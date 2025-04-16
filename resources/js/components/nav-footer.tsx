@@ -1,67 +1,87 @@
-import * as React from 'react';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '@/components/ui/sidebar';
+import {
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuItem,
+    SidebarMenuButton,
+} from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@radix-ui/react-collapsible';
-import { ChevronRight } from 'lucide-react';
-import { type ComponentPropsWithoutRef } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
-interface SubItem {
-    title: string;
-    href: string;
-  }
-  
-  interface MenuItem {
-    title: string;
-    icon?: React.ElementType
-    isActive?: boolean
-    items: SubItem[]
-  }
+export function NavFooter({ items = [], className }: { items: NavItem[]; className?: string }) {
+    const page = usePage();
 
-interface SidebarGroupMenuProps {
-    items: MenuItem[]
-    className?: string
-  }
-
-export function NavFooter({
-    items,
-    className,
-    ...props
-}: ComponentPropsWithoutRef<typeof SidebarGroupMenuProps> & {
-    items: NavItem[];
-}) {
     return (
-        <SidebarMenu className={className}>
-            {items.map((item) => {
-                const Icon = item.icon;
+        <SidebarGroup className={className}>
+            <SidebarGroupLabel>System</SidebarGroupLabel>
+            <SidebarMenu>
+                {items.map((item) => (
+                    <NavItemWithSub key={item.title} item={item} currentPath={page.url} />
+                ))}
+            </SidebarMenu>
+        </SidebarGroup>
+    );
+}
 
-                return (
-                    <Collapsible key={item.title} defaultOpen={item.isActive} className="group/collapsible">
-                        <SidebarMenuItem>
-                            <CollapsibleTrigger asChild>
-                                <SidebarMenuButton>
-                                    {Icon && <Icon className="mr-2 h-4 w-4" />}
-                                    <span>{item.title}</span>
-                                    <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                                </SidebarMenuButton>
-                            </CollapsibleTrigger>
+function NavItemWithSub({ item, currentPath }: { item: NavItem; currentPath: string }) {
+    const hasChildren = item.items && item.items.length > 0;
+    const [open, setOpen] = useState(false);
 
-                            <CollapsibleContent>
-                                <SidebarMenuSub>
-                                    {item.items.map((sub) => (
-                                        <SidebarMenuSubItem key={sub.title}>
-                                            <SidebarMenuSubButton asChild>
-                                                <a href={sub.href}>
-                                                    <span>{sub.title}</span>
-                                                </a>
-                                            </SidebarMenuSubButton>
-                                        </SidebarMenuSubItem>
-                                    ))}
-                                </SidebarMenuSub>
-                            </CollapsibleContent>
+    const isActive = item.href === currentPath;
+
+    const toggle = (e: React.MouseEvent) => {
+        if (hasChildren) {
+            e.preventDefault();
+            setOpen(!open);
+        }
+    };
+
+    return (
+        <>
+            <SidebarMenuItem>
+                <SidebarMenuButton
+                    asChild
+                    isActive={isActive}
+                    tooltip={{ children: item.title }}
+                    onClick={toggle}
+                >
+                    <Link href={item.href} prefetch className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                            {item.icon && <item.icon className="w-4 h-4" />}
+                            <span>{item.title}</span>
+                        </div>
+                        {hasChildren && (
+                            <span className="ml-auto">
+                                {open ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ChevronRight className="w-4 h-4" />
+                                )}
+                            </span>
+                        )}
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {hasChildren && open && (
+                <div className="pl-6 space-y-1">
+                    {item.items.map((subItem) => (
+                        <SidebarMenuItem key={subItem.title}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={subItem.href === currentPath}
+                                tooltip={{ children: subItem.title }}
+                            >
+                                <Link href={subItem.href} prefetch>
+                                    {subItem.title}
+                                </Link>
+                            </SidebarMenuButton>
                         </SidebarMenuItem>
-                    </Collapsible>
-                );
-            })}
-        </SidebarMenu>
+                    ))}
+                </div>
+            )}
+        </>
     );
 }

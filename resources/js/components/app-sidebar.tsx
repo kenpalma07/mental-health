@@ -1,10 +1,18 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, FileBarChart, FileBarChart2, Folder, LayoutGrid, MonitorDot } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,6 +20,28 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Mental Health',
+        href: '#',
+        icon: MonitorDot,
+        isActive: true,
+        items: [
+            { title: 'Patient List', href: '/mentalhealth/addPatient' },
+            { title: 'Consultations', href: '/mentalhealth/consultations' },
+        ],
+    },
+    {
+        title: 'Reports',
+        href: '#',
+        icon: FileBarChart2,
+        isActive: true,
+        items: [
+            { title: 'Consultation LogBooks', href: '/mentalhealth/conLogBook' },
+            { title: 'Monthly Reports', href: '/mentalhealth/monthReports' },
+            { title: 'Quarterly Reports', href: '/mentalhealth/quartReports' },
+            { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
+        ],
     },
 ];
 
@@ -22,18 +52,9 @@ const footerNavItems: NavItem[] = [
         icon: Folder,
         isActive: true,
         items: [
-            {
-                title: 'Users',
-                href: '/iam/users',
-            },
-            {
-                title: 'Roles',
-                href: '/iam/roles',
-            },
-            {
-                title: 'Permissions',
-                href: '/iam/permissions',
-            },
+            { title: 'Users', href: '/iam/users' },
+            { title: 'Roles', href: '/iam/roles' },
+            { title: 'Permissions', href: '/iam/permissions' },
         ],
     },
 ];

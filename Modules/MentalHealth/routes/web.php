@@ -3,6 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use Modules\MentalHealth\Http\Controllers\MentalHealthController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('mentalhealth', MentalHealthController::class)->names('mentalhealth');
-});
+Route::prefix('mentalhealth')
+    ->name('mentalhealth.')
+    //->middleware(['auth:sanctum']) //, 'verified', 'approved', 'locked'
+    ->group(function () {
+
+        Route::get('/', function () {
+            return view('mentalhealth::index');
+        });
+        // Permissions Resource
+        Route::resource('permissions', PermissionController::class);
+    });

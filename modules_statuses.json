@@ -1,5 +1,6 @@
 {
     "IAM": true,
     "Core": true,
-    "Auth": true
+    "Auth": true,
+    "MentalHealth": true
 }
