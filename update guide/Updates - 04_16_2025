@@ -1,7 +1,7 @@
-- Add new table name: "tbl_master_patient"
-- file path: database/migrations/2025_04_16_000001_master_patient_list.php
+- Add new table name: "tbl_master_patient" - April 16, 2025
+- file path: database/migrations/2025_04_16_000001_create_master_patient_list_table.php
 - Patient Identification
-- No.,Column Name
+- No. Column Name
     1. id
     2. master_patient_perm_id
     3. pat_temp_id
@@ -86,3 +86,50 @@
     82. phic_stat
     83. PHIESYNC
     84. userid
+
+- Add new table name: "tbl_master_patient" - April 16, 2025
+- file path: database/migrations/2025_04_16_000002_create_consultation_table.php
+- Consultation
+- No. Column Name
+    1. id
+    2. consult_perm_id
+    3. consult_temp_id
+    4. fhudcode
+    5. pat_temp_id
+    6. consult_type_code
+    7. to_consult_code
+    8. consult_date
+    9. consult_time
+    10. pat_age_yr
+    11. pat_age_mo
+    12. pat_age_dy
+    13. mode_transac_code
+    14. pat_height
+    15. pat_weight
+    16. pat_waist_circum
+    17. pat_BMI
+    18. BMI_cat_code
+    19. height_age_code
+    20. weight_age_code
+    21. personnel_temp_id
+    22. chief_complaint
+    23. Patient_Consent_code
+    24. patient_address_temp_id
+    25. parent_consult_temp_id
+    26. PHIC_status
+    27. PCB1
+    28. date_entered
+    29. time_entered
+    30. date_updated
+    31. time_updated
+    32. ts_created_at
+    33. ts_updated_at
+    34. ts_deleted_at
+    35. uploaded
+    36. date_uploaded
+    37. PHIEsubmitted_date
+    38. validated
+    39. PHIESYNC
+    40. userid
+    41. json_DataInfo
+    42. PHIC_TRACKING_NUMBER
