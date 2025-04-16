@@ -1,0 +1,11 @@
+{
+    "name": "MentalHealth",
+    "alias": "mentalhealth",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\MentalHealth\\Providers\\MentalHealthServiceProvider"
+    ],
+    "files": []
+}
