@@ -1,16 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\MentalHealth\Http\Controllers\MentalHealthController;
+// in routes/web.php or a custom routes file
 
-Route::prefix('mentalhealth')
-    ->name('mentalhealth.')
-    //->middleware(['auth:sanctum']) //, 'verified', 'approved', 'locked'
-    ->group(function () {
+use Modules\MentalHealth\Http\Controllers\PatientController;
 
-        Route::get('/', function () {
-            return view('mentalhealth::index');
-        });
-        // Permissions Resource
-        Route::resource('permissions', PermissionController::class);
-    });
+Route::get('/patients', [PatientController::class, 'index']);
+Route::get('/patients/create', [PatientController::class, 'create']);
+Route::get('/patients/{patient}', [PatientController::class, 'show']);
+Route::post('/patients', [PatientController::class, 'store']);
+Route::get('/patients/{patient}/edit', [PatientController::class, 'edit']);
+Route::put('/patients/{patient}', [PatientController::class, 'update']);
+Route::delete('/patients/{patient}', [PatientController::class, 'destroy']);

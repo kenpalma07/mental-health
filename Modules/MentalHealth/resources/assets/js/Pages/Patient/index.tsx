@@ -5,7 +5,7 @@ import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
-    title: 'Add Patients',
+    title: 'Patients',
     href: '/patients',
   },
 ];
@@ -13,9 +13,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 const PatientIndex: React.FC = () => {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Add Patients" />
+      <Head title="Patients" />
       <div className="p-4 space-y-4">
-        <h1 className="text-2xl font-semibold">Hello Add Patient</h1>
+        <h1 className="text-2xl font-semibold">Hello Patient List here</h1>
         {/* Add more content here later */}
       </div>
     </AppLayout>

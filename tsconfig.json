@@ -118,5 +118,8 @@
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
         "resources/js/**/*.tsx",
+        "Modules/IAM/resources/Pages/js/**/*.ts",
+        "Modules/IAM/resources/Pages/js/**/*.d.ts",
+        "Modules/IAM/resources/Pages/js/**/*.tsx",
     ]
 }
