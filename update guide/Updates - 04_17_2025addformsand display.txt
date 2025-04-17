@@ -1,0 +1,10 @@
+        modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+        modified:   Modules/MentalHealth/app/Models/MasterPatient.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   app/Http/Middleware/HandleInertiaRequests.php
+        deleted:    database/migrations/2025_04_16_000001_create_master_patient_list._table.php
+        new file:   database/migrations/2025_04_16_000001_create_master_patient_list_table.php
+        modified:   package-lock.json
+        modified:   package.json
+        modified:   resources/js/app.tsx
