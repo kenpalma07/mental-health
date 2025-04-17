@@ -29,7 +29,7 @@ const mainNavItems: NavItem[] = [
         items: [
             { title: 'Patient List',  href: '/patients' },
             { title: 'Add Patient',  href: '/patients/create' },
-            { title: 'Consultations', href: '/Patient/consultations' },
+            { title: 'Consultations', href: '/patients/consultations' },
         ],
     },
     {
@@ -42,6 +42,17 @@ const mainNavItems: NavItem[] = [
             { title: 'Monthly Reports', href: '/mentalhealth/monthReports' },
             { title: 'Quarterly Reports', href: '/mentalhealth/quartReports' },
             { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
+        ],
+    },
+
+    {
+        title: 'Other Reports',
+        href: '#',
+        icon: FileBarChart2,
+        isActive: true,
+        items: [
+            { title: 'Other One', href: '/others' },
+            { title: 'Other Two', href: '/other/othertwo' },
         ],
     },
 ];

@@ -1,0 +1,51 @@
+- Add new table name: "Modules/MentalHealth" - April 17, 2025
+- file path: Modules/MentalHealth
+
+
+- Add new Providers: "MentalHealthProviders.php" - April 17, 2025
+- file path: Modules/MentalHealth/Providers/MentalHealthProviders.php
+
+
+- Add new Controller: "PatientController.php" - April 17, 2025
+- file path: Modules/MentalHealth/Controllers/PatientController.php
+
+
+- Add new Routes: "web.php" - April 17, 2025
+        Route::get('/patients', [PatientController::class, 'index']);       //route to list all patients
+        Route::get('/patients/create', [PatientController::class, 'create']);  //route to add new patient
+        Route::get('/patients/{patient}', [PatientController::class, 'show']);
+        Route::post('/patients', [PatientController::class, 'store']);
+        Route::get('/patients/{patient}/edit', [PatientController::class, 'edit']);
+        Route::put('/patients/{patient}', [PatientController::class, 'update']);
+        Route::delete('/patients/{patient}', [PatientController::class, 'destroy']);
+- file path: Modules/MentalHealth/Routes/web.php
+
+
+
+- Update in app-sidebar.tsx: "components" - April 17, 2025
+
+    {
+        title: 'Mental Health',
+        href: '#',
+        icon: MonitorDot,
+        isActive: true,
+        items: [
+            { title: 'Patient List',  href: '/patients' },
+            { title: 'Add Patient',  href: '/patients/create' },
+            { title: 'Consultations', href: '/Patient/consultations' },
+        ],
+    },
+    {
+        title: 'Reports',
+        href: '#',
+        icon: FileBarChart2,
+        isActive: true,
+        items: [
+            { title: 'Consultation LogBooks', href: '/mentalhealth/conLogBook' },
+            { title: 'Monthly Reports', href: '/mentalhealth/monthReports' },
+            { title: 'Quarterly Reports', href: '/mentalhealth/quartReports' },
+            { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
+        ],
+    },
+- file path: resources/js/components/app-sidebar.tsx
+
