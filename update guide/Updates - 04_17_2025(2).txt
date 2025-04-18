@@ -1,3 +1,4 @@
+add forms and display        
         modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
         modified:   Modules/MentalHealth/app/Models/MasterPatient.php
         modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx

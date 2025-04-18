@@ -48,4 +48,25 @@
     },
 - file path: resources/js/components/app-sidebar.tsx
 
-
+Ken Pama - Update for Migrations
+- Run through this command to terminal: "composer require doctrine/dbal"
+- Change column to nullable
+    1. fsNumber
+    2. phic_member
+    3. PCB_nhts
+    4. fhudcode
+    5. consult_type_code
+    6. to_consult_code
+    7. consult_date
+    8. consult_time
+    9. pat_age_yr
+    10. pat_age_mo
+    11. pat_age_dy
+    12. mode_transac_code
+    13. personnel_temp_id
+    14. Patient_Consent_code
+    15. date_entered
+    16. time_entered
+    17. ts_created_at
+    18. uploaded
+    19. patient_status
