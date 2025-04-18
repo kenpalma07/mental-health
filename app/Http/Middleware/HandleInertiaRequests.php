@@ -45,6 +45,8 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
             ],
             'filters' => [
                 'search'  => $request->query('search'),
