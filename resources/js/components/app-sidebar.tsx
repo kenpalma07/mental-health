@@ -29,7 +29,7 @@ const mainNavItems: NavItem[] = [
         items: [
             { title: 'Patient List',  href: '/patients' },
             { title: 'Add Patient',  href: '/patients/create' },
-            { title: 'Consultations', href: '/patients/consultations' },
+            { title: 'Consultations', href: '/consultations' },
         ],
     },
     {

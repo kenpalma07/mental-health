@@ -11,40 +11,36 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $query = MasterPatient::query();
-    
-        // Add search filter
-        if ($request->has('search')) {
+
+        // Apply search only if there's a search term
+        if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('pat_fname', 'like', "%$search%")
-                  ->orWhere('pat_lname', 'like', "%$search%")
-                  ->orWhere('facility_name', 'like', "%$search%");
+                $q->where('pat_fname', 'like', "%{$search}%")
+                  ->orWhere('pat_lname', 'like', "%{$search}%")
+                  ->orWhere('facility_name', 'like', "%{$search}%");
             });
         }
-    
-        // Add sex filter
+
+        // Apply sex filter if it exists
         if ($request->filled('sex')) {
             $query->where('sex_code', $request->input('sex'));
         }
-    
-        // Pagination, you can adjust per page as needed
-        $patients = $query->paginate(10); // Use paginate for paginated results
-    
-        // Send pagination data along with the patients
+
+        // Apply pagination and append the current filters to the URL
+        $patients = $query->paginate(10)->appends($request->only(['search', 'sex']));
+
         return inertia('MentalHealth::Patient/index', [
             'patients' => $patients->items(),
-            'pagination' => $patients->toArray(), // Pagination links
+            'pagination' => $patients->toArray(),
             'filters' => $request->only(['search', 'sex']),
         ]);
     }
-    
-    
 
     public function create()
     {
         return inertia('MentalHealth::Patient/addPatient');
     }
-
 
     public function store(Request $request)
     {
@@ -74,12 +70,38 @@ class PatientController extends Controller
             'fat_lname' => 'nullable|string|max:255',
             'fat_birthDate' => 'nullable|date',
         ]);
-    
+
         MasterPatient::create($validated);
-    
+
         return inertia('MentalHealth::Patient/index')->with([
             'success' => 'Patient added successfully!',
         ]);
     }
-    
+
+    public function search(Request $request)
+    {
+        $query = MasterPatient::query();
+
+        if ($request->filled('pat_fname')) {
+            $query->where('pat_fname', 'like', '%' . $request->pat_fname . '%');
+        }
+
+        if ($request->filled('pat_mname')) {
+            $query->where('pat_mname', 'like', '%' . $request->pat_mname . '%');
+        }
+
+        if ($request->filled('pat_lname')) {
+            $query->where('pat_lname', 'like', '%' . $request->pat_lname . '%');
+        }
+
+        if ($request->filled('pat_birthDate')) {
+            $query->where('pat_birthDate', $request->pat_birthDate);
+        }
+
+        if ($request->filled('sex_code')) {
+            $query->where('sex_code', $request->sex_code);
+        }
+
+        return response()->json($query->limit(10)->get());
+    }
 }
