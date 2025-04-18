@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 import SearchPatientModal from './SearchPatientModal'; // Import your modal
 import type { BreadcrumbItem } from '@/types';
+import { Select } from '@headlessui/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -15,15 +16,18 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
+
 const AddPatient: React.FC = () => {
   const { data, setData, post, processing, errors } = useForm({
     facility_name: '',
     facility_location: '',
     provider_name: '',
     intake_date: '',
+    prefix_code: '', // Assuming this is a prefix code
     pat_lname: '',
     pat_mname: '',
     pat_fname: '',
+    suffix_code: '', // Assuming this is a suffix code
     sex_code: '',
     pat_birthDate: '',
     regcode: '',
@@ -37,10 +41,16 @@ const AddPatient: React.FC = () => {
     mot_mname: '',
     mot_lname: '',
     mot_birthDate: '',
+    mot_address: '', // Assuming this is the mother's address - Newly added - Ken
+    mot_contact: '', // Assuming this is the mother's contact number - Newly added - Ken
+    mot_deceased_status: '', // Assuming this is the mother's deceased status - Newly added - Ken
     fat_fname: '',
     fat_mname: '',
     fat_lname: '',
     fat_birthDate: '',
+    fat_address: '', // Assuming this is the father's address - Newly added - Ken
+    fat_contact: '', // Assuming this is the father's contact number - Newly added - Ken
+    fat_deceased_status: '', // Assuming this is the father's deceased status - Newly added - Ken
   });
 
   // State for managing modal visibility
@@ -110,7 +120,7 @@ const AddPatient: React.FC = () => {
             <InputError message={errors.provider_name} />
           </div>
           <div>
-            <Label htmlFor="intake_date">Date Intake</Label>
+            <Label htmlFor="intake_date">Date Registration</Label> {/* Changed to Date Registration */}
             <Input
               id="intake_date"
               type="date"
@@ -124,6 +134,24 @@ const AddPatient: React.FC = () => {
         {/* Patient Details */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold">Patient Information</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <Label htmlFor="prefix_code">Prefix</Label>
+                <select
+                  id="prefix_code"
+                  value={data.prefix_code}
+                  onChange={(e) => setData('prefix_code', e.target.value)}
+                  className="block w-full px-3 py-2 border rounded-md shadow-sm"
+                >
+                  <option value="">Select Prefix</option>
+                  <option value="Mr">Mr</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Dr">Dr</option>
+                </select>
+              <InputError message={errors.prefix_code} /> {/* Newly added - Ken */}
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
               <Label htmlFor="pat_lname">Last Name</Label>
@@ -153,6 +181,26 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.pat_fname} />
             </div>
             <div>
+              <Label htmlFor="suffix_code">Suffix</Label>
+              <select
+                id="suffix_code"
+                value={data.suffix_code}
+                onChange={(e) => setData('suffix_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm"
+              >
+                <option value="">Select Suffix</option>
+                <option value="I">N/A</option>
+                <option value="Jr">Jr</option>
+                <option value="Sr">Sr</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+              </select>
+              <InputError message={errors.suffix_code} /> {/* Newly added - Ken */}
+            </div>
+            <div>
               <Label htmlFor="pat_birthDate">Birth Date</Label>
               <Input
                 id="pat_birthDate"
@@ -163,14 +211,14 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.pat_birthDate} />
             </div>
             <div>
-              <Label htmlFor="sex_code">Gender</Label>
+              <Label htmlFor="sex_code">Sex</Label>
               <select
                 id="sex_code"
                 value={data.sex_code}
                 onChange={(e) => setData('sex_code', e.target.value)}
                 className="block w-full px-3 py-2 border rounded-md shadow-sm"
               >
-                <option value="">Select Gender</option>
+                <option value="">Select Sex</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
               </select>
@@ -209,7 +257,7 @@ const AddPatient: React.FC = () => {
         {/* Location Codes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
-            <Label htmlFor="regcode">Region Code</Label>
+            <Label htmlFor="regcode">Region</Label>
             <Input
               id="regcode"
               value={data.regcode}
@@ -218,7 +266,7 @@ const AddPatient: React.FC = () => {
             <InputError message={errors.regcode} />
           </div>
           <div>
-            <Label htmlFor="provcode">Province Code</Label>
+            <Label htmlFor="provcode">Province</Label>
             <Input
               id="provcode"
               value={data.provcode}
@@ -227,7 +275,7 @@ const AddPatient: React.FC = () => {
             <InputError message={errors.provcode} />
           </div>
           <div>
-            <Label htmlFor="citycode">City Code</Label>
+            <Label htmlFor="citycode">City / Municipality</Label>
             <Input
               id="citycode"
               value={data.citycode}
@@ -236,7 +284,7 @@ const AddPatient: React.FC = () => {
             <InputError message={errors.citycode} />
           </div>
           <div>
-            <Label htmlFor="bgycode">Barangay Code</Label>
+            <Label htmlFor="bgycode">Barangay</Label>
             <Input
               id="bgycode"
               value={data.bgycode}
@@ -249,9 +297,10 @@ const AddPatient: React.FC = () => {
         {/* Parent Details */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold">Parent Information</h3>
+          <h5 className="text-sm font-semibold text-gray-500">Mother's Maiden Name</h5>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div>
-              <Label htmlFor="mot_fname">Mother's First Name</Label>
+              <Label htmlFor="mot_fname">First Name</Label>
               <Input
                 id="mot_fname"
                 value={data.mot_fname}
@@ -260,7 +309,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.mot_fname} />
             </div>
             <div>
-              <Label htmlFor="mot_mname">Mother's Middle Name</Label>
+              <Label htmlFor="mot_mname">Middle Name</Label>
               <Input
                 id="mot_mname"
                 value={data.mot_mname}
@@ -269,7 +318,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.mot_mname} />
             </div>
             <div>
-              <Label htmlFor="mot_lname">Mother's Last Name</Label>
+              <Label htmlFor="mot_lname">Last Name</Label>
               <Input
                 id="mot_lname"
                 value={data.mot_lname}
@@ -278,7 +327,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.mot_lname} />
             </div>
             <div>
-              <Label htmlFor="mot_birthDate">Mother's Birth Date</Label>
+              <Label htmlFor="mot_birthDate">Birth Date</Label>
               <Input
                 id="mot_birthDate"
                 type="date"
@@ -287,8 +336,43 @@ const AddPatient: React.FC = () => {
               />
               <InputError message={errors.mot_birthDate} />
             </div>
+            <div className="sm:col-span-2 lg:col-span-2">
+              <Label htmlFor="mot_address">Address</Label>
+              <Input
+                id="mot_address"
+                value={data.mot_address}
+                onChange={(e) => setData('mot_address', e.target.value)}
+              />
+              <InputError message={errors.mot_address} />
+            </div>
             <div>
-              <Label htmlFor="fat_fname">Father's First Name</Label>
+              <Label htmlFor="mot_contact">Contact Number</Label>
+              <Input
+                id="mot_contact"
+                value={data.mot_contact}
+                onChange={(e) => setData('mot_contact', e.target.value)}
+              />
+              <InputError message={errors.mot_contact} />
+            </div>
+            <div>
+              <Label htmlFor="mot_deceased_status">Deceased</Label>
+              <Select
+                id="mot_deceased_status"
+                value={data.mot_deceased_status}
+                onChange={(e) => setData('mot_deceased_status', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm"
+              >
+                <option value="">Select</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
+              </Select>
+              <InputError message={errors.mot_deceased_status} /> {/* Newly added - Ken */}
+            </div>
+          </div>
+          <h5 className="text-sm font-semibold text-gray-500">Father's Name</h5>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <Label htmlFor="fat_fname">First Name</Label>
               <Input
                 id="fat_fname"
                 value={data.fat_fname}
@@ -297,7 +381,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.fat_fname} />
             </div>
             <div>
-              <Label htmlFor="fat_mname">Father's Middle Name</Label>
+              <Label htmlFor="fat_mname">Middle Name</Label>
               <Input
                 id="fat_mname"
                 value={data.fat_mname}
@@ -306,7 +390,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.fat_mname} />
             </div>
             <div>
-              <Label htmlFor="fat_lname">Father's Last Name</Label>
+              <Label htmlFor="fat_lname">Last Name</Label>
               <Input
                 id="fat_lname"
                 value={data.fat_lname}
@@ -315,7 +399,7 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.fat_lname} />
             </div>
             <div>
-              <Label htmlFor="fat_birthDate">Father's Birth Date</Label>
+              <Label htmlFor="fat_birthDate">Birth Date</Label>
               <Input
                 id="fat_birthDate"
                 type="date"
@@ -323,6 +407,38 @@ const AddPatient: React.FC = () => {
                 onChange={(e) => setData('fat_birthDate', e.target.value)}
               />
               <InputError message={errors.fat_birthDate} />
+            </div>
+            <div className="sm:col-span-2 lg:col-span-2">
+              <Label htmlFor="fat_address">Address</Label>
+              <Input
+                id="fat_address"
+                value={data.fat_address}
+                onChange={(e) => setData('fat_address', e.target.value)}
+              />
+              <InputError message={errors.fat_address} />
+            </div>
+            <div>
+              <Label htmlFor="fat_contact">Contact Number</Label>
+              <Input
+                id="fat_contact"
+                value={data.fat_contact}
+                onChange={(e) => setData('fat_contact', e.target.value)}
+              />
+              <InputError message={errors.fat_contact} />
+            </div>
+            <div>
+              <Label htmlFor="fat_deceased_status">Deceased</Label>
+              <Select
+              id="fat_deceased_status"
+              value={data.fat_deceased_status}
+              onChange={(e) => setData('fat_deceased_status', e.target.value)}
+              className="block w-full px-3 py-2 border rounded-md shadow-sm"
+              >
+                <option value="">Select</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
+              </Select>
+              <InputError message={errors.fat_deceased_status} />
             </div>
           </div>
         </div>
