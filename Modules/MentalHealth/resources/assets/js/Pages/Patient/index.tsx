@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -17,40 +17,48 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit2, Printer } from 'lucide-react';
+import { MoreHorizontal, Edit2, Printer, UserPlus } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import type { PageProps } from '@/types';
 import type { MasterPatient } from '@/types/modules/mental-health';
 import type { BreadcrumbItem } from '@/types';
-import { UserPlus } from 'lucide-react';
-import PatientConsent from '../Forms/patientconsent'; // Corrected import path
+import PatientConsent from '../Forms/patientconsent';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Patients', href: '/patients' },
 ];
 
 const PatientIndex: React.FC = () => {
-  const { patients, filters, pagination } = usePage<
-    PageProps<{
-      patients: MasterPatient[];
-      filters: any;
-      pagination: any;
-    }>
-  >().props;
+  const { patients } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [sexFilter, setSexFilter] = React.useState('');
   const [sorting, setSorting] = React.useState([]);
-  const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false); // State to control modal visibility
-  const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null); // State for selected patient
+  const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
+  const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null);
 
   const openConsentModal = (patient: MasterPatient) => {
     setSelectedPatient(patient);
-    setIsConsentModalOpen(true); // Show the modal
+    setIsConsentModalOpen(true);
   };
 
   const closeConsentModal = () => {
-    setIsConsentModalOpen(false); // Close the modal
-    setSelectedPatient(null); // Reset selected patient
+    setIsConsentModalOpen(false);
+    setSelectedPatient(null);
   };
+
+  const filteredPatients = React.useMemo(() => {
+    return patients.filter((patient) => {
+      const fullName = `${patient.pat_fname} ${patient.pat_mname ?? ''} ${patient.pat_lname}`.toLowerCase();
+      const facility = patient.facility_name?.toLowerCase() || '';
+      const search = searchTerm.toLowerCase();
+
+      const matchesSearch = fullName.includes(search) || facility.includes(search);
+      const matchesSex = sexFilter ? patient.sex_code === sexFilter : true;
+
+      return matchesSearch && matchesSex;
+    });
+  }, [patients, searchTerm, sexFilter]);
 
   const columns = React.useMemo<ColumnDef<MasterPatient>[]>(() => [
     {
@@ -108,13 +116,13 @@ const PatientIndex: React.FC = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-              <Button
+                <Button
                   onClick={() => openConsentModal(patient)}
                   className="flex items-center gap-2 bg-transparent text-black hover:bg-gray-100"
                 >
                   <Printer className="w-4 h-4" />
                   Patient Consent
-              </Button>
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -124,7 +132,7 @@ const PatientIndex: React.FC = () => {
   ], []);
 
   const table = useReactTable({
-    data: patients,
+    data: filteredPatients,
     columns,
     state: {
       sorting,
@@ -157,7 +165,14 @@ const PatientIndex: React.FC = () => {
           </Link>
         </div>
 
-        {/* Search and Filter Section */}
+        <div className="flex gap-4">
+          <Input
+            placeholder="Search by name or facility..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/3"
+          />
+        </div>
 
         <div className="overflow-x-auto bg-white border rounded-lg shadow">
           <table className="min-w-full text-sm text-left text-gray-700">
@@ -203,14 +218,54 @@ const PatientIndex: React.FC = () => {
           </table>
         </div>
 
-        {/* Conditionally render the PatientConsent modal */}
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-gray-600">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              First
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Prev
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              Last
+            </Button>
+          </div>
+        </div>
+
+        {/* PatientConsent modal */}
         {isConsentModalOpen && selectedPatient && (
           <PatientConsent
             patient={selectedPatient}
-            onClose={closeConsentModal} // Close function
+            onClose={closeConsentModal}
           />
         )}
-
       </div>
     </AppLayout>
   );

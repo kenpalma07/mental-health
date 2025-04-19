@@ -104,4 +104,34 @@ class PatientController extends Controller
 
         return response()->json($query->limit(10)->get());
     }
+
+
+    public function edit($id)
+    {
+        $patient = MasterPatient::findOrFail($id);
+
+        return inertia('MentalHealth::Patient/editPatient', [
+            'patient' => $patient,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $patient = MasterPatient::findOrFail($id);
+
+        $validated = $request->validate([
+            'facility_name' => 'required|string|max:255',
+            'pat_fname' => 'required|string|max:255',
+            'pat_lname' => 'required|string|max:255',
+            'sex_code' => 'required|in:M,F',
+            'pat_birthDate' => 'required|date',
+            // add other fields & validation as needed
+        ]);
+
+        $patient->update($validated);
+
+        return redirect()->route('patients')->with('success', 'Patient updated successfully!');
+    }
+
+
 }

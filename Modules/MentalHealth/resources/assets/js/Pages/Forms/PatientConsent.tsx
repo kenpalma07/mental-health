@@ -88,7 +88,7 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient, onClose }) => 
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-5">
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-60" />
+      <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
       <div className="relative bg-white p-6 rounded-lg shadow-xl z-10 w-full max-w-3xl">
         {/* Logo and Facility Info */}
         <div className="flex items-center justify-start mb-6 space-x-4">

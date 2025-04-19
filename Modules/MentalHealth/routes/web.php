@@ -11,9 +11,15 @@ Route::get('/patients', [PatientController::class, 'index']);
 Route::get('/patients/create', [PatientController::class, 'create']);
 Route::post('/patients', [PatientController::class, 'store']);
 Route::get('/patients/search', [PatientController::class, 'search']);
+Route::get('/patients/{id}/edit', [PatientController::class, 'edit']);
+Route::put('/patients/{id}', [PatientController::class, 'update']);
+
+
 
 //Patient Consultation
 Route::get('/consultations', [ConsultationController::class, 'index']);
+
+
 
 //Patient Consent
 Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])->name('patients.consent');

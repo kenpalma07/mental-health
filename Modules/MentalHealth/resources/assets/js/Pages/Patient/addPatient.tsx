@@ -10,10 +10,8 @@ import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Add Patients',
-    href: '/patients/create',
-  },
+  { title: 'Mental Health', href: '/patients' },
+  { title: 'Add Patients', href: '/patients/create' },
 ];
 
 
@@ -91,6 +89,9 @@ const AddPatient: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="w-full px-10 py-8 space-y-8">
         {/* Facility Info */}
+        <h3 className="text-lg font-semibold">Patient Registration Form</h3>
+        <hr></hr>
+        <h3 className="text-lg font-semibold">Facility Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
             <Label htmlFor="facility_name">Facility Name</Label>
