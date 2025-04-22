@@ -27,7 +27,9 @@ const AddPatient: React.FC = () => {
     pat_fname: '',
     suffix_code: '', // Assuming this is a suffix code
     sex_code: '',
+    pat_birthplace: '',
     pat_birthDate: '',
+    civil_stat_code: '',
     regcode: '',
     provcode: '',
     citycode: '',
@@ -181,6 +183,8 @@ const AddPatient: React.FC = () => {
               />
               <InputError message={errors.pat_fname} />
             </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div>
               <Label htmlFor="suffix_code">Suffix</Label>
               <select
@@ -212,6 +216,10 @@ const AddPatient: React.FC = () => {
               <InputError message={errors.pat_birthDate} />
             </div>
             <div>
+              <Label htmlFor="age">Age</Label>
+              {/* Add here for age */}
+            </div>
+            <div>
               <Label htmlFor="sex_code">Sex</Label>
               <select
                 id="sex_code"
@@ -224,6 +232,26 @@ const AddPatient: React.FC = () => {
                 <option value="F">Female</option>
               </select>
               <InputError message={errors.sex_code} />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <Label htmlFor="civil_stat_code">Civil Status</Label>
+              <select
+                id="civil_stat_code"
+                value={data.civil_stat_code}
+                onChange={(e) => setData('civil_stat_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm"
+              >
+                <option value="">Select Civil Status</option>
+                <option value="sin">Single</option>
+                <option value="mar">Married</option>
+                <option value="div">Divorced</option>
+                <option value="sep">Separated</option>
+                <option value="wid">Widow/Widower</option>
+                <option value="na">N/A</option>
+              </select>
+              <InputError message={errors.civil_stat_code} />
             </div>
             <div>
               <Label htmlFor="pat_mobile">Mobile</Label>

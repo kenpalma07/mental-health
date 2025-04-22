@@ -1,0 +1,7 @@
+Updates status - Ken Palma
+
+1. modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+2. modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+3. modified:   database/migrations/2025_04_22_000006_create_referral_form.php
+4. modified:   2025_04_18_000004_create_mental_assessment_form
+5. added:      2025_04_22_000005_create_treatment_plan
