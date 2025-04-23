@@ -13,3 +13,10 @@ Updates status - Ken Palma
 9.  new file:   Modules/MentalHealth/resources/assets/js/Pages/json/philippine_reg_prov_cit_brgy.json
 
 
+10. modified:   Modules/MentalHealth/app/Http/Controllers/ConsultationController.php
+11. modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+12. modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+13. modified:   Modules/MentalHealth/routes/web.php
+
+
+
