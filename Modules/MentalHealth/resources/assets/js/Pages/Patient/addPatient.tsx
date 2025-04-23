@@ -271,14 +271,16 @@ const AddPatient: React.FC = () => {
               />
               <InputError message={errors.pat_landline} />
             </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             <div className="sm:col-span-2 lg:col-span-3">
-              <Label htmlFor="patient_address">Address</Label>
-              <Input
-                id="patient_address"
-                value={data.patient_address}
-                onChange={(e) => setData('patient_address', e.target.value)}
-              />
-              <InputError message={errors.patient_address} />
+                <Label htmlFor="patient_address">No. Street</Label>
+                <Input
+                  id="patient_address"
+                  value={data.patient_address}
+                  onChange={(e) => setData('patient_address', e.target.value)}
+                />
+                <InputError message={errors.patient_address} />
             </div>
           </div>
         </div>
@@ -320,6 +322,15 @@ const AddPatient: React.FC = () => {
               onChange={(e) => setData('bgycode', e.target.value)}
             />
             <InputError message={errors.bgycode} />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-1 lg:grid-cols-1 gap-6">
+          <div>
+            <Label htmlFor="pat_full_address">Full Address</Label>
+            <Input
+              placeholder="Full Address" disabled
+            />
           </div>
         </div>
 
