@@ -94,9 +94,12 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <form onSubmit={handleSubmit} className="p-6 space-y-6">
-        <h2 className="text-xl font-semibold">Facility Information</h2>
-        <div className="grid grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="w-full px-10 py-8 space-y-8">
+        {/* Facility Info */}
+        <h3 className="text-lg font-semibold">Edit - Patient Registration Form</h3>
+        <hr></hr>
+        <h3 className="text-lg font-semibold">Facility Information</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
             <Label>Facility Name</Label>
             <Input value={data.facility_name} onChange={e => setData('facility_name', e.target.value)} />

@@ -46,9 +46,10 @@ return new class extends Migration
             $table->text('assess_self_suic')->nullable();
 
             //Timestamp
-            $table->timestamp('ts_created_at')->nullable();
+            $table->timestamp('ts_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('ts_updated_at')->nullable();
             $table->timestamp('ts_deleted_at')->nullable();
+            $table->timestamp('registered_at')->nullable();
         });
 
         Schema::table('tbl_mental_assessment_form', function (Blueprint $table) {

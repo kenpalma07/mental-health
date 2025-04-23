@@ -33,9 +33,10 @@ return new class extends Migration
             $table->string('tp_other', 200)->nullable();
 
             //Timestamp
-            $table->timestamp('ts_created_at')->nullable();
+            $table->timestamp('ts_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('ts_updated_at')->nullable();
             $table->timestamp('ts_deleted_at')->nullable();
+            $table->timestamp('registered_at')->nullable();
         });
     }
 

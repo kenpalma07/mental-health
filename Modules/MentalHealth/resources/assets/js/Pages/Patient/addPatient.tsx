@@ -126,7 +126,7 @@ const AddPatient: React.FC = () => {
             <Label htmlFor="intake_date">Date Registration</Label> {/* Changed to Date Registration */}
             <Input
               id="intake_date"
-              type="date"
+              type="datetime-local"
               value={data.intake_date}
               onChange={(e) => setData('intake_date', e.target.value)}
             />
