@@ -30,6 +30,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
     intake_date: patient.intake_date || '',
     facility_barangay: patient.facility_barangay || '',
     facility_name: patient.facility_name || '',
+    registered_at: formatTimestampForInput(patient.registered_at) || '',
 
     pat_lname: patient.pat_lname || '',
     pat_fname: patient.pat_fname || '',
@@ -92,6 +93,19 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
     put(`/patients/${patient.id}`);
   };
 
+  function formatTimestampForInput(timestamp: string): string {
+    if(!timestamp) return '';
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+
+  }
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit} className="w-full px-10 py-8 space-y-8">
@@ -119,6 +133,16 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
             <Label>Date Intake</Label>
             <Input value={data.intake_date} onChange={e => setData('intake_date', e.target.value)} disabled />
             <InputError message={errors.intake_date} />
+          </div>
+          <div>
+            <Label htmlFor="registered_at">Date of Registration</Label>
+            <Input
+              id="registered_at"
+              type="datetime-local"
+              value={data.registered_at}
+              onChange={(e) => setData('registered_at', e.target.value)} disabled
+            />
+            <InputError message={errors.registered_at} />
           </div>
         </div>
 

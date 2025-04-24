@@ -23,7 +23,8 @@ const AddPatient: React.FC = () => {
     facility_name: '',
     facility_location: '',
     provider_name: '',
-    intake_date: '',
+    //intake_date: '',
+    registered_at: '', // Assuming this is the date of registration
     prefix_code: '', // Assuming this is a prefix code
     pat_lname: '',
     pat_mname: '',
@@ -79,6 +80,23 @@ const AddPatient: React.FC = () => {
     return age;
   }
 
+  function getRegistration(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+  
+  useEffect(() => {
+    if (!data.registered_at) {
+      setData('registered_at', getRegistration());
+    }
+  }, []);
+  
   // State for managing modal visibility
   const [isModalOpen, setModalOpen] = React.useState(false);
 
@@ -122,50 +140,53 @@ const AddPatient: React.FC = () => {
         <h3 className="text-lg font-semibold">Facility Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
-            <Label htmlFor="facility_name">Facility Name</Label>
+            <Label htmlFor="facility_name">
+              Facility Name <span className="text-red-600 font-bold">*</span>
+            </Label>
             <Input
               id="facility_name"
-              className="text-green-500"
+              className="text-dark-500"
               value={data.facility_name}
               onChange={(e) => setData('facility_name', e.target.value)}
             />
             <InputError message={errors.facility_name} />
           </div>
           <div>
-            <Label htmlFor="facility_location">Facility Location</Label>
+            <Label htmlFor="facility_location">
+              Facility Location <span className="text-red-600 font-bold">*</span>
+            </Label>
             <Input
               id="facility_location"
-              className="text-green-500"
+              className="text-dark-500"
               value={data.facility_location}
               onChange={(e) => setData('facility_location', e.target.value)}
             />
             <InputError message={errors.facility_location} />
           </div>
           <div>
-            <Label htmlFor="provider_name">Name of Provider</Label>
+            <Label htmlFor="provider_name">
+              Name of Provider <span className="text-red-600 font-bold">*</span>
+            </Label>
             <Input
               id="provider_name"
-              className="text-green-500"
+              className="text-dark-500"
               value={data.provider_name}
               onChange={(e) => setData('provider_name', e.target.value)}
             />
             <InputError message={errors.provider_name} />
           </div>
           <div>
-            <Label htmlFor="intake_date">Date Registration</Label> {/* Changed to Date Registration */}
+            <Label htmlFor="registered_at">Date of Registration</Label>
             <Input
-              id="intake_date"
-<<<<<<< HEAD
+              id="registered_at"
               type="datetime-local"
-=======
-              type="date"
-              className="text-green-500"
->>>>>>> 47771dbcf35e9e140eb313be24455d94bc3a2c70
-              value={data.intake_date}
-              onChange={(e) => setData('intake_date', e.target.value)}
+              className="text-dark-500"
+              value={data.registered_at}
+              onChange={(e) => setData('registered_at', e.target.value)}
             />
-            <InputError message={errors.intake_date} />
+            <InputError message={errors.registered_at} />
           </div>
+
         </div>
 
         {/* Patient Details */}
@@ -173,12 +194,14 @@ const AddPatient: React.FC = () => {
           <h3 className="text-lg font-semibold">Patient Information</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <Label htmlFor="prefix_code">Prefix</Label>
+              <Label htmlFor="prefix_code">
+                Prefix <span className="text-red-600 font-bold">*</span>
+              </Label>
                 <Select
                   id="prefix_code"
                   value={data.prefix_code}
                   onChange={(e) => setData('prefix_code', e.target.value)}
-                  className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500">
+                  className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500">
                   <option value="">Select Prefix</option>
                   <option value="Mr">Mr</option>
                   <option value="Ms">Ms</option>
@@ -190,44 +213,53 @@ const AddPatient: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <Label htmlFor="pat_lname">Last Name</Label>
+              <Label htmlFor="pat_lname">
+                Last Name <span className="text-red-600 font-bold">*</span>
+              </Label>
               <Input
                 id="pat_lname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.pat_lname}
                 onChange={(e) => setData('pat_lname', e.target.value)}
               />
               <InputError message={errors.pat_lname} />
             </div>
             <div>
-              <Label htmlFor="pat_mname">Middle Name</Label>
-              <Input
-                id="pat_mname"
-                className="text-green-500"
-                value={data.pat_mname}
-                onChange={(e) => setData('pat_mname', e.target.value)}
-              />
-              <InputError message={errors.pat_mname} />
-            </div>
-            <div>
-              <Label htmlFor="pat_fname">First Name</Label>
+              <Label htmlFor="pat_fname">
+                First Name <span className="text-red-600 font-bold">*</span>
+              </Label>
               <Input
                 id="pat_fname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.pat_fname}
                 onChange={(e) => setData('pat_fname', e.target.value)}
               />
               <InputError message={errors.pat_fname} />
             </div>
+            <div>
+              <Label htmlFor="pat_mname">
+                Middle Name <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input
+                id="pat_mname"
+                className="text-dark-500"
+                value={data.pat_mname}
+                onChange={(e) => setData('pat_mname', e.target.value)}
+              />
+              <InputError message={errors.pat_mname} />
+            </div>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div>
-              <Label htmlFor="suffix_code">Suffix</Label>
+              <Label htmlFor="suffix_code">
+                Suffix <span className="text-red-600 font-bold">*</span>
+              </Label>
               <Select
                 id="suffix_code"
                 value={data.suffix_code}
                 onChange={(e) => setData('suffix_code', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500"
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select Suffix</option>
                 <option value="I">N/A</option>
@@ -241,37 +273,42 @@ const AddPatient: React.FC = () => {
               </Select>
               <InputError message={errors.suffix_code} /> 
             </div>
-                    <div>
-                      <Label htmlFor="pat_birthDate">Birth Date</Label>
-                      <Input
-                        id="pat_birthDate"
-                        type="date"
-                        className="text-green-500"
-                        value={data.pat_birthDate}
-                        onChange={(e) => setData('pat_birthDate', e.target.value)}
-                      />
-                      <InputError message={errors.pat_birthDate} />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="age">Age</Label>
-                      <Input
-                        id="age"
-                        type="text"
-                        className="text-green-500"
-                        value={age !== '' ? age : ''}
-                        readOnly
-                        disabled
-                      />
-                    </div>
+            <div>
+              <Label htmlFor="pat_birthDate">
+                Birth Date <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input
+                id="pat_birthDate"
+                type="date"
+                className="text-dark-500"
+                value={data.pat_birthDate}
+                onChange={(e) => setData('pat_birthDate', e.target.value)}
+              />
+              <InputError message={errors.pat_birthDate} />
+            </div>
 
             <div>
-              <Label htmlFor="sex_code">Sex</Label>
+              <Label htmlFor="age">
+                Age <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input
+                id="age"
+                type="text"
+                className="w-full border rounded p-2 bg-gray-100 text-dark-500"
+                value={age !== '' ? age : ''}
+                readOnly
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="sex_code">
+                Sex <span className="text-red-600 font-bold">*</span>
+              </Label>
               <Select
                 id="sex_code"
                 value={data.sex_code}
                 onChange={(e) => setData('sex_code', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500"
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select Sex</option>
                 <option value="M">Male</option>
@@ -282,12 +319,14 @@ const AddPatient: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <Label htmlFor="civil_stat_code">Civil Status</Label>
+              <Label htmlFor="civil_stat_code">
+                Civil Status <span className="text-red-600 font-bold">*</span> 
+              </Label>
               <Select
                 id="civil_stat_code"
                 value={data.civil_stat_code}
                 onChange={(e) => setData('civil_stat_code', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500"
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select Civil Status</option>
                 <option value="sin">Single</option>
@@ -303,7 +342,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="pat_mobile">Mobile</Label>
               <Input
                 id="pat_mobile"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.pat_mobile}
                 onChange={(e) => setData('pat_mobile', e.target.value)}
               />
@@ -313,7 +352,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="pat_landline">Landline</Label>
               <Input
                 id="pat_landline"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.pat_landline}
                 onChange={(e) => setData('pat_landline', e.target.value)}
               />
@@ -322,10 +361,12 @@ const AddPatient: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             <div className="sm:col-span-2 lg:col-span-3">
-                <Label htmlFor="patient_address">No. Street</Label>
+                <Label htmlFor="patient_address">
+                  No. Street <span className="text-red-600 font-bold">*</span> 
+                </Label>
                 <Input
                   id="patient_address"
-                  className="text-green-500"
+                  className="text-dark-500"
                   value={data.patient_address}
                   onChange={(e) => setData('patient_address', e.target.value)}
                 />
@@ -338,7 +379,9 @@ const AddPatient: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Region */}
         <div>
-          <Label htmlFor="regcode">Region</Label>
+          <Label htmlFor="regcode">
+            Region <span className="text-red-600 font-bold">*</span> 
+          </Label>
           <Select
             id="regcode"
             value={selectedRegion}
@@ -352,7 +395,7 @@ const AddPatient: React.FC = () => {
               setData('citycode', '');
               setData('bgycode', '');
             }}
-            className="w-full border rounded p-2 text-green-500"
+            className="w-full border rounded p-2 text-dark-500"
           >
             <option value="">Select Region</option>
             {Object.entries(locationData).map(([code, info]) => (
@@ -366,7 +409,9 @@ const AddPatient: React.FC = () => {
 
         {/* Province */}
         <div>
-          <Label htmlFor="provcode">Province</Label>
+          <Label htmlFor="provcode">
+            Province <span className="text-red-600 font-bold">*</span> 
+          </Label>
           <Select
             id="provcode"
             value={selectedProvince}
@@ -378,7 +423,7 @@ const AddPatient: React.FC = () => {
               setData('citycode', '');
               setData('bgycode', '');
             }}
-            className="w-full border rounded p-2 text-green-500"
+            className="w-full border rounded p-2 text-dark-500"
             disabled={!selectedRegion}
           >
             <option value="">Select Province</option>
@@ -394,7 +439,9 @@ const AddPatient: React.FC = () => {
 
         {/* City / Municipality */}
         <div>
-          <Label htmlFor="citycode">City / Municipality</Label>
+          <Label htmlFor="citycode">
+            City / Municipality <span className="text-red-600 font-bold">*</span> 
+          </Label>
           <Select
             id="citycode"
             value={selectedCity}
@@ -404,7 +451,7 @@ const AddPatient: React.FC = () => {
               setData('citycode', val);
               setData('bgycode', '');
             }}
-            className="w-full border rounded p-2 text-green-500"
+            className="w-full border rounded p-2 text-dark-500"
             disabled={!selectedProvince}
           >
             <option value="">Select City/Municipality</option>
@@ -424,12 +471,14 @@ const AddPatient: React.FC = () => {
 
         {/* Barangay */}
         <div>
-          <Label htmlFor="bgycode">Barangay</Label>
+          <Label htmlFor="bgycode">
+            Barangay <span className="text-red-600 font-bold">*</span> 
+          </Label>
           <Select
             id="bgycode"
             value={data.bgycode}
             onChange={(e) => setData('bgycode', e.target.value)}
-            className="w-full border rounded p-2 text-green-500"
+            className="w-full border rounded p-2 text-dark-500"
             disabled={!selectedCity}
           >
             <option value="">Select Barangay</option>
@@ -452,7 +501,7 @@ const AddPatient: React.FC = () => {
               <Input
                 id="fulladdress"
                 type="text"
-                className="w-full border rounded p-2 bg-gray-100 text-green-500"
+                className="w-full border rounded p-2 bg-gray-100 text-dark-500"
                 value={
                   [
                     data.patient_address,
@@ -468,9 +517,8 @@ const AddPatient: React.FC = () => {
               />
             </div>
 
-
       </div>
-
+        <hr></hr>
         {/* Parent Details */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold">Parent Information</h3>
@@ -480,7 +528,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_fname">First Name</Label>
               <Input
                 id="mot_fname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.mot_fname}
                 onChange={(e) => setData('mot_fname', e.target.value)}
               />
@@ -490,7 +538,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_mname">Middle Name</Label>
               <Input
                 id="mot_mname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.mot_mname}
                 onChange={(e) => setData('mot_mname', e.target.value)}
               />
@@ -500,7 +548,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_lname">Last Name</Label>
               <Input
                 id="mot_lname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.mot_lname}
                 onChange={(e) => setData('mot_lname', e.target.value)}
               />
@@ -510,7 +558,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_birthDate">Birth Date</Label>
               <Input
                 id="mot_birthDate"
-                className="text-green-500"
+                className="text-dark-500"
                 type="date"
                 value={data.mot_birthDate}
                 onChange={(e) => setData('mot_birthDate', e.target.value)}
@@ -521,7 +569,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_address">Address</Label>
               <Input
                 id="mot_address"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.mot_address}
                 onChange={(e) => setData('mot_address', e.target.value)}
               />
@@ -531,7 +579,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="mot_contact">Contact Number</Label>
               <Input
                 id="mot_contact"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.mot_contact}
                 onChange={(e) => setData('mot_contact', e.target.value)}
               />
@@ -543,7 +591,7 @@ const AddPatient: React.FC = () => {
                 id="mot_deceased_status"
                 value={data.mot_deceased_status}
                 onChange={(e) => setData('mot_deceased_status', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500"
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select</option>
                 <option value="1">Yes</option>
@@ -558,7 +606,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_fname">First Name</Label>
               <Input
                 id="fat_fname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.fat_fname}
                 onChange={(e) => setData('fat_fname', e.target.value)}
               />
@@ -568,7 +616,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_mname">Middle Name</Label>
               <Input
                 id="fat_mname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.fat_mname}
                 onChange={(e) => setData('fat_mname', e.target.value)}
               />
@@ -578,7 +626,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_lname">Last Name</Label>
               <Input
                 id="fat_lname"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.fat_lname}
                 onChange={(e) => setData('fat_lname', e.target.value)}
               />
@@ -588,7 +636,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_birthDate">Birth Date</Label>
               <Input
                 id="fat_birthDate"
-                className="text-green-500"
+                className="text-dark-500"
                 type="date"
                 value={data.fat_birthDate}
                 onChange={(e) => setData('fat_birthDate', e.target.value)}
@@ -599,7 +647,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_address">Address</Label>
               <Input
                 id="fat_address"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.fat_address}
                 onChange={(e) => setData('fat_address', e.target.value)}
               />
@@ -609,7 +657,7 @@ const AddPatient: React.FC = () => {
               <Label htmlFor="fat_contact">Contact Number</Label>
               <Input
                 id="fat_contact"
-                className="text-green-500"
+                className="text-dark-500"
                 value={data.fat_contact}
                 onChange={(e) => setData('fat_contact', e.target.value)}
               />
@@ -621,7 +669,7 @@ const AddPatient: React.FC = () => {
               id="fat_deceased_status"
               value={data.fat_deceased_status}
               onChange={(e) => setData('fat_deceased_status', e.target.value)}
-              className="block w-full px-3 py-2 border rounded-md shadow-sm text-green-500"
+              className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select</option>
                 <option value="1">Yes</option>

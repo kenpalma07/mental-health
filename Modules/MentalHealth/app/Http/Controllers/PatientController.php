@@ -48,7 +48,6 @@ class PatientController extends Controller
             'facility_name' => 'required|string|max:255',
             'facility_location' => 'nullable|string|max:255',
             'provider_name' => 'nullable|string|max:255',
-            'intake_date' => 'nullable|date',
             'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
             'pat_mname' => 'nullable|string|max:255',
@@ -56,10 +55,10 @@ class PatientController extends Controller
             'suffix_code' => 'required|string|max:5', //Added by Ken
             'sex_code' => 'required|in:M,F',
             'pat_birthDate' => 'required|date',
-            'regcode' => 'nullable|string|max:10',
-            'provcode' => 'nullable|string|max:10',
-            'citycode' => 'nullable|string|max:10',
-            'bgycode' => 'nullable|string|max:10',
+            'regcode' => 'required|string|max:100',
+            'provcode' => 'required|string|max:100',
+            'citycode' => 'required|string|max:100',
+            'bgycode' => 'required|string|max:100',
             'patient_address' => 'nullable|string|max:255',
             'pat_mobile' => 'nullable|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
@@ -77,6 +76,7 @@ class PatientController extends Controller
             'fat_address' => 'nullable|string|max:255', //Added by Ken
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|char|max:1', //Added by Ken
+            'registered_at' => 'nullable|date',
         ]);
 
         MasterPatient::create($validated);

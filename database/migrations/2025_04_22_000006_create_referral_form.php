@@ -51,6 +51,8 @@ return new class extends Migration
 
         //Update table master patient
         Schema::table('tbl_master_patient', function (Blueprint $table){
+            $table->date('intake_date')->nullable()->change();
+            $table->string('pat_landline', 15)->nullable()->change();
             $table->string('mot_fname', 50)->nullable()->change();
             $table->string('mot_mname', 50)->nullable()->change();
             $table->string('mot_lname', 50)->nullable()->change();
@@ -67,13 +69,40 @@ return new class extends Migration
             $table->string('fat_deceased_status', 1)->nullable()->comment('Y/N')->after('fat_contact');
             $table->string('pat_house_no')->nullable()->after('patient_address');
             $table->string('pat_street', 100)->nullable()->after('pat_house_no');
-            $table->timestamp('registered_at')->nullable()->after('pat_street');
+            $table->timestamp('registered_at')->nullable()->after('ts_deleted_at');
         });
     }
 
     public function down()
     {
         Schema::dropIfExists('tbl_referral_form');
+
+        Schema::table('tbl_master_patient', function (Blueprint $table) {
+            // Revert nullable changes
+            $table->date('intake_date')->nullable(false)->change();
+            $table->string('pat_landline', 15)->nullable(false)->change();
+            $table->string('mot_fname', 50)->nullable(false)->change();
+            $table->string('mot_mname', 50)->nullable(false)->change();
+            $table->string('mot_lname', 50)->nullable(false)->change();
+            $table->date('mot_birthdate')->nullable(false)->change();
+            $table->string('fat_fname', 50)->nullable(false)->change();
+            $table->string('fat_mname', 50)->nullable(false)->change();
+            $table->string('fat_lname', 50)->nullable(false)->change();
+            $table->date('fat_birthdate')->nullable(false)->change();
+    
+            // Drop newly added columns
+            $table->dropColumn([
+                'mot_address',
+                'mot_contact',
+                'mot_deceased_status',
+                'fat_address',
+                'fat_contact',
+                'fat_deceased_status',
+                'pat_house_no',
+                'pat_street',
+                'registered_at',
+            ]);
+        });
     }
 }
 

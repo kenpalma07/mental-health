@@ -24,6 +24,10 @@ class MasterPatient extends Model
         'date_updated', 'time_updated', 'ts_updated_at',
     ];
 
+    protected $casts = [
+        'registered_at' => 'datetime',
+    ];
+
     protected static function boot()
     {
         parent::boot();
