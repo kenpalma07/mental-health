@@ -20,7 +20,6 @@ Route::put('/patients/{id}', [PatientController::class, 'update']);
 Route::get('/consultations', [ConsultationController::class, 'index']);
 
 
-
 //Patient Consent
 Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])->name('patients.consent');
 

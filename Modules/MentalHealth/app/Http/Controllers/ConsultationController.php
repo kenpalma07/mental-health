@@ -3,6 +3,7 @@
 namespace Modules\MentalHealth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Modules\MentalHealth\Models\MasterPatient;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,17 +11,21 @@ class ConsultationController extends Controller
 {
     public function index(Request $request)
     {
-        // Retrieve patient id from query string
-        $patientId = $request->query('id');
+        $id = $request->query('id');
 
-        // Return the consultations page with the patient data
-        return inertia('MentalHealth::Consultation/index', [
-            'patientId' => $patientId, // Pass the patient id to the page
+        $patient = MasterPatient::find($id);
+
+        if (!$patient) {
+            abort(404, 'Patient not found');
+        }
+
+        return Inertia::render('MentalHealth::Consultation/index', [
+            'patient' => $patient
         ]);
     }
 
     public function create()
     {
-        return inertia('MentalHealth::Consultation/addConsultation');
+        return Inertia::render('MentalHealth::Consultation/addConsultation');
     }
 }

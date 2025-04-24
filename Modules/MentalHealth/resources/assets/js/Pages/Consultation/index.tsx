@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
+import { usePage } from '@inertiajs/react';
+
 import {
   User,
   Hospital,
@@ -46,6 +48,8 @@ const InfoRow = ({
 );
 
 const ConsultationIndex: React.FC = () => {
+  const { props } = usePage();
+  const patient = props.patient;
   const [showForm, setShowForm] = React.useState(false);
   const [consultations, setConsultations] = React.useState<any[]>([]);
   const [formData, setFormData] = React.useState({
@@ -61,6 +65,14 @@ const ConsultationIndex: React.FC = () => {
     bmiCategory: '',
     bloodPressure: '',
   });
+
+  const birthDate = new Date(patient.pat_birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -126,31 +138,32 @@ const ConsultationIndex: React.FC = () => {
     setShowForm(true);
   };
 
+  
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Consultations" />
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-300 rounded-xl p-4 shadow-sm bg-white text-sm">
-          <div className="space-y-2 col-span-1">
+        <div className="space-y-2 col-span-1">
             <div className="text-white bg-blue-500 px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
               Personal Information
             </div>
-            <InfoRow icon={User} label="Patient name:" value="PATIENT3 PATIENT3 PATIENT3" />
-            <InfoRow icon={Hospital} label="Hospital #:" value="000000000000000003" />
-            <InfoRow icon={Venus} label="Sex:" value="Male" />
-            <InfoRow icon={User} label="Civil status:" value="Single" />
-            <InfoRow icon={Cake} label="Birthdate:" value="9/23/1992" />
-            <InfoRow icon={CalendarDays} label="Age:" value="32 yrs" />
+            <InfoRow icon={User} label="Patient name:" value={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} />
+            <InfoRow icon={Hospital} label="Patient Number:" value={`2025-${String(patient.id).padStart(6, '0')}`} />
+            <InfoRow icon={Venus} label="Sex:" value={patient.sex_code} />
+            <InfoRow icon={User} label="Civil status:" value={patient.civil_status || 'N/A'} />
+            <InfoRow icon={Cake} label="Birthdate:" value={new Date(patient.pat_birthDate).toLocaleDateString()} />
+            <InfoRow icon={CalendarDays} label="Age:" value={`${age} yrs`} />
           </div>
           <div className="space-y-2 col-span-1">
             <div className="text-white bg-blue-500 px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
-              Case Information
+              Relationship Information
             </div>
-            <InfoRow icon={ArrowRight} label="Case #:" value="2025-000013" withArrow />
-            <InfoRow icon={ArrowRight} label="Encounter:" value="Patient" withArrow />
-            <InfoRow icon={ArrowRight} label="Account:" value="2025-000000004" withArrow />
-            <InfoRow icon={ArrowRight} label="Philhealth:" value="15656565665" withArrow />
-            <InfoRow icon={ArrowRight} label="Date entered:" value="03/05/2025 01:05 PM" withArrow />
+            <InfoRow icon={ArrowRight} label="Patient Address:" value={patient.patient_address} withArrow />
+            <InfoRow icon={ArrowRight} label="Mother's name:" value={`${patient.mot_fname} ${patient.mot_mname} ${patient.mot_lname}`} withArrow />
+            <InfoRow icon={ArrowRight} label="Father's name:" value={`${patient.fat_fname} ${patient.fat_mname} ${patient.fat_lname}`} withArrow />
+            <InfoRow icon={ArrowRight} label="Date entered:" value={`${new Date(patient.ts_created_at).toLocaleDateString()} ${new Date(patient.ts_created_at).toLocaleTimeString()}`} withArrow />
           </div>
         </div>
 
@@ -160,131 +173,124 @@ const ConsultationIndex: React.FC = () => {
           </div>
 
           <div className="flex gap-2">
-          <Button
-            onClick={() => setShowForm(true)}
-            className="bg-green-100 text-green-700 hover:bg-green-200"
-            variant="outline"
-          >
-            ➕ Add Consultation
-          </Button>
+            <Button
+              onClick={() => setShowForm(true)}
+              className="bg-green-100 text-green-700 hover:bg-green-200"
+              variant="outline"
+            >
+              ➕ Add Consultation
+            </Button>
 
-          <Button
-            disabled={!consultations.length}
-            className={`${
-              consultations.length
-                ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
-            variant="outline"
-          >
-            📋 Assessment List
-          </Button>
-        </div>
+            <Button
+              disabled={!consultations.length}
+              className={`${
+                consultations.length
+                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+              variant="outline"
+            >
+              📋 Assessment List
+            </Button>
+          </div>
 
-
-        {showForm && (
-          <div className="bg-gray-50 p-4 rounded-lg border mt-2 space-y-3">
-            
-            {/* Date field fixed alignment */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="col-span-2 md:col-span-1">
-                <Label htmlFor="date">Date</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <Label htmlFor="VitalSign">Vital Sign</Label>
-            {/* Vital signs */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <Input
-                name="temp"
-                value={formData.temp}
-                onChange={handleInputChange}
-                placeholder="Temp (°C)"
-              />
-
-              <Input
-                name="heartRate"
-                value={formData.heartRate}
-                onChange={handleInputChange}
-                placeholder="Heart Rate (bpm)"
-              />
-
-              <Input
-                name="oxygenSaturation"
-                value={formData.oxygenSaturation}
-                onChange={handleInputChange}
-                placeholder="O₂ Saturation (%)"
-              />
-
-              <Input
-                name="respiratoryRate"
-                value={formData.respiratoryRate}
-                onChange={handleInputChange}
-                placeholder="Respiratory Rate (rpm)"
-              />
-
-              <Input
-                name="bloodPressure"
-                value={formData.bloodPressure}
-                onChange={handleInputChange}
-                placeholder="Blood Pressure (e.g. 110/80)"
-              />
-            </div>
-
-            <Label htmlFor="BMI">BMI</Label>
-            {/* Height, Weight, BMI */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <Input
-                name="height"
-                value={formData.height}
-                onChange={handleInputChange}
-                placeholder="Height (cm)"
-              />
-
-              <Input
-                name="weight"
-                value={formData.weight}
-                onChange={handleInputChange}
-                placeholder="Weight (kg)"
-              />
-
-              <div>
-                <Input
-                  readOnly
-                  value={formData.bmi}
-                  placeholder="BMI"
-                  className="bg-gray-100 w-full"
-                />
-                <div className="text-sm text-gray-600 mt-1 italic">
-                  {formData.bmiCategory}
+          {showForm && (
+            <div className="bg-gray-50 p-4 rounded-lg border mt-2 space-y-3">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="col-span-2 md:col-span-1">
+                  <Label htmlFor="date">Date</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
+                    className="w-full"
+                  />
                 </div>
               </div>
+
+              <Label htmlFor="VitalSign">Vital Sign</Label>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <Input
+                  name="temp"
+                  value={formData.temp}
+                  onChange={handleInputChange}
+                  placeholder="Temp (°C)"
+                />
+
+                <Input
+                  name="heartRate"
+                  value={formData.heartRate}
+                  onChange={handleInputChange}
+                  placeholder="Heart Rate (bpm)"
+                />
+
+                <Input
+                  name="oxygenSaturation"
+                  value={formData.oxygenSaturation}
+                  onChange={handleInputChange}
+                  placeholder="O₂ Saturation (%)"
+                />
+
+                <Input
+                  name="respiratoryRate"
+                  value={formData.respiratoryRate}
+                  onChange={handleInputChange}
+                  placeholder="Respiratory Rate (rpm)"
+                />
+
+                <Input
+                  name="bloodPressure"
+                  value={formData.bloodPressure}
+                  onChange={handleInputChange}
+                  placeholder="Blood Pressure (e.g. 110/80)"
+                />
+              </div>
+
+              <Label htmlFor="BMI">BMI</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <Input
+                  name="height"
+                  value={formData.height}
+                  onChange={handleInputChange}
+                  placeholder="Height (cm)"
+                />
+
+                <Input
+                  name="weight"
+                  value={formData.weight}
+                  onChange={handleInputChange}
+                  placeholder="Weight (kg)"
+                />
+
+                <div>
+                  <Input
+                    readOnly
+                    value={formData.bmi}
+                    placeholder="BMI"
+                    className="bg-gray-100 w-full"
+                  />
+                  <div className="text-sm text-gray-600 mt-1 italic">
+                    {formData.bmiCategory}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Notes</Label>
+                <Input
+                  id="notes"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                  rows={3}
+                />
+              </div>
+
+              <Button onClick={handleSubmit}>Submit Consultation</Button>
             </div>
-
-            {/* Notes */}
-            <div>
-              <Label htmlFor="notes">Notes</Label>
-              <Input
-                id="notes"
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-                rows={3}
-              />
-            </div>
-
-            <Button onClick={handleSubmit}>Submit Consultation</Button>
-          </div>
-        )}
-
+          )}
 
           {consultations.length > 0 && (
             <ul className="space-y-2 mt-4">

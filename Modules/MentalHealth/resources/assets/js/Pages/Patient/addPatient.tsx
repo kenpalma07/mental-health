@@ -178,11 +178,19 @@ const AddPatient: React.FC = () => {
           <div>
             <Label htmlFor="registered_at">Date of Registration</Label>
             <Input
+<<<<<<< HEAD
               id="registered_at"
               type="datetime-local"
               className="text-dark-500"
               value={data.registered_at}
               onChange={(e) => setData('registered_at', e.target.value)}
+=======
+              id="intake_date"
+              type="date"
+              className="text-green-500"
+              value={data.intake_date}
+              onChange={(e) => setData('intake_date', e.target.value)}
+>>>>>>> ab29873b9b402705b733af9962a331b1440f8e71
             />
             <InputError message={errors.registered_at} />
           </div>
