@@ -19,13 +19,13 @@ class ConsultationController extends Controller
             abort(404, 'Patient not found');
         }
 
-        return Inertia::render('MentalHealth::Consultation/index', [
+        return inertia('MentalHealth::Consultation/index', [
             'patient' => $patient
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('MentalHealth::Consultation/addConsultation');
+        return inertia('MentalHealth::Consultation/addConsultation');
     }
 }
