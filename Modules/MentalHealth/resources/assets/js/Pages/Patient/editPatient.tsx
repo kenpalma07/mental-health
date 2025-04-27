@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { PageProps } from '@/types';
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { BreadcrumbItem } from '@/types';
+import locationData from '../json/philippine_reg_prov_cit_brgy.json';
 
 interface Props extends PageProps {
   patient: MasterPatient;
@@ -20,34 +21,40 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Edit Patient', href: '#' },
 ];
 
+
 const EditPatient: React.FC<Props> = ({ patient }) => {
   const { data, setData, put, processing, errors } = useForm({
+    master_patient_perm_id: patient.master_patient_perm_id || '',
     facility_region: patient.facility_region || '',
     facility_province: patient.facility_province || '',
     facility_city: patient.facility_city || '',
     facility_location: patient.facility_location || '',
     provider_name: patient.provider_name || '',
-    intake_date: patient.intake_date || '',
+    //intake_date: patient.intake_date || '',
     facility_barangay: patient.facility_barangay || '',
     facility_name: patient.facility_name || '',
     registered_at: formatTimestampForInput(patient.registered_at) || '',
 
+    prefix_code: patient.prefix_code || '',
     pat_lname: patient.pat_lname || '',
     pat_fname: patient.pat_fname || '',
     pat_mname: patient.pat_mname || '',
-    pat_suffix: patient.pat_suffix || '',
+    suffix_code: patient.suffix_code || '',
     sex_code: patient.sex_code || '',
-    civil_status: patient.civil_status || '',
+    civil_stat_code: patient.civil_stat_code || '',
     pat_birthDate: patient.pat_birthDate || '',
+
     regcode: patient.regcode || '',
     provcode: patient.provcode || '',
     citycode: patient.citycode || '',
     bgycode: patient.bgycode || '',
-    pat_age: patient.pat_age || '',
-    pat_birthPlace: patient.pat_birthPlace || '',
-    pat_religion: patient.pat_religion || '',
-    pat_educ: patient.pat_educ || '',
-    pat_occupation: patient.pat_occupation || '',
+    zipcode: patient.zipcode || '',
+    country_code: patient.country_code || '',
+    pat_birthplace: patient.pat_birthplace || '',
+    religion_code: patient.religion_code || '',
+    nationality: patient.nationality || '',
+    educattainment: patient.educattainment || '',
+    occupation_code: patient.occupation_code || '',
     pat_mobile: patient.pat_mobile || '',
     pat_landline: patient.pat_landline || '',
     is_deceased: patient.is_deceased || false,
@@ -61,30 +68,71 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
     mot_fname: patient.mot_fname || '',
     mot_mname: patient.mot_mname || '',
     mot_lname: patient.mot_lname || '',
-    mot_suffix: patient.mot_suffix || '',
+    mot_birthdate: patient.mot_birthdate || '',
     mot_contact: patient.mot_contact || '',
-    mot_deceased: patient.mot_deceased || false,
+    mot_deceased_status: patient.mot_deceased_status || '',
     mot_address: patient.mot_address || '',
 
     fat_fname: patient.fat_fname || '',
     fat_mname: patient.fat_mname || '',
     fat_lname: patient.fat_lname || '',
-    fat_suffix: patient.fat_suffix || '',
+    fat_birthdate: patient.fat_birthdate || '',
     fat_contact: patient.fat_contact || '',
-    fat_deceased: patient.fat_deceased || false,
+    fat_deceased_status: patient.fat_deceased_status || '',
     fat_address: patient.fat_address || '',
   });
 
+  
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [age, setAge] = useState({ years: '', months: '', days: '' });
+
+  useEffect(() => {
+    if (data.regcode) {
+      setSelectedRegion(data.regcode);
+    }
+    if (data.provcode) {
+      setSelectedProvince(data.provcode);
+    }
+    if (data.citycode) {
+      setSelectedCity(data.citycode);
+    }
+  }, [data.regcode, data.provcode, data.citycode]);
+
+  function getAgeBreakdown(birthDate: string) {
+    if (!birthDate) return { years: '', months: '', days: '' };
+  
+    const birth = new Date(birthDate);
+    const today = new Date();
+  
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+  
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+  
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+  
+    return {
+      years: years.toString(),
+      months: months.toString(),
+      days: days.toString(),
+    };
+  }  
+
   useEffect(() => {
     if (data.pat_birthDate) {
-      const birthDate = new Date(data.pat_birthDate);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      setData('pat_age', age.toString());
+      setAge(getAgeBreakdown(data.pat_birthDate));
+    } else {
+      setAge({ years: '', months: '', days: '' });
     }
   }, [data.pat_birthDate]);
 
@@ -103,202 +151,710 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
-
   }
+
+  const regionLookup: Record<string, string> = {
+    'NCR': 'NATIONAL CAPITAL REGION',
+    'CAR': 'CORDILLERA ADMINISTRATIVE REGION',
+    'ARMM': 'AUTONOMOUS REGION IN MUSLIM MINDANAO',
+    'BARMM': 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO',
+    'NIR': 'Negros Island Region',
+    '13': 'CARAGA',
+    '12': 'SOCCSKSARGEN',
+    '11': 'DAVAO REGION',
+    '10': 'NORTHERN MINDANAO',
+    '09': 'ZAMBOANGA PENINSULA',
+    '08': 'EASTERN VISAYAS',
+    '07': 'CENTRAL VISAYAS',
+    '06': 'WESTERN VISAYAS',
+    '05': 'BICOL REGION',
+    '4B': 'MIMAROPA REGION',
+    '4A': 'CALABARZON',
+    '03': 'CENTRAL LUZON',
+    '02': 'CAGAYAN VALLEY',
+    '01': 'ILOCOS REGION',
+  };
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit} className="w-full px-10 py-8 space-y-8">
         {/* Facility Info */}
-        <h3 className="text-lg font-semibold">Edit - Patient Registration Form</h3>
+        <h2 className="text-lg font-semibold">EDIT PATIENT REGISTRATION FORM</h2>
         <hr></hr>
         <h3 className="text-lg font-semibold">Facility Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
-            <Label>Facility Name</Label>
+            <Label>
+              Facility Name <span className="text-red-600 font-bold">*</span> 
+            </Label>
             <Input value={data.facility_name} onChange={e => setData('facility_name', e.target.value)} />
             <InputError message={errors.facility_name} />
           </div>
           <div>
-            <Label>Facility Location</Label>
+            <Label>
+              Facility Location <span className="text-red-600 font-bold">*</span> 
+            </Label>
             <Input value={data.facility_location} onChange={e => setData('facility_location', e.target.value)} />
             <InputError message={errors.facility_location} />
           </div>
           <div>
-            <Label>Provider Name</Label>
+            <Label>
+              Provider Name <span className="text-red-600 font-bold">*</span> 
+            </Label>
             <Input value={data.provider_name} onChange={e => setData('provider_name', e.target.value)} />
             <InputError message={errors.provider_name} />
           </div>
           <div>
-            <Label>Date Intake</Label>
-            <Input value={data.intake_date} onChange={e => setData('intake_date', e.target.value)} disabled />
-            <InputError message={errors.intake_date} />
-          </div>
-          <div>
-            <Label htmlFor="registered_at">Date of Registration</Label>
+            <Label htmlFor="registered_at">
+              Date of Registration <span className="text-red-600 font-bold">*</span> 
+            </Label>
             <Input
               id="registered_at"
               type="datetime-local"
               value={data.registered_at}
-              onChange={(e) => setData('registered_at', e.target.value)} disabled
+              onChange={(e) => setData('registered_at', e.target.value)}
             />
             <InputError message={errors.registered_at} />
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold pt-4">Patient Information</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            ['pat_lname', 'Last Name'],
-            ['pat_fname', 'First Name'],
-            ['pat_mname', 'Middle Name'],
-            ['pat_suffix', 'Suffix'],
-          ].map(([field, label]) => (
-            <div key={field}>
-              <Label>{label}</Label>
-              <Input
-                value={data[field as keyof typeof data]}
-                onChange={e => setData(field as keyof typeof data, e.target.value)}
-              />
-              <InputError message={errors[field as keyof typeof data]} />
-            </div>
-          ))}
+        {/* -------------------------- Start of Patient Information -------------------------- */}
+        <hr></hr>
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold"> Patient Information </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          {/* Sex Dropdown */}
-          <div>
-            <Label>Sex</Label>
-            <Input
-              type="text"
-              value={data.sex_code === 'M' ? 'Male' : data.sex_code === 'F' ? 'Female' : ''}
-              onChange={e => setData('sex_code', e.target.value === 'Male' ? 'm' : e.target.value === 'Female' ? 'f' : '')} disabled
-            />
-            <InputError message={errors.sex_code} />
-          </div>
-
-
-          <div>
-            <Label>Civil Status</Label>
-            <Input
-              value={data.civil_status}
-              onChange={e => setData('civil_status', e.target.value)}
-            />
-            <InputError message={errors.civil_status} />
-          </div>
-
-          {[
-            ['pat_birthDate', 'Birth Date'],
-            ['patient_address', 'Address'],
-            ['regcode', 'Region'],
-            ['provcode', 'Province'],
-            ['citycode', 'City'],
-            ['bgycode', 'Barangay'],
-            ['pat_age', 'Age'],
-            ['pat_birthPlace', 'Birth Place'],
-            ['pat_religion', 'Religion'],
-            ['pat_educ', 'Education'],
-            ['pat_occupation', 'Occupation'],
-            ['pat_mobile', 'Contact Number'],
-            ['pat_landline', 'Landline'],
-          ].map(([field, label]) => (
-            <div key={field}>
-              <Label>{label}</Label>
-              <Input
-                type={field === 'pat_birthDate' ? 'date' : 'text'}
-                value={data[field as keyof typeof data]}
-                onChange={e => setData(field as keyof typeof data, e.target.value)}
-                disabled={field === 'pat_age'}
-              />
-              <InputError message={errors[field as keyof typeof data]} />
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center space-x-2 pt-4">
-          <Checkbox checked={data.is_deceased} onCheckedChange={v => setData('is_deceased', !!v)} />
-          <Label>Is Deceased?</Label>
-        </div>
-        {data.is_deceased && (
-          <div className="grid grid-cols-2 gap-4">
+            {/* -------------------------- Start of Master Patient Perm ID -------------------------- */}
             <div>
-              <Label>Date of Death</Label>
-              <Input type="date" value={data.death_date} onChange={e => setData('death_date', e.target.value)} />
-              <InputError message={errors.death_date} />
+              <Label>
+                Patient ID <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input 
+                value={patient.master_patient_perm_id}
+                className="w-full border rounded p-2 bg-gray-100 text-dark-500"
+                readOnly />
+              <InputError message={errors.master_patient_perm_id} />
+            </div>
+            {/* -------------------------- End of Master Patient Perm ID -------------------------- */}
+            
+            {/* -------------------------- Start of Prefix -------------------------- */}
+            <div>
+              <Label>
+                Prefix <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="prefix_code"
+                value={data.prefix_code ?? ''}
+                onChange={(e) => setData('prefix_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Prefix</option>
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Dr">Dr</option>
+              </select>
+              <InputError message={errors.prefix_code} />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <Label>
+                Last Name <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input value={data.pat_lname} onChange={e => setData('pat_lname', e.target.value)} />
+              <InputError message={errors.pat_lname} />
             </div>
             <div>
-              <Label>Reason of Death</Label>
-              <Input value={data.death_reason} onChange={e => setData('death_reason', e.target.value)} />
-              <InputError message={errors.death_reason} />
+              <Label>
+                First Name <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input value={data.pat_fname} onChange={e => setData('pat_fname', e.target.value)} />
+              <InputError message={errors.pat_fname} />
+            </div>
+            <div>
+              <Label>
+                Middle Name <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input value={data.pat_mname} onChange={e => setData('pat_mname', e.target.value)} />
+              <InputError message={errors.pat_mname} />
             </div>
           </div>
-        )}
 
-        <h2 className="text-xl font-semibold pt-4">Address</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label>House No.</Label>
-            <Input value={data.pat_houseno} onChange={e => setData('pat_houseno', e.target.value)} />
-            <InputError message={errors.pat_houseno} />
-          </div>
-          <div>
-            <Label>Street</Label>
-            <Input value={data.pat_street} onChange={e => setData('pat_street', e.target.value)} />
-            <InputError message={errors.pat_street} />
-          </div>
-          <div className="col-span-2">
-            <Label>Full Address</Label>
-            <Input value={data.patient_address} onChange={e => setData('patient_address', e.target.value)} />
-            <InputError message={errors.patient_address} />
-          </div>
-        </div>
+          {/* ----------------- Start of Next Row ----------------- */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <h2 className="text-xl font-semibold pt-4">Mother's Information</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            ['mot_lname', "Last Name"],
-            ['mot_fname', "First Name"],
-            ['mot_mname', "Middle Name"],
-            ['mot_suffix', "Suffix"],
-            ['mot_contact', "Contact"],
-            ['mot_address', "Address"],
-          ].map(([field, label]) => (
-            <div key={field}>
-              <Label>{label}</Label>
+            {/* ----------------- Start of Patient Suffix ----------------- */}
+            <div>
+              <Label>
+                Suffix <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="suffix_code"
+                value={data.suffix_code ?? ''}
+                onChange={(e) => setData('suffix_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Suffix</option>
+                <option value="NA">N/A</option>
+                <option value="Jr">Jr</option>
+                <option value="Sr">Sr</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+              </select>
+              <InputError message={errors.suffix_code} />
+            </div>
+            {/* ----------------- End of Patient Suffix ----------------- */}
+
+            {/* ----------------- Start of Patient Birthdate ----------------- */}
+            <div>
+              <Label>
+                Birthdate <span className="text-red-600 font-bold">*</span> 
+              </Label>
               <Input
-                value={data[field as keyof typeof data]}
-                onChange={e => setData(field as keyof typeof data, e.target.value)}
+                type="date"
+                value={data.pat_birthDate}
+                onChange={e => setData('pat_birthDate', e.target.value)}
               />
-              <InputError message={errors[field as keyof typeof data]} />
+              <InputError message={errors.pat_birthDate} />
             </div>
-          ))}
-          <div className="col-span-2 flex items-center space-x-2">
-            <Checkbox checked={data.mot_deceased} onCheckedChange={v => setData('mot_deceased', !!v)} />
-            <Label>Is Deceased?</Label>
-          </div>
-        </div>
+            {/* ----------------- End of Patient Birthdate ----------------- */}
 
-        <h2 className="text-xl font-semibold pt-4">Father's Information</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            ['fat_lname', "Last Name"],
-            ['fat_fname', "First Name"],
-            ['fat_mname', "Middle Name"],
-            ['fat_suffix', "Suffix"],
-            ['fat_contact', "Contact"],
-            ['fat_address', "Address"],
-          ].map(([field, label]) => (
-            <div key={field}>
-              <Label>{label}</Label>
-              <Input
-                value={data[field as keyof typeof data]}
-                onChange={e => setData(field as keyof typeof data, e.target.value)}
-              />
-              <InputError message={errors[field as keyof typeof data]} />
+            {/* ----------------- Start of Patient Age ----------------- */}
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label>Year:</Label>
+                <Input
+                  type="text"
+                  className="w-full border rounded p-2 bg-gray-100 text-dark-500 text-center font-bold"
+                  value={age.years}
+                  readOnly
+                />
+              </div>
+              <div>
+                <Label>Month:</Label>
+                <Input
+                  type="text"
+                  className="w-full border rounded p-2 bg-gray-100 text-dark-500 text-center font-bold"
+                  value={age.months}
+                  readOnly
+                />
+              </div>
+              <div>
+                <Label>Day:</Label>
+                <Input
+                  type="text"
+                  className="w-full border rounded p-2 bg-gray-100 text-dark-500 text-center font-bold"
+                  value={age.days}
+                  readOnly
+                />
+              </div>
             </div>
-          ))}
-          <div className="col-span-2 flex items-center space-x-2">
-            <Checkbox checked={data.fat_deceased} onCheckedChange={v => setData('fat_deceased', !!v)} />
-            <Label>Is Deceased?</Label>
+            {/* ----------------- End of Patient Age ----------------- */}
+
+            {/* ----------------- Star of Patient Sex ----------------- */}
+            <div>
+              <Label htmlFor="sex">
+                Sex <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="sex_code"
+                value={data.sex_code ?? ''}
+                onChange={(e) => setData('sex_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Sex</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+              <InputError message={errors.suffix_code} />
+            </div>
+            {/* ----------------- End of Patient Sex ----------------- */}
           </div>
+          {/* ----------------- End of Next Row ----------------- */}
+
+          {/* ----------------- Start of Next Row ----------------- */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {/* ----------------- Start of Patient Civil Status ----------------- */}
+            <div>
+              <Label htmlFor="civil_stat_code">
+                Civil Status <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="civil_stat_code"
+                value={data.civil_stat_code ?? ''}
+                onChange={(e) => setData('civil_stat_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Civil Status</option>
+                <option value="sin">Single</option>
+                <option value="mar">Married</option>
+                <option value="div">Divorced</option>
+                <option value="sep">Separated</option>
+                <option value="wid">Widow/Widower</option>
+                <option value="na">N/A</option>
+              </select>
+              <InputError message={errors.civil_stat_code} />
+            </div>
+            {/* ----------------- End of Patient Civil Status ----------------- */}
+
+            {/* ----------------- Start of Birthplace ----------------- */}
+            <div>
+              <Label htmlFor="pat_birthPlace">
+                Birthplace <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input 
+                value={data.pat_birthplace} 
+                onChange={e => setData('pat_birthplace', e.target.value)}
+                />
+              <InputError message={errors.pat_birthplace} />
+            </div>
+            {/* ----------------- End of Birthplace ----------------- */}
+
+            {/* ----------------- Start of Patient Religion ----------------- */}
+            <div>
+              <Label htmlFor="religion_code">
+                Religion <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="religion_code"
+                value={data.religion_code ?? ''}
+                onChange={(e) => setData('religion_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Religion</option>
+                <option value="Chri">Christian</option>
+                <option value="Cat">Catholic</option>
+                <option value="Prot">Protestant</option>
+                <option value="Isla">Islam</option>
+                <option value="Bud">Buddhism</option>
+                <option value="Hind">Hinduism</option>
+                <option value="Other">Other</option>
+              </select>
+              <InputError message={errors.religion_code} />  
+            </div>
+            {/* ----------------- End of Religion ----------------- */}
+
+            {/* ----------------- Start of Nationality ----------------- */}
+            <div>
+              <Label htmlFor="nationality">
+                Nationality <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="nationality"
+                value={data.nationality ?? ''}
+                onChange={(e) => setData('nationality', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Nationality</option>
+                <option value="PH">Filipino</option>
+                <option value="US">American</option>
+                <option value="Oth">Others</option>
+              </select>
+              <InputError message={errors.nationality} />
+            </div>
+            {/* ----------------- End of Nationality ----------------- */}
+
+            {/* ----------------- Start of Educational Attainment ----------------- */}
+            <div>
+              <Label htmlFor="educattainment">
+                Educational Attainment <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="educattainment"
+                value={data.educattainment ?? ''}
+                onChange={(e) => setData('educattainment', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select</option>
+                <option value="01">No Schooling</option>
+                <option value="02">Elementary</option>
+                <option value="03">High School</option>
+                <option value="04">College</option>
+                <option value="05">Graduate</option>
+              </select>
+              <InputError message={errors.educattainment} />
+            </div>
+            {/* ----------------- End of Educational Attainment ----------------- */}
+
+            {/* ----------------- Start of Patient Occupation ----------------- */}
+            <div>
+              <Label htmlFor="occupation_code">
+                Occupation <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input
+                value={data.occupation_code}
+                onChange={e => setData('occupation_code', e.target.value)}
+              />
+              <InputError message={errors.occupation_code} />
+            </div>
+            {/* ----------------- End of Patient Occupation ----------------- */}
+
+            {/* ----------------- Start of Patient Mobile ----------------- */}
+            <div>
+              <Label htmlFor="pat_mobile">
+                Contact Number <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input value={data.pat_mobile} onChange={e => setData('pat_mobile', e.target.value)} />
+              <InputError message={errors.pat_mobile} />
+            </div>
+            {/* ----------------- End of Patient Mobile ----------------- */}
+
+            {/* ----------------- Start of Patient Landline ----------------- */}
+            <div>
+              <Label htmlFor="pat_landline">
+                Landline <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input value={data.pat_landline} onChange={e => setData('pat_landline', e.target.value)} />
+              <InputError message={errors.pat_landline} />
+            </div>
+            {/* ----------------- End of Patient Landline ----------------- */}
+          </div>
+          {/* ----------------- End of Next Row ----------------- */}
+
+
+          <hr></hr>
+          {/* ----------------- Start of Demographi Information ----------------- */}
+          <h3 className="text-lg font-semibold">Demographic Information</h3>
+          {/* ----------------- Start of Next Row ----------------- */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {/* ----------------- Start of Patient Address ----------------- */}
+            <div className="col-span-4">
+              <Label htmlFor="patient_address">
+                House # / Lot # / Street Name / Building / Purok # / Village Name <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input
+                id="patient_address"
+                className="text-dark-500"
+                value={data.patient_address}
+                onChange={(e) => setData('patient_address', e.target.value)}
+              />
+              <InputError message={errors.patient_address} />
+            </div>
+            {/* ----------------- End of Patient Address ----------------- */}
+
+            {/* ----------------- Start of Region ----------------- */}
+            <div>
+              <Label htmlFor="regcode">
+                Region <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="regcode"
+                value={selectedRegion}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedRegion(val);
+                  setSelectedProvince('');
+                  setSelectedCity('');
+                  setData('regcode', val);
+                  setData('provcode', '');
+                  setData('citycode', '');
+                  setData('bgycode', '');
+                }}
+                className="w-full border rounded p-2 text-dark-500"
+              >
+              <option value="">Select Region</option>
+                {Object.entries(locationData).map(([code, info]) => (
+                  <option key={code} value={code}>
+                    {info.region_name}
+              </option>
+              ))}
+            </select>
+            </div>
+            {/* ----------------- End of Region ----------------- */}
+
+            {/* ----------------- Start of Province ----------------- */}
+            <div>
+              <Label htmlFor="provcode">
+                Province <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="provcode"
+                value={selectedProvince}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedProvince(val);
+                  setSelectedCity('');
+                  setData('provcode', val);
+                  setData('citycode', '');
+                  setData('bgycode', '');
+                }}
+                className="w-full border rounded p-2 text-dark-500"
+                disabled={!selectedRegion}
+              >
+                <option value="">Select Province</option>
+                  {selectedRegion &&
+                    Object.keys(locationData[selectedRegion].province_list).map((prov) => (
+                      <option key={prov} value={prov}>
+                        {prov}
+                      </option>
+                    ))}
+              </select>
+            </div>
+            {/* ----------------- End of Province ----------------- */}
+            
+            {/* ----------------- Start of City ----------------- */}
+            <div>
+              <Label htmlFor="citycode">
+                City <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="citycode"
+                value={selectedCity}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedCity(val);
+                  setData('citycode', val);
+                  setData('bgycode', '');
+                }}
+                className="w-full border rounded p-2 text-dark-500"
+                disabled={!selectedProvince}
+              >
+                <option value="">Select City/Municipality</option>
+                  {selectedRegion &&
+                    selectedProvince &&
+                    locationData[selectedRegion].province_list[selectedProvince].municipality_list.map((muni, i) => {
+                      const city = Object.keys(muni)[0];
+                      return (
+                        <option key={i} value={city}>
+                          {city}
+                        </option>
+                      );
+                    })}
+              </select>
+            </div>
+            {/* ----------------- End of City ----------------- */}
+
+            {/* ----------------- Start of Barangay ----------------- */}
+            <div>
+              <Label htmlFor="bgycode">
+                Barangay <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="bgycode"
+                value={data.bgycode}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setData('bgycode', val);
+                  setData('bgycode', val);
+                }}
+                className="w-full border rounded p-2 text-dark-500"
+                disabled={!selectedCity}
+              >
+                <option value="">Select Barangay</option>
+                  {selectedRegion &&
+                    selectedProvince &&
+                    selectedCity &&
+                    locationData[selectedRegion].province_list[selectedProvince].municipality_list
+                      .find((m) => Object.keys(m)[0] === selectedCity)?.[selectedCity].barangay_list.map((brgy, i) => (
+                        <option key={i} value={brgy}>
+                          {brgy}
+                        </option>
+                      ))}
+              </select>
+            </div>
+            {/* ----------------- End of Barangay ----------------- */}
+
+            {/* ----------------- Start of Zipcode ----------------- */}
+            <div>
+              <Label htmlFor="zipcode">
+                Zipcode <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input value={data.zipcode} onChange={e => setData('zipcode', e.target.value)} />
+              <InputError message={errors.zipcode} />
+            </div>
+            {/* ----------------- End of Zipcode ----------------- */}
+
+            {/* ----------------- Start of Country ----------------- */}
+            <div>
+              <Label>
+                Country <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <select
+                id="country_code"
+                value={data.country_code ?? ''}
+                onChange={(e) => setData('country_code', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select Country</option>
+                <option value="PH">Philippines</option>
+              </select>
+              <InputError message={errors.country_code} />
+            </div>
+            {/* ----------------- End of Country ----------------- */}
+          </div>
+          {/* ----------------- End of Next Row ----------------- */}
+
+          {/* ----------------- Start of Next Row ----------------- */}
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
+
+            {/* ----------------- Start of Patient Full Address ----------------- */}
+            <div >
+              <Label htmlFor="fulladdress">
+                Full Address <span className="text-red-600 font-bold">*</span> 
+              </Label>
+              <Input
+                id="fulladdress"
+                type="text"
+                className="w-full border rounded p-2 bg-gray-100 text-dark-500"
+                value={
+                  [
+                    data.patient_address,
+                    data.bgycode,
+                    selectedCity,
+                    selectedProvince,
+                    selectedRegion,
+                    regionLookup[data.regcode] || '',
+                    data.zipcode,
+                    data.country_code === 'PH' ? 'Philippines' : '', // Country
+                  ]
+                    .filter(Boolean)
+                    .join(', ')
+                }
+                readOnly
+              />
+            </div>
+            {/* ----------------- End of Patient Full Address ----------------- */}
+          {/* ----------------- End of Demographic Information ----------------- */}
+          {/* ----------------- End of Next Row ----------------- */}
+          <hr></hr>
+          
+          {/* -------------------------- Start of Parent's Information -------------------------- */}
+          <h3 className="text-lg font-semibold">Parent's Information</h3>
+
+          {/* ----------------- Start of Mother's Information ----------------- */}
+          <h5 className="text-sm font-semibold text-gray-500">Mother's Maiden Name</h5>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <Label htmlFor="mot_lname">
+                Last Name
+              </Label>
+              <Input value={data.mot_lname} onChange={e => setData('mot_lname', e.target.value)} />
+              <InputError message={errors.mot_lname} />
+            </div>
+            <div>
+              <Label htmlFor="mot_fname">
+                First Name
+              </Label>
+              <Input value={data.mot_fname} onChange={e => setData('mot_fname', e.target.value)} />
+              <InputError message={errors.mot_fname} />
+            </div>
+            <div>
+              <Label htmlFor="mot_mname">
+                Middle Name
+              </Label>
+              <Input value={data.mot_mname} onChange={e => setData('mot_mname', e.target.value)} />
+              <InputError message={errors.mot_mname} />
+            </div>
+            <div>
+              <Label htmlFor="mot_birthDate">Birth Date</Label>
+              <Input
+                type="date"
+                value={data.mot_birthdate}
+                onChange={e => setData('mot_birthdate', e.target.value)}
+              />
+              <InputError message={errors.mot_birthdate} />
+            </div>
+            <div className="col-span-2">
+              <Label htmlFor="mot_address">
+                Address
+              </Label>
+              <Input value={data.mot_address} onChange={e => setData('mot_address', e.target.value)} />
+              <InputError message={errors.mot_address} />
+            </div>
+            <div>
+              <Label htmlFor="mot_contact">
+                Contact Number
+              </Label>
+              <Input value={data.mot_contact} onChange={e => setData('mot_contact', e.target.value)} />
+              <InputError message={errors.mot_contact} />
+            </div>
+            <div>
+              <Label htmlFor="mot_deceased_status">Deceased</Label>
+              <select
+                id="mot_deceased_status"
+                value={data.mot_deceased_status ?? ''}
+                onChange={(e) => setData('mot_deceased_status', e.target.value)}              
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
+              </select>
+              <InputError message={errors.mot_deceased_status} />
+            </div>
+          </div>
+          {/* ----------------- End of Mother's Information ----------------- */}
+
+          {/* ----------------- Start of Father's Information ----------------- */}
+          <h5 className="text-sm font-semibold text-gray-500">Mother's Maiden Name</h5>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <Label htmlFor="fat_lname">
+                Last Name
+              </Label>
+              <Input value={data.fat_lname} onChange={e => setData('fat_lname', e.target.value)} />
+              <InputError message={errors.fat_lname} />
+            </div>
+            <div>
+              <Label htmlFor="fat_fname">
+                First Name
+              </Label>
+              <Input value={data.fat_fname} onChange={e => setData('fat_fname', e.target.value)} />
+              <InputError message={errors.fat_fname} />
+            </div>
+            <div>
+              <Label htmlFor="fat_mname">
+                Middle Name
+              </Label>
+              <Input value={data.fat_mname} onChange={e => setData('fat_mname', e.target.value)} />
+              <InputError message={errors.fat_mname} />
+            </div>
+            <div>
+              <Label htmlFor="fat_birthdate">Birth Date</Label>
+              <Input
+                type="date"
+                value={data.fat_birthdate}
+                onChange={e => setData('fat_birthdate', e.target.value)}
+              />
+              <InputError message={errors.fat_birthdate} />
+            </div>
+            <div className="col-span-2">
+              <Label htmlFor="fat_address">
+                Address
+              </Label>
+              <Input value={data.fat_address} onChange={e => setData('fat_address', e.target.value)} />
+              <InputError message={errors.fat_address} />
+            </div>
+            <div>
+              <Label htmlFor="fat_contact">
+                Contact Number
+              </Label>
+              <Input value={data.fat_contact} onChange={e => setData('fat_contact', e.target.value)} />
+              <InputError message={errors.fat_contact} />
+            </div>
+            <div>
+              <Label htmlFor="fat_deceased_status">Deceased</Label>
+              <select
+                id="fat_deceased_status"
+                value={data.fat_deceased_status ?? ''}
+                onChange={(e) => setData('fat_deceased_status', e.target.value)}              
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
+              >
+                <option value="">Select</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
+              </select>
+              <InputError message={errors.fat_deceased_status} />
+          </div>
+          {/* ----------------- End of Father's Information ----------------- */}
+        </div>
+        </div>
         </div>
 
         <div className="pt-6">

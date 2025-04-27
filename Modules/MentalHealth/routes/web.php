@@ -8,7 +8,7 @@ use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 
 //Patient Information
 Route::get('/patients', [PatientController::class, 'index']);
-Route::get('/patients/create', [PatientController::class, 'create']);
+Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
 Route::post('/patients', [PatientController::class, 'store']);
 Route::get('/patients/search', [PatientController::class, 'search']);
 Route::get('/patients/{id}/edit', [PatientController::class, 'edit']);

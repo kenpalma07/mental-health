@@ -1,0 +1,39 @@
+New Updates for Add Patient Form
+1. Date Registration
+2. Patient Id
+3. Prefix
+4. Suffix
+5. Age
+6. Civil Status
+7. Birth Place
+8. Religion
+9. Nationality
+10. Educational Attainment
+11. Occupation
+12. Zipcode
+13. Country
+14. Parents Information
+    - Birthdate
+    - Address
+    - Contact Number
+    - Deceased Status
+
+New Updates for Edit Patient Form
+1. Date Registration
+2. Patient Id
+3. Prefix
+4. Suffix
+5. Age
+6. Civil Status
+7. Birth Place
+8. Religion
+9. Nationality
+10. Educational Attainment
+11. Occupation
+12. Zipcode
+13. Country
+14. Parents Information
+    - Birthdate
+    - Address
+    - Contact Number
+    - Deceased Status
