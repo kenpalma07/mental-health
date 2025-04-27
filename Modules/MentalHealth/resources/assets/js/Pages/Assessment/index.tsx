@@ -139,7 +139,7 @@ export default function AssessmentIndex() {
       <Head title="Assessment" />
 
       {/* Patient Info Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-300 rounded-xl p-4 shadow-sm bg-white text-sm mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-300 rounded-xl p-4 shadow-sm bg-white text-sm mb-1">
         <div className="space-y-2">
           <div className="bg-blue-500 text-white px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
             Personal Information
@@ -167,7 +167,7 @@ export default function AssessmentIndex() {
       <div className="p-4">
         <div className="flex items-center gap-2 mb-4">
           <User className="text-gray-600" />
-          <h1 className="text-md font-bold text-gray-600">Assessment Tool</h1>
+          <h4 className="text-md font-bold text-gray-600">Assessment Tool</h4>
         </div>
 
         <div className="flex items-center justify-between mb-8">
