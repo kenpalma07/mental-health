@@ -111,9 +111,7 @@ class PatientController extends Controller
 
         MasterPatient::create($validated);
 
-        return inertia('MentalHealth::Patient/index')->with([
-            'success' => 'Patient added successfully!',
-        ]);
+        return redirect()->route('patients')->with('success', 'Patient added successfully!');
     }
 
     private function generatePatientRecordNumber()
@@ -170,17 +168,19 @@ class PatientController extends Controller
 
     public function update(Request $request, $id)
     {
-        $patient = MasterPatient::findOrFail($id);
-
         $validated = $request->validate([
             'facility_name' => 'required|string|max:255',
-            'pat_fname' => 'required|string|max:255',
+            'facility_location' => 'nullable|string|max:255',
+            'provider_name' => 'nullable|string|max:255',
+            'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
-            'sex_code' => 'required|in:M,F',
-            'pat_birthDate' => 'required|date',
-            // add other fields & validation as needed
+            'pat_mname' => 'nullable|string|max:255',
+            'pat_fname' => 'required|string|max:255',
+            'suffix_code' => 'required|string|max:5', //Added by Ken
+
         ]);
 
+        $patient = MasterPatient::findOrFail($id);
         $patient->update($validated);
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
