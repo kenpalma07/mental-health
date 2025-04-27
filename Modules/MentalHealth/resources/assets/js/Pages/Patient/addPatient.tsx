@@ -237,7 +237,7 @@ export default function AddPatient() {
             <InputError message={errors.provider_name} />
           </div>
           <div>
-            <Label htmlFor="registered_at">Date of Registration</Label>
+            <Label htmlFor="registered_at">Date of Registration <span className="text-red-600 font-bold">*</span></Label>
             <Input
               id="registered_at"
               type="datetime-local"

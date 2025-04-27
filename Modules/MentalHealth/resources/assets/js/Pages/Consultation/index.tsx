@@ -320,6 +320,9 @@ const ConsultationIndex: React.FC = () => {
                   <Button className="absolute top-1 right-2 group-hover:block text-xs" variant="outline">
                     ➕ Add Assessment Tool
                   </Button>
+                  <Button className="absolute top-1 right-2 group-hover:block text-xs" variant="outline">
+                    ➕ Print Patient ITR
+                  </Button>
                 </li>
               ))}
             </ul>
