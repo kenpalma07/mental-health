@@ -131,14 +131,22 @@ const PatientIndex: React.FC = () => {
     },
   ], []);
 
+  // after your other useState calls
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 20,    // ← default rows per page
+  });
+
   const table = useReactTable({
     data: filteredPatients,
     columns,
     state: {
       sorting,
+      pagination,
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
