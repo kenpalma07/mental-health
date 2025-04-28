@@ -159,15 +159,50 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
+            'registered_at' => 'nullable|date',
             'facility_name' => 'required|string|max:255',
             'facility_location' => 'nullable|string|max:255',
             'provider_name' => 'nullable|string|max:255',
+
             'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
             'pat_mname' => 'nullable|string|max:255',
             'pat_fname' => 'required|string|max:255',
             'suffix_code' => 'required|string|max:5', //Added by Ken
+            'sex_code' => 'required|in:M,F',
+            'civil_stat_code' => 'required|string|max:5',
+            'pat_birthplace' => 'nullable|string|max:200',
+            'religion_code' => 'required|string|max:5',
+            'nationality' => 'required|string|max:5',
+            'pat_birthdate' => 'required|date',
+            'educattainment' => 'required|string|max:2',
+            'occupation_code' => 'required|string|max:255',
 
+            'regcode' => 'required|string|max:100',
+            'provcode' => 'required|string|max:100',
+            'citycode' => 'required|string|max:100',
+            'bgycode' => 'required|string|max:100',
+            'zipcode' => 'required|string|max:11',
+            'country_code' => 'required|string|max:5',
+            'patient_address' => 'nullable|string|max:255',
+            'pat_mobile' => 'nullable|string|max:20',
+            'pat_landline' => 'nullable|string|max:20',
+
+            'mot_fname' => 'nullable|string|max:255',
+            'mot_mname' => 'nullable|string|max:255',
+            'mot_lname' => 'nullable|string|max:255',
+            'mot_birthDate' => 'nullable|date',
+            'mot_address' => 'nullable|string|max:255', //Added by Ken
+            'mot_contact' => 'nullable|string|max:20', //Added by Ken
+            'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
+
+            'fat_fname' => 'nullable|string|max:255',
+            'fat_mname' => 'nullable|string|max:255',
+            'fat_lname' => 'nullable|string|max:255',
+            'fat_birthdate' => 'nullable|date',
+            'fat_address' => 'nullable|string|max:255', //Added by Ken
+            'fat_contact' => 'nullable|string|max:20', //Added by Ken
+            'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
         ]);
 
         $patient = MasterPatient::findOrFail($id);
