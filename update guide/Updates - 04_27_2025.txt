@@ -45,3 +45,15 @@ New Updates for Edit Patient Form
         modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
         modified:   Modules/MentalHealth/routes/web.php
         Modules/MentalHealth/resources/assets/js/Pages/Patient/viewPatientDetails.tsx
+
+
+        modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/viewPatientDetails.tsx
+        modified:   database/migrations/2025_04_18_000004_create_mental_assessment_form.php
+        modified:   database/migrations/2025_04_22_000005_create_treatment_plan.php
+        modified:   database/migrations/2025_04_22_000006_create_referral_form.php
+

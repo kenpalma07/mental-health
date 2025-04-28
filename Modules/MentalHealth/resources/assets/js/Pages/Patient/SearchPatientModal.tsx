@@ -14,6 +14,7 @@ interface Props {
 
 interface Patient {
   id: number;
+  master_patient_perm_id: string;
   pat_fname: string;
   pat_mname: string;
   pat_lname: string;
@@ -23,6 +24,7 @@ interface Patient {
 
 const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
   const [form, setForm] = React.useState({
+    master_patient_perm_id: '',
     pat_fname: '',
     pat_mname: '',
     pat_lname: '',
@@ -45,6 +47,7 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
 
   const clearSearch = () => {
     setForm({
+      master_patient_perm_id: '',
       pat_fname: '',
       pat_mname: '',
       pat_lname: '',
@@ -64,28 +67,35 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
       <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
         <Dialog.Panel className="bg-white rounded-lg p-6 max-w-xl z-50 shadow-lg relative w-full">
           <div className="flex justify-between items-center mb-4">
-            <Dialog.Title className="text-lg font-semibold">Search Existing Patients</Dialog.Title>
+            <Dialog.Title className="text-lg font-semibold">SEARCH EXISTING PATIENT</Dialog.Title>
             <Button onClick={onClose}><X className="w-5 h-5" /></Button>
           </div>
 
           <div className="mb-6 space-y-3">
             <Input
+              placeholder="Hospital Number"
+              value={form.master_patient_perm_id}
+              onChange={e => setForm(prev => ({ ...prev, master_patient_perm_id: e.target.value }))}
+              className="border rounded px-3 py-2 w-full placeholder:italic"
+            />
+
+            <Input
               placeholder="First Name"
               value={form.pat_fname}
               onChange={e => setForm(prev => ({ ...prev, pat_fname: e.target.value }))}
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full placeholder:italic"
             />
             <Input
               placeholder="Middle Name"
               value={form.pat_mname}
               onChange={e => setForm(prev => ({ ...prev, pat_mname: e.target.value }))}
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full placeholder:italic"
             />
             <Input
               placeholder="Last Name"
               value={form.pat_lname}
               onChange={e => setForm(prev => ({ ...prev, pat_lname: e.target.value }))}
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full placeholder:italic"
             />
             <Input
               type="date"
