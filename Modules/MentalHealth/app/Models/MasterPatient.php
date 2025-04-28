@@ -14,14 +14,19 @@ class MasterPatient extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'master_patient_perm_id', 'pat_temp_id',
         'facility_name', 'facility_location', 'provider_name', 'intake_date',
-        'pat_lname', 'pat_mname', 'pat_fname', 'sex_code', 'pat_birthDate',
-        'regcode', 'provcode', 'citycode', 'bgycode', 'patient_address',
-        'pat_mobile', 'pat_landline',
+        'prefix_code',
+        'pat_lname', 'pat_mname', 'pat_fname', 'sex_code', 'suffix_code', 'civil_stat_code', 'pat_birthDate',
+        'educattainment', 'occupation_code',
+        'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'country_code', 'patient_address',
+        'pat_birthplace', 'religion_code', 'nationality', 'pat_mobile', 'pat_landline',
         'mot_fname', 'mot_mname', 'mot_lname', 'mot_birthDate',
         'fat_fname', 'fat_mname', 'fat_lname', 'fat_birthDate',
         'date_entered', 'time_entered', 'ts_created_at',
-        'date_updated', 'time_updated', 'ts_updated_at',
+        'date_updated', 'time_updated', 'ts_updated_at', 'registered_at',
+        'mot_address', 'mot_contact', 'mot_deceased_status',
+        'fat_address', 'fat_contact', 'fat_deceased_status',
     ];
 
     protected static function boot()

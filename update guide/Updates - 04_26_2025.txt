@@ -1,0 +1,13 @@
+        modified:   Modules/MentalHealth/app/Http/Controllers/ConsultationController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        modified:   resources/js/components/app-sidebar.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .hintrc
+        Modules/MentalHealth/app/Http/Controllers/AssessmentController.php
+        Modules/MentalHealth/resources/assets/js/Pages/Assessment/
+        Modules/MentalHealth/resources/assets/js/Pages/json/Mental_Health_icd_10_code.json
+        Modules/MentalHealth/resources/assets/js/Pages/json/mental_health_meds.json

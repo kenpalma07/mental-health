@@ -1,0 +1,17 @@
+        modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        new file:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        modified:   resources/js/components/app-sidebar.tsx
+        modified:   tsconfig.json
+
+
+        new file:   Modules/MentalHealth/app/Http/Controllers/PatientConsentController.php
+        new file:   Modules/MentalHealth/resources/assets/js/Pages/Forms/PatientConsent.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        renamed:    update guide/Updates - 04_17_2025addformsand display.txt -> update guide/Updates - 04_17_2025addformsand display copy.txt
+        new file:   update guide/Updates - 04_18_2025searchadd-datatable-actiontoprint-itr-consent.txt
+

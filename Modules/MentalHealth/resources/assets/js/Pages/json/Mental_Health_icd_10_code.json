@@ -1,0 +1,682 @@
+{
+    "depression": [
+      {
+        "code": "F33.3",
+        "description": "Recurrent depressive disorder, current episode severe with psychotic symptoms including endogenous depression with psychotic symptoms; manic-depressive psychosis, depressed type with psychotic symptoms; recurrent severe episodes of major depression"
+      },
+      {
+        "code": "F33.9",
+        "description": "Recurrent depressive disorder, unspecified; monopolar depression NOS"
+      },
+      {
+        "code": "F34.1",
+        "description": "Dysthymia; depressive neurosis; depressive personality disorder; neurotic depression; persistent anxiety depression"
+      },
+      {
+        "code": "F53.0",
+        "description": "Mild mental and behavioral disorders associated with the puerperium, not elsewhere classified; depression postnatal NOS; depression postpartum NOS"
+      }
+    ],
+    "epilepsy": [
+      {
+        "code": "G40.0",
+        "description": "Localization-related focal idiopathic epilepsy and epileptic syndromes with seizures of localized onset; localization-related partial idiopathic epilepsy and epileptic syndromes with seizures of localized onset; benign childhood epilepsy with centrotemporal"
+      },
+      {
+        "code": "G40.1",
+        "description": "Localization-related focal symptomatic epilepsy and epileptic syndromes with simple partial seizures; localization-related partial symptomatic epilepsy and epileptic syndromes with simple partial seizures; attacks without alteration of consciousness"
+      },
+      {
+        "code": "G40.2",
+        "description": "Localization-related focal symptomatic epilepsy and epileptic syndromes with complex partial seizures; localization-related partial symptomatic epilepsy and epileptic syndromes with complex partial seizures; attacks with alteration of consciousness"
+      },
+      {
+        "code": "G40.3",
+        "description": "Generalized idiopathic epilepsy and epileptic syndromes; benign myoclonic epilepsy in infancy; benign familial neonatal convulsions; childhood absence epilepsy [pyknolepsy]; epilepsy with grand mal seizures on awakening; juvenile absence epilepsy"
+      },
+      {
+        "code": "G40.4",
+        "description": "Other generalized epilepsy and epileptic syndromes; epilepsy with myoclonic absences; epilepsy with myoclonic-astatic seizures; infantile spasms; Lennox-Gastaut syndrome; Salaam attacks"
+      },
+      {
+        "code": "G40.5",
+        "description": "Special epileptic syndromes; epilepsia partialis continua [Kozhevnikof]; epileptic seizures related to alcohol; epileptic seizures related to drugs; epileptic seizures related to hormonal changes"
+      },
+      {
+        "code": "G40.6",
+        "description": "Grand mal seizures, unspecified (with or without petit mal)"
+      },
+      {
+        "code": "G40.7",
+        "description": "Petit mal, unspecified, without grand mal seizures"
+      },
+      {
+        "code": "G40.8",
+        "description": "Other epilepsy; epilepsies and epileptic syndromes undetermined as to whether they are focal or generalized"
+      },
+      {
+        "code": "G40.9",
+        "description": "Epilepsy, unspecified; epileptic convulsions NOS; epileptic fits NOS; epileptic seizures NOS"
+      },
+      {
+        "code": "F06.2",
+        "description": "Organic delusional [schizophrenia-like] disorder; paranoid and paranoid-hallucinatory organic states"
+      },
+      {
+        "code": "F07.0",
+        "description": "Organic personality disorder; organic pseudopsychopathic personality; organic pseudoretarded personality"
+      },
+      {
+        "code": "F80.3",
+        "description": "Acquired aphasia with epilepsy [Landau-Kleffner]"
+      }
+    ],
+    "developmental_disorder": [
+      {
+        "code": "F80",
+        "description": "Specific developmental disorders of speech and language"
+      },
+      {
+        "code": "F80.0",
+        "description": "Phonological disorder"
+      },
+      {
+        "code": "F80.1",
+        "description": "Expressive language disorder"
+      },
+      {
+        "code": "F80.2",
+        "description": "Mixed receptive-expressive language disorder"
+      },
+      {
+        "code": "F80.3",
+        "description": "Acquired aphasia with epilepsy [Landau-Kleffner]"
+      },
+      {
+        "code": "F80.8",
+        "description": "Other developmental disorders of speech or language"
+      },
+      {
+        "code": "F80.9",
+        "description": "Developmental disorder of speech or language, unspecified"
+      },
+      {
+        "code": "F81",
+        "description": "Specific developmental disorders of scholastic skills"
+      },
+      {
+        "code": "F81.0",
+        "description": "Specific reading disorder"
+      },
+      {
+        "code": "F81.1",
+        "description": "Specific spelling disorder"
+      },
+      {
+        "code": "F81.2",
+        "description": "Mathematics disorder"
+      },
+      {
+        "code": "F81.3",
+        "description": "Mixed disorder of scholastic skills"
+      },
+      {
+        "code": "F81.8",
+        "description": "Other developmental disorders of scholastic skills"
+      },
+      {
+        "code": "F81.9",
+        "description": "Developmental disorder of scholastic skills, unspecified"
+      },
+      {
+        "code": "F82",
+        "description": "Specific developmental disorder of motor function"
+      },
+      {
+        "code": "F83",
+        "description": "Mixed specific developmental disorders"
+      },
+      {
+        "code": "F84",
+        "description": "Pervasive developmental disorders"
+      },
+      {
+        "code": "F84.0",
+        "description": "Autistic disorder"
+      },
+      {
+        "code": "F84.1",
+        "description": "Atypical autism"
+      },
+      {
+        "code": "F84.2",
+        "description": "Rett's syndrome"
+      },
+      {
+        "code": "F84.3",
+        "description": "Other childhood disintegrative disorder"
+      },
+      {
+        "code": "F84.4",
+        "description": "Overactive disorder associated with mental retardation and stereotyped movements"
+      },
+      {
+        "code": "F84.5",
+        "description": "Asperger's syndrome"
+      },
+      {
+        "code": "F84.8",
+        "description": "Other pervasive developmental disorders"
+      },
+      {
+        "code": "F84.9",
+        "description": "Pervasive developmental disorder, unspecified"
+      },
+      {
+        "code": "F88",
+        "description": "Other disorders of psychological development"
+      },
+      {
+        "code": "F89",
+        "description": "Unspecified disorder of psychological development"
+      },
+      {
+        "code": "F91.3",
+        "description": "Oppositional defiant disorder"
+      },
+      {
+        "code": "F91.8",
+        "description": "Other conduct disorders"
+      },
+      {
+        "code": "F91.9",
+        "description": "Conduct disorder, unspecified"
+      },
+      {
+        "code": "F92",
+        "description": "Mixed disorders of conduct and emotions"
+      },
+      {
+        "code": "F92.0",
+        "description": "Depressive conduct disorder"
+      },
+      {
+        "code": "F92.8",
+        "description": "Other mixed disorders of conduct and emotions"
+      },
+      {
+        "code": "F92.9",
+        "description": "Mixed disorder of conduct and emotions, unspecified"
+      },
+      {
+        "code": "F93",
+        "description": "Emotional disorders with onset specific to childhood"
+      },
+      {
+        "code": "F93.0",
+        "description": "Separation anxiety disorder of childhood"
+      },
+      {
+        "code": "F93.1",
+        "description": "Phobic anxiety disorder of childhood"
+      },
+      {
+        "code": "F93.2",
+        "description": "Social anxiety disorder of childhood"
+      },
+      {
+        "code": "F93.3",
+        "description": "Sibling rivalry disorder"
+      },
+      {
+        "code": "F93.8",
+        "description": "Other childhood emotional disorders"
+      },
+      {
+        "code": "F93.9",
+        "description": "Childhood emotional disorder, unspecified"
+      },
+      {
+        "code": "F94",
+        "description": "Disorders of social functioning with onset specific to childhood and adolescence"
+      },
+      {
+        "code": "F94.0",
+        "description": "Selective mutism"
+      },
+      {
+        "code": "F94.1",
+        "description": "Reactive attachment disorder of childhood"
+      },
+      {
+        "code": "F94.2",
+        "description": "Disinhibited attachment disorder of childhood"
+      },
+      {
+        "code": "F94.8",
+        "description": "Other childhood disorders of social functioning"
+      },
+      {
+        "code": "F94.9",
+        "description": "Childhood disorder of social functioning, unspecified"
+      },
+      {
+        "code": "F95",
+        "description": "Tic disorder"
+      },
+      {
+        "code": "F95.0",
+        "description": "Transient tic disorder"
+      },
+      {
+        "code": "F95.1",
+        "description": "Chronic motor or vocal tic disorder"
+      },
+      {
+        "code": "F95.2",
+        "description": "Tourette's disorder"
+      },
+      {
+        "code": "F95.8",
+        "description": "Other tic disorders"
+      },
+      {
+        "code": "F95.9",
+        "description": "Tic disorder, unspecified"
+      },
+      {
+        "code": "F98",
+        "description": "Other behavioral and emotional disorders with onset usually occurring in childhood and adolescence"
+      },
+      {
+        "code": "F98.0",
+        "description": "Enuresis not due to a substance or known physiological condition (Functional/non-organic origin/psychogenic enuresis)"
+      },
+      {
+        "code": "F98.1",
+        "description": "Encopresis not due to a substance or known physiological condition (Functional/non-organic origin/psychogenic enuresis)"
+      }
+    ],
+    "self_harm_suicide": [
+      {
+        "code": "X70",
+        "description": "Intentional self-harm by hanging, strangulation and suffocation"
+      },
+      {
+        "code": "X71",
+        "description": "Intentional self-harm by drowning and submersion"
+      },
+      {
+        "code": "X72",
+        "description": "Intentional self-harm by handgun discharge"
+      },
+      {
+        "code": "X73",
+        "description": "Intentional self-harm by rifle, shotgun and larger firearm discharge"
+      },
+      {
+        "code": "X74",
+        "description": "Intentional self-harm by other and unspecified firearm discharge"
+      },
+      {
+        "code": "X75",
+        "description": "Intentional self-harm by explosive material"
+      },
+      {
+        "code": "X76",
+        "description": "Intentional self-harm by smoke, fire and flames"
+      },
+      {
+        "code": "X77",
+        "description": "Intentional self-harm by steam, hot vapours and hot objects"
+      },
+      {
+        "code": "X78",
+        "description": "Intentional self-harm by sharp object"
+      },
+      {
+        "code": "X79",
+        "description": "Intentional self-harm by blunt object"
+      },
+      {
+        "code": "X80",
+        "description": "Intentional self-harm by jumping from a high place"
+      },
+      {
+        "code": "X81",
+        "description": "Intentional self-harm by jumping or lying before moving object"
+      },
+      {
+        "code": "X82",
+        "description": "Intentional self-harm by crashing of motor vehicle"
+      },
+      {
+        "code": "X83",
+        "description": "Intentional self-harm by other specified means"
+      }
+    ],
+    "alcohol_use_disorder": [
+        {
+            "code": "F10",
+            "description": "Mental and behavioural disorders due to use of alcohol"
+          },
+          {
+            "code": "F10.0",
+            "description": "Alcohol intoxication"
+          },
+          {
+            "code": "F11",
+            "description": "Mental and behavioural disorders due to use of opioids"
+          },
+          {
+            "code": "F12",
+            "description": "Mental and behavioural disorders due to use of cannabinoids"
+          },
+          {
+            "code": "F13",
+            "description": "Mental and behavioural disorders due to use of sedatives or hypnotics"
+          },
+          {
+            "code": "F14",
+            "description": "Mental and behavioural disorders due to use of cocaine"
+          },
+          {
+            "code": "F15",
+            "description": "Mental and behavioural disorders due to use of other stimulants, including caffeine"
+          },
+          {
+            "code": "F16",
+            "description": "Mental and behavioural disorders due to use of hallucinogens"
+          },
+          {
+            "code": "F17",
+            "description": "Mental and behavioural disorders due to use of tobacco"
+          },
+          {
+            "code": "F18",
+            "description": "Mental and behavioural disorders due to use of volatile solvents"
+          },
+          {
+            "code": "F19",
+            "description": "Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances"
+          }
+    ],
+    "drug_use_disorder": [
+      {
+        "code": "F10",
+        "description": "Mental and behavioural disorders due to use of alcohol"
+      },
+      {
+        "code": "F10.0",
+        "description": "Alcohol intoxication"
+      },
+      {
+        "code": "F11",
+        "description": "Mental and behavioural disorders due to use of opioids"
+      },
+      {
+        "code": "F12",
+        "description": "Mental and behavioural disorders due to use of cannabinoids"
+      },
+      {
+        "code": "F13",
+        "description": "Mental and behavioural disorders due to use of sedatives or hypnotics"
+      },
+      {
+        "code": "F14",
+        "description": "Mental and behavioural disorders due to use of cocaine"
+      },
+      {
+        "code": "F15",
+        "description": "Mental and behavioural disorders due to use of other stimulants, including caffeine"
+      },
+      {
+        "code": "F16",
+        "description": "Mental and behavioural disorders due to use of hallucinogens"
+      },
+      {
+        "code": "F17",
+        "description": "Mental and behavioural disorders due to use of tobacco"
+      },
+      {
+        "code": "F18",
+        "description": "Mental and behavioural disorders due to use of volatile solvents"
+      },
+      {
+        "code": "F19",
+        "description": "Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances"
+      }
+    ],
+    "behavioral_disorder": [
+        {
+          "code": "Z03.2",
+          "description": "Observation for suspected mental and behavioral disorders"
+        },
+        {
+          "code": "Z13.3",
+          "description": "Special screening examinations for mental and behavioral disorders : Alcoholism, Depression, Mental retardation"
+        },
+        {
+            "code": "Z81.0",
+            "description": "Family history of mental and behavioral disorders"
+        },
+        {
+            "code": "Z81.8",
+            "description": "Family history of other mental and behavioral disorders - Conditions classifiable elsewhere in F00-F99"
+        },
+        {
+            "code": "Z86.5",
+            "description": "Personal history of other mental and behavioral disorders - Conditions classifiable to F00 - F09, F20 - F99"
+        }
+      ],
+      "dementia": [
+          {
+              "code": "F00*",
+              "description": "Dementia in Alzheimer's disease (G30.-+)"
+          },
+          {
+              "code": "F00.0*",
+              "description": "Dementia in Alzheimer's disease with early onset (G30.0+)"
+          },
+          {
+              "code": "F00.1*",
+              "description": "Dementia in Alzheimer's disease with late onset (G30.1+)"
+          },
+          {
+              "code": "F00.2*",
+              "description": "Dementia in Alzheimer's disease, atypical or mixed type (G30.8+)"
+          },
+          {
+              "code": "F00.9*",
+              "description": "Dementia in Alzheimer's disease, unspecified (G30.9+)"
+          },
+          {
+              "code": "F01",
+              "description": "Vascular dementia"
+          },
+          {
+              "code": "F01.0",
+              "description": "Vascular dementia of acute onset"
+          },
+          {
+              "code": "F01.1",
+              "description": "Multi-infarct dementia"
+          },
+          {
+              "code": "F01.2",
+              "description": "Subcortical vascular dementia"
+          },
+          {
+              "code": "F01.3",
+              "description": "Mixed cortical and subcortical vascular dementia"
+          },
+          {
+              "code": "F01.8",
+              "description": "Other vascular dementia"
+          },
+          {
+              "code": "F01.9",
+              "description": "Vascular dementia, unspecified"
+          },
+          {
+              "code": "F02*",
+              "description": "Dementia in other diseases classified elsewhere"
+          },
+          {
+              "code": "F02.0*",
+              "description": "Dementia in Pick's disease (G31.0+)"
+          },
+          {
+              "code": "F02.1*",
+              "description": "Dementia in Creutzfeldt-Jakob disease (A81.0+)"
+          },
+          {
+              "code": "F02.2*",
+              "description": "Dementia in Huntington's disease (G10+)"
+          },
+          {
+              "code": "F02.3*",
+              "description": "Dementia in Parkinson's disease (G20+)"
+          },
+          {
+              "code": "F02.4*",
+              "description": "Dementia in human immunodeficiency virus [HIV] disease (B22.0+)"
+          },
+          {
+              "code": "F02.8*",
+              "description": "Dementia in other specified diseases classified elsewhere"
+          },
+          {
+              "code": "F03",
+              "description": "Unspecified dementia (Presenile dementia, Senile dementia)"
+          }
+      ],
+      "psychoses": [
+        {
+            "code": "F20",
+            "description": "Schizophrenia"
+        },
+        {
+            "code": "F20.0",
+            "description": "Paranoid schizophrenia"
+        },
+        {
+            "code": "F20.1",
+            "description": "Hebephrenic schizophrenia"
+        },
+        {
+            "code": "F20.2",
+            "description": "Catatonic schizophrenia"
+        },
+        {
+            "code": "F20.3",
+            "description": "Undifferentiated schizophrenia"
+        },
+        {
+            "code": "F20.4",
+            "description": "Post-schizophrenic depression"
+        },
+        {
+            "code": "F20.5",
+            "description": "Residual schizophrenia"
+        },
+        {
+            "code": "F20.6",
+            "description": "Simple schizophrenia"
+        },
+        {
+            "code": "F20.8",
+            "description": "Other schizophrenia"
+        },
+        {
+            "code": "F20.9",
+            "description": "Schizophrenia, unspecified"
+        },
+        {
+            "code": "F21",
+            "description": "Schizotypal disorder"
+        },
+        {
+            "code": "F22",
+            "description": "Persistent delusional disorders"
+        },
+        {
+            "code": "F22.0",
+            "description": "Delusional disorder"
+        },
+        {
+            "code": "F22.8",
+            "description": "Other persistent delusional disorders"
+        },
+        {
+            "code": "F22.9",
+            "description": "Persistent delusional disorder, unspecified"
+        },
+        {
+            "code": "F23",
+            "description": "Acute and transient psychotic disorders"
+        },
+        {
+            "code": "F23.0",
+            "description": "Acute polymorphic psychotic disorder without symptoms of schizophrenia"
+        },
+        {
+            "code": "F23.1",
+            "description": "Acute polymorphic psychotic disorder with symptoms of schizophrenia"
+        },
+        {
+            "code": "F23.2",
+            "description": "Acute schizophrenia-like psychotic disorder"
+        },
+        {
+            "code": "F23.3",
+            "description": "Other acute predominantly delusional psychotic disorders"
+        },
+        {
+            "code": "F23.8",
+            "description": "Other acute and transient psychotic disorders"
+        },
+        {
+            "code": "F23.9",
+            "description": "Acute and transient psychotic disorder, unspecified"
+        },
+        {
+            "code": "F24",
+            "description": "Induced delusional disorder"
+        },
+        {
+            "code": "F25",
+            "description": "Schizoaffective disorders"
+        },
+        {
+            "code": "F25.0",
+            "description": "Schizoaffective disorder, manic type"
+        },
+        {
+            "code": "F25.1",
+            "description": "Schizoaffective disorder, depressive type"
+        },
+        {
+            "code": "F25.2",
+            "description": "Schizoaffective disorder, mixed type"
+        },
+        {
+            "code": "F25.8",
+            "description": "Other schizoaffective disorders"
+        },
+        {
+            "code": "F25.9",
+            "description": "Schizoaffective disorder, unspecified"
+        },
+        {
+            "code": "F28",
+            "description": "Other nonorganic psychotic disorders"
+        },
+        {
+            "code": "F29",
+            "description": "Unspecified nonorganic psychosis (Psychosis)"
+        }
+    ]
+
+  }
+  

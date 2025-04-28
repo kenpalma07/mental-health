@@ -112,3 +112,5 @@ return new class extends Migration
         Schema::dropIfExists('tbl_master_patient');
     }
 };
+
+?>

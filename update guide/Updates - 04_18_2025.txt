@@ -1,0 +1,7 @@
+- Needed to Add Columns in Parent's Information
+    1. Contact Number
+    2. Address
+    3. Deceased Status
+    4. For father - Suffix
+
+- Add this to terminal: "npm install react-select"

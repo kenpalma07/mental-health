@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -17,71 +17,54 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit2, Printer } from 'lucide-react';
+import { MoreHorizontal, Edit2, Printer, UserPlus, Eye, Stethoscope} from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import type { PageProps } from '@/types';
 import type { MasterPatient } from '@/types/modules/mental-health';
 import type { BreadcrumbItem } from '@/types';
-import { UserPlus  } from 'lucide-react'; 
+import PatientConsent from '../Forms/patientconsent';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Patients', href: '/patients' },
 ];
 
 const PatientIndex: React.FC = () => {
-  const { patients, filters, pagination } = usePage<
-    PageProps<{
-      patients: MasterPatient[];
-      filters: any;
-      pagination: any;
-    }>
-  >().props;
+  const { patients } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
 
-  const { data, setData, get } = useForm({
-    search: filters.search || '',
-    sex: filters.sex || '',
-    page: pagination.current_page || 1,
-  });
-
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [sexFilter, setSexFilter] = React.useState('');
   const [sorting, setSorting] = React.useState([]);
-  const timeout = React.useRef<NodeJS.Timeout | null>(null);
+  const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
+  const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null);
 
-  const handleSearchChange = (value: string) => {
-    setData('search', value);
-    setData('page', 1); // Reset to page 1 when searching
-
-    if (timeout.current) clearTimeout(timeout.current); // Clear the previous timeout
-
-    timeout.current = setTimeout(() => {
-      // Send empty string if the search bar is cleared, else send the search term
-      get('/patients', {
-        preserveState: true,
-        data: {
-          search: value.trim() || '', // If search is empty, pass an empty string
-          sex: filters.sex, // Preserve the sex filter
-          page: 1, // Always go to page 1 on a new search
-        },
-      });
-    }, 300);
+  const openConsentModal = (patient: MasterPatient) => {
+    setSelectedPatient(patient);
+    setIsConsentModalOpen(true);
   };
 
-  const handleSexFilter = (value: string) => {
-    setData('sex', value);
-    setData('page', 1); // Reset to page 1 when filtering by sex
-    get('/patients', { preserveState: true });
+  const closeConsentModal = () => {
+    setIsConsentModalOpen(false);
+    setSelectedPatient(null);
   };
 
-  const handleClearFilters = () => {
-    // Reset all filters to their initial values
-    setData('search', '');
-    setData('sex', '');
-    setData('page', 1);
+  const filteredPatients = React.useMemo(() => {
+    return patients.filter((patient) => {
+      const fullName = `${patient.pat_fname} ${patient.pat_mname ?? ''} ${patient.pat_lname}`.toLowerCase();
+      const facility = patient.facility_name?.toLowerCase() || '';
+      const search = searchTerm.toLowerCase();
 
-    // Re-fetch the patients with no filters
-    get('/patients', { preserveState: true });
-  };
+      const matchesSearch = fullName.includes(search) || facility.includes(search);
+      const matchesSex = sexFilter ? patient.sex_code === sexFilter : true;
+
+      return matchesSearch && matchesSex;
+    });
+  }, [patients, searchTerm, sexFilter]);
 
   const columns = React.useMemo<ColumnDef<MasterPatient>[]>(() => [
+    {
+      accessorKey: 'master_patient_perm_id',
+      header: 'Patient ID',
+    },
     {
       accessorKey: 'fullname',
       header: 'Name',
@@ -93,7 +76,11 @@ const PatientIndex: React.FC = () => {
     {
       accessorKey: 'sex_code',
       header: 'Sex',
-    },
+      cell: ({ row }) => {
+        const sex = row.original.sex_code;
+        return sex === 'M' ? 'Male' : sex === 'F' ? 'Female' : '';
+      },
+    },    
     {
       accessorKey: 'pat_birthDate',
       header: 'Birthdate',
@@ -130,6 +117,12 @@ const PatientIndex: React.FC = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link href={`/patients/${patient.id}/view`} className="flex items-center gap-2">
+                <Eye className="w-4 h-4" />
+                View Details
+              </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={`/patients/${patient.id}/edit`} className="flex items-center gap-2">
                   <Edit2 className="w-4 h-4" />
@@ -137,16 +130,13 @@ const PatientIndex: React.FC = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/patients/${patient.id}/consent`} className="flex items-center gap-2">
+                <Button
+                  onClick={() => openConsentModal(patient)}
+                  className="flex items-center gap-2 bg-transparent text-black hover:bg-gray-100"
+                >
                   <Printer className="w-4 h-4" />
                   Patient Consent
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href={`/patients/${patient.id}/print-itr`} target="_blank" className="flex items-center gap-2">
-                  <Printer className="w-4 h-4" />
-                  Print ITR
-                </Link>
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -155,66 +145,59 @@ const PatientIndex: React.FC = () => {
     },
   ], []);
 
+  // after your other useState calls
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 20,    // ← default rows per page
+  });
+
   const table = useReactTable({
-    data: patients,
+    data: filteredPatients,
     columns,
     state: {
       sorting,
+      pagination,
     },
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    manualPagination: true,
-    pageCount: pagination.last_page,
   });
-
-  const goToPage = (page: number) => {
-    setData('page', page);
-    get('/patients', { preserveState: true });
-  };
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Patients" />
       <div className="p-6 space-y-6">
-        <div className="flex items-center gap-4">
+        <div className="flex">
           <Link
             href="/patients/create"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+            className="px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition flex items-center gap-2 rounded-l-lg"
           >
-            <UserPlus className="w-4 h-4" /> {/* Add UserPlus icon here */}
+            <UserPlus className="w-4 h-4" />
             Add Patient
           </Link>
           <Link
             href="/consultations"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+            className="px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition flex items-center gap-2 rounded-r-lg -ml-px"
           >
-            <UserPlus className="w-4 h-4" /> {/* Add UserPlus icon here */}
+            <Stethoscope className="w-4 h-4" />
             Patient Consultation
           </Link>
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex gap-4">
           <Input
-            value={data.search}
-            onChange={e => handleSearchChange(e.target.value)}
-            placeholder="Search patients..."
-            className="w-full sm:w-1/3"
+            placeholder="Search by name or facility..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/3"
           />
-          {/* Clear Filters Button */}
-          <Button
-            onClick={handleClearFilters}
-            variant="outline"
-            className="px-4 py-2 border border-gray-400"
-          >
-            Clear Filters
-          </Button>
         </div>
 
         <div className="overflow-x-auto bg-white border rounded-lg shadow">
           <table className="min-w-full text-sm text-left text-gray-700">
-            <thead className="bg-gray-50 text-xs text-gray-500 border-b">
+            <thead className="bg-black text-xs text-white border-b">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
@@ -256,25 +239,54 @@ const PatientIndex: React.FC = () => {
           </table>
         </div>
 
-        <div className="flex justify-between items-center pt-4">
-          <Button
-            onClick={() => goToPage(pagination.current_page - 1)}
-            disabled={pagination.current_page === 1}
-            variant="outline"
-          >
-            Previous
-          </Button>
-          <span>
-            Page {pagination.current_page} of {pagination.last_page}
-          </span>
-          <Button
-            onClick={() => goToPage(pagination.current_page + 1)}
-            disabled={pagination.current_page === pagination.last_page}
-            variant="outline"
-          >
-            Next
-          </Button>
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-gray-600">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              First
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Prev
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              Last
+            </Button>
+          </div>
         </div>
+
+        {/* PatientConsent modal */}
+        {isConsentModalOpen && selectedPatient && (
+          <PatientConsent
+            patient={selectedPatient}
+            onClose={closeConsentModal}
+          />
+        )}
       </div>
     </AppLayout>
   );

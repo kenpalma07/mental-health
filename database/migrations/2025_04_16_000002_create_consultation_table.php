@@ -56,6 +56,13 @@ return new class extends Migration
             $table->string('PHIC_TRACKING_NUMBER', 255)->nullable();
         });
 
+        // Adding foreign key constraint after table creation
+        Schema::table('tbl_consultation', function (Blueprint $table) {
+            $table->foreign('pat_temp_id')->references('pat_temp_id')->on('tbl_master_patient')
+                  ->onDelete('cascade') // Optional: Deletes the consultation record when the referenced master patient is deleted
+                  ->onUpdate('cascade'); // Optional: Updates the foreign key when the referenced master patient's pat_temp_id is updated
+        });
+
         Schema::table('tbl_consultation', function (Blueprint $table) {
             $table->char('patient_status', 1)->after('PHIESYNC');
         });
@@ -66,6 +73,11 @@ return new class extends Migration
      */
     public function down()
     {
+        // Drop the foreign key before dropping the table
+        Schema::table('tbl_consultation', function (Blueprint $table) {
+            $table->dropForeign(['pat_temp_id']);
+        });
+
         Schema::dropIfExists('tbl_consultation');
     }
 };

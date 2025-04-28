@@ -43,9 +43,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tbl_master_patient', function (Blueprint $table) {
-            $table->string('fsNumber', 100)->nullable(false)->change();
-            $table->char('phic_member', 1)->nullable(false)->change();
-            $table->char('PCB_nhts', 1)->nullable(false)->change();
+            //$table->string('fsNumber', 100)->nullable(false)->change();
+            //$table->char('phic_member', 1)->nullable(false)->change();
+            //$table->char('PCB_nhts', 1)->nullable(false)->change();
         });
 
         Schema::table('tbl_consultation', function (Blueprint $table) {

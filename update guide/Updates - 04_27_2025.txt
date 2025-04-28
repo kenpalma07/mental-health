@@ -1,0 +1,47 @@
+New Updates for Add Patient Form
+1. Date Registration
+2. Patient Id
+3. Prefix
+4. Suffix
+5. Age
+6. Civil Status
+7. Birth Place
+8. Religion
+9. Nationality
+10. Educational Attainment
+11. Occupation
+12. Zipcode
+13. Country
+14. Parents Information
+    - Birthdate
+    - Address
+    - Contact Number
+    - Deceased Status
+
+New Updates for Edit Patient Form
+1. Date Registration
+2. Patient Id
+3. Prefix
+4. Suffix
+5. Age
+6. Civil Status
+7. Birth Place
+8. Religion
+9. Nationality
+10. Educational Attainment
+11. Occupation
+12. Zipcode
+13. Country
+14. Parents Information
+    - Birthdate
+    - Address
+    - Contact Number
+    - Deceased Status
+
+
+        modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Assessment/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        Modules/MentalHealth/resources/assets/js/Pages/Patient/viewPatientDetails.tsx

@@ -1,0 +1,7 @@
+        new file:   Modules/MentalHealth/resources/assets/js/Pages/Patient/PatientResultModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        new file:   Modules/MentalHealth/resources/assets/js/Pages/Patient/editPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        modified:   database/migrations/2025_04_16_000002_create_consultation_table.php
