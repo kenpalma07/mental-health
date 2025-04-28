@@ -138,7 +138,7 @@ const ConsultationIndex: React.FC = () => {
     setShowForm(true);
   };
 
-  
+  console.log(patient);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>

@@ -59,11 +59,12 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
+        // $validated = $request->validate([]);
         $validated = $request->validate([
             'master_patient_perm_id' => 'nullable|string|max:255', // New field added by Ken
             'facility_name' => 'required|string|max:255',
-            'facility_location' => 'nullable|string|max:255',
-            'provider_name' => 'nullable|string|max:255',
+            'facility_location' => 'required|string|max:255',
+            'provider_name' => 'required|string|max:255',
             'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
             'pat_mname' => 'nullable|string|max:255',
@@ -101,6 +102,13 @@ class PatientController extends Controller
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
             'registered_at' => 'nullable|date',
+        ], [], [
+            'facility_name' => 'Facility Name',
+            'facility_location' => 'Facility Location',
+            'provider_name' => 'Provider Name',
+
+            'prefix_code' => 'Prefix',
+            'pat_lname' => 'Last Name',
         ]);
         $timestamp = $request->input('registered_at');
         $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
