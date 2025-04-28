@@ -37,3 +37,11 @@ New Updates for Edit Patient Form
     - Address
     - Contact Number
     - Deceased Status
+
+
+        modified:   Modules/MentalHealth/app/Http/Controllers/PatientController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Assessment/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        Modules/MentalHealth/resources/assets/js/Pages/Patient/viewPatientDetails.tsx

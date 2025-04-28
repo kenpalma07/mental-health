@@ -17,6 +17,8 @@ Route::get('/patients/{id}/edit', [PatientController::class, 'edit']);
 //Route::put('/patients/{id}', [PatientController::class, 'update']);
 //Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
 Route::put('/patients/{id}', [PatientController::class, 'update']);
+Route::get('/patients/{id}/view', [PatientController::class, 'view']);
+
 
 
 // Patient Consultation

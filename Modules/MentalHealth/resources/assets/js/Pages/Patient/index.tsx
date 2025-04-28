@@ -17,7 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit2, Printer, UserPlus } from 'lucide-react';
+import { MoreHorizontal, Edit2, Printer, UserPlus, Eye, Stethoscope} from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import type { PageProps } from '@/types';
 import type { MasterPatient } from '@/types/modules/mental-health';
@@ -62,6 +62,10 @@ const PatientIndex: React.FC = () => {
 
   const columns = React.useMemo<ColumnDef<MasterPatient>[]>(() => [
     {
+      accessorKey: 'master_patient_perm_id',
+      header: 'Patient ID',
+    },
+    {
       accessorKey: 'fullname',
       header: 'Name',
       cell: ({ row }) => {
@@ -72,7 +76,11 @@ const PatientIndex: React.FC = () => {
     {
       accessorKey: 'sex_code',
       header: 'Sex',
-    },
+      cell: ({ row }) => {
+        const sex = row.original.sex_code;
+        return sex === 'M' ? 'Male' : sex === 'F' ? 'Female' : '';
+      },
+    },    
     {
       accessorKey: 'pat_birthDate',
       header: 'Birthdate',
@@ -109,6 +117,12 @@ const PatientIndex: React.FC = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link href={`/patients/${patient.id}/view`} className="flex items-center gap-2">
+                <Eye className="w-4 h-4" />
+                View Details
+              </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={`/patients/${patient.id}/edit`} className="flex items-center gap-2">
                   <Edit2 className="w-4 h-4" />
@@ -156,23 +170,22 @@ const PatientIndex: React.FC = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Patients" />
       <div className="p-6 space-y-6">
-        <div className="flex items-center gap-4">
+        <div className="flex">
           <Link
             href="/patients/create"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+            className="px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition flex items-center gap-2 rounded-l-lg"
           >
             <UserPlus className="w-4 h-4" />
             Add Patient
           </Link>
           <Link
             href="/consultations"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+            className="px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition flex items-center gap-2 rounded-r-lg -ml-px"
           >
-            <UserPlus className="w-4 h-4" />
+            <Stethoscope className="w-4 h-4" />
             Patient Consultation
           </Link>
         </div>
-
         <div className="flex gap-4">
           <Input
             placeholder="Search by name or facility..."
@@ -184,7 +197,7 @@ const PatientIndex: React.FC = () => {
 
         <div className="overflow-x-auto bg-white border rounded-lg shadow">
           <table className="min-w-full text-sm text-left text-gray-700">
-            <thead className="bg-gray-50 text-xs text-gray-500 border-b">
+            <thead className="bg-black text-xs text-white border-b">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (

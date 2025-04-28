@@ -19,7 +19,8 @@ class PatientController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('pat_fname', 'like', "%{$search}%")
                   ->orWhere('pat_lname', 'like', "%{$search}%")
-                  ->orWhere('facility_name', 'like', "%{$search}%");
+                  ->orWhere('facility_name', 'like', "%{$search}%")
+                  ->orWhere('master_patient_perm_id', 'like', "%{$search}%");
             });
         }
 
@@ -37,6 +38,15 @@ class PatientController extends Controller
             'filters' => $request->only(['search', 'sex']),
         ]);
     }
+
+    public function view($id)
+    {
+        $patient = MasterPatient::findOrFail($id);
+        return inertia('MentalHealth::Patient/viewPatientDetails', [
+            'patient' => $patient,
+        ]);
+    }
+    
 
     public function create()
     {   

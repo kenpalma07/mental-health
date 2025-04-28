@@ -9,7 +9,6 @@ import SearchPatientModal from './SearchPatientModal'; // Import your modal
 import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
 import locationData from '../json/philippine_reg_prov_cit_brgy.json';
-import { ZapIcon } from 'lucide-react';
 
 
 
@@ -269,6 +268,21 @@ export default function AddPatient() {
             </div>
             {/* ----------------- End of Patient Record Number ----------------- */}
             
+            {/* ----------------- Profile Picture ----------------- */}
+            {/* <div>
+              <Label htmlFor="pat_photo">
+                Patient Photo <span className="text-red-600 font-bold">*</span>
+              </Label>
+              <Input
+                type="file"
+                id="pat_photo"
+                accept="image/*"
+                capture="environment"
+                className="text-dark-500"
+              />
+            </div> */}
+            {/* ----------------- End of Patient Record Number ----------------- */}
+
             {/* ----------------- Start of Prefix ----------------- */}
             <div>
               <Label htmlFor="prefix_code">
@@ -630,11 +644,14 @@ export default function AddPatient() {
                 className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
               >
                 <option value="">Select Region</option>
-                {Object.entries(locationData).map(([code, info]) => (
-                  <option key={code} value={code}>
-                    {info.region_name}
-                  </option>
-                ))}
+                {Object.entries(locationData).map(([code, info]) => {
+                  const regionName = regionLookup[code] || info.region_name;
+                  return (
+                    <option key={code} value={code}>
+                      Region {code} - {regionName}
+                    </option>
+                  );
+                })}
               </Select>
               <InputError message={errors.regcode} />
             </div>
