@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
-import SearchPatientModal from './SearchPatientModal'; // Import your modal
+import SearchPatientModal from './SearchPatientModal'; 
 import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
 import locationData from '../json/philippine_reg_prov_cit_brgy.json';
@@ -30,6 +30,7 @@ export default function AddPatient() {
     facility_name: '',
     facility_location: '',
     provider_name: '',
+    //intake_date: '',
     registered_at: '', 
     prefix_code: '', 
     pat_lname: '',
@@ -55,20 +56,20 @@ export default function AddPatient() {
     pat_mobile: '',
     pat_landline: '',
 
-    
+
     mot_fname: '',
     mot_mname: '',
     mot_lname: '',
     mot_birthDate: '',
     mot_address: '', 
-    mot_contact: '', 
+    mot_contact: '',
     mot_deceased_status: '',
     fat_fname: '',
     fat_mname: '',
     fat_lname: '',
     fat_birthDate: '',
     fat_address: '', 
-    fat_contact: '', 
+    fat_contact: '',
     fat_deceased_status: '', 
   });
 
@@ -130,10 +131,16 @@ export default function AddPatient() {
     }
   }, [data.registered_at, setData]);
   
+  // State for managing modal visibility
   const [isModalOpen, setModalOpen] = React.useState(false);
+
+  // Open modal function
   const openModal = () => setModalOpen(true);
+
+  // Close modal function
   const closeModal = () => setModalOpen(false);
 
+  // Disable background scroll when modal is open
   React.useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -142,11 +149,12 @@ export default function AddPatient() {
     }
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = ''; // Reset on unmount
     };
   }, [isModalOpen]);
 
   React.useEffect(() => {
+    // Automatically open the modal when the page loads
     openModal();
   }, []);
 
@@ -632,8 +640,7 @@ export default function AddPatient() {
                   setData('citycode', '');
                   setData('bgycode', '');
                 }}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
-              >
+                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500">
                 <option value="">Select Region</option>
                 {Object.entries(locationData).map(([code, info]) => {
                   const regionName = regionLookup[code] || info.region_name;

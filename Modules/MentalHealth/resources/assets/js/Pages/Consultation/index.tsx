@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/Label';
+import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -381,7 +381,7 @@ const ConsultationIndex: React.FC = () => {
                   name="chief_complaint"
                   value={formData.chief_complaint}
                   onChange={handleInputChange}
-                  rows={3}
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 

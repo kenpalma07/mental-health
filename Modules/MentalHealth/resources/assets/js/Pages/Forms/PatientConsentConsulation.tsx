@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 
 interface PatientConsentProps {
   patient: {
+    id: number;
     pat_fname: string;
     pat_lname: string;
     sex_code: string;
@@ -22,7 +23,6 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient }) => {
   const printConsent = () => {
     const printWindow = window.open('', '', 'width=800,height=600');
     if (printWindow) {
-      // Adding custom content for print
       printWindow.document.write(`
         <html>
           <head>
@@ -155,12 +155,12 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient }) => {
 
         {/* Actions */}
         <div className="flex justify-end gap-4 mt-4">
-        <Button
-            onClick={() => router.visit('/patients')} 
+          <Button
+            onClick={() => router.visit(`/consultations?id=${patient.id}`)}  // Redirects with query parameter
             className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
           >
             Close
-        </Button>
+          </Button>
           <Button
             onClick={printConsent}
             disabled={!isAgreed}

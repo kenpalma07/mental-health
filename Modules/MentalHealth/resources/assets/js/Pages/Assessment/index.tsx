@@ -55,7 +55,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Add Assessment', href: '/#' },
 ];
 
-function InfoRow({ icon: Icon, label, value, withArrow }: { icon: React.ComponentType, label: string, value: string, withArrow?: boolean }) {
+function InfoRow({ icon: Icon, label, value, withArrow }: { icon: React.ComponentType<{ className?: string; size?: number }>, label: string, value: string, withArrow?: boolean }) {
   return (
     <div className="flex items-center space-x-2">
       <Icon className="text-gray-500" size={16} />
@@ -175,7 +175,7 @@ export default function AssessmentIndex() {
             <div className="absolute top-1/2 left-0 right-0 border-t-2 border-gray-300 z-0" />
             {steps.map((step, index) => (
               <div key={index} className="flex flex-col items-center flex-1 relative">
-                <button
+                <Button
                   type="button"
                   onClick={() => setCurrentStep(index)}
                   className={cn(
@@ -185,7 +185,7 @@ export default function AssessmentIndex() {
                   )}
                 >
                   <step.icon size={24} />
-                </button>
+                </Button>
                 <span className={cn("mt-1 text-xs", currentStep >= index ? "text-black font-semibold" : "text-gray-400")}>
                   {step.label}
                 </span>
@@ -356,15 +356,15 @@ export default function AssessmentIndex() {
 
                 {/* Total Quantity Calculation */}
                 {
-                intake && frequency && duration && frequencyUnit && durationUnit && 
-                intake !== "" && frequency !== "" && duration !== "" && frequencyUnit !== "" && durationUnit !== "" 
+                intake && frequency && duration && frequency && duration && 
+                intake !== "" && frequency !== "" && duration !== "" && frequency !== "" && duration !== "" 
                 && (
                     <div className="mt-4">
                     <label className="text-sm font-medium text-gray-700">Total Quantity</label>
                     <div className="p-2 border rounded-md">
                         {
                         // Calculate total based on intake, frequency, and duration
-                        frequencyUnit === "hour" && durationUnit === "day"
+                        frequency === "hour" && duration === "day"
                             ? `${parseFloat(intake) * parseFloat(frequency) * parseFloat(duration)} total`
                             : parseFloat(intake) * parseFloat(frequency) * parseFloat(duration)
                         }

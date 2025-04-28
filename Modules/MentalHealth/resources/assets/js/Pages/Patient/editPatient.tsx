@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import type { PageProps } from '@/types';
-import type { MasterPatient } from '@/types/modules/mental-health';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -10,10 +8,7 @@ import InputError from '@/components/input-error';
 import { Select } from '@/components/ui/select';
 import type { BreadcrumbItem } from '@/types';
 import locationData from '../json/philippine_reg_prov_cit_brgy.json';
-
-interface Props extends PageProps {
-  patient: MasterPatient;
-}
+import { Props } from 'node_modules/@headlessui/react/dist/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
