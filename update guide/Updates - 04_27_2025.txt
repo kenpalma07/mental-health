@@ -57,3 +57,12 @@ New Updates for Edit Patient Form
         modified:   database/migrations/2025_04_22_000005_create_treatment_plan.php
         modified:   database/migrations/2025_04_22_000006_create_referral_form.php
 
+
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Forms/PatientConsent.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/PatientResultModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/editPatient.tsx
+
+
+

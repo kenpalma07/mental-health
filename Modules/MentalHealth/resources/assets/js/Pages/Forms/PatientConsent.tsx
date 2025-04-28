@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { MasterPatient } from '@/types/modules/mental-health';
-// import AppLogoIcon from '@/components/ui/app-logo'; // Import the logo component
+import { Head, router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface PatientConsentProps {
   patient: MasterPatient;
@@ -87,6 +90,8 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient, onClose }) => 
   };
 
   return (
+    <>
+  <Head title="Add Patients" />
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-5">
       <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
       <div className="relative bg-white p-6 rounded-lg shadow-xl z-10 w-full max-w-3xl">
@@ -129,37 +134,38 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient, onClose }) => 
 
           {/* Consent Agreement */}
           <div className="flex items-center space-x-2">
-            <input
+            <Input
               type="checkbox"
               id="dataPrivacy"
               checked={isAgreed}
               onChange={handleAgreementChange}
               className="h-5 w-5 border-gray-300 rounded"
             />
-            <label htmlFor="dataPrivacy" className="text-sm">
+            <Label htmlFor="dataPrivacy" className="text-sm">
               I hereby agree to the Data Privacy Act and consent to the use of my data for treatment purposes.
-            </label>
+            </Label>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex justify-end gap-4 mt-4">
-          <button
-            onClick={onClose}
+        <Button
+            onClick={() => router.visit('/patients')} 
             className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
           >
             Close
-          </button>
-          <button
+        </Button>
+          <Button
             onClick={printConsent}
             disabled={!isAgreed}
             className={`px-4 py-2 ${isAgreed ? 'bg-green-600' : 'bg-gray-300 cursor-not-allowed'} text-white rounded-lg hover:bg-green-700`}
           >
             Print Consent
-          </button>
+          </Button>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

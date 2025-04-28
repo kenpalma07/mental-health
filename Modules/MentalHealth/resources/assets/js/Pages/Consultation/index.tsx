@@ -49,13 +49,54 @@ const InfoRow = ({
 );
 
 const ConsultationIndex: React.FC = () => {
-  const { props } = usePage();
+  const { props } = usePage<{ patient: { 
+    id: number;
+    pat_birthDate: string; 
+    master_patient_perm_id: string; 
+    pat_fname: string; 
+    pat_mname: string; 
+    pat_lname: string; 
+    sex_code: string; 
+    civil_stat_code: string; 
+    patient_address: string; 
+    provcode: string; 
+    citycode: string; 
+    bgycode: string; 
+    fat_address: string; 
+    mot_fname: string; 
+    mot_mname: string; 
+    mot_lname: string; 
+    fat_fname: string; 
+    fat_mname: string; 
+    fat_lname: string; 
+    ts_created_at: string; 
+  } }>();
   const patient = props.patient;
   const [showForm, setShowForm] = React.useState(false);
-  const [consultations, setConsultations] = React.useState<any[]>([]);
+  type Consultation = {
+    id: string;
+    date: string;
+    chief_complaint: string;
+    pat_consent: string;
+    temp: string;
+    heartRate: string;
+    oxygenSaturation: string;
+    respiratoryRate: string;
+    height: string;
+    weight: string;
+    bmi: string;
+    bmiCategory: string;
+    bloodPressure: string;
+    notes: string;
+  };
+  
+  const [consultations, setConsultations] = React.useState<Consultation[]>([]);
   const [formData, setFormData] = React.useState({
+    
+    id: '',
     date: '',
-    notes: '',
+    chief_complaint: '',
+    pat_consent: '',
     temp: '',
     heartRate: '',
     oxygenSaturation: '',
@@ -65,6 +106,7 @@ const ConsultationIndex: React.FC = () => {
     bmi: '',
     bmiCategory: '',
     bloodPressure: '',
+    notes: '',
   });
 
   const birthDate = new Date(patient.pat_birthDate);
@@ -109,22 +151,25 @@ const ConsultationIndex: React.FC = () => {
   }, [formData.height, formData.weight]);
 
   const handleSubmit = () => {
-    if (!formData.date || !formData.notes) return;
+    if (!formData.date || !formData.chief_complaint) return;
 
     setConsultations((prev) => [...prev, formData]);
     setFormData({
-      date: '',
-      notes: '',
-      temp: '',
-      heartRate: '',
-      oxygenSaturation: '',
-      respiratoryRate: '',
-      height: '',
-      weight: '',
-      bmi: '',
-      bmiCategory: '',
-      bloodPressure: '',
-    });
+          id: '',
+          date: '',
+          chief_complaint: '',
+          pat_consent: '',
+          notes: '',
+          temp: '',
+          heartRate: '',
+          oxygenSaturation: '',
+          respiratoryRate: '',
+          height: '',
+          weight: '',
+          bmi: '',
+          bmiCategory: '',
+          bloodPressure: '',
+        });
     setShowForm(false);
   };
 
@@ -138,13 +183,7 @@ const ConsultationIndex: React.FC = () => {
     setConsultations((prev) => prev.filter((_, i) => i !== index));
     setShowForm(true);
   };
-<<<<<<< HEAD
 
-  console.log(patient);
-=======
-console.log(patient);
-  
->>>>>>> 079904975b7c0cf992c3a74203b60df744b6450e
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -155,6 +194,8 @@ console.log(patient);
             <div className="text-white bg-blue-500 px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
               Personal Information
             </div>
+            <InfoRow icon={Hospital} label="ID:" 
+              value={`${patient.id}`} />
             <InfoRow icon={Hospital} label="Patient Health No.:" 
               value={`${patient.master_patient_perm_id}`} />
             <InfoRow icon={User} label="Patient name:" 
@@ -308,12 +349,37 @@ console.log(patient);
                 </div>
               </div>
 
+              <div className="flex items-center gap-2">
+                  <Input
+                    type="radio"
+                    id="pat_consent"
+                    name="pat_consent"
+                    value="yes"
+                    checked={formData.pat_consent === 'yes'}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  />
+                  <Label htmlFor="pat_consent">
+                    Patient Consent (
+                    <a
+                      href={`/patients/${patient.id}/consentconsult`}
+                      className="text-blue-600 underline hover:text-blue-800"
+                      target="_blank"
+                    >
+                      Click Here
+                    </a>
+                    )
+                  </Label>
+                </div>
+
+
+
               <div>
-                <Label htmlFor="notes">Notes</Label>
+                <Label htmlFor="chief_complaint">Chief Complaint</Label>
                 <Input
-                  id="notes"
-                  name="notes"
-                  value={formData.notes}
+                  id="chief_complaint"
+                  name="chief_complaint"
+                  value={formData.chief_complaint}
                   onChange={handleInputChange}
                   rows={3}
                 />
