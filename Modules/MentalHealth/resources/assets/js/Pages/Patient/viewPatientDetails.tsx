@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { User, Edit, Calendar, ArrowRight } from 'lucide-react'; // Import only the necessary icons
 import type { BreadcrumbItem } from '@/types';
@@ -37,9 +37,9 @@ const ViewPatientDetails = ({ patient }) => {
             <div className="flex items-center justify-center bg-blue-500 p-4">
               <h3 className="text-xl font-semibold text-white">Patient Information</h3>
             </div>
-            {/* User Icon in a Circle */}
+            
             <div className="w-32 h-32 rounded-full bg-white flex items-center justify-center mx-auto shadow-lg">
-              <User className="w-16 h-16 text-gray-500" /> {/* User icon inside a circle */}
+              <User className="w-16 h-16 text-gray-500" /> 
             </div>
 
             <div className="p-6">

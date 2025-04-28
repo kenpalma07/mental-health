@@ -19,8 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface PageProps {
   nextId: string;
-  // You can add more props if necessary, for example:
-  [key: string]: any; // Allows any other props Inertia might pass
+  [key: string]: unknown; 
 }
 
 export default function AddPatient() {
@@ -31,13 +30,12 @@ export default function AddPatient() {
     facility_name: '',
     facility_location: '',
     provider_name: '',
-    //intake_date: '',
-    registered_at: '', // Assuming this is the date of registration
-    prefix_code: '', // Assuming this is a prefix code
+    registered_at: '', 
+    prefix_code: '', 
     pat_lname: '',
     pat_mname: '',
     pat_fname: '',
-    suffix_code: '', // Assuming this is a suffix code
+    suffix_code: '', 
     sex_code: '',
     pat_birthplace: '',
     pat_birthDate: '',
@@ -57,21 +55,21 @@ export default function AddPatient() {
     pat_mobile: '',
     pat_landline: '',
 
-    // Assuming these are the parents information
+    
     mot_fname: '',
     mot_mname: '',
     mot_lname: '',
     mot_birthDate: '',
-    mot_address: '', // Assuming this is the mother's address - Newly added - Ken
-    mot_contact: '', // Assuming this is the mother's contact number - Newly added - Ken
-    mot_deceased_status: '', // Assuming this is the mother's deceased status - Newly added - Ken
+    mot_address: '', 
+    mot_contact: '', 
+    mot_deceased_status: '',
     fat_fname: '',
     fat_mname: '',
     fat_lname: '',
     fat_birthDate: '',
-    fat_address: '', // Assuming this is the father's address - Newly added - Ken
-    fat_contact: '', // Assuming this is the father's contact number - Newly added - Ken
-    fat_deceased_status: '', // Assuming this is the father's deceased status - Newly added - Ken
+    fat_address: '', 
+    fat_contact: '', 
+    fat_deceased_status: '', 
   });
 
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -130,18 +128,12 @@ export default function AddPatient() {
     if (!data.registered_at) {
       setData('registered_at', getRegistration());
     }
-  }, []);
+  }, [data.registered_at, setData]);
   
-  // State for managing modal visibility
   const [isModalOpen, setModalOpen] = React.useState(false);
-
-  // Open modal function
   const openModal = () => setModalOpen(true);
-
-  // Close modal function
   const closeModal = () => setModalOpen(false);
 
-  // Disable background scroll when modal is open
   React.useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -150,12 +142,11 @@ export default function AddPatient() {
     }
 
     return () => {
-      document.body.style.overflow = ''; // Reset on unmount
+      document.body.style.overflow = '';
     };
   }, [isModalOpen]);
 
   React.useEffect(() => {
-    // Automatically open the modal when the page loads
     openModal();
   }, []);
 

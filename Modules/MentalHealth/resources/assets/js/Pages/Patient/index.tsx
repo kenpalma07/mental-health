@@ -90,19 +90,6 @@ const PatientIndex: React.FC = () => {
       header: 'Facility',
     },
     {
-      accessorKey: 'provider_name',
-      header: 'Provider',
-    },
-    {
-      accessorKey: 'patient_address',
-      header: 'Address',
-    },
-    {
-      accessorFn: row => row.pat_mobile || row.pat_landline,
-      id: 'contact',
-      header: 'Contact',
-    },
-    {
       id: 'actions',
       enableHiding: false,
       header: () => <span className="sr-only">Actions</span>,
@@ -201,7 +188,7 @@ const PatientIndex: React.FC = () => {
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
-                    <th key={header.id} className="px-6 py-3">
+                    <th key={header.id} className="px-6 py-2">
                       {header.isPlaceholder ? null : (
                         <div
                           className="cursor-pointer select-none"
@@ -228,7 +215,7 @@ const PatientIndex: React.FC = () => {
                 table.getRowModel().rows.map(row => (
                   <tr key={row.id} className="border-t hover:bg-gray-50 transition">
                     {row.getVisibleCells().map(cell => (
-                      <td key={cell.id} className="px-6 py-4">
+                      <td key={cell.id} className="px-6 py-2 text-xs">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
                     ))}
@@ -238,7 +225,6 @@ const PatientIndex: React.FC = () => {
             </tbody>
           </table>
         </div>
-
         {/* Pagination Controls */}
         <div className="flex items-center justify-between mt-4">
           <div className="text-sm text-gray-600">

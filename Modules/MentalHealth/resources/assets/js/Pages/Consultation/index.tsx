@@ -7,6 +7,7 @@ import { usePage } from '@inertiajs/react';
 import {
   User,
   Hospital,
+  Home,
   Venus,
   CalendarDays,
   Cake,
@@ -137,8 +138,13 @@ const ConsultationIndex: React.FC = () => {
     setConsultations((prev) => prev.filter((_, i) => i !== index));
     setShowForm(true);
   };
+<<<<<<< HEAD
 
   console.log(patient);
+=======
+console.log(patient);
+  
+>>>>>>> 079904975b7c0cf992c3a74203b60df744b6450e
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -149,21 +155,46 @@ const ConsultationIndex: React.FC = () => {
             <div className="text-white bg-blue-500 px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
               Personal Information
             </div>
-            <InfoRow icon={User} label="Patient name:" value={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} />
-            <InfoRow icon={Hospital} label="Patient Number:" value={`2025-${String(patient.id).padStart(6, '0')}`} />
-            <InfoRow icon={Venus} label="Sex:" value={patient.sex_code} />
-            <InfoRow icon={User} label="Civil status:" value={patient.civil_status || 'N/A'} />
-            <InfoRow icon={Cake} label="Birthdate:" value={new Date(patient.pat_birthDate).toLocaleDateString()} />
-            <InfoRow icon={CalendarDays} label="Age:" value={`${age} yrs`} />
+            <InfoRow icon={Hospital} label="Patient Health No.:" 
+              value={`${patient.master_patient_perm_id}`} />
+            <InfoRow icon={User} label="Patient name:" 
+              value={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} />
+            <InfoRow 
+              icon={Venus} 
+              label="Sex:" 
+              value={patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : ''} 
+            />
+            <InfoRow 
+              icon={User} 
+              label="Civil Status:" 
+              value={
+                patient.civil_stat_code === 'sin' ? 'Single' :
+                patient.civil_stat_code === 'mar' ? 'Married' :
+                patient.civil_stat_code === 'sep' ? 'Separated' :
+                patient.civil_stat_code === 'div' ? 'Divorced' :
+                patient.civil_stat_code === 'wid' ? 'Widower' :
+                patient.civil_stat_code === 'na'  ? 'N/A' :
+                ''
+              }
+            />
+            <InfoRow icon={Cake} label="Birthdate:" 
+              value={new Date(patient.pat_birthDate).toLocaleDateString()} />
+            <InfoRow icon={CalendarDays} label="Age:" 
+              value={`${age} yrs`} />
+            <InfoRow 
+              icon={Home} 
+              label="Address:" 
+              value={`${patient.patient_address}, ${patient.provcode}, ${patient.citycode}, ${patient.bgycode}`}
+            />
           </div>
           <div className="space-y-2 col-span-1">
             <div className="text-white bg-blue-500 px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">
               Relationship Information
             </div>
-            <InfoRow icon={ArrowRight} label="Patient Address:" value={patient.patient_address} withArrow />
-            <InfoRow icon={ArrowRight} label="Mother's name:" value={`${patient.mot_fname} ${patient.mot_mname} ${patient.mot_lname}`} withArrow />
-            <InfoRow icon={ArrowRight} label="Father's name:" value={`${patient.fat_fname} ${patient.fat_mname} ${patient.fat_lname}`} withArrow />
-            <InfoRow icon={ArrowRight} label="Date entered:" value={`${new Date(patient.ts_created_at).toLocaleDateString()} ${new Date(patient.ts_created_at).toLocaleTimeString()}`} withArrow />
+            <InfoRow icon={Home} label="Parent Address:" value={patient.fat_address}/>
+            <InfoRow icon={User} label="Mother's name:" value={`${patient.mot_fname} ${patient.mot_mname} ${patient.mot_lname}`}/>
+            <InfoRow icon={User} label="Father's name:" value={`${patient.fat_fname} ${patient.fat_mname} ${patient.fat_lname}`}/>
+            <InfoRow icon={CalendarDays} label="Date entered:" value={`${new Date(patient.ts_created_at).toLocaleDateString()} ${new Date(patient.ts_created_at).toLocaleTimeString()}`}/>
           </div>
         </div>
 

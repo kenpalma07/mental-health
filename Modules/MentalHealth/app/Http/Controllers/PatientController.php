@@ -141,6 +141,9 @@ class PatientController extends Controller
     {
         $query = MasterPatient::query();
 
+        if ($request->filled('master_patient_perm_id')) {
+            $query->where('master_patient_perm_id', 'like', '%' . $request->master_patient_perm_id . '%');
+        }
         if ($request->filled('pat_fname')) {
             $query->where('pat_fname', 'like', '%' . $request->pat_fname . '%');
         }
@@ -180,7 +183,7 @@ class PatientController extends Controller
             'registered_at' => 'nullable|date',
             'facility_name' => 'required|string|max:255',
             'facility_location' => 'nullable|string|max:255',
-            'provider_name' => 'nullable|string|max:255',
+            'provider_name' => 'required|string|max:255',
 
             'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
