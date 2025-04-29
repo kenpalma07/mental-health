@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import type { PageProps } from '@/types';
-import type { MasterPatient } from '@/types/modules/mental-health';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Select } from '@/components/ui/select';
 import type { BreadcrumbItem } from '@/types';
 import locationData from '../json/philippine_reg_prov_cit_brgy.json';
-
-interface Props extends PageProps {
-  patient: MasterPatient;
-}
+import { Props } from 'node_modules/@headlessui/react/dist/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -241,7 +236,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label>
                 Prefix <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="prefix_code"
                 value={data.prefix_code ?? ''}
                 onChange={(e) => setData('prefix_code', e.target.value)}
@@ -252,7 +247,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="Ms">Ms</option>
                 <option value="Mrs">Mrs</option>
                 <option value="Dr">Dr</option>
-              </select>
+              </Select>
               <InputError message={errors.prefix_code} />
             </div>
           </div>
@@ -288,7 +283,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label>
                 Suffix <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="suffix_code"
                 value={data.suffix_code ?? ''}
                 onChange={(e) => setData('suffix_code', e.target.value)}
@@ -303,7 +298,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="III">III</option>
                 <option value="IV">IV</option>
                 <option value="V">V</option>
-              </select>
+              </Select>
               <InputError message={errors.suffix_code} />
             </div>
             {/* ----------------- End of Patient Suffix ----------------- */}
@@ -359,7 +354,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="sex">
                 Sex <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="sex_code"
                 value={data.sex_code ?? ''}
                 onChange={(e) => setData('sex_code', e.target.value)}
@@ -368,7 +363,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="">Select Sex</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
-              </select>
+              </Select>
               <InputError message={errors.suffix_code} />
             </div>
             {/* ----------------- End of Patient Sex ----------------- */}
@@ -383,7 +378,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="civil_stat_code">
                 Civil Status <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="civil_stat_code"
                 value={data.civil_stat_code ?? ''}
                 onChange={(e) => setData('civil_stat_code', e.target.value)}
@@ -396,7 +391,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="sep">Separated</option>
                 <option value="wid">Widow/Widower</option>
                 <option value="na">N/A</option>
-              </select>
+              </Select>
               <InputError message={errors.civil_stat_code} />
             </div>
             {/* ----------------- End of Patient Civil Status ----------------- */}
@@ -419,7 +414,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="religion_code">
                 Religion <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="religion_code"
                 value={data.religion_code ?? ''}
                 onChange={(e) => setData('religion_code', e.target.value)}
@@ -433,7 +428,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="Bud">Buddhism</option>
                 <option value="Hind">Hinduism</option>
                 <option value="Other">Other</option>
-              </select>
+              </Select>
               <InputError message={errors.religion_code} />  
             </div>
             {/* ----------------- End of Religion ----------------- */}
@@ -443,7 +438,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="nationality">
                 Nationality <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="nationality"
                 value={data.nationality ?? ''}
                 onChange={(e) => setData('nationality', e.target.value)}
@@ -453,7 +448,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="PH">Filipino</option>
                 <option value="US">American</option>
                 <option value="Oth">Others</option>
-              </select>
+              </Select>
               <InputError message={errors.nationality} />
             </div>
             {/* ----------------- End of Nationality ----------------- */}
@@ -463,7 +458,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="educattainment">
                 Educational Attainment <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="educattainment"
                 value={data.educattainment ?? ''}
                 onChange={(e) => setData('educattainment', e.target.value)}
@@ -475,7 +470,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="03">High School</option>
                 <option value="04">College</option>
                 <option value="05">Graduate</option>
-              </select>
+              </Select>
               <InputError message={errors.educattainment} />
             </div>
             {/* ----------------- End of Educational Attainment ----------------- */}
@@ -542,7 +537,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="regcode">
                 Region <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="regcode"
                 value={selectedRegion}
                 onChange={(e) => {
@@ -563,7 +558,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                     {info.region_name}
               </option>
               ))}
-            </select>
+            </Select>
             </div>
             {/* ----------------- End of Region ----------------- */}
 
@@ -572,7 +567,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="provcode">
                 Province <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="provcode"
                 value={selectedProvince}
                 onChange={(e) => {
@@ -593,7 +588,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                         {prov}
                       </option>
                     ))}
-              </select>
+              </Select>
             </div>
             {/* ----------------- End of Province ----------------- */}
             
@@ -602,7 +597,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="citycode">
                 City <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="citycode"
                 value={selectedCity}
                 onChange={(e) => {
@@ -625,7 +620,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                         </option>
                       );
                     })}
-              </select>
+              </Select>
             </div>
             {/* ----------------- End of City ----------------- */}
 
@@ -634,7 +629,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label htmlFor="bgycode">
                 Barangay <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="bgycode"
                 value={data.bgycode}
                 onChange={(e) => {
@@ -655,7 +650,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                           {brgy}
                         </option>
                       ))}
-              </select>
+              </Select>
             </div>
             {/* ----------------- End of Barangay ----------------- */}
 
@@ -674,7 +669,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               <Label>
                 Country <span className="text-red-600 font-bold">*</span>
               </Label>
-              <select
+              <Select
                 id="country_code"
                 value={data.country_code ?? ''}
                 onChange={(e) => setData('country_code', e.target.value)}
@@ -682,7 +677,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
               >
                 <option value="">Select Country</option>
                 <option value="PH">Philippines</option>
-              </select>
+              </Select>
               <InputError message={errors.country_code} />
             </div>
             {/* ----------------- End of Country ----------------- */}
@@ -775,7 +770,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
             </div>
             <div>
               <Label htmlFor="mot_deceased_status">Deceased</Label>
-              <select
+              <Select
                 id="mot_deceased_status"
                 value={data.mot_deceased_status ?? ''}
                 onChange={(e) => setData('mot_deceased_status', e.target.value)}              
@@ -784,7 +779,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="">Select</option>
                 <option value="1">Yes</option>
                 <option value="2">No</option>
-              </select>
+              </Select>
               <InputError message={errors.mot_deceased_status} />
             </div>
           </div>
@@ -839,7 +834,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
             </div>
             <div>
               <Label htmlFor="fat_deceased_status">Deceased</Label>
-              <select
+              <Select
                 id="fat_deceased_status"
                 value={data.fat_deceased_status ?? ''}
                 onChange={(e) => setData('fat_deceased_status', e.target.value)}              
@@ -848,7 +843,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                 <option value="">Select</option>
                 <option value="1">Yes</option>
                 <option value="2">No</option>
-              </select>
+              </Select>
               <InputError message={errors.fat_deceased_status} />
           </div>
           {/* ----------------- End of Father's Information ----------------- */}

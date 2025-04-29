@@ -106,17 +106,23 @@
 
         /* Completeness */
         // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-        "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./resources/js/*"],
-            "ziggy-js": ["./vendor/tightenco/ziggy"]
+            "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+            "baseUrl": ".",
+            "paths": {
+                "@/*": ["./resources/js/*"],
+                "@types/*": ["./resources/js/types/*"],
+                "@models/*": ["./Modules/MentalHealth/app/Models/*"],
+                "@components/*": ["./resources/js/Components/*"],
+                "ziggy-js": ["./vendor/tightenco/ziggy"]
+            },
+            "jsx": "react-jsx"
         },
-        "jsx": "react-jsx"
-    },
-    "include": [
-        "resources/js/**/*.ts",
-        "resources/js/**/*.d.ts",
-        "resources/js/**/*.tsx",
-    ]
+        "include": [
+            "resources/js/**/*.ts",
+            "resources/js/**/*.d.ts",
+            "resources/js/**/*.tsx",
+            "modules/MentalHealth/resources/assets/js/**/*.ts",
+            "modules/MentalHealth/resources/assets/js/**/*.d.ts",
+            "modules/MentalHealth/resources/assets/js/**/*.tsx",
+        ]
 }

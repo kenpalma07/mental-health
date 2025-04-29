@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import { User, Edit, Calendar, ArrowRight } from 'lucide-react'; // Import only the necessary icons
+import { User, Edit, ArrowRight } from 'lucide-react'; // Import only the necessary icons
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -10,7 +10,24 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Patient Details', href: '#' },
 ];
 
-const ViewPatientDetails = ({ patient }) => {
+interface Patient {
+  pat_fname: string;
+  pat_mname: string;
+  pat_lname: string;
+  pat_birthDate: string;
+  sex_code: string;
+  contact_number: string;
+  patient_address: string;
+  city: string;
+  province: string;
+  region: string;
+  parent_name: string;
+  parent_contact: string;
+  parent_address: string;
+  parent_deceased: boolean;
+}
+
+const ViewPatientDetails = ({ patient }: { patient: Patient }) => {
   const calculateAge = (birthDate: string) => {
     const birth = new Date(birthDate);
     const today = new Date();

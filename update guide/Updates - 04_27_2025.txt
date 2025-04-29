@@ -57,3 +57,28 @@ New Updates for Edit Patient Form
         modified:   database/migrations/2025_04_22_000005_create_treatment_plan.php
         modified:   database/migrations/2025_04_22_000006_create_referral_form.php
 
+
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Forms/PatientConsent.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/PatientResultModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/SearchPatientModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/editPatient.tsx
+
+
+                modified:   .hintrc
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Assessment/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Forms/PatientConsent.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/editPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/viewPatientDetails.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/json/philippine_reg_prov_cit_brgy.json
+        modified:   tsconfig.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        Modules/MentalHealth/resources/assets/js/Pages/Forms/PatientConsentConsulation.tsx
+
+
+
+

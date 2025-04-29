@@ -117,13 +117,13 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
           <div className="flex justify-end mb-2 gap-2">
             <Button
               onClick={search}
-              className="flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transform hover:scale-108 transition-all duration-200"
             >
               <Search className="w-4 h-4" /> Search
             </Button>
             <Button
               onClick={clearSearch}
-              className="flex items-center gap-1 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              className="flex items-center gap-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-500 transform hover:scale-108 transition-all duration-200"
             >
               <Eraser className="w-4 h-4" /> Clear
             </Button>
