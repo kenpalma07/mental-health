@@ -7,8 +7,25 @@ import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 import { Select } from '@/components/ui/select';
 import type { BreadcrumbItem } from '@/types';
-import locationData from '../json/philippine_reg_prov_cit_brgy.json';
-import { Props } from 'node_modules/@headlessui/react/dist/types';
+import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
+
+// 🛠️ DEFINE the type first
+type LocationData = {
+  [regionCode: string]: {
+    region_name: string;
+    province_list: {
+      [provinceName: string]: {
+        municipality_list: Array<{
+          [municipalityName: string]: {
+            barangay_list: string[];
+          };
+        }>;
+      };
+    };
+  };
+};
+
+const locationData = rawLocationData as unknown as LocationData;
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -16,18 +33,66 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Edit Patient', href: '#' },
 ];
 
-const EditPatient: React.FC<Props> = ({ patient }) => {
+interface PatientProps {
+  patient: {
+    master_patient_perm_id: string;
+    facility_name?: string;
+    facility_location?: string;
+    provider_name?: string;
+    registered_at?: string;
+    prefix_code?: string;
+    pat_lname?: string;
+    pat_fname?: string;
+    pat_mname?: string;
+    suffix_code?: string;
+    sex_code?: string;
+    civil_stat_code?: string;
+    pat_birthDate?: string;
+    regcode?: string;
+    provcode?: string;
+    citycode?: string;
+    bgycode?: string;
+    zipcode?: string;
+    country_code?: string;
+    pat_birthplace?: string;
+    religion_code?: string;
+    nationality?: string;
+    educattainment?: string;
+    occupation_code?: string;
+    pat_mobile?: string;
+    pat_landline?: string;
+    is_deceased?: boolean;
+    death_date?: string;
+    death_reason?: string;
+    pat_street?: string;
+    pat_houseno?: string;
+    patient_address?: string;
+    mot_fname?: string;
+    mot_mname?: string;
+    mot_lname?: string;
+    mot_birthdate?: string;
+    mot_contact?: string;
+    mot_deceased_status?: string;
+    mot_address?: string;
+    fat_fname?: string;
+    fat_mname?: string;
+    fat_lname?: string;
+    fat_birthdate?: string;
+    fat_contact?: string;
+    fat_deceased_status?: string;
+    fat_address?: string;
+    id: string;
+  };
+}
+
+const EditPatient: React.FC<PatientProps> = ({ patient }) => {
   const { data, setData, put, processing, errors } = useForm({
     master_patient_perm_id: patient.master_patient_perm_id || '',
-    facility_region: patient.facility_region || '',
-    facility_province: patient.facility_province || '',
-    facility_city: patient.facility_city || '',
+    facility_name: patient.facility_name || '',
     facility_location: patient.facility_location || '',
     provider_name: patient.provider_name || '',
     //intake_date: patient.intake_date || '',
-    facility_barangay: patient.facility_barangay || '',
-    facility_name: patient.facility_name || '',
-    registered_at: formatTimestampForInput(patient.registered_at) || '',
+    registered_at: formatTimestampForInput(patient.registered_at ?? '') || '',
 
     prefix_code: patient.prefix_code || '',
     pat_lname: patient.pat_lname || '',
@@ -167,6 +232,22 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
     '03': 'CENTRAL LUZON',
     '02': 'CAGAYAN VALLEY',
     '01': 'ILOCOS REGION',
+  };
+
+  interface SelectProps {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    className?: string;
+    id?: string; // Add this if missing
+    children?: React.ReactNode;
+  }
+  
+  const Select: React.FC<SelectProps> = ({ id, value, onChange, className, children }) => {
+    return (
+      <select id={id} value={value} onChange={onChange} className={className}>
+        {children}
+      </select>
+    );
   };
 
   return (
@@ -578,16 +659,16 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                   setData('citycode', '');
                   setData('bgycode', '');
                 }}
-                className="w-full border rounded p-2 text-dark-500"
-                disabled={!selectedRegion}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedRegion ? 'opacity-50 cursor-not-allowed' : ''}`}
+                // Just apply a "disabled" class when `selectedRegion` is falsy
               >
                 <option value="">Select Province</option>
-                  {selectedRegion &&
-                    Object.keys(locationData[selectedRegion].province_list).map((prov) => (
-                      <option key={prov} value={prov}>
-                        {prov}
-                      </option>
-                    ))}
+                {selectedRegion &&
+                  Object.keys(locationData[selectedRegion].province_list).map((prov) => (
+                    <option key={prov} value={prov}>
+                      {prov}
+                    </option>
+                  ))}
               </Select>
             </div>
             {/* ----------------- End of Province ----------------- */}
@@ -606,8 +687,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                   setData('citycode', val);
                   setData('bgycode', '');
                 }}
-                className="w-full border rounded p-2 text-dark-500"
-                disabled={!selectedProvince}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedProvince ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <option value="">Select City/Municipality</option>
                   {selectedRegion &&
@@ -637,8 +717,7 @@ const EditPatient: React.FC<Props> = ({ patient }) => {
                   setData('bgycode', val);
                   setData('bgycode', val);
                 }}
-                className="w-full border rounded p-2 text-dark-500"
-                disabled={!selectedCity}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedCity ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <option value="">Select Barangay</option>
                   {selectedRegion &&
