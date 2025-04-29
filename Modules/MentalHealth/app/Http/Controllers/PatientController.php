@@ -127,7 +127,7 @@ class PatientController extends Controller
         $masterPatientPermId = $request->input('master_patient_perm_id');
         
         $finalCombinedId = "{$masterPatientPermId}{$timestamp}";
-        $validated['pat_temp_id'] = $finalCombinedId;
+        //$validated['pat_temp_id'] = $finalCombinedId;
 
         MasterPatient::create($validated);
 
