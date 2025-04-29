@@ -91,18 +91,16 @@ return new class extends Migration
             $table->string('fat_lname', 50)->nullable(false)->change();
             $table->date('fat_birthdate')->nullable(false)->change();
     
-            // Drop newly added columns
-            $table->dropColumn([
-                'mot_address',
-                'mot_contact',
-                'mot_deceased_status',
-                'fat_address',
-                'fat_contact',
-                'fat_deceased_status',
-                'pat_house_no',
-                'pat_street',
-                'registered_at',
-            ]);
+            // Drop added columns individually for safety
+            $table->dropColumn('mot_address');
+            $table->dropColumn('mot_contact');
+            $table->dropColumn('mot_deceased_status');
+            $table->dropColumn('fat_address');
+            $table->dropColumn('fat_contact');
+            $table->dropColumn('fat_deceased_status');
+            $table->dropColumn('pat_house_no');
+            $table->dropColumn('pat_street');
+            $table->dropColumn('registered_at');
         });
     }
 }

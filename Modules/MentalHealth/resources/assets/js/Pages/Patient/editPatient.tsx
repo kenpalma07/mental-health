@@ -21,7 +21,6 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Edit Patient', href: '#' },
 ];
 
-
 const EditPatient: React.FC<Props> = ({ patient }) => {
   const { data, setData, put, processing, errors } = useForm({
     master_patient_perm_id: patient.master_patient_perm_id || '',
