@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import { User, Edit, ArrowRight } from 'lucide-react'; // Import only the necessary icons
+import { User, Edit, ArrowRight } from 'lucide-react';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [

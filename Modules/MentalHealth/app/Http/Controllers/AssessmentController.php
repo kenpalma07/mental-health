@@ -3,12 +3,21 @@
 namespace Modules\MentalHealth\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Inertia\Inertia;
+use Modules\MentalHealth\Models\MasterPatient;
+use Illuminate\Http\Request;
 
 class AssessmentController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        return Inertia('MentalHealth::Assessment/index');
+        $patient = MasterPatient::find($id);
+    
+        if (!$patient) {
+            abort(404, 'Patient not found');
+        }
+    
+        return inertia('MentalHealth::Assessment/index', [
+            'patient' => $patient
+        ]);
     }
 }

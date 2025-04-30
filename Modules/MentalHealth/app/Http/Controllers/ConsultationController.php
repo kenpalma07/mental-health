@@ -5,7 +5,6 @@ namespace Modules\MentalHealth\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\MentalHealth\Models\MasterPatient;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class ConsultationController extends Controller
 {
