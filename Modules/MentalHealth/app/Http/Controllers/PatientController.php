@@ -73,11 +73,11 @@ class PatientController extends Controller
             'sex_code' => 'required|in:M,F',
             'civil_stat_code' => 'required|string|max:5',
             'pat_birthplace' => 'nullable|string|max:200',
-            'religion_code' => 'required|string|max:5',
-            'nationality' => 'required|string|max:5',
+            'religion_code' => 'nullable|string|max:5',
+            'nationality' => 'nullable|string|max:5',
             'pat_birthDate' => 'required|date',
-            'educattainment' => 'required|string|max:2',
-            'occupation_code' => 'required|string|max:255',
+            'educattainment' => 'nullable|string|max:2',
+            'occupation_code' => 'nullable|string|max:255',
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -105,17 +105,29 @@ class PatientController extends Controller
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
-            'provider_name' => 'Provider Name',
+            'provider_name' => 'Name of Provider',
 
             'prefix_code' => 'Prefix',
             'pat_lname' => 'Last Name',
+            'pat_fname' => 'First Name',
+            'pat_mname' => 'Middle Name',
+            'suffix_code' => 'Suffix',
+            'sex_code' => 'Sex',
+            'civil_stat_code' =>'Civil Status',
+            'pat_birthdate' => 'Birthdate',
+            'regcode' => 'Region',
+            'provcode' => 'Province',
+            'citycode' => 'City',
+            'bgycode' => 'Barangay',
+            'zipcode' => 'Zipcode',
+            'country_code' => 'Country',
         ]);
         $timestamp = $request->input('registered_at');
         $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
         $masterPatientPermId = $request->input('master_patient_perm_id');
         
         $finalCombinedId = "{$masterPatientPermId}{$timestamp}";
-        $validated['pat_temp_id'] = $finalCombinedId;
+        //$validated['pat_temp_id'] = $finalCombinedId;
 
         MasterPatient::create($validated);
 

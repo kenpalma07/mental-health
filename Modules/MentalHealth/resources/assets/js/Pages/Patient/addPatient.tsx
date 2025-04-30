@@ -8,9 +8,25 @@ import InputError from '@/components/input-error';
 import SearchPatientModal from './SearchPatientModal'; 
 import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
-import locationData from '../json/philippine_reg_prov_cit_brgy.json';
+import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 
+// 🛠️ DEFINE the type first
+type LocationData = {
+  [regionCode: string]: {
+    region_name: string;
+    province_list: {
+      [provinceName: string]: {
+        municipality_list: Array<{
+          [municipalityName: string]: {
+            barangay_list: string[];
+          };
+        }>;
+      };
+    };
+  };
+};
 
+const locationData = rawLocationData as unknown as LocationData;
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -55,7 +71,6 @@ export default function AddPatient() {
     country_code: '',
     pat_mobile: '',
     pat_landline: '',
-
 
     mot_fname: '',
     mot_mname: '',
@@ -663,8 +678,7 @@ export default function AddPatient() {
                   setData('citycode', '');
                   setData('bgycode', '');
                 }}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
-                disabled={!selectedRegion}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedRegion ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <option value="">Select Province</option>
                 {selectedRegion &&
@@ -692,8 +706,7 @@ export default function AddPatient() {
                   setData('citycode', val);
                   setData('bgycode', '');
                 }}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
-                disabled={!selectedProvince}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedProvince ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <option value="">Select City/Municipality</option>
                 {selectedRegion &&
@@ -720,8 +733,7 @@ export default function AddPatient() {
                 id="bgycode"
                 value={data.bgycode}
                 onChange={(e) => setData('bgycode', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-md shadow-sm text-dark-500"
-                disabled={!selectedCity}
+                className={`w-full border rounded p-2 text-dark-500 ${!selectedCity ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <option value="">Select Barangay</option>
                 {selectedRegion &&

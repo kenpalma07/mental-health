@@ -59,7 +59,7 @@ return new class extends Migration
             $table->string('provcode', 100)->index();
             $table->string('citycode', 100)->index();
             $table->string('bgycode',100)->index();
-            $table->integer('zipcode')->nullable();
+            $table->string('zipcode', 10)->nullable();
             $table->string('patient_address', 250)->index();
             $table->string('pat_email', 50)->nullable();
             $table->string('pat_mobile', 23)->index();
@@ -84,7 +84,7 @@ return new class extends Migration
             $table->char('pMemberSex', 1)->nullable();
             $table->string('type_of_membership', 50)->nullable();
             $table->string('phil_sub_code', 50)->nullable();
-            $table->char('PCB_nhts', 1);
+            $table->char('PCB_nhts', 1)->nullable();
             $table->date('enlist_date')->nullable();
             $table->string('Patient_Type', 100)->nullable();
             $table->date('date_entered')->nullable();
@@ -109,7 +109,9 @@ return new class extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('tbl_master_patient');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 };
 
