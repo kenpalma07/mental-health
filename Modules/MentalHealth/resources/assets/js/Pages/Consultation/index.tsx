@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 
 import {
   User,
@@ -14,10 +14,19 @@ import {
   ArrowRight,
   Edit,
   Trash,
+  Stethoscope
 } from 'lucide-react';
+
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -51,6 +60,9 @@ const InfoRow = ({
 const ConsultationIndex: React.FC = () => {
   const { props } = usePage<{ patient: { 
     id: number;
+    consult_type_code: string;
+    to_consult_code: string;
+    chief_complaint: string;
     pat_birthDate: string; 
     master_patient_perm_id: string; 
     pat_fname: string; 
@@ -76,6 +88,8 @@ const ConsultationIndex: React.FC = () => {
   type Consultation = {
     id: string;
     date: string;
+    consult_type_code: string;
+    to_consult_code: string;
     chief_complaint: string;
     pat_consent: string;
     temp: string;
@@ -95,6 +109,8 @@ const ConsultationIndex: React.FC = () => {
     
     id: '',
     date: '',
+    consult_type_code: '',
+    to_consult_code: '',
     chief_complaint: '',
     pat_consent: '',
     temp: '',
@@ -156,6 +172,8 @@ const ConsultationIndex: React.FC = () => {
     setConsultations((prev) => [...prev, formData]);
     setFormData({
           id: '',
+          consult_type_code: '',
+          to_consult_code: '',
           date: '',
           chief_complaint: '',
           pat_consent: '',
@@ -184,6 +202,7 @@ const ConsultationIndex: React.FC = () => {
     setShowForm(true);
   };
 
+console.log(patient);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -244,30 +263,33 @@ const ConsultationIndex: React.FC = () => {
             Patient Consultations
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setShowForm(true)}
-              className="bg-green-100 text-green-700 hover:bg-green-200"
-              variant="outline"
-            >
-              ➕ Add Consultation
-            </Button>
+          <div className="flex gap-1">
+              <Button
+                onClick={() => setShowForm(true)}
+                className="bg-green-300 text-green-700 hover:bg-green-400 "
+                variant="outline"
+              >
+                <Stethoscope className="w-4 h-4 mr-2"/>
+                Add Consultation
+              </Button>
 
-            <Button
-              disabled={!consultations.length}
-              className={`${
-                consultations.length
-                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
-              variant="outline"
-            >
-              📋 Assessment List
-            </Button>
-          </div>
+              <Button
+                disabled={!consultations.length}
+                className={`flex items-center ${
+                  consultations.length
+                    ? 'bg-green-300 text-green-700 hover:bg-green-400'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
+                variant="outline"
+              >
+                <Stethoscope className="w-4 h-4 mr-2" />
+                Assessment List
+              </Button>
+            </div>
+
 
           {showForm && (
-            <div className="bg-gray-50 p-4 rounded-lg border mt-2 space-y-3">
+            <div className="bg-gray-48 p-4 rounded-lg border mt-2 space-y-3">
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="col-span-2 md:col-span-1">
                   <Label htmlFor="date">Date</Label>
@@ -281,6 +303,50 @@ const ConsultationIndex: React.FC = () => {
                   />
                 </div>
               </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="col-span-2 md:col-span-1">
+                  <Label htmlFor="consult_type_code">Consultation Type</Label>
+                  <Select
+                    value={formData.consult_type_code}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, consult_type_code: value }))
+                    }
+                    name="consult_type_code"
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Consultation Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="visited">Visited</SelectItem>
+                      <SelectItem value="walkin">Walk-in</SelectItem>
+                      <SelectItem value="referred">Referred</SelectItem>
+                      <SelectItem value="teleconsultation">Teleconsultation</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="col-span-2 md:col-span-1">
+                  <Label htmlFor="date">Consultation Case</Label>
+                  <Select
+                    value={formData.to_consult_code}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, to_consult_code: value }))
+                    }
+                    name="to_consult_code"
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Consultation Case" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mentalhealth">Mental Health</SelectItem>
+                      <SelectItem value="other">Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+              </div>
+
 
               <Label htmlFor="VitalSign">Vital Sign</Label>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -349,31 +415,6 @@ const ConsultationIndex: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                  <Input
-                    type="radio"
-                    id="pat_consent"
-                    name="pat_consent"
-                    value="yes"
-                    checked={formData.pat_consent === 'yes'}
-                    onChange={handleInputChange}
-                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  />
-                  <Label htmlFor="pat_consent">
-                    Patient Consent (
-                    <a
-                      href={`/patients/${patient.id}/consentconsult`}
-                      className="text-blue-600 underline hover:text-blue-800"
-                      target="_blank"
-                    >
-                      Click Here
-                    </a>
-                    )
-                  </Label>
-                </div>
-
-
-
               <div>
                 <Label htmlFor="chief_complaint">Chief Complaint</Label>
                 <Input
@@ -394,7 +435,11 @@ const ConsultationIndex: React.FC = () => {
               {consultations.map((item, index) => (
                 <li key={index} className="relative group border p-3 rounded bg-white shadow-sm hover:shadow-md transition">
                   <div className="font-semibold">{item.date}</div>
-                  <div className="text-xs text-gray-700">Notes: {item.notes}</div>
+                  <div className="text-xs text-gray-700">Notes: {item.chief_complaint}</div>
+                  <div className="text-xs text-gray-700">
+                    Consultation Type: {item.consult_type_code}</div>
+                    <div className="text-xs text-gray-700">
+                    Consultation Code: {item.to_consult_code}</div>
                   <div className="text-xs text-gray-700">
                     Vitals: Temp {item.temp}°C, HR {item.heartRate} bpm, O₂ {item.oxygenSaturation}%, RR {item.respiratoryRate}, BP {item.bloodPressure}
                   </div>
@@ -414,12 +459,14 @@ const ConsultationIndex: React.FC = () => {
                     </button>
 
                   </div>
-                  <Button className="absolute top-1 right-2 group-hover:block text-xs" variant="outline">
-                    ➕ Add Assessment Tool
-                  </Button>
-                  <Button className="absolute top-1 right-2 group-hover:block text-xs" variant="outline">
-                    ➕ Print Patient ITR
-                  </Button>
+                  <Link
+                    href={`/assessment/${patient.id}/addConsultation`}
+                    className="absolute top-1 right-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 flex items-center gap-2 rounded-l-lg px-3 py-1 text-sm"
+                  >
+                    <Stethoscope className="w-3 h-3 text-white-600"/>
+                    Add Assessment Tool
+                  </Link>
+
                 </li>
               ))}
             </ul>

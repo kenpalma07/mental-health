@@ -29,4 +29,4 @@ Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])-
 Route::get('/others', [OtherController::class, 'index']);
 
 // Patient Assessment
-Route::get('/assessment', [AssessmentController::class, 'index']); // <-- Add this!
+Route::get('/assessment/{id}/addConsultation', [AssessmentController::class, 'index']); // <-- Add this!

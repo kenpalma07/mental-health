@@ -146,16 +146,9 @@ export default function AddPatient() {
     }
   }, [data.registered_at, setData]);
   
-  // State for managing modal visibility
   const [isModalOpen, setModalOpen] = React.useState(false);
-
-  // Open modal function
   const openModal = () => setModalOpen(true);
-
-  // Close modal function
   const closeModal = () => setModalOpen(false);
-
-  // Disable background scroll when modal is open
   React.useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -164,12 +157,11 @@ export default function AddPatient() {
     }
 
     return () => {
-      document.body.style.overflow = ''; // Reset on unmount
+      document.body.style.overflow = ''; 
     };
   }, [isModalOpen]);
 
   React.useEffect(() => {
-    // Automatically open the modal when the page loads
     openModal();
   }, []);
 
