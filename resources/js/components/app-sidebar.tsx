@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, LayoutGrid, MonitorDot } from 'lucide-react';
+import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -59,6 +59,15 @@ const mainNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
+    {
+        title: 'Reference',
+        href: '#',
+        icon: Cog,
+        isActive: true,
+        items: [
+            { title: 'FHUD', href: '/reference/fhud' },
+        ],
+    },
     {
         title: 'Identity Access Mgmt',
         href: '#',

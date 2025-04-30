@@ -1,0 +1,22 @@
+Update Table Column
+1. Table "tbl_consultation"
+    - fhudcode
+    - to_consult_code
+    - consult_date
+    - consult_time
+    - pat_age_yr
+    - pat_age_mo
+    - pat_age_dy
+    - mode_transac_code
+    - personnel_temp_id
+    - date_entered
+    - time_entered
+2. Add column to "tbl_consultation"
+    - master_patient_perm_id
+    - pat_temperature
+    - pat_heart_rate
+    - pat_oxygen_sat
+    - pat_systolic_pres
+    - pat_diastolic_pres
+3. Add column to "tbl_master_patient"
+    - fhudcode
