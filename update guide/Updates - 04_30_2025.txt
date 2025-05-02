@@ -1,2 +1,19 @@
 fhud_hospital
 hhospmas
+
+
+        modified:   Modules/MentalHealth/app/Http/Controllers/ConsultationController.php
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Assessment/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/PatientResultModal.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/addPatient.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Patient/index.tsx
+        modified:   Modules/MentalHealth/routes/web.php
+        modified:   modules_statuses.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        Modules/MentalHealth/app/Models/Consultation.php
+        database/migrations/2025_04_22_000020_update_consultation_table.php
+        resources/js/components/ui/textarea.tsx
+        update guide/databaseissues/

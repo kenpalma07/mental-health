@@ -2,5 +2,6 @@
     "IAM": true,
     "Core": true,
     "Auth": true,
-    "MentalHealth": true
+    "MentalHealth": true,
+    "References": true
 }

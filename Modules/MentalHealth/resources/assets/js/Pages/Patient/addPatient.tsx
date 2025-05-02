@@ -10,7 +10,7 @@ import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 
-// 🛠️ DEFINE the type first
+
 type LocationData = {
   [regionCode: string]: {
     region_name: string;
@@ -46,7 +46,6 @@ export default function AddPatient() {
     facility_name: '',
     facility_location: '',
     provider_name: '',
-    //intake_date: '',
     registered_at: '', 
     prefix_code: '', 
     pat_lname: '',

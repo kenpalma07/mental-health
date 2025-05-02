@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+ } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from "@/lib/utils";
 import { User, Clipboard, Heart, Calendar, Stethoscope, ArrowRight } from "lucide-react";
 import type { BreadcrumbItem } from '@/types';
@@ -98,33 +107,6 @@ export default function AssessmentIndex({ patient }: Props) {
     setDuration('');
   };
 
-  const handleDiagnosisChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const diagnosis = e.target.value;
-    setSelectedDiagnosis(diagnosis);
-    setSelectedIcdCode('');
-    setIcdDescription('');
-    setSelectedMedicine('');
-    setIntake('');
-    setFrequency('');
-    setDuration('');
-  };
-
-  const handleIcdCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const code = e.target.value;
-    setSelectedIcdCode(code);
-
-    const diagnosisData = icd10Data[selectedDiagnosis as keyof typeof icd10Data];
-    const selected = diagnosisData?.find((item: { code: string }) => item.code === code);
-    setIcdDescription(selected?.description || '');
-  };
-
-  const handleMedicineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMedicine(e.target.value);
-    setIntake('');
-    setFrequency('');
-    setDuration('');
-  };
-
   const handleSubmit = () => {
     if (!selectedDiagnosis || !selectedIcdCode || !selectedMedicine || !intake || !frequency || !duration) {
       alert('Please complete Diagnosis, ICD-10, Medicine, Intake, Frequency, and Duration.');
@@ -204,58 +186,109 @@ export default function AssessmentIndex({ patient }: Props) {
           <div className="mt-8 space-y-6">
             <h2 className="text-xl font-semibold text-gray-700">Diagnosis & Medicine</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">Diagnosis</label>
-                <select value={selectedDiagnosis} onChange={handleDiagnosisChange} className="w-full p-2 border rounded-md">
-                  <option value="">-- Select Diagnosis --</option>
-                  {diagnoses.map((d) => (
-                    <option key={d.icdKey} value={d.icdKey}>{d.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {selectedDiagnosis && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Diagnosis Field */}
                 <div>
-                  <label className="text-sm font-medium text-gray-700">ICD-10 Code</label>
-                  <select value={selectedIcdCode} onChange={handleIcdCodeChange} className="w-full p-2 border rounded-md">
-                    <option value="">-- Select ICD-10 Code --</option>
-                    {icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.map((item) => (
-                      <option key={item.code} value={item.code}>{item.code} - {item.description}</option>
-                    ))}
-                  </select>
+                  <Label className="text-sm font-medium text-gray-700">Diagnosis</Label>
+                  <Select
+                    value={selectedDiagnosis}
+                    onValueChange={(value) => setSelectedDiagnosis(value)}
+                    name="diagnosis_code"
+                  >
+                    <SelectTrigger className="w-full p-2 border rounded-md">
+                      <SelectValue placeholder="-- Select Diagnosis --" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {diagnoses.map((d) => (
+                        <SelectItem key={d.icdKey} value={d.icdKey}>
+                          {d.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-              )}
-            </div>
+
+                {/* ICD-10 Code Field */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">ICD-10 Code</Label>
+                  <Select
+                    value={selectedIcdCode}
+                    onValueChange={(value) => setSelectedIcdCode(value)}
+                    name="icd_code"
+                  >
+                    <SelectTrigger className="w-full p-2 border rounded-md">
+                      <SelectValue
+                        placeholder="-- Select ICD-10 Code --"
+                        defaultValue={selectedIcdCode}
+                        aria-label={selectedIcdCode}
+                      >
+                        {selectedIcdCode}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                      {icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.map((item) => (
+                        <SelectItem key={item.code} value={item.code}>
+                          {item.code} - {item.description}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Description Field */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Description</Label>
+                  <Textarea
+                    className="w-full mt-1 p-2 border rounded-md text-sm"
+                    rows={5}
+                    disabled
+                    value={
+                      icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find(
+                        (item) => item.code === selectedIcdCode
+                      )?.description || ""
+                    }
+                  />
+                </div>
+              </div>
 
             {selectedDiagnosis && (
               <div>
-                <label className="text-sm font-medium text-gray-700">Recommended Medicine</label>
-                <select value={selectedMedicine} onChange={handleMedicineChange} className="w-full p-2 border rounded-md">
-                  <option value="">-- Select Medicine --</option>
-                  {medicines.map((med, idx) => (
-                    <option key={idx} value={med.name}>{med.name} ({med.brand})</option>
-                  ))}
-                </select>
+                <Label className="text-sm font-medium text-gray-700">Recommended Medicine</Label>
+                <Select
+                  value={selectedMedicine}
+                  onValueChange={(value) => setSelectedMedicine(value)}
+                  name="recommended_medicine"
+                >
+                  <SelectTrigger className="w-full p-2 border rounded-md">
+                    <SelectValue placeholder="-- Select Medicine --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {medicines.map((med, idx) => (
+                      <SelectItem key={idx} value={med.name}>
+                        {med.name} ({med.brand})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             )}
 
-            {selectedMedicine && (
+            {/* {selectedMedicine && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Intake</label>
-                  <input type="number" value={intake} onChange={(e) => setIntake(e.target.value)} className="w-full p-2 border rounded-md" />
+                  <Label className="text-sm font-medium text-gray-700">Intake</Label>
+                  <Input type="number" value={intake} onChange={(e) => setIntake(e.target.value)} className="w-full p-2 border rounded-md" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Frequency</label>
-                  <input type="number" value={frequency} onChange={(e) => setFrequency(e.target.value)} className="w-full p-2 border rounded-md" />
+                  <Label className="text-sm font-medium text-gray-700">Frequency</Label>
+                  <Input type="number" value={frequency} onChange={(e) => setFrequency(e.target.value)} className="w-full p-2 border rounded-md" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Duration</label>
-                  <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full p-2 border rounded-md" />
+                  <Label className="text-sm font-medium text-gray-700">Duration</Label>
+                  <Input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full p-2 border rounded-md" />
                 </div>
               </div>
-            )}
+            )} */}
 
           {/* Intake, Frequency, Duration Fields */}
             {selectedMedicine && (
@@ -263,7 +296,7 @@ export default function AssessmentIndex({ patient }: Props) {
                   <div className="flex space-x-4">
                   {/* Intake Field */}
                   <div className="flex-1">
-                      <label htmlFor="intake" className="text-sm font-medium text-gray-700">Intake</label>
+                      <Label htmlFor="intake" className="text-sm font-medium text-gray-700">Intake</Label>
                       <div className="flex space-x-2">
                       <input
                           type="number"
@@ -287,9 +320,9 @@ export default function AssessmentIndex({ patient }: Props) {
   
                   {/* Frequency Field */}
                   <div className="flex-1">
-                      <label htmlFor="frequency" className="text-sm font-medium text-gray-700">Frequency</label>
+                      <Label htmlFor="frequency" className="text-sm font-medium text-gray-700">Frequency</Label>
                       <div className="flex space-x-2">
-                      <input
+                      <Input
                           type="number"
                           id="frequency"
                           value={frequency}
@@ -297,17 +330,20 @@ export default function AssessmentIndex({ patient }: Props) {
                           className="w-40 p-2 border rounded-md"
                           placeholder="e.g., 1, 2, 3"
                       />
-                      <select
-                          id="frequency-unit"
-                          className="w-full p-2 border rounded-md"
-                         // onChange={(e) => setFrequencyUnit(e.target.value)}
+                      <Select
+                        value={frequency}
+                        onValueChange={(value) => setFrequency(value)}
                       >
-                          <option value="" disabled>Select Frequency</option>
-                          <option value="hour">Hour(s)</option>
-                          <option value="day">Day(s)</option>
-                          <option value="week">Week(s)</option>
-                          <option value="month">Month(s)</option>
-                      </select>
+                        <SelectTrigger className="w-full p-2 border rounded-md">
+                          <SelectValue placeholder="Select Frequency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="hour">Hour(s)</SelectItem>
+                          <SelectItem value="day">Day(s)</SelectItem>
+                          <SelectItem value="week">Week(s)</SelectItem>
+                          <SelectItem value="month">Month(s)</SelectItem>
+                        </SelectContent>
+                      </Select>
                       </div>
                   </div>
   
@@ -315,7 +351,7 @@ export default function AssessmentIndex({ patient }: Props) {
                   <div className="flex-1">
                       <label htmlFor="duration" className="text-sm font-medium text-gray-700">Duration</label>
                       <div className="flex space-x-2">
-                      <input
+                      <Input
                           type="number"
                           id="duration"
                           value={duration}
@@ -323,17 +359,20 @@ export default function AssessmentIndex({ patient }: Props) {
                           className="w-40 p-2 border rounded-md"
                           placeholder="e.g., 1, 2, 3"
                       />
-                      <select
-                          id="duration-unit"
-                          className="w-full p-2 border rounded-md"
-                        //  onChange={(e) => setDurationUnit(e.target.value)}
+                      <Select
+                        value={duration}
+                        onValueChange={(value) => setDuration(value)}
                       >
-                          <option value="" disabled>Select Duration</option>
-                          <option value="hour">Hour(s)</option>
-                          <option value="day">Day(s)</option>
-                          <option value="week">Week(s)</option>
-                          <option value="month">Month(s)</option>
-                      </select>
+                        <SelectTrigger className="w-full p-2 border rounded-md">
+                          <SelectValue placeholder="Select Duration" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="hour">Hour(s)</SelectItem>
+                          <SelectItem value="day">Day(s)</SelectItem>
+                          <SelectItem value="week">Week(s)</SelectItem>
+                          <SelectItem value="month">Month(s)</SelectItem>
+                        </SelectContent>
+                      </Select>
                       </div>
                   </div>
                   </div>
@@ -344,7 +383,7 @@ export default function AssessmentIndex({ patient }: Props) {
                   intake !== "" && frequency !== "" && duration !== "" && frequency !== "" && duration !== "" 
                   && (
                       <div className="mt-4">
-                      <label className="text-sm font-medium text-gray-700">Total Quantity</label>
+                      <Label className="text-sm font-medium text-gray-700">Total Quantity</Label>
                       <div className="p-2 border rounded-md">
                           {
                           // Calculate total based on intake, frequency, and duration
@@ -358,6 +397,7 @@ export default function AssessmentIndex({ patient }: Props) {
                   }
               </div>
               )}
+            <br />
           </div>
         )}
       </div>
