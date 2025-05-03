@@ -17,3 +17,14 @@ Untracked files:
         database/migrations/2025_04_22_000020_update_consultation_table.php
         resources/js/components/ui/textarea.tsx
         update guide/databaseissues/
+
+
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Assessment/index.tsx
+        deleted:    Modules/MentalHealth/resources/assets/js/Pages/Consultation/addConsultation.tsx
+        modified:   Modules/MentalHealth/resources/assets/js/Pages/Consultation/index.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        Modules/MentalHealth/resources/assets/js/Pages/Consultation/consultationList.tsx
+        Modules/MentalHealth/resources/assets/js/Pages/components/
+

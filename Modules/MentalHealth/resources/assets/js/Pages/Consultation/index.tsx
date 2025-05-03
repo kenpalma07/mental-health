@@ -14,7 +14,8 @@ import {
   ArrowRight,
   Edit,
   Trash,
-  Stethoscope
+  Stethoscope,
+  Send
 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -494,7 +495,13 @@ const ConsultationIndex: React.FC = () => {
                   className="w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
-              <Button onClick={handleSubmit}>Submit Consultation</Button>
+              <Button
+               onClick={handleSubmit}
+               className="flex items-center gap-2 bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg shadow"
+               >
+                <Send className="w-4 h-4" />
+                Submit Consultation
+              </Button>
             </div>
           )}
 
@@ -527,7 +534,7 @@ const ConsultationIndex: React.FC = () => {
                         </div>
 
                         <Link
-                          href={`/assessment/${patient.id}/addConsultation`}
+                          href={`/assessment/${patient.id}/addAssessment`}
                           className="absolute top-1 right-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 flex items-center gap-2 rounded-l-lg px-3 py-1 text-sm"
                         >
                           <Stethoscope className="w-3 h-3 text-white-600" />
