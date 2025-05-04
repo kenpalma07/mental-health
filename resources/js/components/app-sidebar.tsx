@@ -56,16 +56,18 @@ const mainNavItems: NavItem[] = [
             { title: 'Other Two', href: '/other/othertwo' },
         ],
     },
+
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Reference',
+        title: 'References',
         href: '#',
         icon: Cog,
         isActive: true,
         items: [
-            { title: 'FHUD', href: '/reference/fhud' },
+            { title: 'FHUD', href: '/references/fhud' },
+            { title: 'Setup', href: '/references/setup' },
         ],
     },
     {

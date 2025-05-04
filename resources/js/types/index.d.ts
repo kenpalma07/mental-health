@@ -1,9 +1,12 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { PageProps as InertiaPageProps } from '@inertiajs/react';
 
 export interface Auth {
     user: User;
 }
+
+export type PageProps<T = {}> = InertiaPageProps<T> & SharedData;
 
 export interface BreadcrumbItem {
     title: string;
@@ -20,6 +23,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    items?: NavItem[];
 }
 
 export interface SharedData {
@@ -54,3 +58,22 @@ export interface Permission {
     module: string;
     guard_name: string;
 }
+
+export interface FHUD {
+    id: number;
+    fhudcode: string;
+    faccode: string;
+    facility_name: string;
+    provider_name: string;
+    facility_address: string,
+    regcode: string;
+    provcode: string;
+    citycode: string;
+    bgycode: string;
+    zipcode: string;
+    facility_stat: 'A' | 'I';
+    date_mod: string;
+    accreno: string;
+    facility_licno: string;
+    // …any other fields you need
+  }

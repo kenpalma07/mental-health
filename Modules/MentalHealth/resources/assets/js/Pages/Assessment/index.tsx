@@ -240,7 +240,7 @@ export default function AssessmentIndex({ patient }: Props) {
               </div>
             )}
 
-            {selectedMedicine && (
+            {/* {selectedMedicine && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700">Intake</label>
@@ -255,7 +255,7 @@ export default function AssessmentIndex({ patient }: Props) {
                   <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full p-2 border rounded-md" />
                 </div>
               </div>
-            )}
+            )} */}
 
           {/* Intake, Frequency, Duration Fields */}
             {selectedMedicine && (
@@ -269,14 +269,14 @@ export default function AssessmentIndex({ patient }: Props) {
                           type="number"
                           id="intake"
                           value={intake}
-                          //onChange={(e) => setIntake(e.target.value)}
+                          onChange={(e) => setIntake(e.target.value)}
                           className="w-40 p-2 border rounded-md"
                           placeholder="e.g., 1, 2, 3"
                       />
                       <select
                           id="intake-unit"
                           className="w-full p-2 border rounded-md"
-                         // onChange={(e) => setIntakeUnit(e.target.value)}
+                         onChange={(e) => setIntakeUnit(e.target.value)}
                       >
                           <option value="" disabled>Select Intake</option>
                           <option value="tablet">Tablet</option>
@@ -293,14 +293,14 @@ export default function AssessmentIndex({ patient }: Props) {
                           type="number"
                           id="frequency"
                           value={frequency}
-                        //  onChange={(e) => setFrequency(e.target.value)}
+                        onChange={(e) => setFrequency(e.target.value)}
                           className="w-40 p-2 border rounded-md"
                           placeholder="e.g., 1, 2, 3"
                       />
                       <select
                           id="frequency-unit"
                           className="w-full p-2 border rounded-md"
-                         // onChange={(e) => setFrequencyUnit(e.target.value)}
+                         onChange={(e) => setFrequencyUnit(e.target.value)}
                       >
                           <option value="" disabled>Select Frequency</option>
                           <option value="hour">Hour(s)</option>

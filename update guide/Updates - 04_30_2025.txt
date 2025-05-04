@@ -1,2 +1,6 @@
 fhud_hospital
 hhospmas
+
+Creating Folder Command
+1. php artisan module:make References
+2. php artisan module:make-model Reference References

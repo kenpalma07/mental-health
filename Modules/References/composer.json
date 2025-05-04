@@ -1,0 +1,30 @@
+{
+    "name": "doh/references",
+    "description": "",
+    "authors": [
+        {
+            "name": "DOH KMITS",
+            "email": "noreply.ihomis@doh.gov.ph"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\References\\": "app/",
+            "Modules\\References\\Database\\Factories\\": "database/factories/",
+            "Modules\\References\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\References\\Tests\\": "tests/"
+        }
+    }
+}

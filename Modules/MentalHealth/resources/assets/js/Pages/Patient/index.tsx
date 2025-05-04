@@ -22,7 +22,7 @@ import AppLayout from '@/layouts/app-layout';
 import type { PageProps } from '@/types';
 import type { MasterPatient } from '@/types/modules/mental-health';
 import type { BreadcrumbItem } from '@/types';
-import PatientConsent from '../Forms/patientconsent';
+import PatientConsent from '../Forms/PatientConsent';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Patients', href: '/patients' },

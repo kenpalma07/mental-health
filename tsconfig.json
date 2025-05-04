@@ -124,5 +124,8 @@
             "modules/MentalHealth/resources/assets/js/**/*.ts",
             "modules/MentalHealth/resources/assets/js/**/*.d.ts",
             "modules/MentalHealth/resources/assets/js/**/*.tsx",
+            "modules/References/resources/assets/js/**/*.ts",
+            "modules/References/resources/assets/js/**/*.d.ts",
+            "modules/References/resources/assets/js/**/*.tsx",
         ]
 }

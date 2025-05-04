@@ -1,0 +1,3 @@
+Install these:
+1. npm install react@latest react-dom@latest
+2. Facility List

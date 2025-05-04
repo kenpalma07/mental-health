@@ -315,7 +315,7 @@ console.log(patient);
                     name="consult_type_code"
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select Consultation Type" />
+                      <SelectValue placeholder="Consultation Type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="visited">Visited</SelectItem>
@@ -336,7 +336,7 @@ console.log(patient);
                     name="to_consult_code"
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select Consultation Case" />
+                      <SelectValue placeholder="Consultation Case" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="mentalhealth">Mental Health</SelectItem>
@@ -460,7 +460,7 @@ console.log(patient);
 
                   </div>
                   <Link
-                    href={`/assessment/${patient.id}/addConsultation`}
+                    href={`/assessment/${patient.id}/addAssessment`}
                     className="absolute top-1 right-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 flex items-center gap-2 rounded-l-lg px-3 py-1 text-sm"
                   >
                     <Stethoscope className="w-3 h-3 text-white-600"/>
