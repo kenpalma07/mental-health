@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot } from 'lucide-react';
+import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot, AlertOctagonIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -21,6 +21,7 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    
     {
         title: 'Mental Health',
         href: '#',
@@ -28,9 +29,23 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient List',  href: '/patients' },
-            { title: 'Add Patient',  href: '/patients/create' },
-            { title: 'Consultations', href: '/consultations' },
-            { title: 'Assessment', href: '/assessment' },
+            // { title: 'Add Patient',  href: '/patients/create' },
+            // { title: 'Consultations', href: '/consultations' },
+            // { title: 'Assessment', href: '/assessment' },
+        ],
+    },
+
+    {
+        title: 'Forms',
+        href: '#',
+        icon: Folder,
+        isActive: true,
+        items: [
+            { title: '(ITR)-Individual Treatment Record', href: '/itr' },
+            { title: 'Medical Abstract', href: '/medabstract' },
+            { title: 'Treatment Card', href: '/treatmentcard' },
+            { title: 'Medication Card', href: '/medcard' },
+            { title: 'Referral Forms', href: '/referralform' },
         ],
     },
     {
@@ -39,21 +54,21 @@ const mainNavItems: NavItem[] = [
         icon: FileBarChart2,
         isActive: true,
         items: [
-            { title: 'Consultation LogBooks', href: '/mentalhealth/conLogBook' },
-            { title: 'Monthly Reports', href: '/mentalhealth/monthReports' },
-            { title: 'Quarterly Reports', href: '/mentalhealth/quartReports' },
-            { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
+            { title: 'Mental Health Tracker', href: '/mhtracker' },
+            { title: 'Mental Health Masterlist', href: '/mhmasterlist' },
+            { title: 'Suicide Report (School Age)', href: '/schoolagesr' },
+            { title: 'Suicide Report (Adults)', href: '/adultsr' },
         ],
     },
-
     {
-        title: 'Other Reports',
+        title: 'Notification',
         href: '#',
-        icon: FileBarChart2,
+        icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Other One', href: '/others' },
-            { title: 'Other Two', href: '/other/othertwo' },
+            { title: 'Patient Schedule List', href: '/mentalhealth/conLogBook' },
+            { title: 'Incoming Referrals', href: '/mentalhealth/monthReports' },
+            { title: 'Outgoing Referrals', href: '/mentalhealth/quartReports' },
         ],
     },
 

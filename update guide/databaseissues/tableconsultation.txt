@@ -1,0 +1,8 @@
+
+
+update the pat_height -> decimal 5,2
+update the pat_height -> decimal 5,2
+
+update the consult_temp_id -> remove uniquekey
+patient_address_temp_id -> change length to 255
+adjust the health number -> to 10 zeros

@@ -20,10 +20,10 @@ interface Props {
   onRegisterNewPatient: () => void; 
 }
 
-const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
-  const handleConsultation = (id: number) => {
-    window.location.href = `/consultations?id=${id}`;
-  };
+  const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
+    const handleConsultation = (id: number) => {
+      window.location.href = `/consultations/${id}`;
+    };
 
   const handleRegister = () => {
     onClose();

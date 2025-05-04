@@ -1,83 +1,56 @@
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { cn } from "@/lib/utils";
-import { User, Clipboard, Heart, Calendar, Stethoscope, ArrowRight } from "lucide-react";
+import { User, Clipboard, Heart, Calendar, Stethoscope } from "lucide-react";
 import type { BreadcrumbItem } from '@/types';
 import { Head, PageProps } from '@inertiajs/react';
-import icd10Data from '../json/Mental_Health_icd_10_code.json';
-import mentalHealthMeds from '../json/mental_health_meds.json';
-
-interface Patient {
-  id: number;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  sex_code: string;
-  civil_status: string;
-  pat_birthDate: string;
-  patient_address: string;
-  mot_fname: string;
-  mot_mname: string;
-  mot_lname: string;
-  fat_fname: string;
-  fat_mname: string;
-  fat_lname: string;
-  ts_created_at: string;
-}
+import AssessPhyHealth from '../components/AssessPhyHealth';
+import ConMNSAssess from '../components/ConMNSAssess';
+import ManMNSAssess from '../components/ManMNSAssess';
+import DiagMeds from '../components/DiagMeds';
+import SchedNxtVisit from '../components/SchedNxtVisit';
+import TreatmentPlan from '../components/TreatmentPlan';
+import PatientInfoHead from '../Forms/PatientInfoHead';
+import Stepper from '../components/Stepper';
 
 interface Props extends PageProps {
-  patient: Patient;
-}
-
-const steps = [
-  { label: "Assess Physical Health", icon: User },
-  { label: "MNS Assessment", icon: Clipboard },
-  { label: "Manage MNS Conditions", icon: Heart },
-  { label: "Diagnosis and Medicine", icon: Stethoscope },
-  { label: "Schedule Next Visit", icon: Calendar },
-];
-
-const diagnoses = [
-  { label: 'Depression', icdKey: 'depression' },
-  { label: 'Psychoses', icdKey: 'psychoses' },
-  { label: 'Epilepsy', icdKey: 'epilepsy' },
-  { label: 'Behavioural Disorders', icdKey: 'behavioral_disorder' },
-  { label: 'Developmental Disorders', icdKey: 'developmental_disorder' },
-  { label: 'Dementia', icdKey: 'dementia' },
-  { label: 'Alcohol Use Disorder', icdKey: 'alcohol_use_disorder' },
-  { label: 'Drug Use Disorder', icdKey: 'drug_use_disorder' },
-  { label: 'Self-Harm/Suicide', icdKey: 'self_harm_suicide' },
-];
-
-const breadcrumbs: BreadcrumbItem[] = [
-  { title: 'Mental Health', href: '/patients' },
-  { title: 'Patient List', href: '/patients' },
-  { title: 'Add Assessment', href: '/#' },
-];
-
-function InfoRow({ icon: Icon, label, value, withArrow }: { icon: React.ComponentType<{ className?: string; size?: number }>, label: string, value: string, withArrow?: boolean }) {
-  return (
-    <div className="flex items-center space-x-2">
-      <Icon className="text-gray-500" size={16} />
-      <span className="text-gray-600 font-medium">{label}</span>
-      <span className="text-gray-700">{value}</span>
-      {withArrow && <ArrowRight className="text-gray-500 ml-2" size={16} />}
-    </div>
-  );
+  patient: any;
 }
 
 export default function AssessmentIndex({ patient }: Props) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
-  const [selectedIcdCode, setSelectedIcdCode] = useState('');
-  const [icdDescription, setIcdDescription] = useState('');
-  const [selectedMedicine, setSelectedMedicine] = useState('');
-  const [intake, setIntake] = useState('');
-  const [frequency, setFrequency] = useState('');
-  const [duration, setDuration] = useState('');
+  const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Mental Health', href: '/patients' },
+    { title: 'Patient Consultation', href: `/consultations/${patient.id}` },
+    { title: 'Add Assessment', href: '/#' },
+  ];
 
-  const age = new Date().getFullYear() - new Date(patient.pat_birthDate).getFullYear();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedDiagnosis, setSelectedDiagnosis] = useState<string>('');
+  const [selectedIcdCode, setSelectedIcdCode] = useState<string>('');
+  const [selectedMedicine, setSelectedMedicine] = useState<string>('');
+  const [intake, setIntake] = useState<string>('');
+  const [intakeUnit, setIntakeUnit] = useState<string>('mg');
+  const [frequency, setFrequency] = useState<string>('');
+  const [frequencyUnit, setFrequencyUnit] = useState<string>('day');
+  const [duration, setDuration] = useState<string>('');
+  const [durationUnit, setDurationUnit] = useState<string>('day');
+
+  const [physicalHealthData, setPhysicalHealthData] = useState({
+    assessment: '',
+    management: '',
+  });
+
+  const [MNSData, setMNSData] = useState({});
+  const [manMNSData, setmanMNSData] = useState({});
+
+  const steps = [
+    { label: "Physical Health", icon: User },
+    { label: "Conduct Assessment", icon: Clipboard },
+    { label: "Manage Assessment", icon: Heart },
+    { label: "Diagnosis and Medicine", icon: Stethoscope },
+    { label: "Schedule Next Visit", icon: Calendar },
+    { label: "Treatment Plan", icon: Stethoscope },
+  ];
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) setCurrentStep(prev => prev + 1);
@@ -91,77 +64,29 @@ export default function AssessmentIndex({ patient }: Props) {
     setCurrentStep(0);
     setSelectedDiagnosis('');
     setSelectedIcdCode('');
-    setIcdDescription('');
     setSelectedMedicine('');
     setIntake('');
     setFrequency('');
     setDuration('');
   };
 
-  const handleDiagnosisChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const diagnosis = e.target.value;
-    setSelectedDiagnosis(diagnosis);
-    setSelectedIcdCode('');
-    setIcdDescription('');
-    setSelectedMedicine('');
-    setIntake('');
-    setFrequency('');
-    setDuration('');
-  };
-
-  const handleIcdCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const code = e.target.value;
-    setSelectedIcdCode(code);
-
-    const diagnosisData = icd10Data[selectedDiagnosis as keyof typeof icd10Data];
-    const selected = diagnosisData?.find((item: { code: string }) => item.code === code);
-    setIcdDescription(selected?.description || '');
-  };
-
-  const handleMedicineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMedicine(e.target.value);
-    setIntake('');
-    setFrequency('');
-    setDuration('');
+  const isFormIncomplete = () => {
+    return !selectedDiagnosis || !selectedIcdCode || !selectedMedicine || !intake || !frequency || !duration;
   };
 
   const handleSubmit = () => {
-    if (!selectedDiagnosis || !selectedIcdCode || !selectedMedicine || !intake || !frequency || !duration) {
+    if (isFormIncomplete()) {
       alert('Please complete Diagnosis, ICD-10, Medicine, Intake, Frequency, and Duration.');
       return;
     }
-    alert(`✅ Submitted:\nDiagnosis: ${selectedDiagnosis}\nICD-10: ${selectedIcdCode}\nDescription: ${icdDescription}\nMedicine: ${selectedMedicine}\nIntake: ${intake}\nFrequency: ${frequency}\nDuration: ${duration}`);
+    // Submit form logic here
   };
-
-  const medicines = selectedDiagnosis
-    ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || []
-    : [];
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Assessment" />
+      <PatientInfoHead patient={patient} />
 
-      {/* Patient Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border rounded-xl p-4 shadow-sm bg-white text-sm mb-1">
-        <div className="space-y-2">
-          <div className="bg-blue-500 text-white px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">Personal Information</div>
-          <InfoRow icon={User} label="Patient name:" value={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} />
-          <InfoRow icon={User} label="Patient Number:" value={`2025-${String(patient.id).padStart(6, '0')}`} />
-          <InfoRow icon={User} label="Sex:" value={patient.sex_code} />
-          <InfoRow icon={User} label="Civil status:" value={patient.civil_status} />
-          <InfoRow icon={User} label="Birthdate:" value={new Date(patient.pat_birthDate).toLocaleDateString()} />
-          <InfoRow icon={User} label="Age:" value={`${age} yrs`} />
-        </div>
-        <div className="space-y-2">
-          <div className="bg-blue-500 text-white px-3 py-1 rounded mb-2 w-fit text-sm font-semibold">Relationship Information</div>
-          <InfoRow icon={ArrowRight} label="Patient Address:" value={patient.patient_address} />
-          <InfoRow icon={ArrowRight} label="Mother's name:" value={`${patient.mot_fname} ${patient.mot_mname} ${patient.mot_lname}`} />
-          <InfoRow icon={ArrowRight} label="Father's name:" value={`${patient.fat_fname} ${patient.fat_mname} ${patient.fat_lname}`} />
-          <InfoRow icon={ArrowRight} label="Date entered:" value={`${new Date(patient.ts_created_at).toLocaleString()}`} />
-        </div>
-      </div>
-
-      {/* Stepper */}
       <div className="p-4">
         <div className="flex items-center gap-2 mb-4">
           <User className="text-gray-600" />
@@ -169,36 +94,16 @@ export default function AssessmentIndex({ patient }: Props) {
         </div>
 
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center relative w-full">
-            <div className="absolute top-1/2 left-0 right-0 border-t-2 border-gray-300 z-0" />
-            {steps.map((step, index) => (
-              <div key={index} className="flex flex-col items-center flex-1 relative">
-                <Button
-                  type="button"
-                  onClick={() => setCurrentStep(index)}
-                  className={cn(
-                    "w-12 h-12 flex items-center justify-center rounded-full border-4",
-                    currentStep >= index ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-300",
-                    "z-10"
-                  )}
-                >
-                  <step.icon size={24} />
-                </Button>
-                <span className={cn("mt-1 text-xs", currentStep >= index ? "text-black font-semibold" : "text-gray-400")}>
-                  {step.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
+          <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
           <div className="flex gap-2 ml-8">
             <Button variant="outline" onClick={prevStep} disabled={currentStep === 0}>Previous</Button>
             <Button variant="outline" onClick={nextStep} disabled={currentStep === steps.length - 1}>Next</Button>
-            <Button variant="default" onClick={handleSubmit}>Submit</Button>
+            <Button variant="default" onClick={handleSubmit} disabled={isFormIncomplete()}>Submit</Button>
             <Button variant="destructive" onClick={reset}>Reset</Button>
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* Diagnosis & Medicine Step */}
         {currentStep === 3 && (
           <div className="mt-8 space-y-6">
@@ -360,9 +265,24 @@ export default function AssessmentIndex({ patient }: Props) {
               )}
           </div>
         )}
+=======
+        {currentStep === 0 && <AssessPhyHealth data={physicalHealthData} setData={setPhysicalHealthData} />}
+        {currentStep === 1 && <ConMNSAssess data={MNSData} setMNSData={setMNSData} />}
+        {currentStep === 2 && <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} />}
+        {currentStep === 3 && <DiagMeds
+          selectedDiagnosis={selectedDiagnosis} setSelectedDiagnosis={setSelectedDiagnosis}
+          selectedIcdCode={selectedIcdCode} setSelectedIcdCode={setSelectedIcdCode}
+          selectedMedicine={selectedMedicine} setSelectedMedicine={setSelectedMedicine}
+          intake={intake} setIntake={setIntake} intakeUnit={intakeUnit} setIntakeUnit={setIntakeUnit}
+          frequency={frequency} setFrequency={setFrequency} frequencyUnit={frequencyUnit}
+          setFrequencyUnit={setFrequencyUnit} duration={duration} setDuration={setDuration}
+          durationUnit={durationUnit} setDurationUnit={setDurationUnit}
+        />}
+        {currentStep === 4 && <SchedNxtVisit />}
+        {currentStep === 5 && <TreatmentPlan />}
+        
+>>>>>>> f29d314262856412b55a823310db27ed2093de14
       </div>
     </AppLayout>
   );
 }
-
-
