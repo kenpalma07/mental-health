@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-
+import { Label } from '@/components/ui/label';
 const categories = [
   {
     title: '1. Presenting complaint',
@@ -119,8 +119,10 @@ const ConMNSAssess: React.FC<Props> = ({ data, setMNSData }) => {
           <span className="text-sm italic text-white"> (refer to mhGAP-IG version 2.0p.9)</span>
         </h6>
       </div>
-
       <div className="bg-gray-48 p-4 space-y-6">
+      <Label htmlFor="assessment" className="text-sm font-medium text-gray-600 mb-1">
+             Conduct MNS Assessment
+      </Label>
         {categories.map(({ title, groups }) => (
           <div key={title}>
             <div className="w-full bg-gray-400 py-2 px-4 rounded-md">

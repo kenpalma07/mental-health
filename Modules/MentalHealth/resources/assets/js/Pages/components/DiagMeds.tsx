@@ -5,7 +5,10 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { NotebookPen, Printer } from 'lucide-react';
+import { NotebookPen, Send } from 'lucide-react';
+import { Input } from '@headlessui/react';
+import ModalRXDiagMeds from '../modal/ModalRXDiagMeds';
+import ModalDiagMedsEnc from '../modal/ModalDiagMedsEnc';
 
 const DiagMeds = ({
   selectedDiagnosis,
@@ -59,8 +62,8 @@ const DiagMeds = ({
   ];
 
   const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
-  const icdCodes = icd10Data[selectedDiagnosis] || [];
 
+  
   // Function to convert any unit to hours
   const convertToHours = (value: number, unit: string) => {
     switch (unit) {
@@ -77,7 +80,6 @@ const DiagMeds = ({
     }
   };
 
-  // Calculate total quantity based on intake, frequency, and duration
   const calculateTotalQuantity = () => {
     const intakeNum = parseFloat(intake);
     const frequencyNum = parseFloat(frequency);
@@ -95,84 +97,90 @@ const DiagMeds = ({
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isrxModalOpen, setRxIsModalOpen] = useState(false);
+
+
 
   return (
     <div className="bg-gray-48 p-4 rounded-lg border mt-2 space-y-3">
+        <div className="bg-blue-500 px-4 py-3 flex w-full items-center rounded-t-lg">
+          <h6 className="text-lg font-semibold text-white w-full">
+            III. Continuation of Manage MNS Assessment
+            <span className="text-sm italic text-white">
+              {' '}
+              (refer to mhGAP-IG version 2.0 p.11)
+            </span>
+          </h6>
+        </div>
       {/* Diagnosis Section */}
-      <div className="bg-blue-500 px-4 py-3 flex w-full items-center rounded-t-lg">
-        <h6 className="text-lg font-semibold text-white w-full">
-          III. Continuation of Manage MNS Assessment
-          <span className="text-sm italic text-white">
-            {' '}
-            (refer to mhGAP-IG version 2.0 p.11)
-          </span>
-        </h6>
-      </div>
-      <h4 className="text-xl font-semibold text-gray-700">Diagnosis</h4>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Diagnosis Field */}
-          <div>
-            <Label className="text-sm font-medium text-gray-700">Diagnosis</Label>
-            <Select
-              value={selectedDiagnosis}
-              onValueChange={(value) => setSelectedDiagnosis(value)}
-              name="diagnosis_code"
-            >
-              <SelectTrigger className="w-full p-2 border rounded-md">
-                <SelectValue placeholder="-- Select Diagnosis --">
-                  {selectedDiagnosis}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {diagnoses.map((d) => (
-                  <SelectItem key={d.icdKey} value={d.icdKey}>
-                    {d.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="p-4 rounded-lg border mt-2 space-y-3">
 
-          {/* ICD-10 Code Field */}
-          <div>
-            <Label className="text-sm font-medium text-gray-700">ICD-10 Code</Label>
-            <Select
-              value={selectedIcdCode}
-              onValueChange={(value) => setSelectedIcdCode(value)}
-              name="icd_code"
-            >
-              <SelectTrigger className="w-full p-2 border rounded-md">
-                <SelectValue
-                  placeholder="-- Select ICD-10 Code --"
-                  defaultValue={selectedIcdCode}
-                  aria-label={selectedIcdCode}
-                >
-                  {selectedIcdCode}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent className="w-[var(--radix-select-trigger-width)]">
-                {(icd10Data[selectedDiagnosis as keyof typeof icd10Data] || []).map((item) => (
-                  <SelectItem key={item.code} value={item.code}>
-                    {item.code} - {item.description}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <h4 className="text-xl font-semibold text-gray-700">Diagnosis</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Diagnosis Field */}
+            <div>
+              <Label className="text-sm font-medium text-gray-700">Diagnosis</Label>
+              <Select
+                value={selectedDiagnosis}
+                onValueChange={(value) => setSelectedDiagnosis(value)}
+                name="diagnosis_code"
+              >
+                <SelectTrigger className="w-full p-2 border rounded-md">
+                  <SelectValue placeholder="-- Select Diagnosis --">
+                    {selectedDiagnosis}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {diagnoses.map((d) => (
+                    <SelectItem key={d.icdKey} value={d.icdKey}>
+                      {d.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* Description Field */}
-          <div>
-            <Label className="text-sm font-medium text-gray-700">Description</Label>
-            <Textarea
-              className="w-full mt-1 p-2 border rounded-md text-sm"
-              rows={5}
-              disabled
-              value={
-                icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find(
-                  (item) => item.code === selectedIcdCode
-                )?.description || ""
-              }
-            />
+            {/* ICD-10 Code Field */}
+            <div>
+              <Label className="text-sm font-medium text-gray-700">ICD-10 Code</Label>
+              <Select
+                value={selectedIcdCode}
+                onValueChange={(value) => setSelectedIcdCode(value)}
+                name="icd_code"
+              >
+                <SelectTrigger className="w-full p-2 border rounded-md">
+                  <SelectValue
+                    placeholder="-- Select ICD-10 Code --"
+                    defaultValue={selectedIcdCode}
+                    aria-label={selectedIcdCode}
+                  >
+                    {selectedIcdCode}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                  {(icd10Data[selectedDiagnosis as keyof typeof icd10Data] || []).map((item) => (
+                    <SelectItem key={item.code} value={item.code}>
+                      {item.code} - {item.description}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Description Field */}
+            <div>
+              <Label className="text-sm font-medium text-gray-700">Description</Label>
+              <Textarea
+                className="w-full mt-1 p-2 border rounded-md text-sm"
+                rows={5}
+                disabled
+                value={
+                  icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find(
+                    (item) => item.code === selectedIcdCode
+                  )?.description || ""
+                }
+              />
+            </div>
           </div>
         </div>
 
@@ -181,6 +189,16 @@ const DiagMeds = ({
       <div className="p-4 rounded-lg border mt-2 space-y-3">
         <h4 className="text-xl font-semibold text-gray-700">Medicine</h4>
         <div className="flex items-end gap-4">
+          {/* Date Issued */}
+          <div className="flex-1">
+            <h5 className="text-sm font-medium text-gray-700">Date Issued</h5>
+            <Input
+              type="date"
+              id="date_issue"
+              name="date_issue"
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
           <div className="flex-1">
             <Label className="text-sm font-medium text-gray-700">Recommended Medicine</Label>
             <Select value={selectedMedicine} onValueChange={setSelectedMedicine} name="recommended_medicine">
@@ -190,7 +208,7 @@ const DiagMeds = ({
               <SelectContent>
                 {medicines.map((med, idx) => (
                   <SelectItem key={idx} value={med.name}>
-                    {med.name} ({med.brand})
+                    {med.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -198,7 +216,18 @@ const DiagMeds = ({
           </div>
 
           <div className="w-80">
-            <Label className="text-sm font-medium text-gray-700">Patient Medication List</Label>
+            <Label className="text-sm font-medium text-gray-700">Rx Prescription List</Label>
+            <Button
+              type="button"
+              onClick={() => setRxIsModalOpen(true)}
+              className="w-full p-2 rounded-md text-sm flex items-center gap-2 bg-green-600 text-white hover:bg-green-700"
+            >
+              <NotebookPen size={16} className="text-white" />
+              Rx List
+            </Button>
+          </div>
+          <div className="w-80">
+            <Label className="text-sm font-medium text-gray-700">Patient Medication History</Label>
             <Button
               type="button"
               onClick={() => setIsModalOpen(true)}
@@ -222,12 +251,11 @@ const DiagMeds = ({
                 className="w-40 p-2 border rounded-md"
                 placeholder="e.g. 1,2,3"
               />
-              <Select value={intakeUnit} onValueChange={setIntakeUnit} className="w-full p-2 border rounded-md">
+              <Select value={intakeUnit} onValueChange={setIntakeUnit}>
                 <SelectTrigger className="w-full p-2 border rounded-md">
                   <SelectValue placeholder="Select Intake" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem disabled>Select Intake</SelectItem>  {/* This makes "Select Intake" not clickable */}
                   <SelectItem value="tablet">Tablet(s)</SelectItem>
                   <SelectItem value="ampule">Ampule(s)</SelectItem>
                   <SelectItem value="vial">Vial(s)</SelectItem>
@@ -246,12 +274,11 @@ const DiagMeds = ({
                   className="w-40 p-2 border rounded-md"
                   placeholder="e.g. 1,2,3"
                 />
-                <Select value={frequencyUnit} onValueChange={setFrequencyUnit} className="mt-2 w-full ml-2">
+                <Select value={frequencyUnit} onValueChange={setFrequencyUnit}>
                   <SelectTrigger className="w-full p-2 border rounded-md">
                     <SelectValue placeholder="Select Frequency" />
                   </SelectTrigger>
                   <SelectContent>
-                  <SelectItem disabled>Select Frequency</SelectItem>
                     <SelectItem value="hour">Hour(s)</SelectItem>
                     <SelectItem value="day">Day(s)</SelectItem>
                     <SelectItem value="week">Week(s)</SelectItem>
@@ -270,7 +297,7 @@ const DiagMeds = ({
                   className="w-40 p-2 border rounded-md"
                   placeholder="e.g. 1,2,3"
                 />
-                <Select value={durationUnit} onValueChange={setDurationUnit} className="mt-2 w-full ml-2">
+                <Select value={durationUnit} onValueChange={setDurationUnit}>
                   <SelectTrigger className="w-full p-2 border rounded-md">
                     <SelectValue placeholder="Select Duration" />
                   </SelectTrigger>
@@ -286,61 +313,70 @@ const DiagMeds = ({
           </div>
         </div>
 
-        {/* Calculate and Display Total Quantity */}
-        <div className="mt-4">
-          <h5 className="text-sm font-medium text-gray-700">Total Quantity</h5>
-          <p className="text-lg font-bold">{calculateTotalQuantity()}</p>
+        <div className="mt-4 flex gap-4">
+          {/* Total Quantity */}
+          <div className="flex-1">
+            <h5 className="text-sm font-medium text-gray-700">Total Quantity</h5>
+            <Input
+              className="w-full p-2 border rounded-md"
+              value={calculateTotalQuantity()}
+              readOnly
+            />
+          </div>
+          {/* Doctor */}
+          <div className="flex-1">
+            <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
+                <Select>
+                  <SelectTrigger className="w-full p-2 border rounded-md">
+                    <SelectValue placeholder="Select Doctor" />
+                  </SelectTrigger>
+                  <SelectContent>
+                  <SelectItem value="doctor">Dr. Sample V. Quak</SelectItem>
+                  </SelectContent>
+                </Select>
+          </div>
+
+          {/* Remarks */}
+          <div className="flex-1">
+            <h5 className="text-sm font-medium text-gray-700">Remarks</h5>
+            <Textarea
+              placeholder="Remarks here"
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
         </div>
+
+        <Button>
+          <Send size={16} className="mr-2" />
+          Submit
+          </Button>
       </div>
 
-      {/* Medication List Modal */}
-      {isModalOpen && (
+
+      {/* Rx List Modal */}
+      {isrxModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Patient Medication List</h2>
-              <Button size="icon" variant="ghost" onClick={() => setIsModalOpen(false)}>
+              <h2 className="text-lg font-semibold">Rx Prescription List</h2>
+              <Button size="icon" variant="ghost" onClick={() => setRxIsModalOpen(false)}>
                 ✕
               </Button>
             </div>
 
-            <div className="printable">
-              <table className="w-full text-sm border mb-4">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border p-2 text-left">Start Date</th>
-                    <th className="border p-2 text-left">Medicine</th>
-                    <th className="border p-2 text-left">Brand</th>
-                    <th className="border p-2 text-left">Dosage</th>
-                    <th className="border p-2 text-left">Instructions</th>
-                    <th className="border p-2 text-left">Quantity</th>
-                    <th className="border p-2 text-left">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {medicines.map((med, idx) => (
-                    <tr key={idx}>
-                      <td className="border p-2">01/01/2025</td>
-                      <td className="border p-2">{med.name}</td>
-                      <td className="border p-2">{med.brand}</td>
-                      <td className="border p-2">1</td>
-                      <td className="border p-2">Take 1 tablet daily</td>
-                      <td className="border p-2">{calculateTotalQuantity()}</td>
-                      <td className="border p-2">In Progress</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+              <ModalRXDiagMeds/>
 
-            <Button
-              className="w-full p-2 rounded-md text-sm bg-blue-600 text-white hover:bg-blue-700 mt-4"
-              onClick={() => window.print()}
-            >
-              <Printer size={16} className="mr-2" />
-              Print Prescription
-            </Button>
           </div>
+        </div>
+      )}
+
+
+      {/* Medication List Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+
+          <ModalDiagMedsEnc setIsModalOpen={setIsModalOpen} />
+
         </div>
       )}
     </div>
