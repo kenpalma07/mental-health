@@ -41,10 +41,11 @@ const mainNavItems: NavItem[] = [
         icon: Folder,
         isActive: true,
         items: [
-            { title: '(ITR)-Individual Treatment Record', href: '/others' },
-            { title: 'Medical Abstract', href: '/other/othertwo' },
-            { title: 'Treatment Card', href: '/other/othertwo' },
-            { title: 'Referral Forms', href: '/other/othertwo' },
+            { title: '(ITR)-Individual Treatment Record', href: '/itr' },
+            { title: 'Medical Abstract', href: '/medabstract' },
+            { title: 'Treatment Card', href: '/treatmentcard' },
+            { title: 'Medication Card', href: '/medcard' },
+            { title: 'Referral Forms', href: '/referralform' },
         ],
     },
     {
@@ -53,10 +54,10 @@ const mainNavItems: NavItem[] = [
         icon: FileBarChart2,
         isActive: true,
         items: [
-            { title: 'Consultation LogBooks', href: '/mentalhealth/conLogBook' },
-            { title: 'Monthly Reports', href: '/mentalhealth/monthReports' },
-            { title: 'Quarterly Reports', href: '/mentalhealth/quartReports' },
-            { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
+            { title: 'Mental Health Tracker', href: '/mhtracker' },
+            { title: 'Mental Health Masterlist', href: '/mhmasterlist' },
+            { title: 'Suicide Report (School Age)', href: '/schoolagesr' },
+            { title: 'Suicide Report (Adults)', href: '/adultsr' },
         ],
     },
     {
