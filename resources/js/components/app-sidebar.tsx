@@ -29,9 +29,9 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient List',  href: '/patients' },
-            { title: 'Add Patient',  href: '/patients/create' },
-            { title: 'Consultations', href: '/consultations' },
-            { title: 'Assessment', href: '/assessment' },
+            // { title: 'Add Patient',  href: '/patients/create' },
+            // { title: 'Consultations', href: '/consultations' },
+            // { title: 'Assessment', href: '/assessment' },
         ],
     },
 
