@@ -103,7 +103,6 @@ export default function AssessmentIndex({ patient }: Props) {
           </div>
         </div>
 
-        {/* Conditional Rendering Based on Current Step */}
         {currentStep === 0 && <AssessPhyHealth data={physicalHealthData} setData={setPhysicalHealthData} />}
         {currentStep === 1 && <ConMNSAssess data={MNSData} setMNSData={setMNSData} />}
         {currentStep === 2 && <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} />}
@@ -118,6 +117,7 @@ export default function AssessmentIndex({ patient }: Props) {
         />}
         {currentStep === 4 && <SchedNxtVisit />}
         {currentStep === 5 && <TreatmentPlan />}
+        
       </div>
     </AppLayout>
   );

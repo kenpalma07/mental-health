@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot } from 'lucide-react';
+import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot, AlertOctagonIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -21,6 +21,7 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    
     {
         title: 'Mental Health',
         href: '#',
@@ -31,6 +32,19 @@ const mainNavItems: NavItem[] = [
             { title: 'Add Patient',  href: '/patients/create' },
             { title: 'Consultations', href: '/consultations' },
             { title: 'Assessment', href: '/assessment' },
+        ],
+    },
+
+    {
+        title: 'Forms',
+        href: '#',
+        icon: Folder,
+        isActive: true,
+        items: [
+            { title: '(ITR)-Individual Treatment Record', href: '/others' },
+            { title: 'Medical Abstract', href: '/other/othertwo' },
+            { title: 'Treatment Card', href: '/other/othertwo' },
+            { title: 'Referral Forms', href: '/other/othertwo' },
         ],
     },
     {
@@ -45,15 +59,15 @@ const mainNavItems: NavItem[] = [
             { title: 'Annually Reports', href: '/mentalhealth/AnnulReports' },
         ],
     },
-
     {
-        title: 'Other Reports',
+        title: 'Notification',
         href: '#',
-        icon: FileBarChart2,
+        icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Other One', href: '/others' },
-            { title: 'Other Two', href: '/other/othertwo' },
+            { title: 'Patient Schedule List', href: '/mentalhealth/conLogBook' },
+            { title: 'Incoming Referrals', href: '/mentalhealth/monthReports' },
+            { title: 'Outgoing Referrals', href: '/mentalhealth/quartReports' },
         ],
     },
 ];
