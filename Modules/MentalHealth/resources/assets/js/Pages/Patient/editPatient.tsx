@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
-import { Select } from '@/components/ui/select';
 import type { BreadcrumbItem } from '@/types';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 
