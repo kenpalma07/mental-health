@@ -505,49 +505,6 @@ const ConsultationIndex: React.FC = () => {
             </div>
           )}
 
-<<<<<<< HEAD
-          {consultations.length > 0 && (
-            <ul className="space-y-2 mt-4">
-              {consultations.map((item, index) => (
-                <li key={index} className="relative group border p-3 rounded bg-white shadow-sm hover:shadow-md transition">
-                  <div className="font-semibold">{item.date}</div>
-                  <div className="text-xs text-gray-700">Notes: {item.chief_complaint}</div>
-                  <div className="text-xs text-gray-700">
-                    Consultation Type: {item.consult_type_code}</div>
-                    <div className="text-xs text-gray-700">
-                    Consultation Code: {item.to_consult_code}</div>
-                  <div className="text-xs text-gray-700">
-                    Vitals: Temp {item.temp}°C, HR {item.heartRate} bpm, O₂ {item.oxygenSaturation}%, RR {item.respiratoryRate}, BP {item.bloodPressure}
-                  </div>
-                  <div className="text-xs text-gray-700">
-                    BMI: {item.bmi} ({item.bmiCategory}) – Height: {item.height} cm, Weight: {item.weight} kg
-                  </div>
-
-                  <div className="mt-1 flex gap-2 text-xs">
-                    <button onClick={() => handleEdit(index)} 
-                    className="text-blue-600 hover:underline flex items-center gap-1">
-                      <Edit size={16} /> Edit
-                    </button>
-
-                    <button onClick={() => handleDelete(index)}
-                     className="text-red-600 hover:underline flex items-center gap-1">
-                      <Trash size={16} /> Delete
-                    </button>
-
-                  </div>
-                  <Link
-                    href={`/assessment/${patient.id}/addAssessment`}
-                    className="absolute top-1 right-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 flex items-center gap-2 rounded-l-lg px-3 py-1 text-sm"
-                  >
-                    <Stethoscope className="w-3 h-3 text-white-600"/>
-                    Add Assessment Tool
-                  </Link>
-
-                </li>
-              ))}
-            </ul>
-          )}
-=======
           {consultations.length > 0 ? (
                   <ul className="space-y-2 mt-4">
                     {consultations.map((item, index) => (
@@ -589,7 +546,6 @@ const ConsultationIndex: React.FC = () => {
                 ) : (
                   <div className="text-center text-gray-500">No consultations found for this patient.</div>
                 )}
->>>>>>> f29d314262856412b55a823310db27ed2093de14
         </div>
       </div>
     </AppLayout>

@@ -39,7 +39,6 @@ interface PageProps {
 }
 
 export default function AddPatient() {
-<<<<<<< HEAD
     const { nextId } = usePage<PageProps>().props;
 
     const { data, setData, post, processing, errors } = useForm({
@@ -120,75 +119,6 @@ export default function AddPatient() {
             months: months.toString(),
             days: days.toString(),
         };
-=======
-  const { nextId } = usePage<PageProps>().props;
-
-  const { data, setData, post, processing, errors } = useForm({
-    master_patient_perm_id: nextId,
-    facility_name: '',
-    facility_location: '',
-    provider_name: '',
-    registered_at: '', 
-    prefix_code: '', 
-    pat_lname: '',
-    pat_mname: '',
-    pat_fname: '',
-    suffix_code: '', 
-    sex_code: '',
-    pat_birthplace: '',
-    pat_birthDate: '',
-    civil_stat_code: '',
-    religion_code: '',
-    nationality: '',
-    educattainment: '',
-    occupation_code: '',
-
-    patient_address: '',
-    regcode: '',
-    provcode: '',
-    citycode: '',
-    bgycode: '',
-    zipcode: '',
-    country_code: '',
-    pat_mobile: '',
-    pat_landline: '',
-
-    mot_fname: '',
-    mot_mname: '',
-    mot_lname: '',
-    mot_birthDate: '',
-    mot_address: '', 
-    mot_contact: '',
-    mot_deceased_status: '',
-    fat_fname: '',
-    fat_mname: '',
-    fat_lname: '',
-    fat_birthDate: '',
-    fat_address: '', 
-    fat_contact: '',
-    fat_deceased_status: '', 
-  });
-
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [age, setAge] = useState({ years: '', months: '', days: '' });
-
-  function getAgeBreakdown(birthDate: string) {
-    if (!birthDate) return { years: '', months: '', days: '' };
-  
-    const birth = new Date(birthDate);
-    const today = new Date();
-  
-    let years = today.getFullYear() - birth.getFullYear();
-    let months = today.getMonth() - birth.getMonth();
-    let days = today.getDate() - birth.getDate();
-  
-    if (days < 0) {
-      months--;
-      const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-      days += prevMonth.getDate();
->>>>>>> 8fb0cba0fcb140a70330825f7e0df0ba076ba34a
     }
 
     useEffect(() => {
