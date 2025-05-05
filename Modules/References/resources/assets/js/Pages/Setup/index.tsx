@@ -12,7 +12,7 @@ const HelloWorldPage: React.FC<PageProps> = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="p-6 text-lg font-semibold text-gray-800">
-                Hello, World! 🎉
+                HOSPITAL MASTER DATA
             </div>
         </AppLayout>
     );
