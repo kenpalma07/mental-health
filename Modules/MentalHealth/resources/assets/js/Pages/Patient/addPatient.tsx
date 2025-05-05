@@ -126,7 +126,7 @@ export default function AddPatient() {
 
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
-
+  
     useEffect(() => {
         if (!data.registered_at) {
             setData('registered_at', getRegistration());
@@ -974,4 +974,5 @@ export default function AddPatient() {
             <SearchPatientModal open={isModalOpen} onClose={closeModal} />
         </AppLayout>
     );
+}
 }
