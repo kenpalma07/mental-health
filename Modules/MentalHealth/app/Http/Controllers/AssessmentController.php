@@ -4,7 +4,6 @@ namespace Modules\MentalHealth\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\MentalHealth\Models\MasterPatient;
-use Illuminate\Http\Request;
 
 class AssessmentController extends Controller
 {

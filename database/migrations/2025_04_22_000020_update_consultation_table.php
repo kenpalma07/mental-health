@@ -20,9 +20,9 @@ return new class extends Migration
     {
         Schema::table('tbl_consultation', function (Blueprint $table) {
             // Revert back to VARCHAR(10)
-            $table->string('pat_height', 10)->nullable()->change();
-            $table->string('pat_weight', 10)->nullable()->change();
-            $table->string('pat_BMI', 10)->nullable()->change();
+            $table->decimal('pat_height', 10)->nullable(false)->change();
+            $table->decimal('pat_weight', 10)->nullable(false)->change();
+            $table->decimal('pat_BMI', 10)->nullable(false)->change();
         });
     }
 };
