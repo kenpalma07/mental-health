@@ -145,7 +145,7 @@ class PatientController extends Controller
             $nextNumber = 1; // First record
         }
 
-        return str_pad($nextNumber, 15, '0', STR_PAD_LEFT);
+        return str_pad($nextNumber, 10, '0', STR_PAD_LEFT);
     }
 
 
