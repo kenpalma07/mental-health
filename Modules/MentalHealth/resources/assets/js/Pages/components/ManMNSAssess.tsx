@@ -35,7 +35,7 @@ const categories: Category[] = [
     ],
   },
   {
-    title: '2. Physical Intervention',
+    title: '2. Psychosocial Interventions',
     groups: [
       {
         label: 'Details',
