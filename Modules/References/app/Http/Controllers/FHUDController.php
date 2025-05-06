@@ -13,32 +13,32 @@ class FHUDController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $query = FHUD::query();
+    {
+        $query = FHUD::query();
 
-    // Apply search if a search term is provided
-    if ($request->filled('search')) {
-        $search = $request->input('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('hfhudcode', 'like', "%{$search}%")
-              ->orWhere('hfhudname', 'like', "%{$search}%");
-        });
+        // Apply search if a search term is provided
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('hfhudcode', 'like', "%{$search}%")
+                ->orWhere('hfhudname', 'like', "%{$search}%");
+            });
+        }
+
+        // Optional filter: facility type (example only, adjust as needed)
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        // Apply pagination
+        $facilities = $query->paginate(10)->appends($request->only(['search', 'type']));
+
+        return inertia('References::FHUD/index', [
+            'facility' => $facilities->items(),
+            'pagination' => $facilities->toArray(),
+            'filters' => $request->only(['search', 'type']),
+        ]);
     }
-
-    // Optional filter: facility type (example only, adjust as needed)
-    if ($request->filled('type')) {
-        $query->where('type', $request->input('type'));
-    }
-
-    // Apply pagination
-    $facilities = $query->paginate(10)->appends($request->only(['search', 'type']));
-
-    return inertia('References::FHUD/index', [
-        'facility' => $facilities->items(),
-        'pagination' => $facilities->toArray(),
-        'filters' => $request->only(['search', 'type']),
-    ]);
-}
 
 
     /**

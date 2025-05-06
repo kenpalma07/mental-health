@@ -33,7 +33,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('tbl_hfacmas');
+        Schema::dropIfExists('tbl_facility_setup');
     }
 }
 

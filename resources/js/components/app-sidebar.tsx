@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot, AlertOctagonIcon } from 'lucide-react';
+import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -78,7 +78,7 @@ const footerNavItems: NavItem[] = [
     {
         title: 'References',
         href: '#',
-        icon: Cog,
+        icon: Settings,
         isActive: true,
         items: [
             { title: 'FHUD', href: '/references/fhud' },
