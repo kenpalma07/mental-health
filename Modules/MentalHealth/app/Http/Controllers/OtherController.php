@@ -15,29 +15,29 @@ class OtherController extends Controller
     
     public function itr()
     {
-        return inertia('MentalHealth::Other/itr');
+        return inertia('MentalHealth::Forms/itr');
     }
 
     
     public function medabstract()
     {
-        return inertia('MentalHealth::Other/medabstract');
+        return inertia('MentalHealth::Forms/medabstract');
     }
 
     
     public function referralform()
     {
-        return inertia('MentalHealth::Other/referralform');
+        return inertia('MentalHealth::Forms/referralform');
     }
 
     
     public function treatmentcard()
     {
-        return inertia('MentalHealth::Other/treatmentcard');
+        return inertia('MentalHealth::Forms/treatmentcard');
     }
 
     public function medcard()
     {
-        return inertia('MentalHealth::Other/medcard');
+        return inertia('MentalHealth::Forms/medcard');
     }
 }
