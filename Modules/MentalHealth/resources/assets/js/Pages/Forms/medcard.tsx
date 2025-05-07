@@ -80,6 +80,7 @@ const medcardindex: React.FC = () => {
               <p className="text-sm">Authorized Signature</p>
               <div className="mt-4 border-t w-full pt-2 text-sm">Municipal Mayor</div>
             </div>
+            <button onscree>print</button>
           </div>
   
           {/* Medication Table */}

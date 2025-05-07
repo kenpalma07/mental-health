@@ -29,6 +29,7 @@ class ConsultationController extends Controller
             'consult_time' => 'required',
             'consult_type_code' => 'required|string',
             'to_consult_code' => 'required|string',
+            'type_service' => 'required|string',
             'chief_complaint' => 'required|string',
             'pat_temperature' => 'required|numeric',
             'pat_heart_rate' => 'required|integer',

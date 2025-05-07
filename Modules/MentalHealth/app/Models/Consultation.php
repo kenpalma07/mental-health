@@ -21,6 +21,7 @@ class Consultation extends Model
         'consult_time',
         'consult_type_code',
         'to_consult_code',
+        'type_service',
         'chief_complaint',
         'pat_temperature',
         'pat_heart_rate',
