@@ -88,6 +88,7 @@ const ConsultationIndex: React.FC = () => {
     consult_date: string;
     consult_time: string;
     consult_type_code: string;
+    type_service: string;
     to_consult_code: string;
     chief_complaint: string;
     pat_temperature: number; 
@@ -109,6 +110,7 @@ const ConsultationIndex: React.FC = () => {
     consult_date: '',
     consult_time: '',
     consult_type_code: '',
+    type_service: '',
     to_consult_code: '',
     chief_complaint: '',
     pat_temperature: '',
@@ -193,6 +195,7 @@ const ConsultationIndex: React.FC = () => {
       consult_time: currentTime,
       consult_type_code: formData.consult_type_code,
       to_consult_code: formData.to_consult_code,
+      type_service: formData.type_service,
       chief_complaint: formData.chief_complaint,
       pat_temperature: parseFloat(formData.pat_temperature), // Ensure it's a number
       pat_heart_rate: parseInt(formData.pat_heart_rate),   // Ensure it's a number
@@ -222,6 +225,7 @@ const ConsultationIndex: React.FC = () => {
           consult_time: '',
           consult_type_code: '',
           to_consult_code: '',
+          type_service: '',
           chief_complaint: '',
           pat_temperature: '',
           pat_heart_rate: '',
@@ -404,6 +408,27 @@ const ConsultationIndex: React.FC = () => {
                     <SelectContent>
                       <SelectItem value="mentalhealth">Mental Health</SelectItem>
                       <SelectItem value="other">Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="col-span-2 md:col-span-1">
+                  <Label htmlFor="date">Type of Services</Label>
+                  <Select
+                    value={formData.type_service}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, type_service: value }))
+                    }
+                    name="type_service"
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Service Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="reass">Re-Assessment</SelectItem>
+                      <SelectItem value="dismeds">Dispensing Medicaton</SelectItem>
+                      <SelectItem value="psychoed">Psychoeducation</SelectItem>
+                      <SelectItem value="iniass">Initial Assessment</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
