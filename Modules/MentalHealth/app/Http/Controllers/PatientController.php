@@ -207,7 +207,7 @@ class PatientController extends Controller
             'pat_birthplace' => 'nullable|string|max:200',
             'religion_code' => 'required|string|max:5',
             'nationality' => 'required|string|max:5',
-            'pat_birthdate' => 'required|date',
+            'pat_birthDate' => 'required|date',
             'educattainment' => 'required|string|max:2',
             'occupation_code' => 'required|string|max:255',
 
@@ -241,7 +241,7 @@ class PatientController extends Controller
         $patient = MasterPatient::findOrFail($id);
         $patient->update($validated);
 
-        return redirect()->route('patients')->with('success', 'Patient updated successfully!');
+        return redirect()->route('patients.index')->with('success', 'Patient updated successfully!');
     }
 
 

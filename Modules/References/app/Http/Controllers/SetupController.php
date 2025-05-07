@@ -12,13 +12,27 @@ class SetupController extends Controller
 {
     public function index()
     {
-        return inertia('References::Setup/index');
-        // $setup = FacilitySetup::with('fhudFacility')->first();
+        // $hasSetup = FacilitySetup::exists(); // true or false
+        $facilitySetups = FacilitySetup::all();
 
-        // return Inertia::render('Setup/index', [
-        //     'existingSetup' => $setup
-        // ]);
+        return inertia('References::Setup/index', [
+            'facilitySetups' => $facilitySetups,
+        ]);
+    }
+
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'facility_name' => 'required|string|max:255',
+            'fhudcode' => 'required|string|max:50',
+            'faccode' => 'required|string|max:50',
+        ]);
+
+        // If validation fails, Laravel will return a 422 error
+        // If validation passes, continue saving the data
+        FacilitySetup::create($data);
+
+        return redirect()->route('facilitysetup')->with('success', 'Facility setup successfully!');
     }
 }
-
-?>

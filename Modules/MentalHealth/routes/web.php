@@ -9,12 +9,12 @@ use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 use Modules\MentalHealth\Http\Controllers\AssessmentController; 
 
 // Patient Information
-Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
 Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 Route::get('/patients/search', [PatientController::class, 'search']);
 Route::get('/patients/{id}/edit', [PatientController::class, 'edit']);
-Route::put('/patients/{id}', [PatientController::class, 'update']);
+Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{id}/view', [PatientController::class, 'view']);
 
 // Patient Consultation
