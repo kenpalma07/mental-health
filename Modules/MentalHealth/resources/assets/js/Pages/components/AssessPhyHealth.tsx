@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 
-type Props = {
+interface Props {
   data: {
     assessment: string;
     management: string;
@@ -10,12 +10,19 @@ type Props = {
     assessment: string;
     management: string;
   }>>;
-};
+  errors?: {
+    assessment?: string;
+    management?: string;
+  };
+}
 
-const AssessPhyHealth: React.FC<Props> = ({ data, setData }) => {
+const AssessPhyHealth: React.FC<Props> = ({ data, setData, errors = {} }) => {
+  useEffect(() => {
+    console.log('AssessPhyHealth data:', data);
+  }, [data]);
+
   return (
     <div className="rounded-lg border overflow-hidden mt-2 w-full">
-      {/* Header */}
       <div className="bg-blue-500 px-4 py-3 flex w-full items-center">
         <h6 className="text-lg font-semibold text-white w-full">
           I. Assess Physical Health
@@ -23,7 +30,6 @@ const AssessPhyHealth: React.FC<Props> = ({ data, setData }) => {
         </h6>
       </div>
 
-      {/* Grid layout */}
       <div className="bg-gray-48 p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
@@ -33,13 +39,12 @@ const AssessPhyHealth: React.FC<Props> = ({ data, setData }) => {
             <Textarea
               id="assessment"
               value={data.assessment}
-              onChange={(e) =>
-                setData(prev => ({ ...prev, assessment: e.target.value }))
-              }
+              onChange={(e) => setData(prev => ({ ...prev, assessment: e.target.value }))}
               rows={6}
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm focus:outline-none ${errors.assessment ? 'border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
               placeholder="Enter assessment..."
             />
+            {errors.assessment && <span className="text-red-500 text-xs mt-1">{errors.assessment}</span>}
           </div>
 
           <div className="flex flex-col">
@@ -49,13 +54,12 @@ const AssessPhyHealth: React.FC<Props> = ({ data, setData }) => {
             <Textarea
               id="management"
               value={data.management}
-              onChange={(e) =>
-                setData(prev => ({ ...prev, management: e.target.value }))
-              }
+              onChange={(e) => setData(prev => ({ ...prev, management: e.target.value }))}
               rows={6}
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm focus:outline-none ${errors.management ? 'border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
               placeholder="Enter management notes..."
             />
+            {errors.management && <span className="text-red-500 text-xs mt-1">{errors.management}</span>}
           </div>
         </div>
       </div>

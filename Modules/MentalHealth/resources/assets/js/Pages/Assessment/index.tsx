@@ -17,6 +17,7 @@ interface Props extends PageProps {
   patient: any;
 }
 
+
 export default function AssessmentIndex({ patient }: Props) {
   const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
@@ -39,6 +40,10 @@ export default function AssessmentIndex({ patient }: Props) {
     assessment: '',
     management: '',
   });
+  const [physicalErrors, setPhysicalErrors] = useState({
+    assessment: '',
+    management: '',
+  });
 
   const [MNSData, setMNSData] = useState({});
   const [manMNSData, setmanMNSData] = useState({});
@@ -53,6 +58,13 @@ export default function AssessmentIndex({ patient }: Props) {
   ];
 
   const nextStep = () => {
+    if (currentStep === 0) {
+      const errors: any = {};
+      if (!physicalHealthData.assessment) errors.assessment = 'Assessment is Physical Health required.';
+      if (!physicalHealthData.management) errors.management = 'Management is Physical Health required.';
+      setPhysicalErrors(errors);
+      if (Object.keys(errors).length > 0) return;
+    }
     if (currentStep < steps.length - 1) setCurrentStep(prev => prev + 1);
   };
 
@@ -68,6 +80,8 @@ export default function AssessmentIndex({ patient }: Props) {
     setIntake('');
     setFrequency('');
     setDuration('');
+    setPhysicalHealthData({ assessment: '', management: '' });
+    setPhysicalErrors({ assessment: '', management: '' });
   };
 
   const isFormIncomplete = () => {
@@ -76,15 +90,14 @@ export default function AssessmentIndex({ patient }: Props) {
 
   const handleSubmit = () => {
     if (isFormIncomplete()) {
-      alert('Please complete Diagnosis, ICD-10, Medicine, Intake, Frequency, and Duration.');
       return;
     }
-    // Submit form logic here
   };
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Assessment" />
+
       <PatientInfoHead patient={patient} />
 
       <div className="p-4">
@@ -103,7 +116,7 @@ export default function AssessmentIndex({ patient }: Props) {
           </div>
         </div>
 
-        {currentStep === 0 && <AssessPhyHealth data={physicalHealthData} setData={setPhysicalHealthData} />}
+        {currentStep === 0 && <AssessPhyHealth data={physicalHealthData} setData={setPhysicalHealthData} errors={physicalErrors} />}
         {currentStep === 1 && <ConMNSAssess data={MNSData} setMNSData={setMNSData} />}
         {currentStep === 2 && <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} />}
         {currentStep === 3 && <DiagMeds
@@ -117,7 +130,6 @@ export default function AssessmentIndex({ patient }: Props) {
         />}
         {currentStep === 4 && <SchedNxtVisit />}
         {currentStep === 5 && <TreatmentPlan />}
-        
       </div>
     </AppLayout>
   );

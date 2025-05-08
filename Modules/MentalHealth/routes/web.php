@@ -39,3 +39,5 @@ Route::get('/adultsr', [ReportController::class, 'adultsr']);
 
 // Patient Assessment
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']); // <-- Add this!
+Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
+

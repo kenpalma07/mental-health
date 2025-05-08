@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import icd10Data from '../json/Mental_Health_icd_10_code.json'; // ICD-10 Codes Data
 import mentalHealthMeds from '../json/mental_health_meds.json'; // Medicine Data
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
@@ -63,7 +63,65 @@ const DiagMeds = ({
 
   const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
 
+  useEffect(() => {
+    console.log("Diagnosis selected:", selectedDiagnosis);
+  }, [selectedDiagnosis]);
+
+  useEffect(() => {
+    console.log("ICD Code selected:", selectedIcdCode);
+  }, [selectedIcdCode]);
+
+  useEffect(() => {
+    const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find(
+      (item) => item.code === selectedIcdCode
+    )?.description;
+    if (description) {
+      console.log("ICD-10 Description:", description);
+    }
+  }, [selectedDiagnosis, selectedIcdCode]);
+
+  const [dateIssued, setDateIssued] = useState('');
+  useEffect(() => {
+    if (dateIssued) console.log("Date Issued:", dateIssued);
+  }, [dateIssued]);
+
+  const doctors = [
+    { id: "doc1", name: "Dr. Sample V. Quak" },
+    { id: "doc2", name: "Dr. Jane Doe" },
+    { id: "doc3", name: "Dr. John Smith" },
+  ];
   
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  
+  useEffect(() => {
+    const doctor = doctors.find((doc) => doc.id === selectedDoctor);
+    if (doctor) {
+      console.log("Selected Doctor:", doctor);
+    }
+  }, [selectedDoctor]);
+
+  const [remarks, setRemarks] = useState('');
+  useEffect(() => {
+    if (remarks) console.log("Remarks:", remarks);
+  }, [remarks]);
+  
+
+  useEffect(() => {
+    console.log("Medicine selected:", selectedMedicine);
+  }, [selectedMedicine]);
+
+  useEffect(() => {
+    console.log("Intake:", intake, intakeUnit);
+  }, [intake, intakeUnit]);
+
+  useEffect(() => {
+    console.log("Frequency:", frequency, frequencyUnit);
+  }, [frequency, frequencyUnit]);
+
+  useEffect(() => {
+    console.log("Duration:", duration, durationUnit);
+  }, [duration, durationUnit]);
+
   // Function to convert any unit to hours
   const convertToHours = (value: number, unit: string) => {
     switch (unit) {
@@ -95,6 +153,12 @@ const DiagMeds = ({
     const numDoses = Math.floor(durationInHours / frequencyInHours);
     return numDoses * intakeNum;
   };
+
+  useEffect(() => {
+    const totalQuantity = calculateTotalQuantity();
+    console.log("Total Quantity:", totalQuantity);
+  }, [intake, frequency, duration, frequencyUnit, durationUnit]);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isrxModalOpen, setRxIsModalOpen] = useState(false);
@@ -197,6 +261,8 @@ const DiagMeds = ({
               id="date_issue"
               name="date_issue"
               className="w-full p-2 border rounded-md"
+              value={dateIssued}
+              onChange={(e) => setDateIssued(e.target.value)}
             />
           </div>
           <div className="flex-1">
@@ -318,37 +384,43 @@ const DiagMeds = ({
           <div className="flex-1">
             <h5 className="text-sm font-medium text-gray-700">Total Quantity</h5>
             <Input
-              className="w-full p-2 border rounded-md"
-              value={calculateTotalQuantity()}
-              readOnly
-            />
+                className="w-full p-2 border rounded-md"
+                value={calculateTotalQuantity()}
+                readOnly
+              />
           </div>
           {/* Doctor */}
           <div className="flex-1">
-            <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
-                <Select>
-                  <SelectTrigger className="w-full p-2 border rounded-md">
-                    <SelectValue placeholder="Select Doctor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                  <SelectItem value="doctor">Dr. Sample V. Quak</SelectItem>
-                  </SelectContent>
-                </Select>
-          </div>
+              <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
+              <Select onValueChange={setSelectedDoctor}>
+                <SelectTrigger className="w-full p-2 border rounded-md">
+                  <SelectValue placeholder="Select Doctor" />
+                </SelectTrigger>
+                <SelectContent>
+                  {doctors.map((doc) => (
+                    <SelectItem key={doc.id} value={doc.id}>
+                      {doc.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
           {/* Remarks */}
           <div className="flex-1">
             <h5 className="text-sm font-medium text-gray-700">Remarks</h5>
-            <Textarea
-              placeholder="Remarks here"
-              className="w-full p-2 border rounded-md"
-            />
+              <Textarea
+                rows={3}
+                className="w-full p-2 border rounded-md"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+              />
           </div>
         </div>
 
         <Button>
           <Send size={16} className="mr-2" />
-          Submit
+          Save Meds
           </Button>
       </div>
 

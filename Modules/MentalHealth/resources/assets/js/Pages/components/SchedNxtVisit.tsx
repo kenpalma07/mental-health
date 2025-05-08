@@ -10,7 +10,7 @@ export default function SchedNxtVisit() {
   const { data, setData, post, processing, errors } = useForm({
     next_visit_date: '',
   })
-
+  console.log('Scheduled Next Visit:', data.next_visit_date) // Log the next visit date
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     post('/schedule/next-visit')
@@ -43,6 +43,7 @@ export default function SchedNxtVisit() {
 
   // Determine the starting day of the month (e.g., Sunday, Monday)
   const startDay = new Date(currentYear, new Date().getMonth(), 1).getDay()
+
 
   return (
     <div className="space-y-6">
