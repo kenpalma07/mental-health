@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class FacilitySetup extends Model
 {
-    protected $table = 'tbl_fhud_facility';
+    protected $table = 'tbl_facility_setup';
+
+    protected $primaryKey = 'id';
+
 
     protected $fillable = [
         'fhudcode', 'facility_name', 'faccode',
     ];
+
+    public $timestamps = false;
+    
 }
 
 
