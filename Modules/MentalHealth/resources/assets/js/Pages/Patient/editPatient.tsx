@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import { router } from '@inertiajs/core';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
@@ -251,6 +251,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Edit Patient" />
             <form onSubmit={handleSubmit} className="w-full space-y-8 px-10 py-8">
                 {/* Facility Info */}
                 <h2 className="text-lg font-semibold">EDIT PATIENT REGISTRATION FORM</h2>

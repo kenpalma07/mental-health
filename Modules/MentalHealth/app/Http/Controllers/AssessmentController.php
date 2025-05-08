@@ -4,8 +4,10 @@ namespace Modules\MentalHealth\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\MentalHealth\Entities\MentalAssessmentForm;
+use Modules\MentalHealth\Models\MentalAssessmentForm;
 use Modules\MentalHealth\Models\MasterPatient;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AssessmentController extends Controller
 {
@@ -24,8 +26,9 @@ class AssessmentController extends Controller
 
     public function store(Request $request)
     {
+        // Validate the request data
         $validated = $request->validate([
-            'consultation_id' => 'required|string|max:50',
+            'consultation_id' => 'nullable|string|max:50', 
             'pat_temp_id' => 'nullable|string|max:50',
             'carer_name' => 'nullable|string|max:200',
             'carer_address' => 'nullable|string|max:250',
@@ -67,9 +70,27 @@ class AssessmentController extends Controller
             'special_pop' => 'nullable|string|max:255',
             'date_nxt_visit' => 'nullable|date',
         ]);
-
-        $form = MentalAssessmentForm::create($validated);
-
-        return redirect()->back()->with('success', 'Assessment form saved successfully.');
+    
+        // Format the registered_at timestamp if it exists
+        if (!empty($validated['registered_at'])) {
+            $validated['registered_at'] = Carbon::parse($validated['registered_at'])->format('Y-m-d H:i:s');
+        }
+    
+        // Fetch the consultation data using consult_perm_id
+        $consultation = DB::table('tbl_consultation')  // Use tbl_consultation
+            ->where('consult_perm_id', $request->input('consultation_id'))  // Match the consult_perm_id from the request
+            ->first();
+    
+        if (!$consultation) {
+            return redirect()->back()->with('error', 'Consultation not found.');
+        }
+    
+        // Assign the consult_perm_id from the consultation table to the consultation_id field in the assessment form
+        $validated['consultation_id'] = $consultation->consult_perm_id;
+    
+        // Create the new mental assessment form record
+        MentalAssessmentForm::create($validated);
+    
+        return redirect()->back()->with('success', 'Assessment saved.');
     }
 }

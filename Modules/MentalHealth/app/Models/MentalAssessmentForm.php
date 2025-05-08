@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\MentalHealth\Entities;
+namespace Modules\MentalHealth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -67,15 +67,11 @@ class MentalAssessmentForm extends Model
 
         static::creating(function ($model) {
             $now = Carbon::now('Asia/Manila');
-            $model->date_entered = $now->toDateString();
-            $model->time_entered = $now->toTimeString();
             $model->ts_created_at = $now;
         });
 
         static::updating(function ($model) {
             $now = Carbon::now('Asia/Manila');
-            $model->date_updated = $now->toDateString();
-            $model->time_updated = $now->toTimeString();
             $model->ts_updated_at = $now;
         });
     }

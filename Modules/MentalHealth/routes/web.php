@@ -13,7 +13,7 @@ Route::get('/patients', [PatientController::class, 'index'])->name('patients.ind
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
 Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 Route::get('/patients/search', [PatientController::class, 'search']);
-Route::get('/patients/{id}/edit', [PatientController::class, 'edit']);
+Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
 Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{id}/view', [PatientController::class, 'view']);
 

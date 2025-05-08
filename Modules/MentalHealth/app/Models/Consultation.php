@@ -26,6 +26,7 @@ class Consultation extends Model
         'pat_temperature',
         'pat_heart_rate',
         'pat_oxygen_sat',
+        'respiratoryRate',
         'pat_height',
         'pat_weight',
         'pat_BMI',
