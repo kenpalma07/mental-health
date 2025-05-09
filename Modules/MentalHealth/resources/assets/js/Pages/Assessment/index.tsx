@@ -96,17 +96,13 @@ export default function AssessmentIndex({ patient }: Props) {
             consultation_id: null,
             pat_temp_id: null,
     
-            // Physical Health
             assessment_physical_health: physicalHealthData.assessment,
             management_physical_health: physicalHealthData.management,
     
-            // Conduct Assessment
             ...MNSData,
     
-            // Manage Assessment
             ...manMNSData,
     
-            // Diagnosis & Medicine
             diagnosis: selectedDiagnosis,
             icd_10_code: selectedIcdCode,
             icd_10_descrip: '',
