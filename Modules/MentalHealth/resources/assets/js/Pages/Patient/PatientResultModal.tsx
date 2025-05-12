@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dialog } from '@headlessui/react';
-import { X, Stethoscope  } from 'lucide-react';
+import { X, Stethoscope } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Patient {
@@ -17,17 +17,17 @@ interface Props {
   open: boolean;
   onClose: () => void;
   patients: Patient[];
-  onRegisterNewPatient: () => void; 
+  onRegisterNewPatient: () => void;
 }
 
-  const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
-    const handleConsultation = (id: number) => {
-      window.location.href = `/consultations/${id}`;
-    };
+const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
+  const handleConsultation = (id: number) => {
+    window.location.href = `/consultations/${id}`;
+  };
 
   const handleRegister = () => {
     onClose();
-    onRegisterNewPatient(); 
+    onRegisterNewPatient();
   };
 
   return (
@@ -66,7 +66,7 @@ interface Props {
             <p className="text-sm text-gray-600 mb-4">No matching patient found. Would you like to register a new one?</p>
             <div className="flex justify-end">
               <Button
-                onClick={handleRegister} 
+                onClick={handleRegister}
                 className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
               >
                 Register New Patient

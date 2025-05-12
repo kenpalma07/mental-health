@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-
 interface PatientConsentProps {
   patient: {
     pat_fname: string;
@@ -16,70 +15,76 @@ interface PatientConsentProps {
   };
 }
 
+const calculateAge = (birthDate: string) => {
+  const birth = new Date(birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+};
+
 const PatientConsent: React.FC<PatientConsentProps> = ({ patient }) => {
   const [isAgreed, setIsAgreed] = useState(false);
-
+  const age = calculateAge(patient.pat_birthDate);
   const printConsent = () => {
     const printWindow = window.open('', '', 'width=800,height=600');
     if (printWindow) {
-      // Adding custom content for print
       printWindow.document.write(`
         <html>
           <head>
             <style>
               body { font-family: Arial, sans-serif; padding: 20px; }
-              h2 { font-size: 1.5em; margin-bottom: 20px; }
-              .content { margin-bottom: 20px; }
-              .footer { margin-top: 30px; }
-              .no-print { display: none; }
-              .facility-info { text-align: center; margin-bottom: 20px; }
-              .patient-info { margin-top: 20px; }
+              h1, h2, h3 { text-align: center; }
+              .section { margin-bottom: 20px; }
             </style>
           </head>
           <body>
-            <!-- Centered Facility Name and Address -->
-            <div class="facility-info">
-              <h1><strong>[Facility Name]</strong></h1>
-              <p>[Facility Address]</p>
+            <h3>Republic of the Philippines<br>
+            Province of Agusan del Sur<br>
+            MUNICIPALITY OF SAN FRANCISCO</h3>
+            <p style="text-align: center;">Purok 3, Barangay 4, San Francisco, Agusan del Sur<br>
+            Email: rhusanfranciscoagdsurdevt@yahoo.com</p>
+
+            <h2>MUNICIPAL HEALTH OFFICE</h2>
+            <p style="text-align: center;"><em>Transforming Lives, Building Healthy Communities</em></p>
+            <h3 style="margin-top: 20px;">INFORMED CONSENT</h3>
+
+            <div class="section">
+              <p>I, <strong>${patient.pat_fname} ${patient.pat_lname}</strong>, ${age} years of age, hereby consent to the medical, nursing, laboratory, and radiology procedures to be conducted by the staff of the <strong>Rural Health Unit and Reproductive Health Center of San Francisco</strong>. I entrust myself/the patient to their care and authorize them to administer necessary medications and treatments as prescribed by my attending physician whom I have voluntarily chosen and accepted to treat me/the patient.</p>
+
+              <p>I have been thoroughly explained on the treatment and procedures involved and have been provided with all necessary information. I understand that these may encompass various diagnostic tests, injections, and potentially invasive surgeries and procedures.</p>
+
+              <p><em>(Please specify the surgery or procedure if any)</em></p>
+              <p>________________________________________________________________________</p>
+
+              <p>Furthermore, I consent to the administration of anesthesia during the procedure as may then be considered necessary or desirable in the judgment of the medical staff. I also grant permission for the disposal of any tissues or parts by authorities of the Primary Care Facility (PCF) that may be deemed necessary to remove from me/the patient.</p>
+
+              <p>I agree to the documentation of the treatment or operation through photography and/or videography.</p>
+
+              <p>I am fully aware of and properly explained the <strong>No Balance Billing Policy</strong> for basic accommodation in the PCF. I am also informed on the pricing of various services and commodities offered by the facility such as the price of basic accommodation, fees of medical and surgical procedures, price of laboratory and professional fees, price of drugs and medicines and medical supplies, bundle/package price of health services, corresponding PhilHealth case rates and Z-package rates if applicable.</p>
+
+              <p>I understand that personal and sensitive data may be collected, and it will be handled with utmost confidentiality. Additionally, I have been informed about how the information will be used, stored, and shared.</p>
+
+              <p>This consent is given freely and voluntarily, without any external pressure or coercion. I acknowledge the potential risks and complications associated with the procedures, which may not always be foreseeable or avoidable.</p>
+
+              <p>I understand that neither the attending physician(s) nor the PCF personnel will be held liable for any charges, provided there is no negligence on their part.</p>
             </div>
-            
-            <h2 class="text-center">Patient Consent for Health Facility Care</h2>
-  
-            <!-- Patient Information -->
-            <div class="patient-info">
-              <p><strong>Patient Name:</strong> ${patient.pat_fname} ${patient.pat_lname}</p>
-              <p><strong>Sex:</strong> ${patient.sex_code === "M" ? "Male" : patient.sex_code === "F" ? "Female" : "N/A"}</p>
-              <p><strong>Birthdate:</strong> ${patient.pat_birthDate}</p>
-              <p><strong>Contact Number:</strong> ${patient.pat_mobile}</p>
-              <p><strong>Address:</strong> ${patient.patient_address}</p>
-            </div>
-  
-            <p>
-              I, <strong>${patient.pat_fname} ${patient.pat_lname}</strong>, hereby consent to receive medical care and treatment at <strong>[Health Facility Name]</strong>.
-              I acknowledge that I have been informed of the nature and purpose of the medical procedures and treatments I may undergo.
-              I understand that this consent is voluntary and that I have the right to withdraw it at any time.
-            </p>
-            <p>
-              By signing below, I approve the following:
-            </p>
-            <ol>
-              <li><strong>Medical Evaluation:</strong> I consent to undergo necessary medical evaluations, diagnostic tests, and consultations that are required for my treatment.</li>
-              <li><strong>Treatment Procedures:</strong> I authorize the healthcare professionals at <strong>[Health Facility Name]</strong> to provide appropriate treatment for my condition, including but not limited to medical procedures, medications, and surgical interventions as deemed necessary.</li>
-              <li><strong>Confidentiality:</strong> I understand that all information related to my medical care will be kept confidential according to the healthcare facility's privacy policies and applicable laws.</li>
-              <li><strong>Emergency Treatment:</strong> In the event of an emergency, I authorize <strong>[Health Facility Name]</strong> to administer the necessary treatment or procedures as deemed urgent by the healthcare team.</li>
-              <li><strong>Cost of Treatment:</strong> I acknowledge that I am responsible for all costs associated with the treatment I receive, including but not limited to, medical fees, diagnostic tests, and hospitalization expenses, unless otherwise covered by insurance.</li>
-              <li><strong>No Guarantee of Outcomes:</strong> I understand that while healthcare professionals at <strong>[Health Facility Name]</strong> will provide the best care possible, there are no guarantees regarding the results or outcomes of my treatment.</li>
-            </ol>
-            <p>
-              By signing this consent form, I confirm that I have been provided with sufficient information to make an informed decision about my treatment. I understand that I may ask questions and seek clarification about my treatment options.
-            </p>
-            <div class="footer">
-              <p>
-                Patient's Signature: _______________________
-              </p>
-              <p>
-                Date: _______________________
-              </p>
+
+            <div class="section">
+              <p>Signature or Thumbmark of Patient or Authorized Person: ____________________________</p>
+              <p>Relation to the patient: ____________________________</p>
+              <p>(In case the patient is minor or unable to sign)</p>
+              <br>
+              <p>Witness: ____________________________</p>
+              <p>Signature: ____________________________</p>
+              <p>Address: ____________________________</p>
+              <br>
+              <p>Interpreter (if required): ____________________________</p>
+              <p>Signature: ____________________________</p>
+              <p>Address: ____________________________</p>
             </div>
           </body>
         </html>
@@ -88,8 +93,6 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient }) => {
       printWindow.print();
     }
   };
-  
-  
 
   const handleAgreementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsAgreed(e.target.checked);
@@ -97,80 +100,72 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ patient }) => {
 
   return (
     <>
-  <Head title="Add Patients" />
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-5">
-      <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
-      <div className="relative bg-white p-6 rounded-lg shadow-xl z-10 w-full max-w-3xl">
-        {/* Logo and Facility Info */}
-        <div className="flex items-center justify-start mb-6 space-x-4">
-          {/* Logo */}
-          {/* <AppLogoIcon className="h-16 w-auto" /> */}
-
-          {/* Facility Name and Address */}
-          <div className="text-left">
-            <h1 className="text-xl font-semibold">[Facility Name]</h1>
-            <p className="text-sm text-gray-600">[Facility Address]</p>
+      <Head title="Patient Consent" />
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-5">
+        <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
+        <div className="relative bg-white p-6 rounded-lg shadow-xl z-10 w-full max-w-3xl overflow-y-auto max-h-screen">
+          <div className="text-center mb-4">
+            <h1 className="text-xl font-bold">Republic of the Philippines</h1>
+            <p>Province of Agusan del Sur</p>
+            <p className="font-semibold">MUNICIPALITY OF SAN FRANCISCO</p>
+            <p className="text-sm">Purok 3, Barangay 4, San Francisco, Agusan del Sur<br />Email: rhusanfranciscoagdsurdevt@yahoo.com</p>
           </div>
-        </div>
 
-        {/* Patient Consent Title */}
-        <h2 className="text-xl font-semibold text-center mb-6">
-          Patient Consent for Health Facility Care
-        </h2>
+          <h2 className="text-center font-bold text-lg mb-2">MUNICIPAL HEALTH OFFICE</h2>
+          <p className="text-center italic mb-4">Transforming Lives, Building Healthy Communities</p>
+          <h3 className="text-center text-md font-semibold mb-6">INFORMED CONSENT</h3>
 
-        {/* Scrollable Consent Text */}
-        <div className="space-y-4 max-h-96 overflow-y-auto mb-4">
-          <p className="text-base mb-4">
-            I, <strong>{patient.pat_fname} {patient.pat_lname}</strong>, hereby consent to receive medical care and treatment at <strong>[Health Facility Name]</strong>.
-            I acknowledge that I have been informed of the nature and purpose of the medical procedures and treatments I may undergo.
-            I understand that this consent is voluntary and that I have the right to withdraw it at any time.
-          </p>
-          <p className="text-base mb-4">By signing below, I approve the following:</p>
-          <ol className="list-decimal pl-5 mb-4">
-            <li className="mb-2"><strong>Medical Evaluation:</strong> I consent to undergo necessary medical evaluations, diagnostic tests, and consultations that are required for my treatment.</li>
-            <li className="mb-2"><strong>Treatment Procedures:</strong> I authorize the healthcare professionals at <strong>[Health Facility Name]</strong> to provide appropriate treatment for my condition, including but not limited to medical procedures, medications, and surgical interventions as deemed necessary.</li>
-            <li className="mb-2"><strong>Confidentiality:</strong> I understand that all information related to my medical care will be kept confidential according to the healthcare facility's privacy policies and applicable laws.</li>
-            <li className="mb-2"><strong>Emergency Treatment:</strong> In the event of an emergency, I authorize <strong>[Health Facility Name]</strong> to administer the necessary treatment or procedures as deemed urgent by the healthcare team.</li>
-            <li className="mb-2"><strong>Cost of Treatment:</strong> I acknowledge that I am responsible for all costs associated with the treatment I receive, including but not limited to, medical fees, diagnostic tests, and hospitalization expenses, unless otherwise covered by insurance.</li>
-            <li className="mb-2"><strong>No Guarantee of Outcomes:</strong> I understand that while healthcare professionals at <strong>[Health Facility Name]</strong> will provide the best care possible, there are no guarantees regarding the results or outcomes of my treatment.</li>
-          </ol>
-          <p className="text-base mb-6">
-            By signing this consent form, I confirm that I have been provided with sufficient information to make an informed decision about my treatment. I understand that I may ask questions and seek clarification about my treatment options.
-          </p>
+          <div className="space-y-4 text-justify text-sm max-h-[60vh] overflow-y-auto mb-4">
+            <p>I, <strong>{patient.pat_fname} {patient.pat_lname}</strong>, <strong>{age}</strong> years of age, hereby consent to the medical, nursing, laboratory, and radiology procedures to be conducted by the staff of the <strong>Rural Health Unit and Reproductive Health Center of San Francisco</strong>. I entrust myself/the patient to their care and authorize them to administer necessary medications and treatments as prescribed by my attending physician whom I have voluntarily chosen and accepted to treat me/the patient.</p>
 
-          {/* Consent Agreement */}
-          <div className="flex items-center space-x-2">
+            <p>I have been thoroughly explained on the treatment and procedures involved and have been provided with all necessary information. I understand that these may encompass various diagnostic tests, injections, and potentially invasive surgeries and procedures.</p>
+
+            <p><em>(Please specify the surgery or procedure if any)</em></p>
+            <p>________________________________________________________________________</p>
+
+            <p>Furthermore, I consent to the administration of anesthesia during the procedure as may then be considered necessary or desirable in the judgment of the medical staff. I also grant permission for the disposal of any tissues or parts by authorities of the Primary Care Facility (PCF) that may be deemed necessary to remove from me/the patient.</p>
+
+            <p>I agree to the documentation of the treatment or operation through photography and/or videography.</p>
+
+            <p>I am fully aware of and properly explained the <strong>No Balance Billing Policy</strong> for basic accommodation in the PCF. I am also informed on the pricing of various services and commodities offered by the facility such as the price of basic accommodation, fees of medical and surgical procedures, price of laboratory and professional fees, price of drugs and medicines and medical supplies, bundle/package price of health services, corresponding PhilHealth case rates and Z-package rates if applicable.</p>
+
+            <p>I understand that personal and sensitive data may be collected, and it will be handled with utmost confidentiality. Additionally, I have been informed about how the information will be used, stored, and shared.</p>
+
+            <p>This consent is given freely and voluntarily, without any external pressure or coercion. I acknowledge the potential risks and complications associated with the procedures, which may not always be foreseeable or avoidable.</p>
+
+            <p>I understand that neither the attending physician(s) nor the PCF personnel will be held liable for any charges, provided there is no negligence on their part.</p>
+          </div>
+
+          <div className="flex items-center space-x-2 mb-4">
             <Input
               type="checkbox"
-              id="dataPrivacy"
+              id="agreeConsent"
               checked={isAgreed}
               onChange={handleAgreementChange}
-              className="h-5 w-5 border-gray-300 rounded"
+              className="h-4 w-4"
             />
-            <Label htmlFor="dataPrivacy" className="text-sm">
-              I hereby agree to the Data Privacy Act and consent to the use of my data for treatment purposes.
+            <Label htmlFor="agreeConsent" className="text-sm">
+              I have read and agree to the terms of the informed consent.
             </Label>
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="flex justify-end gap-4 mt-4">
-        <Button
-            onClick={() => router.visit('/patients')} 
-            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-          >
-            Close
-        </Button>
-          <Button
-            onClick={printConsent}
-            disabled={!isAgreed}
-            className={`px-4 py-2 ${isAgreed ? 'bg-green-600' : 'bg-gray-300 cursor-not-allowed'} text-white rounded-lg hover:bg-green-700`}
-          >
-            Print Consent
-          </Button>
+          <div className="flex justify-end gap-4 mt-4">
+            <Button
+              onClick={() => router.visit('/patients')}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+            >
+              Close
+            </Button>
+            <Button
+              onClick={printConsent}
+              disabled={!isAgreed}
+              className={`px-4 py-2 ${isAgreed ? 'bg-green-600' : 'bg-gray-300 cursor-not-allowed'} text-white rounded-lg hover:bg-green-700`}
+            >
+              Print Consent
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

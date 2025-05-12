@@ -4,7 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
+<<<<<<< HEAD
 import { Head, Link, useForm } from '@inertiajs/react';
+=======
+import { Head, useForm } from '@inertiajs/react';
+>>>>>>> d7f86dc6b6ff8e17369e1aeb78fcd171525aeaed
 import React, { useEffect, useState } from 'react';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 

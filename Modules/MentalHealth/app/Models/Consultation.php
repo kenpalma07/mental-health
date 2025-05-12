@@ -26,6 +26,7 @@ class Consultation extends Model
         'pat_temperature',
         'pat_heart_rate',
         'pat_oxygen_sat',
+        'respiratoryRate',
         'pat_height',
         'pat_weight',
         'pat_BMI',
@@ -45,14 +46,14 @@ class Consultation extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $now = Carbon::now();
+            $now = Carbon::now('Asia/Manila');
             $model->date_entered = $now->toDateString();
             $model->time_entered = $now->toTimeString();
             $model->ts_created_at = $now;
         });
 
         static::updating(function ($model) {
-            $now = Carbon::now();
+            $now = Carbon::now('Asia/Manila');
             $model->date_updated = $now->toDateString();
             $model->time_updated = $now->toTimeString();
             $model->ts_updated_at = $now;

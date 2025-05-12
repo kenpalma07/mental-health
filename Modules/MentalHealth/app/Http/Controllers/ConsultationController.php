@@ -11,16 +11,15 @@ class ConsultationController extends Controller
 {
     public function index($id)
     {
-        $patient = MasterPatient::find($id);
-
-        if (!$patient) {
-            abort(404, 'Patient not found');
-        }
-
+        $patient = MasterPatient::findOrFail($id);
+        $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
+    
         return inertia('MentalHealth::Consultation/index', [
-            'patient' => $patient
+            'patient' => $patient,
+            'consultations' => $consultations,
         ]);
     }
+    
 
     public function store(Request $request)
     {
