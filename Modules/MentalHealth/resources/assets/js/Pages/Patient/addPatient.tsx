@@ -5,11 +5,10 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Select } from '@headlessui/react';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 import SearchPatientModal from './SearchPatientModal';
-
 
 type LocationData = {
     [regionCode: string]: {
@@ -33,16 +32,29 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Add Patients', href: '/patients/create' },
 ];
 
+interface Facility {
+    fhudcode: string;
+    facility_name: string;
+    facility_address: string;
+    provider_name: string;
+}
+
 interface PageProps {
     nextId: string;
+    facilities: Facility[];
     [key: string]: unknown;
 }
 
 export default function AddPatient() {
-    const { nextId } = usePage<PageProps>().props;
+    const { nextId, facilities } = usePage<PageProps>().props;
+    const [fhudcode, setFhudcode] = useState<string>('');
+    const [facilityName, setFacilityName] = useState<string>('');
+    const [facilityAddress, setFacilityAddress] = useState<string>('');
+    const [providerName, setProviderName] = useState<string>('');
 
     const { data, setData, post, processing, errors } = useForm({
         master_patient_perm_id: nextId,
+        fhudcode: '',
         facility_name: '',
         facility_location: '',
         provider_name: '',
@@ -75,18 +87,32 @@ export default function AddPatient() {
         mot_fname: '',
         mot_mname: '',
         mot_lname: '',
-        mot_birthDate: '',
+        mot_birthdate: '',
         mot_address: '',
         mot_contact: '',
         mot_deceased_status: '',
         fat_fname: '',
         fat_mname: '',
         fat_lname: '',
-        fat_birthDate: '',
+        fat_birthdate: '',
         fat_address: '',
         fat_contact: '',
         fat_deceased_status: '',
+        trackno: '',
     });
+
+    useEffect(() => {
+        if (facilities && facilities.length > 0) {
+            setFhudcode(facilities[0].fhudcode);
+            setFacilityName(facilities[0].facility_name);
+            setFacilityAddress(facilities[0].facility_address);
+            setProviderName(facilities[0].provider_name);
+            setData('fhudcode', facilities[0].fhudcode);
+            setData('facility_name', facilities[0].facility_name);
+            setData('facility_location', facilities[0].facility_address);
+            setData('provider_name', facilities[0].provider_name);
+        }
+    }, [facilities, setData]);
 
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedProvince, setSelectedProvince] = useState('');
@@ -194,12 +220,26 @@ export default function AddPatient() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Patients" />
+            <Head title="Add Patient" />
 
             <form onSubmit={handleSubmit} className="w-full space-y-8 px-10 py-8">
                 {/* ----------------- Start of Patient Registration Form ----------------- */}
 
-                <h2 className="text-lg font-semibold">PATIENT REGISTRATION FORM</h2>
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 pb-4 md:flex-row">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-800">PATIENT REGISTRATION FORM</h2>
+
+                    <div className="flex items-center gap-3">
+                        <Button type="submit" disabled={processing}>
+                            Save Patient
+                        </Button>
+                        <Link
+                            href="/patients"
+                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
+                        >
+                            Back to Patient List
+                        </Link>
+                    </div>
+                </div>
                 <hr></hr>
                 <h3 className="text-lg font-semibold">Facility Information</h3>
 
@@ -211,9 +251,10 @@ export default function AddPatient() {
                         </Label>
                         <Input
                             id="facility_name"
-                            className="text-dark-500"
+                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
                             value={data.facility_name}
                             onChange={(e) => setData('facility_name', e.target.value)}
+                            readOnly
                         />
                         <InputError message={errors.facility_name} />
                     </div>
@@ -223,9 +264,10 @@ export default function AddPatient() {
                         </Label>
                         <Input
                             id="facility_location"
-                            className="text-dark-500"
+                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
                             value={data.facility_location}
                             onChange={(e) => setData('facility_location', e.target.value)}
+                            readOnly
                         />
                         <InputError message={errors.facility_location} />
                     </div>
@@ -235,9 +277,10 @@ export default function AddPatient() {
                         </Label>
                         <Input
                             id="provider_name"
-                            className="text-dark-500"
+                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
                             value={data.provider_name}
                             onChange={(e) => setData('provider_name', e.target.value)}
+                            readOnly
                         />
                         <InputError message={errors.provider_name} />
                     </div>
@@ -253,6 +296,19 @@ export default function AddPatient() {
                             onChange={(e) => setData('registered_at', e.target.value)}
                         />
                         <InputError message={errors.registered_at} />
+                    </div>
+                    <div className="hidden">
+                        <Label htmlFor="fhudcode">
+                            FHUD Code <span className="font-bold text-red-600">*</span>
+                        </Label>
+                        <Input
+                            id="fhudcode"
+                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
+                            value={data.fhudcode}
+                            onChange={(e) => setData('fhudcode', e.target.value)}
+                            readOnly
+                        />
+                        <InputError message={errors.fhudcode} />
                     </div>
                 </div>
                 {/* ----------------- End of Facility Information ----------------- */}
@@ -278,17 +334,11 @@ export default function AddPatient() {
 
                         {/* ----------------- Profile Picture ----------------- */}
                         {/* <div>
-              <Label htmlFor="pat_photo">
-                Patient Photo <span className="text-red-600 font-bold">*</span>
-              </Label>
-              <Input
-                type="file"
-                id="pat_photo"
-                accept="image/*"
-                capture="environment"
-                className="text-dark-500"
-              />
-            </div> */}
+                            <Label htmlFor="pat_photo">
+                                Patient Photo <span className="font-bold text-red-600">*</span>
+                            </Label>
+                            <Input type="file" id="pat_photo" accept="image/*" capture="environment" className="text-dark-500" />
+                        </div> */}
                         {/* ----------------- End of Patient Record Number ----------------- */}
 
                         {/* ----------------- Start of Prefix ----------------- */}
@@ -844,15 +894,15 @@ export default function AddPatient() {
                             <InputError message={errors.mot_lname} />
                         </div>
                         <div>
-                            <Label htmlFor="mot_birthDate">Birth Date</Label>
+                            <Label htmlFor="mot_birthdate">Birth Date</Label>
                             <Input
-                                id="mot_birthDate"
+                                id="mot_birthdate"
                                 className="text-dark-500"
                                 type="date"
-                                value={data.mot_birthDate}
-                                onChange={(e) => setData('mot_birthDate', e.target.value)}
+                                value={data.mot_birthdate}
+                                onChange={(e) => setData('mot_birthdate', e.target.value)}
                             />
-                            <InputError message={errors.mot_birthDate} />
+                            <InputError message={errors.mot_birthdate} />
                         </div>
                         <div className="sm:col-span-2 lg:col-span-2">
                             <Label htmlFor="mot_address">Address</Label>
@@ -925,15 +975,15 @@ export default function AddPatient() {
                             <InputError message={errors.fat_lname} />
                         </div>
                         <div>
-                            <Label htmlFor="fat_birthDate">Birth Date</Label>
+                            <Label htmlFor="fat_birthdate">Birth Date</Label>
                             <Input
-                                id="fat_birthDate"
+                                id="fat_birthdate"
                                 className="text-dark-500"
                                 type="date"
-                                value={data.fat_birthDate}
-                                onChange={(e) => setData('fat_birthDate', e.target.value)}
+                                value={data.fat_birthdate}
+                                onChange={(e) => setData('fat_birthdate', e.target.value)}
                             />
-                            <InputError message={errors.fat_birthDate} />
+                            <InputError message={errors.fat_birthdate} />
                         </div>
                         <div className="sm:col-span-2 lg:col-span-2">
                             <Label htmlFor="fat_address">Address</Label>
@@ -976,10 +1026,16 @@ export default function AddPatient() {
                 {/* ----------------- End of Patient Registration Form ----------------- */}
 
                 {/* Submit */}
-                <div className="pt-6">
+                <div className="flex items-center gap-4 pt-6">
                     <Button type="submit" disabled={processing}>
                         Save Patient
                     </Button>
+                    <Link
+                        href="/patients"
+                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
+                    >
+                        Back to Patient List
+                    </Link>
                 </div>
             </form>
 

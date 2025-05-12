@@ -4,9 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
-import { router } from '@inertiajs/core';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 
 // 🛠️ DEFINE the type first
@@ -196,7 +195,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/patients/${patient.id}`); // Navigate manually
+        put(`/patients/${patient.id}`);
     };
 
     function formatTimestampForInput(timestamp: string): string {
@@ -251,11 +250,27 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Edit Patient" />
             <form onSubmit={handleSubmit} className="w-full space-y-8 px-10 py-8">
                 {/* Facility Info */}
-                <h2 className="text-lg font-semibold">EDIT PATIENT REGISTRATION FORM</h2>
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 pb-4 md:flex-row">
+                    <h2 className="text-xl font-bold text-gray-800 tracking-tight">EDIT PATIENT REGISTRATION FORM</h2>
+
+                    <div className="flex items-center gap-3">
+                        <Button type="submit" disabled={processing}>
+                            Update Patient
+                        </Button>
+                        <Link
+                            href="/patients"
+                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
+                        >
+                            Back to Patient List
+                        </Link>
+                    </div>
+                </div>
                 <hr></hr>
                 <h3 className="text-lg font-semibold">Facility Information</h3>
+
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     <div>
                         <Label>
@@ -830,7 +845,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                         {/* ----------------- End of Mother's Information ----------------- */}
 
                         {/* ----------------- Start of Father's Information ----------------- */}
-                        <h5 className="text-sm font-semibold text-gray-500">Mother's Maiden Name</h5>
+                        <h5 className="text-sm font-semibold text-gray-500">Father's Name</h5>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             <div>
                                 <Label htmlFor="fat_lname">Last Name</Label>
@@ -881,10 +896,16 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                     </div>
                 </div>
 
-                <div className="pt-6">
+                <div className="flex items-center gap-4 pt-6">
                     <Button type="submit" disabled={processing}>
                         Update Patient
                     </Button>
+                    <Link
+                        href="/patients"
+                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
+                    >
+                        Back to Patient List
+                    </Link>
                 </div>
             </form>
         </AppLayout>

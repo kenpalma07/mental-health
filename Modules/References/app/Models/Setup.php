@@ -3,6 +3,7 @@
 namespace Modules\References\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Setup extends Model
 {
@@ -11,7 +12,7 @@ class Setup extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'fhudcode', 'facility_name', 'faccode',
+        'fhudcode', 'facility_name', 'faccode', 'facility_address',
     ];
     
 }

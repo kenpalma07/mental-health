@@ -9,7 +9,7 @@ use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 use Modules\MentalHealth\Http\Controllers\AssessmentController; 
 
 // Patient Information
-Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+Route::get('/patients', [PatientController::class, 'index'])->name('patients');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
 Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 Route::get('/patients/search', [PatientController::class, 'search']);

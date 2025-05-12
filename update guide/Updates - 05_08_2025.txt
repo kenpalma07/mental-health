@@ -1,0 +1,3 @@
+Install these features
+
+1. npm install react-to-print

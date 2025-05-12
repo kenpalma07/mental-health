@@ -27,6 +27,7 @@ class SetupController extends Controller
             'facility_name' => 'required|string|max:255',
             'fhudcode' => 'required|string|max:50',
             'faccode' => 'required|string|max:50',
+            'facility_address' => 'required|string|max:255',
         ]);
 
         // If validation fails, Laravel will return a 422 error
@@ -34,5 +35,30 @@ class SetupController extends Controller
         FacilitySetup::create($data);
 
         return redirect()->route('facilitysetup')->with('success', 'Facility setup successfully!');
+    }
+
+    public function edit($id)
+    {
+        $facilitySetup = FacilitySetup::findOrFail($id);
+
+        return inertia('References::Setup/edit', [
+            'facilitySetup' => $facilitySetup,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'facility_name' => 'nullable|string|max:255|unique:tbl_facility_setup,facility_name,' . $id,
+            'fhudcode' => 'nullable|string|max:50|unique:tbl_facility_setup,fhudcode,' . $id,
+            'faccode' => 'nullable|string|max:50|unique:tbl_facility_setup,faccode,' . $id,
+            'provider_name' => 'nullable|string|max:255',
+            'facility_address' => 'nullable|string|max:255',
+        ]);
+
+        $facilitySetup = FacilitySetup::findOrFail($id);
+        $facilitySetup->update($data);
+
+        return redirect()->route('facilitysetup')->with('success', 'Facility setup updated successfully!');
     }
 }

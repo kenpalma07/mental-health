@@ -12,7 +12,7 @@ class FacilitySetup extends Model
 
 
     protected $fillable = [
-        'fhudcode', 'facility_name', 'faccode',
+        'fhudcode', 'facility_name', 'faccode', 'facility_address', 'provider_name',
     ];
 
     public $timestamps = false;
