@@ -105,68 +105,8 @@ const medcardindex: React.FC = () => {
                 </button>
               </div>
             </div>
-<<<<<<< HEAD
-            <br></br>
-=======
-            <div className="w-1/3 border p-2">
-              <h2 className="font-bold mb-2">Patient Info</h2>
-              <input className="w-full border p-1 mb-1" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="birthdate" placeholder="Birthdate" value={formData.birthdate} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="doctor" placeholder="Doctor" value={formData.doctor} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="doctorPhone" placeholder="Doctor Phone" value={formData.doctorPhone} onChange={handleChange} />
-              <input className="w-full border p-1 mb-1" name="emergencyName" placeholder="Emergency Contact Name" value={formData.emergencyName} onChange={handleChange} />
-              <input className="w-full border p-1" name="emergencyPhone" placeholder="Emergency Contact Phone" value={formData.emergencyPhone} onChange={handleChange} />
-            </div>
-            <div className="w-1/3 border p-2 flex flex-col items-center justify-center text-center">
-              <h1 className="text-lg font-bold">MEDICATION CARD</h1>
-              <p className="mt-4 text-sm">Municipal Health Office</p>
-              <p className="text-sm">Authorized Signature</p>
-              <div className="mt-4 border-t w-full pt-2 text-sm">Municipal Mayor</div>
-            </div>
-            <button onscree>print</button>
-          </div>
-  
-          {/* Medication Table */}
-          <div className="border p-2 w-full">
-            <h2 className="text-center font-bold mb-2">MEDICATION</h2>
-            <table className="table-auto w-full border text-xs">
-              <thead>
-                <tr>
-                  <th className="border p-1">Name of Drug</th>
-                  <th className="border p-1">Date</th>
-                  <th className="border p-1">Dose/Strength</th>
-                  <th className="border p-1">Given</th>
-                  <th className="border p-1">Signature</th>
-                </tr>
-              </thead>
-              <tbody>
-                {formData.medications.map((med, index) => (
-                  <tr key={index}>
-                    <td className="border p-1">
-                      <input className="w-full" value={med.drug} onChange={e => handleChange(e, index, 'drug')} />
-                    </td>
-                    <td className="border p-1">
-                      <input className="w-full" value={med.date} onChange={e => handleChange(e, index, 'date')} />
-                    </td>
-                    <td className="border p-1">
-                      <input className="w-full" value={med.dose} onChange={e => handleChange(e, index, 'dose')} />
-                    </td>
-                    <td className="border p-1">
-                      <input className="w-full" value={med.given} onChange={e => handleChange(e, index, 'given')} />
-                    </td>
-                    <td className="border p-1">
-                      <input className="w-full" value={med.personnel} onChange={e => handleChange(e, index, 'personnel')} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
->>>>>>> b026c8de4c1dfc36ce9cacf7afc44940df5022a8
+            <br>
+            </br>
 
               {/* Medication Table Card */}
             <div className="bg-white shadow-lg rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">

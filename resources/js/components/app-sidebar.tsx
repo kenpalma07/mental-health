@@ -82,6 +82,7 @@ const footerNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'FHUD', href: '/references/fhud' },
+            { title: 'Employees', href: '/references/employees' },
             { title: 'Setup', href: '/references/setup' },
         ],
     },

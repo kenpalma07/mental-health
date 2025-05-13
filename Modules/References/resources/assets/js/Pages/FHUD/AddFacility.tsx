@@ -130,18 +130,22 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        if (name === 'fhudcode') {
-            const digitsOnly = value.replace(/\D/g, '');
-            if (digitsOnly.length <= 7) {
-                setForm((prev) => ({ ...prev, fhudcode: digitsOnly }));
+        if (name === 'faccode') {
+            // Always update faccode
+            setForm((prev) => ({ ...prev, faccode: value }));
+    
+            // Extract last 7 digits from the value and update fhudcode
+            const match = value.match(/\d{7}$/);
+            if (match) {
+                setForm((prev) => ({ ...prev, fhudcode: match[0] }));
             }
             return;
         }
 
-        if (name === 'zipcode') {
+        if (name === 'fhudcode' || name === 'zipcode') {
             const digitsOnly = value.replace(/\D/g, '');
             if (digitsOnly.length <= 7) {
-                setForm((prev) => ({ ...prev, zipcode: digitsOnly }));
+                setForm((prev) => ({ ...prev, [name]: digitsOnly }));
             }
             return;
         }
@@ -229,6 +233,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
         setForm((prev) => ({ ...prev, citycode: municipality, brgycode: '' }));
     };
 
+
     if (!isOpen) return null;
 
     return (
@@ -277,7 +282,8 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             placeholder="Code"
                             inputMode="numeric"
                             maxLength={7}
-                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
+                            readOnly
                         />
                         <InputError message={errors.fhudcode} />
                     </div>
@@ -313,6 +319,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         />
                         <InputError message={errors.facility_name} />
                     </div>
+
                     {/* Name of the Provider */}
                     <div>
                         <Label htmlFor="provider_name">
@@ -329,6 +336,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         <InputError message={errors.provider_name} />
                     </div>
 
+                    {/* Facility Address */}
                     <div className="col-span-2">
                         <Label htmlFor="facility_address">
                             Facility Location / Address: <span className="font-bold text-red-600">*</span>

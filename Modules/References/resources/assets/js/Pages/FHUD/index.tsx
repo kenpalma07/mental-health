@@ -17,7 +17,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import { Edit2, PlusCircleIcon } from 'lucide-react';
+import { Edit2, MoreHorizontal, PlusCircleIcon } from 'lucide-react';
 import React from 'react';
 import AddFacility from '../FHUD/AddFacility';
 import EditFacility from '../FHUD/EditFacility';
@@ -28,67 +28,68 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const FHUDIndex: React.FC = () => {
-    const { facility } = usePage<PageProps<{ facility: FHUD[] }>>().props;
-
+    const { facility }: { facility: FHUD[] } = usePage<PageProps<{ facility: FHUD[] }>>().props;
     const [searchTerm, setSearchTerm] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
     const [view, setView] = React.useState<'table' | 'grid'>('table');
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [editModalOpen, setEditModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedFacility, setSelectedFacility] = React.useState<FHUD | null>(null);
+
+    console.log("Active Facility:", facility);
 
     const filteredFacilities = React.useMemo(() => {
         const term = searchTerm.toLowerCase();
-        return facility.filter((fac: FHUD) => [fac.fhudcode, fac.facility_name, fac.faccode].some((field) => field?.toLowerCase().includes(term)));
+        return facility.filter((fac) => [fac.fhudcode, fac.facility_name, fac.faccode].some((field) => field?.toLowerCase().includes(term)));
     }, [facility, searchTerm]);
 
-    const columns = React.useMemo<ColumnDef<FHUD>[]>(() => [
-        { accessorKey: 'fhudcode', header: 'Code' },
-        { accessorKey: 'facility_name', header: 'Facility Name' },
-        {
-            accessorKey: 'date_mod',
-            header: 'Date Added',
-            cell: ({ row }) => dayjs(row.original.date_mod).format('YYYY-MM-DD'),
-        },
-        { accessorKey: 'faccode', header: 'Facility Code' },
-        {
-            accessorKey: 'facility_stat',
-            header: 'Status',
-            cell: ({ row }) => {
-                const status = row.getValue('facility_stat');
-                return status === 'A' ? 'Active' : status === 'I' ? 'Inactive' : status;
+    const handleEdit = (fhud: FHUD) => {
+        setSelectedFacility(fhud);
+        console.log("Active FHUD:", fhud);
+        setIsEditModalOpen(true);
+    };
+
+    const columns = React.useMemo<ColumnDef<FHUD>[]>(
+        () => [
+            { accessorKey: 'fhudcode', header: 'Code' },
+            { accessorKey: 'facility_name', header: 'Facility Name' },
+            { accessorKey: 'provider_name', header: 'Name of the Provider' },
+            { accessorKey: 'faccode', header: 'Facility Code' },
+            {
+                accessorKey: 'date_mod',
+                header: 'Date Registered',
+                cell: ({ row }) => dayjs(row.original.date_mod).format('MM-DD-YYYY'),
             },
-        },
-        {
-            id: 'actions',
-            header: 'Actions',
-            enableHiding: false,
-            cell: ({ row }) => {
-                const fhud = row.original;
-                return (
+            {
+                accessorKey: 'facility_stat',
+                header: 'Status',
+                cell: ({ row }) => {
+                    const status = row.getValue('facility_stat');
+                    return status === 'A' ? 'Active' : status === 'I' ? 'Inactive' : status;
+                },
+            },
+            {
+                id: 'actions',
+                header: 'Actions',
+                enableHiding: false,
+                cell: ({ row }) => (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-6 w-6 p-0 text-lg font-bold">
-                                ...
-                            </Button>
+                            <MoreHorizontal className="h-4 w-4 cursor-pointer" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem
-                                onClick={() => {
-                                    setSelectedFacility(fhud);
-                                    setEditModalOpen(true);
-                                }}
-                            >
+                            <DropdownMenuItem onClick={() => handleEdit(row.original)}>
                                 <Edit2 className="mr-2 h-4 w-4" />
                                 Edit
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                );
+                ),
             },
-        },
-    ], []);
+        ],
+        [],
+    );
 
     const table = useReactTable({
         data: filteredFacilities,
@@ -105,6 +106,7 @@ const FHUDIndex: React.FC = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="FHUD Facilities" />
+
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -127,9 +129,9 @@ const FHUDIndex: React.FC = () => {
                 <div className="overflow-x-auto rounded-lg border bg-white shadow">
                     <table className="min-w-full text-left text-sm text-gray-700">
                         <thead className="border-b bg-black text-xs text-white">
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
+                            {table.getHeaderGroups().map((group) => (
+                                <tr key={group.id}>
+                                    {group.headers.map((header) => (
                                         <th key={header.id} className="px-6 py-2">
                                             {header.isPlaceholder ? null : (
                                                 <div className="cursor-pointer select-none" onClick={header.column.getToggleSortingHandler()}>
@@ -167,7 +169,7 @@ const FHUDIndex: React.FC = () => {
 
                 <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-gray-600">
-                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                        Page {pagination.pageIndex + 1} of {table.getPageCount()}
                     </div>
 
                     <div className="flex gap-2">
@@ -195,7 +197,12 @@ const FHUDIndex: React.FC = () => {
                         <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
                             Next
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => table.setPageIndex(table.getPageCount() - 1)} disabled={!table.getCanNextPage()}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                            disabled={!table.getCanNextPage()}
+                        >
                             Last
                         </Button>
                     </div>
@@ -205,38 +212,37 @@ const FHUDIndex: React.FC = () => {
             <AddFacility
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubmit={(data) => {
+                onSubmit={(data) =>
                     router.post('/references/fhud', data, {
                         onSuccess: () => {
                             setIsModalOpen(false);
                             setSearchTerm('');
                             setPagination({ pageIndex: 0, pageSize: 10 });
                         },
-                    });
-                }}
+                    })
+                }
             />
 
-            <EditFacility
-                isOpen={editModalOpen}
-                facility={selectedFacility}
-                onClose={() => setEditModalOpen(false)}
-                onSubmit={(data) => {
-                    if (!selectedFacility) return;
-                    router.put(`/references/fhud/${selectedFacility.id}`, data, {
-                        onSuccess: () => {
-                            setEditModalOpen(false);
-                            setSelectedFacility(null);
-                            router.visit(window.location.href, {
-                                preserveScroll: true,
-                                preserveState: true,
-                              });
-                              
-                            setSearchTerm('');
-                            setPagination({ pageIndex: 0, pageSize: 10 });
-                        },
-                    });
-                }}
-            />
+            {selectedFacility && (
+                <EditFacility
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        setIsEditModalOpen(false);
+                        setSelectedFacility(null);
+                    }}
+                    facility={selectedFacility}
+                    onSubmit={(data) =>
+                        router.put(`/references/fhud/${selectedFacility.id}`, data, {
+                            onSuccess: () => {
+                                setIsEditModalOpen(false);
+                                setSelectedFacility(null);
+                                setSearchTerm('');
+                                setPagination({ pageIndex: 0, pageSize: 10 });
+                            },
+                        })
+                    }
+                />
+            )}
         </AppLayout>
     );
 };
