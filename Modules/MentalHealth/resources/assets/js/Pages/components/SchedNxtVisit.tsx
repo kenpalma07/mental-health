@@ -8,9 +8,9 @@ import { useEffect, useState } from 'react';
 
 export default function SchedNxtVisit() {
     const { data, setData, post, processing, errors } = useForm({
-        next_visit_date: '',
+        date_nxt_visit: '',
     });
-    console.log('Scheduled Next Visit:', data.next_visit_date); // Log the next visit date
+    // console.log('Scheduled Next Visit:', data.next_visit_date); // Log the next visit date
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/schedule/next-visit');
@@ -86,18 +86,18 @@ export default function SchedNxtVisit() {
                             </div>
 
                             <div>
-                                <Label htmlFor="next_visit_date" className="text-sm">
+                                <Label htmlFor="date_nxt_visit" className="text-sm">
                                     Choose a date
                                 </Label>
                                 <Input
                                     type="date"
-                                    id="next_visit_date"
-                                    name="next_visit_date"
-                                    value={data.next_visit_date}
-                                    onChange={(e) => setData('next_visit_date', e.target.value)}
+                                    id="date_nxt_visit"
+                                    name="date_nxt_visit"
+                                    value={data.date_nxt_visit}
+                                    onChange={(e) => setData('date_nxt_visit', e.target.value)}
                                     className="mt-1"
                                 />
-                                {errors.next_visit_date && <p className="mt-1 text-sm text-red-500">{errors.next_visit_date}</p>}
+                                {errors.date_nxt_visit && <p className="mt-1 text-sm text-red-500">{errors.date_nxt_visit}</p>}
                             </div>
 
                             <Button type="submit" className="flex w-full items-center gap-2" disabled={processing}>

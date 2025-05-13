@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, Cog, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings } from 'lucide-react';
+import { FileBarChart2, Folder, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [

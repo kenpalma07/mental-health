@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 use Modules\MentalHealth\Models\MentalAssessmentForm;
 use Modules\MentalHealth\Models\MasterPatient;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class AssessmentController extends Controller
 {
@@ -19,39 +19,43 @@ class AssessmentController extends Controller
             abort(404, 'Patient not found');
         }
 
-        return inertia('MentalHealth::Assessment/index', [
+        return Inertia::render('MentalHealth::Assessment/index', [
             'patient' => $patient
         ]);
     }
 
     public function store(Request $request)
     {
-        // Validate the request data
         $validated = $request->validate([
-            'consultation_id' => 'nullable|string|max:50', 
+            'consultation_id' => 'nullable|string|max:50',
             'pat_temp_id' => 'nullable|string|max:50',
             'carer_name' => 'nullable|string|max:200',
             'carer_address' => 'nullable|string|max:250',
             'carer_mobile' => 'nullable|string|max:20',
+    
+            // Fields from frontend as arrays
+            'psycho_inter' => 'nullable|array',
+            'career_fam_choice' => 'nullable|array',
+            'link_status' => 'nullable|array',
+            'ref_choice' => 'nullable|array',
+            'ref_fhud' => 'nullable|array',
+            'ref_reason' => 'nullable|array',
+            'special_pop' => 'nullable|array',
+            'treat_avail' => 'nullable|array',
+            'treat_choice' => 'nullable|array',
+    
             'carer_relationship' => 'nullable|string|max:50',
             'assessment_physical_health' => 'nullable|string|max:200',
             'management_physical_health' => 'nullable|string|max:200',
-            'presenting_complaint' => 'nullable|string|max:200',
-            'general_health_history' => 'nullable|string|max:200',
-            'mns_history' => 'nullable|string|max:200',
-            'fam_hist_mns_conditions' => 'nullable|string|max:200',
-            'psychosocial_interventions1' => 'nullable|string|max:200',
-            'carer_family' => 'nullable|string|max:200',
             'child_and_adolescent' => 'nullable|in:Y,N',
             'older_adults' => 'nullable|in:Y,N',
             'preg_or_breastf_wom' => 'nullable|in:Y,N',
             'assess_self_suic' => 'nullable|string',
-            'registered_at' => 'nullable|date',
-            'treat_avail' => 'nullable|string|max:100',
-            'treat_choice' => 'nullable|string|max:100',
+    
             'icd_10_code' => 'nullable|string|max:100',
             'icd_10_descrip' => 'nullable|string|max:255',
             'diagnosis' => 'nullable|string|max:255',
+    
             'phar_date' => 'nullable|date',
             'phar_med' => 'nullable|string|max:100',
             'phar_intake' => 'nullable|numeric',
@@ -63,34 +67,98 @@ class AssessmentController extends Controller
             'phar_quantity' => 'nullable|numeric',
             'phar_doc' => 'nullable|string|max:255',
             'phar_remarks' => 'nullable|string|max:255',
-            'ref_choice' => 'nullable|string|max:100',
-            'ref_fhud' => 'nullable|string|max:255',
-            'ref_reason' => 'nullable|string|max:255',
-            'link_status' => 'nullable|string|max:255',
-            'special_pop' => 'nullable|string|max:255',
+    
             'date_nxt_visit' => 'nullable|date',
         ]);
     
-        // Format the registered_at timestamp if it exists
-        if (!empty($validated['registered_at'])) {
-            $validated['registered_at'] = Carbon::parse($validated['registered_at'])->format('Y-m-d H:i:s');
+        $assessData = $request->only([
+            'consultation_id',
+            'pat_temp_id',
+            'carer_name',
+            'carer_address',
+            'carer_mobile',
+            'carer_relationship',
+            'assessment_physical_health',
+            'management_physical_health',
+            'child_and_adolescent',
+            'older_adults',
+            'preg_or_breastf_wom',
+            'assess_self_suic',
+            'icd_10_code',
+            'icd_10_descrip',
+            'diagnosis',
+            'phar_date',
+            'phar_med',
+            'phar_intake',
+            'phar_intakeUnit',
+            'phar_freq',
+            'phar_freqUnit',
+            'phar_dur',
+            'phar_durUnit',
+            'phar_quantity',
+            'phar_doc',
+            'phar_remarks',
+            'date_nxt_visit',
+        ]);
+    
+        $fieldsToImplode = [
+            'psycho_inter',
+            'career_fam_choice',
+            'link_status',
+            'ref_choice',
+            'ref_fhud',
+            'ref_reason',
+            'special_pop',
+            'treat_avail',
+            'treat_choice',
+        ];
+    
+        foreach ($fieldsToImplode as $field) {
+            if ($request->has($field) && is_array($request[$field])) {
+                $assessData[$field] = implode(', ', $request[$field]);
+            } else {
+                $assessData[$field] = null;
+            }
         }
     
-        // Fetch the consultation data using consult_perm_id
-        $consultation = DB::table('tbl_consultation')  // Use tbl_consultation
-            ->where('consult_perm_id', $request->input('consultation_id'))  // Match the consult_perm_id from the request
-            ->first();
+        // Handle label-item mapping
+        $categories = [
+            'fam_hist_mns_conditions' => ['item' => 'fam_hist_mns_cond_item', 'label' => 'fam_hist_mns_cond_label'],
+            'general_health_history' => ['item' => 'gen_heal_hist_item', 'label' => 'gen_heal_hist_label'],
+            'mns_history' => ['item' => 'mns_hist_item', 'label' => 'mns_hist_label'],
+            'presenting_complaint' => ['item' => 'pres_comp_item', 'label' => 'pres_comp_label'],
+        ];
     
-        if (!$consultation) {
-            return redirect()->back()->with('error', 'Consultation not found.');
+        foreach ($categories as $key => $field) {
+            $section = $request->input($key);
+            $sectionData = is_array($section) && isset($section[0]) ? $section[0] : [];
+    
+            $assessData[$field['item']] = isset($sectionData[$field['item']])
+                ? implode(', ', $sectionData[$field['item']])
+                : '';
+    
+            $assessData[$field['label']] = $sectionData[$field['label']] ?? '';
         }
     
-        // Assign the consult_perm_id from the consultation table to the consultation_id field in the assessment form
-        $validated['consultation_id'] = $consultation->consult_perm_id;
+        // Special population logic
+        if (in_array('Children and Adolescents', $request->special_pop)) {
+            $assessData['child_and_adolescent'] = 'Y';
+        }
     
-        // Create the new mental assessment form record
-        MentalAssessmentForm::create($validated);
+        if (in_array('Older Adults', $request->special_pop)) {
+            $assessData['older_adults'] = 'Y';
+        }
     
-        return redirect()->back()->with('success', 'Assessment saved.');
+        if (in_array('Pregnant or Breastfeeding woman', $request->special_pop)) {
+            $assessData['preg_or_breastf_wom'] = 'Y';
+        }
+    
+        // Save to database
+        MentalAssessmentForm::create($assessData);
+    
+        return redirect()->back()->with('success', 'Assessment form saved successfully.');
     }
+    
+    
 }
+

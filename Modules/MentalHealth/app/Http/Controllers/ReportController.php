@@ -3,27 +3,28 @@ namespace Modules\MentalHealth\Http\Controllers;
 use Modules\MentalHealth\Models\MasterPatient;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ReportController extends Controller
 {
     public function mhtracker()
     {
-        return inertia('MentalHealth::Report/mhtracker');
+        return Inertia::render('MentalHealth::Report/mhtracker');
     }
 
     public function mhmasterlist()
     {
-        return inertia('MentalHealth::Report/mhmasterlist');
+        return Inertia::render('MentalHealth::Report/mhmasterlist');
     }
 
     public function schoolagesr()
     {
-        return inertia('MentalHealth::Report/schoolagesr');
+        return Inertia::render('MentalHealth::Report/schoolagesr');
     }
 
     public function adultsr()
     {
-        return inertia('MentalHealth::Report/adultsr');
+        return Inertia::render('MentalHealth::Report/adultsr');
     }
 
 }

@@ -4,40 +4,41 @@ namespace Modules\MentalHealth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OtherController extends Controller
 {
     public function index()
     {
-        return inertia('MentalHealth::Other/index');
+        return Inertia::render('MentalHealth::Other/index');
     }
 
     
     public function itr()
     {
-        return inertia('MentalHealth::Forms/itr');
+        return Inertia::render('MentalHealth::Forms/itr');
     }
 
     
     public function medabstract()
     {
-        return inertia('MentalHealth::Forms/medabstract');
+        return Inertia::render('MentalHealth::Forms/medabstract');
     }
 
     
     public function referralform()
     {
-        return inertia('MentalHealth::Forms/referralform');
+        return Inertia::render('MentalHealth::Forms/referralform');
     }
 
     
     public function treatmentcard()
     {
-        return inertia('MentalHealth::Forms/treatmentcard');
+        return Inertia::render('MentalHealth::Forms/treatmentcard');
     }
 
     public function medcard()
     {
-        return inertia('MentalHealth::Forms/medcard');
+        return Inertia::render('MentalHealth::Forms/medcard');
     }
 }

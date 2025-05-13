@@ -29,7 +29,7 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
   return (
     <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Patient Medication History</h2>
+        <h2 className="text-lg font-semibold">Medication Dispense History</h2>
         <Button size="icon" variant="ghost" onClick={() => setIsModalOpen(false)}>
           ✕
         </Button>

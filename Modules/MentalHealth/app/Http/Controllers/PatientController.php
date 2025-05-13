@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\MasterPatient;
 use Carbon\Carbon;
+use Inertia\Inertia;
 
 class PatientController extends Controller
 {
@@ -32,7 +33,7 @@ class PatientController extends Controller
         // Apply pagination and append the current filters to the URL
         $patients = $query->paginate(10)->appends($request->only(['search', 'sex']));
 
-        return inertia('MentalHealth::Patient/index', [
+        return Inertia::render('MentalHealth::Patient/index', [
             'patients' => $patients->items(),
             'pagination' => $patients->toArray(),
             'filters' => $request->only(['search', 'sex']),
@@ -42,7 +43,7 @@ class PatientController extends Controller
     public function view($id)
     {
         $patient = MasterPatient::findOrFail($id);
-        return inertia('MentalHealth::Patient/viewPatientDetails', [
+        return Inertia::render('MentalHealth::Patient/viewPatientDetails', [
             'patient' => $patient,
         ]);
     }
@@ -52,7 +53,7 @@ class PatientController extends Controller
     {   
         $nextId = $this->generatePatientRecordNumber();
 
-        return inertia('MentalHealth::Patient/addPatient', [
+        return Inertia::render('MentalHealth::Patient/addPatient', [
             'nextId' => $nextId,
         ]);
     }
@@ -184,7 +185,7 @@ class PatientController extends Controller
     {
         $patient = MasterPatient::findOrFail($id);
 
-        return inertia('MentalHealth::Patient/editPatient', [
+        return Inertia::render('MentalHealth::Patient/editPatient', [
             'patient' => $patient,
         ]);
     }

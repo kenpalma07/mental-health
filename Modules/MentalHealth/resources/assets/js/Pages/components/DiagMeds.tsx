@@ -29,6 +29,8 @@ const DiagMeds = ({
     setDuration,
     durationUnit,
     setDurationUnit,
+    remarks,
+    setRemarks,
 }: {
     selectedDiagnosis: string;
     setSelectedDiagnosis: React.Dispatch<React.SetStateAction<string>>;
@@ -48,6 +50,8 @@ const DiagMeds = ({
     setDuration: React.Dispatch<React.SetStateAction<string>>;
     durationUnit: string;
     setDurationUnit: React.Dispatch<React.SetStateAction<string>>;
+    remarks: string;
+    setRemarks: React.Dispatch<React.SetStateAction<string>>;
 }) => {
     const diagnoses = [
         { label: 'Depression', icdKey: 'depression' },
@@ -64,23 +68,30 @@ const DiagMeds = ({
     const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
 
     useEffect(() => {
-        console.log('Diagnosis selected:', selectedDiagnosis);
+        const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description || '';
+        setIcd10Descrip(description);
+    }, [selectedDiagnosis, selectedIcdCode]);
+
+    const [icd10Descrip, setIcd10Descrip] = useState('');
+
+    useEffect(() => {
+        // console.log('Diagnosis selected:', selectedDiagnosis);
     }, [selectedDiagnosis]);
 
     useEffect(() => {
-        console.log('ICD Code selected:', selectedIcdCode);
+        // console.log('ICD Code selected:', selectedIcdCode);
     }, [selectedIcdCode]);
 
     useEffect(() => {
         const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description;
         if (description) {
-            console.log('ICD-10 Description:', description);
+            // console.log('ICD-10 Description:', description);
         }
     }, [selectedDiagnosis, selectedIcdCode]);
 
     const [dateIssued, setDateIssued] = useState('');
     useEffect(() => {
-        if (dateIssued) console.log('Date Issued:', dateIssued);
+        // if (dateIssued) console.log('Date Issued:', dateIssued);
     }, [dateIssued]);
 
     const doctors = [
@@ -88,35 +99,48 @@ const DiagMeds = ({
         { id: 'doc2', name: 'Dr. Jane Doe' },
         { id: 'doc3', name: 'Dr. John Smith' },
     ];
+    const dispenses = [
+        { id: 'Y', name: 'Yes' },
+        { id: 'N', name: 'No' },
+    ];
 
     const [selectedDoctor, setSelectedDoctor] = useState('');
+    const [selectedDispense, setSelectedDispsense] = useState('');
 
     useEffect(() => {
         const doctor = doctors.find((doc) => doc.id === selectedDoctor);
         if (doctor) {
-            console.log('Selected Doctor:', doctor);
+            // console.log('Selected Doctor:', doctor);
         }
     }, [selectedDoctor]);
 
-    const [remarks, setRemarks] = useState('');
     useEffect(() => {
-        if (remarks) console.log('Remarks:', remarks);
-    }, [remarks]);
+        const dispense = dispenses.find((dis) => dis.id === selectedDispense);
+        if (dispense) {
+            // console.log('Selected Doctor:', doctor);
+        }
+    }, [selectedDispense]);
+
 
     useEffect(() => {
-        console.log('Medicine selected:', selectedMedicine);
+        // if (remarks) //console.log('Remarks:', remarks);
+    }, [remarks]);
+
+
+    useEffect(() => {
+        // console.log('Medicine selected:', selectedMedicine);
     }, [selectedMedicine]);
 
     useEffect(() => {
-        console.log('Intake:', intake, intakeUnit);
+        // console.log('Intake:', intake, intakeUnit);
     }, [intake, intakeUnit]);
 
     useEffect(() => {
-        console.log('Frequency:', frequency, frequencyUnit);
+        // console.log('Frequency:', frequency, frequencyUnit);
     }, [frequency, frequencyUnit]);
 
     useEffect(() => {
-        console.log('Duration:', duration, durationUnit);
+        // console.log('Duration:', duration, durationUnit);
     }, [duration, durationUnit]);
 
     // Function to convert any unit to hours
@@ -153,7 +177,7 @@ const DiagMeds = ({
 
     useEffect(() => {
         const totalQuantity = calculateTotalQuantity();
-        console.log('Total Quantity:', totalQuantity);
+        // console.log('Total Quantity:', totalQuantity);
     }, [intake, frequency, duration, frequencyUnit, durationUnit]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -212,12 +236,9 @@ const DiagMeds = ({
                         <Label className="text-sm font-medium text-gray-700">Description</Label>
                         <Textarea
                             className="mt-1 w-full rounded-md border p-2 text-sm"
-                            rows={5}
-                            disabled
-                            value={
-                                icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description ||
-                                ''
-                            }
+                            rows={6}
+                            readOnly
+                            value={icd10Descrip}
                         />
                     </div>
                 </div>
@@ -232,8 +253,8 @@ const DiagMeds = ({
                         <h5 className="text-sm font-medium text-gray-700">Date Issued</h5>
                         <Input
                             type="date"
-                            id="date_issue"
-                            name="date_issue"
+                            id="phar_date"
+                            name="phar_date"
                             className="w-full rounded-md border p-2"
                             value={dateIssued}
                             onChange={(e) => setDateIssued(e.target.value)}
@@ -267,14 +288,14 @@ const DiagMeds = ({
                         </Button>
                     </div>
                     <div className="w-80">
-                        <Label className="text-sm font-medium text-gray-700">Patient Medication History</Label>
+                        <Label className="text-sm font-medium text-gray-700">Medication Dispense History</Label>
                         <Button
                             type="button"
                             onClick={() => setIsModalOpen(true)}
                             className="flex w-full items-center gap-2 rounded-md bg-green-600 p-2 text-sm text-white hover:bg-green-700"
                         >
                             <NotebookPen size={16} className="text-white" />
-                            Medication List
+                            Dispense List
                         </Button>
                     </div>
                 </div>
@@ -356,12 +377,12 @@ const DiagMeds = ({
                     {/* Total Quantity */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Total Quantity</h5>
-                        <Input className="w-full rounded-md border p-2" value={calculateTotalQuantity()} readOnly />
+                        <Input className="w-full rounded-md border p-2" name="phar_quantity" value={calculateTotalQuantity()} readOnly />
                     </div>
                     {/* Doctor */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
-                        <Select onValueChange={setSelectedDoctor}>
+                        <Select onValueChange={setSelectedDoctor} name="phar_doc">
                             <SelectTrigger className="w-full rounded-md border p-2">
                                 <SelectValue placeholder="Select Doctor" />
                             </SelectTrigger>
@@ -375,10 +396,27 @@ const DiagMeds = ({
                         </Select>
                     </div>
 
+                    {/* if dispense */}
+                    <div className="flex-1">
+                        <h5 className="text-sm font-medium text-gray-700">Is Dispense?</h5>
+                        <Select onValueChange={setSelectedDispsense}>
+                            <SelectTrigger className="w-full rounded-md border p-2">
+                                <SelectValue placeholder="Select Choices" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {dispenses.map((dis) => (
+                                    <SelectItem key={dis.id} value={dis.id}>
+                                        {dis.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
                     {/* Remarks */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Remarks</h5>
-                        <Textarea rows={3} className="w-full rounded-md border p-2" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+                        <Textarea rows={3} className="w-full rounded-md border p-2" name='phar_remarks' value={remarks} onChange={(e) => setRemarks(e.target.value)} />
                     </div>
                 </div>
 

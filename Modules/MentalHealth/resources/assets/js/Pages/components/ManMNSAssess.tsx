@@ -2,11 +2,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import React, { useEffect } from 'react';
+import React  from 'react';
 
 type Group = {
     label: string;
-    items: string[];
+    key: string;
+    items?: string[];
     isTextarea?: boolean;
     showTextareaOn?: string;
     isSelect?: boolean;
@@ -23,10 +24,12 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Avail Treatment?',
+                key: 'treat_avail',
                 items: ['YES', 'NO'],
             },
             {
                 label: 'Choices',
+                key: 'treat_choice',
                 items: ['Psychoeducation', 'Reduce stress and strengthen social support', 'Promote Exercise in daily activity'],
             },
         ],
@@ -36,7 +39,7 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Details',
-                items: [],
+                key: 'psycho_inter',
                 isTextarea: true,
             },
         ],
@@ -46,16 +49,18 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Choices',
+                key: 'ref_choice',
                 items: ['Specialist', 'Mental Hospital'],
             },
             {
                 label: 'Referred Facility',
+                key: 'ref_fhud',
                 items: ['sample hospital'],
                 isSelect: true,
             },
             {
                 label: 'Reasons',
-                items: [],
+                key: 'ref_reason',
                 isTextarea: true,
             },
         ],
@@ -65,6 +70,7 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Choices',
+                key: 'career_fam_choice',
                 items: [
                     'Informed Consent',
                     'Give the person freedom of movement',
@@ -81,6 +87,7 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Choices',
+                key: 'link_status',
                 items: ['Employment', 'Education', 'Social Services', 'Housing', 'Others'],
                 showTextareaOn: 'Others',
             },
@@ -91,6 +98,7 @@ const categories: Category[] = [
         groups: [
             {
                 label: 'Choices',
+                key: 'special_pop',
                 items: ['Children and Adolescents', 'Older Adults', 'Pregnant or Breastfeeding woman'],
             },
         ],
@@ -103,43 +111,38 @@ type Props = {
 };
 
 const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
-    // 🔍 Log the updated form data
-    useEffect(() => {
-        console.log('ManMNSAssess data:', data);
-    }, [data]);
-
-    const handleChange = (label: string, item: string) => {
+    const handleChange = (key: string, item: string) => {
         setmanMNSData((prev) => {
-            const current = prev[label] || [];
+            const current = prev[key] || [];
 
             if (item === 'Others' && current.includes(item)) {
                 return {
                     ...prev,
-                    [label]: current.filter((i) => i !== item && !i.startsWith('OTHER:')),
+                    [key]: current.filter((i) => i !== item && !i.startsWith('OTHER:')),
                 };
             }
 
             return {
                 ...prev,
-                [label]: current.includes(item) ? current.filter((i) => i !== item) : [...current, item],
+                [key]: current.includes(item) ? current.filter((i) => i !== item) : [...current, item],
             };
         });
     };
 
-    const handleTextareaChange = (label: string, value: string) => {
+    const handleTextareaChange = (key: string, value: string) => {
         setmanMNSData((prev) => {
-            const current = (prev[label] || []).filter((i) => !i.startsWith('OTHER:'));
+            const current = (prev[key] || []).filter((i) => !i.startsWith('OTHER:'));
             return {
                 ...prev,
-                [label]: [...current, `OTHER:${value}`],
+                [key]: [...current, `OTHER:${value}`],
             };
         });
     };
 
-    const handleSelectChange = (label: string, value: string) => {
+    const handleSelectChange = (key: string, value: string) => {
         setmanMNSData((prev) => ({
             ...prev,
-            [label]: [value],
+            [key]: [value],
         }));
     };
 
@@ -161,17 +164,17 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                         </div>
                         <div className="mt-2 flex flex-wrap gap-4">
                             {groups.map((group) => (
-                                <div key={group.label} className="min-w-[250px] flex-1">
+                                <div key={group.key} className="min-w-[250px] flex-1">
                                     <div className="mb-1 text-sm font-medium text-gray-600">{group.label}:</div>
                                     <div className="flex flex-col gap-2">
                                         {/* Checkboxes */}
                                         {!group.isTextarea &&
                                             !group.isSelect &&
-                                            group.items.map((item) => (
+                                            group.items?.map((item) => (
                                                 <label key={item} className="flex items-center space-x-2">
                                                     <Checkbox
-                                                        checked={data[group.label]?.includes(item) || false}
-                                                        onCheckedChange={() => handleChange(group.label, item)}
+                                                        checked={data[group.key]?.includes(item) || false}
+                                                        onCheckedChange={() => handleChange(group.key, item)}
                                                     />
                                                     <span>{item}</span>
                                                 </label>
@@ -180,14 +183,14 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                                         {/* Select dropdown */}
                                         {group.isSelect && (
                                             <Select
-                                                value={data[group.label]?.[0] || ''}
-                                                onValueChange={(value) => handleSelectChange(group.label, value)}
+                                                value={data[group.key]?.[0] || ''}
+                                                onValueChange={(value) => handleSelectChange(group.key, value)}
                                             >
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue placeholder="Select Facility" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {group.items.map((item) => (
+                                                    {group.items?.map((item) => (
                                                         <SelectItem key={item} value={item}>
                                                             {item}
                                                         </SelectItem>
@@ -201,31 +204,37 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                                             <Textarea
                                                 className="w-full rounded border p-2"
                                                 placeholder="Enter details..."
-                                                value={data[group.label]?.[0] || ''}
+                                                value={data[group.key]?.[0] || ''}
                                                 onChange={(e) =>
                                                     setmanMNSData((prev) => ({
                                                         ...prev,
-                                                        [group.label]: [e.target.value],
+                                                        [group.key]: [e.target.value],
                                                     }))
                                                 }
                                             />
                                         )}
 
                                         {/* Conditional textarea for "Others" */}
-                                        {group.showTextareaOn && data[group.label]?.includes(group.showTextareaOn) && (
-                                            <Textarea
-                                                className="mt-2 w-full rounded border p-2"
-                                                placeholder="Please specify..."
-                                                value={data[group.label]?.find((i) => i.startsWith('OTHER:'))?.replace('OTHER:', '') || ''}
-                                                onChange={(e) => handleTextareaChange(group.label, e.target.value)}
-                                            />
-                                        )}
+                                        {group.showTextareaOn &&
+                                            data[group.key]?.includes(group.showTextareaOn) && (
+                                                <Textarea
+                                                    className="mt-2 w-full rounded border p-2"
+                                                    placeholder="Please specify..."
+                                                    value={
+                                                        data[group.key]
+                                                            ?.find((i) => i.startsWith('OTHER:'))
+                                                            ?.replace('OTHER:', '') || ''
+                                                    }
+                                                    onChange={(e) => handleTextareaChange(group.key, e.target.value)}
+                                                />
+                                            )}
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
+
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Modules\MentalHealth\Models\MasterPatient;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\Consultation;
+use Inertia\Inertia;
 
 class ConsultationController extends Controller
 {
@@ -14,7 +15,7 @@ class ConsultationController extends Controller
         $patient = MasterPatient::findOrFail($id);
         $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
     
-        return inertia('MentalHealth::Consultation/index', [
+        return Inertia::render('MentalHealth::Consultation/index', [
             'patient' => $patient,
             'consultations' => $consultations,
         ]);
