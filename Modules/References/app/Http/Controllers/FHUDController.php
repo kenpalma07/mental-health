@@ -21,7 +21,7 @@ class FHUDController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('hfhudcode', 'like', "%{$search}%")
-                ->orWhere('hfhudname', 'like', "%{$search}%");
+                    ->orWhere('hfhudname', 'like', "%{$search}%");
             });
         }
 
@@ -52,7 +52,7 @@ class FHUDController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) 
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'fhudcode' => 'required|string|max:12',
@@ -103,15 +103,54 @@ class FHUDController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    // public function edit($id)
-    // {
-    //     return view('references::edit');
-    // }
+    public function edit($id)
+    {
+        $facility = FHUD::findOrFail($id); // Fetch the facility by its ID
+        return response()->json($facility); // You can return the facility data as JSON for your React component
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'fhudcode' => 'nullable|string|max:12',
+            'faccode' => 'required|string|max:255',
+            'facility_name' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:4',
+            'date_mod' => 'required|date',
+            'provider_name' => 'required|string|max:255',
+            'facility_address' => 'required|string|max:255',
+            'regcode' => 'required|string|max:255',
+            'provcode' => 'required|string|max:255',
+            'citycode' => 'required|string|max:255',
+            'bgycode' => 'required|string|max:255',
+            'facility_stat' => 'required|string|max:2',
+            'facility_licno' => 'nullable|string|max:255',
+            'accreno' => 'nullable|string|max:255',
+        ], [], [
+            'fhudcode' => 'Facility Code',
+            'faccode' => 'Facility Code',
+            'facility_name' => 'Facility Name',
+            'provider_name' => 'Name of the Provider',
+            'facility_address' => 'Facility Address',
+            'date_mod' => 'Date Modified',
+            'regcode' => 'Region',
+            'provcode' => 'Province',
+            'citycode' => 'City',
+            'bgycode' => ' Barangay',
+            'zipcode' => 'Zipcode',
+            'facility_stat' => 'Status',
+            'facility_licno' => 'Facility License Nummber',
+            'accreno' => 'PhilHealth Accreditation No',
+        ]);
+
+        $facility = FHUD::findOrFail($id);
+        $facility->update($validated);
+
+        return redirect()->route('facilityhealth')->with('success', 'Patient updated successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.

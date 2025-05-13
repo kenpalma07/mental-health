@@ -5,6 +5,7 @@ namespace Modules\MentalHealth\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\MasterPatient;
+use Modules\MentalHealth\Models\FHUDFacility;
 use Carbon\Carbon;
 
 class PatientController extends Controller
@@ -18,9 +19,9 @@ class PatientController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('pat_fname', 'like', "%{$search}%")
-                  ->orWhere('pat_lname', 'like', "%{$search}%")
-                  ->orWhere('facility_name', 'like', "%{$search}%")
-                  ->orWhere('master_patient_perm_id', 'like', "%{$search}%");
+                    ->orWhere('pat_lname', 'like', "%{$search}%")
+                    ->orWhere('facility_name', 'like', "%{$search}%")
+                    ->orWhere('master_patient_perm_id', 'like', "%{$search}%");
             });
         }
 
@@ -46,22 +47,24 @@ class PatientController extends Controller
             'patient' => $patient,
         ]);
     }
-    
+
 
     public function create()
-    {   
+    {
         $nextId = $this->generatePatientRecordNumber();
+        $facilities = FHUDFacility::all();
 
         return inertia('MentalHealth::Patient/addPatient', [
             'nextId' => $nextId,
+            'facilities' => $facilities,
         ]);
     }
 
     public function store(Request $request)
     {
-        // $validated = $request->validate([]);
         $validated = $request->validate([
             'master_patient_perm_id' => 'nullable|string|max:255', // New field added by Ken
+            'fhudcode' => 'nullable|string|max:12',
             'facility_name' => 'required|string|max:255',
             'facility_location' => 'required|string|max:255',
             'provider_name' => 'required|string|max:255',
@@ -90,14 +93,14 @@ class PatientController extends Controller
             'mot_fname' => 'nullable|string|max:255',
             'mot_mname' => 'nullable|string|max:255',
             'mot_lname' => 'nullable|string|max:255',
-            'mot_birthDate' => 'nullable|date',
+            'mot_birthdate' => 'nullable|date',
             'mot_address' => 'nullable|string|max:255', //Added by Ken
             'mot_contact' => 'nullable|string|max:20', //Added by Ken
             'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
             'fat_fname' => 'nullable|string|max:255',
             'fat_mname' => 'nullable|string|max:255',
             'fat_lname' => 'nullable|string|max:255',
-            'fat_birthDate' => 'nullable|date',
+            'fat_birthdate' => 'nullable|date',
             'fat_address' => 'nullable|string|max:255', //Added by Ken
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
@@ -113,7 +116,7 @@ class PatientController extends Controller
             'pat_mname' => 'Middle Name',
             'suffix_code' => 'Suffix',
             'sex_code' => 'Sex',
-            'civil_stat_code' =>'Civil Status',
+            'civil_stat_code' => 'Civil Status',
             'pat_birthdate' => 'Birthdate',
             'regcode' => 'Region',
             'provcode' => 'Province',
@@ -122,13 +125,25 @@ class PatientController extends Controller
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
         ]);
-        $timestamp = $request->input('registered_at');
-        $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
-        $masterPatientPermId = $request->input('master_patient_perm_id');
-        
-        $finalCombinedId = "{$masterPatientPermId}{$timestamp}";
-        //$validated['pat_temp_id'] = $finalCombinedId;
+        // $timestamp = $request->input('registered_at');
+        // $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
+        // $masterPatientPermId = $request->input('master_patient_perm_id');
+        // $facility = FHUDFacility::where('facility_name', $request->input('facility_name'))->first();
 
+        // if (!$facility) {
+        //     // Handle the error if no facility is found.
+        //     return redirect()->back()->with('error', 'Facility not found!');
+        // }
+
+        // $fhudcode = $facility->fhudcode;
+
+        // Combine master_patient_perm_id and fhudcode into the pat_temp_id
+        // $finalCombinedId = "{$masterPatientPermId}{$fhudcode}";
+
+        // Add the combined ID to the validated data
+        // $validated['trackno'] = $finalCombinedId;
+
+        // Save the patient data into the MasterPatient table
         MasterPatient::create($validated);
 
         return redirect()->route('patients')->with('success', 'Patient added successfully!');
@@ -207,7 +222,7 @@ class PatientController extends Controller
             'pat_birthplace' => 'nullable|string|max:200',
             'religion_code' => 'required|string|max:5',
             'nationality' => 'required|string|max:5',
-            'pat_birthdate' => 'required|date',
+            'pat_birthDate' => 'required|date',
             'educattainment' => 'required|string|max:2',
             'occupation_code' => 'required|string|max:255',
 
@@ -224,7 +239,7 @@ class PatientController extends Controller
             'mot_fname' => 'nullable|string|max:255',
             'mot_mname' => 'nullable|string|max:255',
             'mot_lname' => 'nullable|string|max:255',
-            'mot_birthDate' => 'nullable|date',
+            'mot_birthdate' => 'nullable|date',
             'mot_address' => 'nullable|string|max:255', //Added by Ken
             'mot_contact' => 'nullable|string|max:20', //Added by Ken
             'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
@@ -243,6 +258,4 @@ class PatientController extends Controller
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
     }
-
-
 }

@@ -4,9 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Toggle } from '@/components/ui/toggle';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps } from '@/types'; // Removed as PageProps is not exported
-import type { FHUD } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import type { BreadcrumbItem, FHUD, PageProps } from '@/types';
+import { Head, router, usePage } from '@inertiajs/react';
 import {
     ColumnDef,
     flexRender,
@@ -19,8 +18,9 @@ import {
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { Edit2, MoreHorizontal, PlusCircleIcon } from 'lucide-react';
-import * as React from 'react';
+import React from 'react';
 import AddFacility from '../FHUD/AddFacility';
+import EditFacility from '../FHUD/EditFacility';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'References', href: '/references' },
@@ -28,31 +28,39 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const FHUDIndex: React.FC = () => {
-    const { facility } = usePage<PageProps<{ facility: FHUD[] }>>().props;
+    const { facility }: { facility: FHUD[] } = usePage<PageProps<{ facility: FHUD[] }>>().props;
     const [searchTerm, setSearchTerm] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
-
-    //const [sorting, setSorting] = React.useState([]);
     const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
     const [view, setView] = React.useState<'table' | 'grid'>('table');
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [selectedFacility, setSelectedFacility] = React.useState<FHUD | null>(null);
+
+    console.log("Active Facility:", facility);
 
     const filteredFacilities = React.useMemo(() => {
-        return facility.filter((fac: FHUD) => fac.fhudcode?.toLowerCase().includes(searchTerm.toLowerCase()));
+        const term = searchTerm.toLowerCase();
+        return facility.filter((fac) => [fac.fhudcode, fac.facility_name, fac.faccode].some((field) => field?.toLowerCase().includes(term)));
     }, [facility, searchTerm]);
+
+    const handleEdit = (fhud: FHUD) => {
+        setSelectedFacility(fhud);
+        console.log("Active FHUD:", fhud);
+        setIsEditModalOpen(true);
+    };
 
     const columns = React.useMemo<ColumnDef<FHUD>[]>(
         () => [
             { accessorKey: 'fhudcode', header: 'Code' },
             { accessorKey: 'facility_name', header: 'Facility Name' },
+            { accessorKey: 'provider_name', header: 'Name of the Provider' },
+            { accessorKey: 'faccode', header: 'Facility Code' },
             {
                 accessorKey: 'date_mod',
-                header: 'Date Added',
-                cell: ({ row }) => {
-                    const value = row.original.date_mod;
-                    return dayjs(value).format('YYYY-MM-DD');
-                },
+                header: 'Date Registered',
+                cell: ({ row }) => dayjs(row.original.date_mod).format('MM-DD-YYYY'),
             },
-            { accessorKey: 'faccode', header: 'Facility Code' },
             {
                 accessorKey: 'facility_stat',
                 header: 'Status',
@@ -63,29 +71,21 @@ const FHUDIndex: React.FC = () => {
             },
             {
                 id: 'actions',
-                enableHiding: false,
                 header: 'Actions',
-                cell: ({ row }) => {
-                    const fhud = row.original;
-                    return (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                    <span className="sr-only">Open menu</span>
-                                    <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem asChild>
-                                    <Link href={`/references/fhud/${fhud.id}/edit`}>
-                                        <Edit2 className="h-4 w-4" />
-                                        Edit
-                                    </Link>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    );
-                },
+                enableHiding: false,
+                cell: ({ row }) => (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <MoreHorizontal className="h-4 w-4 cursor-pointer" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem onClick={() => handleEdit(row.original)}>
+                                <Edit2 className="mr-2 h-4 w-4" />
+                                Edit
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                ),
             },
         ],
         [],
@@ -103,11 +103,10 @@ const FHUDIndex: React.FC = () => {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="FHUD Facilities" />
+
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -115,10 +114,10 @@ const FHUDIndex: React.FC = () => {
                             placeholder="Search by facility code..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-1/1"
+                            className="w-full max-w-md"
                         />
                         <Button onClick={() => setIsModalOpen(true)} className="h-8 px-2 lg:px-3">
-                            <PlusCircleIcon className="h-4 w-4" /> Add
+                            <PlusCircleIcon className="mr-1 h-4 w-4" /> Add
                         </Button>
                     </div>
 
@@ -130,9 +129,9 @@ const FHUDIndex: React.FC = () => {
                 <div className="overflow-x-auto rounded-lg border bg-white shadow">
                     <table className="min-w-full text-left text-sm text-gray-700">
                         <thead className="border-b bg-black text-xs text-white">
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
+                            {table.getHeaderGroups().map((group) => (
+                                <tr key={group.id}>
+                                    {group.headers.map((header) => (
                                         <th key={header.id} className="px-6 py-2">
                                             {header.isPlaceholder ? null : (
                                                 <div className="cursor-pointer select-none" onClick={header.column.getToggleSortingHandler()}>
@@ -170,7 +169,7 @@ const FHUDIndex: React.FC = () => {
 
                 <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-gray-600">
-                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                        Page {pagination.pageIndex + 1} of {table.getPageCount()}
                     </div>
 
                     <div className="flex gap-2">
@@ -209,18 +208,41 @@ const FHUDIndex: React.FC = () => {
                     </div>
                 </div>
             </div>
+
             <AddFacility
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubmit={(data) => {
+                onSubmit={(data) =>
                     router.post('/references/fhud', data, {
-                        onSuccess: () => setIsModalOpen(false),
-                        onError: () => {
-                            /* you could display errors here */
+                        onSuccess: () => {
+                            setIsModalOpen(false);
+                            setSearchTerm('');
+                            setPagination({ pageIndex: 0, pageSize: 10 });
                         },
-                    });
-                }}
+                    })
+                }
             />
+
+            {selectedFacility && (
+                <EditFacility
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        setIsEditModalOpen(false);
+                        setSelectedFacility(null);
+                    }}
+                    facility={selectedFacility}
+                    onSubmit={(data) =>
+                        router.put(`/references/fhud/${selectedFacility.id}`, data, {
+                            onSuccess: () => {
+                                setIsEditModalOpen(false);
+                                setSelectedFacility(null);
+                                setSearchTerm('');
+                                setPagination({ pageIndex: 0, pageSize: 10 });
+                            },
+                        })
+                    }
+                />
+            )}
         </AppLayout>
     );
 };

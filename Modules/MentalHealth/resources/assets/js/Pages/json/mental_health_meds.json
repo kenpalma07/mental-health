@@ -1,51 +1,51 @@
 {
-  "depression": [
-    { "name": "Fluoxetine", "type": "SSRI" },
-    { "name": "Escitalopram 10mg", "type": "SSRI" },
-    { "name": "Sertraline 25mg", "type": "Tricyclic Antidepressant" }
-  ],
-  "psychoses": [
-    { "name": "Risperidone", "type": "Antipsychotic" },
-    { "name": "Olanzapine 10mg", "type": "Antipsychotic" },
-    { "name": "Quetiapine", "type": "Antipsychotic" },
-    { "name": "Haloperidol", "type": "Typical Antipsychotic" },
-    { "name": "Chlorpromazine", "type": "Antipsychotic" },
-    { "name": "Fluphenazine Decanoate", "type": "Antipsychotic" },
-    { "name": "Paliperidone Palmitate", "type": "Antipsychotic" },
-    { "name": "Biperiden", "type": "Anticholinergic (for EPS)" },
-    { "name": "Diphenhydramine", "type": "Anticholinergic (for EPS)" },
-    { "name": "Olanzapine 5mg", "type": "Antipsychotic" }
-  ],
-  "epilepsy": [
-    { "name": "Valproic Acid",  "type": "Anticonvulsant" },
-    { "name": "Carbamazepine", "type": "Anticonvulsant" },
-    { "name": "Lamotrigine", "type": "Anticonvulsant" },
-    { "name": "Divalproex Sodium ER", "type": "Mood Stabilizer / Anticonvulsant" }
-  ],
-  "behavioral_disorder": [
-    { "name": "Methylphenidate", "type": "Stimulant" },
-    { "name": "Atomoxetine",  "type": "Non-Stimulant ADHD Med" }
-  ],
-  "developmental_disorder": [
-    { "name": "Aripiprazole",  "type": "Atypical Antipsychotic" },
-    { "name": "Risperidone",  "type": "Atypical Antipsychotic" }
-  ],
-  "dementia": [
-    { "name": "Donepezil", "type": "Cholinesterase Inhibitor" },
-    { "name": "Memantine", "type": "NMDA Receptor Antagonist" }
-  ],
-  "alcohol_use_disorder": [
-    { "name": "Naltrexone", "type": "Opioid Antagonist" },
-    { "name": "Acamprosate", "type": "GABA Modulator" },
-    { "name": "Disulfiram",  "type": "Alcohol Aversion" }
-  ],
-  "drug_use_disorder": [
-    { "name": "Buprenorphine",  "type": "Opioid Partial Agonist" },
-    { "name": "Methadone",  "type": "Opioid Agonist" },
-    { "name": "Naltrexone", "type": "Opioid Antagonist" }
-  ],
-  "self_harm_suicide": [
-    { "name": "Fluoxetine", "type": "SSRI" },
-    { "name": "Sertraline", "type": "SSRI" }
-  ]
+    "depression": [
+        { "name": "Fluoxetine", "type": "SSRI" },
+        { "name": "Escitalopram 10mg", "type": "SSRI" },
+        { "name": "Sertraline 25mg", "type": "Tricyclic Antidepressant" }
+    ],
+    "psychoses": [
+        { "name": "Risperidone", "type": "Antipsychotic" },
+        { "name": "Olanzapine 10mg", "type": "Antipsychotic" },
+        { "name": "Quetiapine", "type": "Antipsychotic" },
+        { "name": "Haloperidol", "type": "Typical Antipsychotic" },
+        { "name": "Chlorpromazine", "type": "Antipsychotic" },
+        { "name": "Fluphenazine Decanoate", "type": "Antipsychotic" },
+        { "name": "Paliperidone Palmitate", "type": "Antipsychotic" },
+        { "name": "Biperiden", "type": "Anticholinergic (for EPS)" },
+        { "name": "Diphenhydramine", "type": "Anticholinergic (for EPS)" },
+        { "name": "Olanzapine 5mg", "type": "Antipsychotic" }
+    ],
+    "epilepsy": [
+        { "name": "Valproic Acid", "type": "Anticonvulsant" },
+        { "name": "Carbamazepine", "type": "Anticonvulsant" },
+        { "name": "Lamotrigine", "type": "Anticonvulsant" },
+        { "name": "Divalproex Sodium ER", "type": "Mood Stabilizer / Anticonvulsant" }
+    ],
+    "behavioral_disorder": [
+        { "name": "Methylphenidate", "type": "Stimulant" },
+        { "name": "Atomoxetine", "type": "Non-Stimulant ADHD Med" }
+    ],
+    "developmental_disorder": [
+        { "name": "Aripiprazole", "type": "Atypical Antipsychotic" },
+        { "name": "Risperidone", "type": "Atypical Antipsychotic" }
+    ],
+    "dementia": [
+        { "name": "Donepezil", "type": "Cholinesterase Inhibitor" },
+        { "name": "Memantine", "type": "NMDA Receptor Antagonist" }
+    ],
+    "alcohol_use_disorder": [
+        { "name": "Naltrexone", "type": "Opioid Antagonist" },
+        { "name": "Acamprosate", "type": "GABA Modulator" },
+        { "name": "Disulfiram", "type": "Alcohol Aversion" }
+    ],
+    "drug_use_disorder": [
+        { "name": "Buprenorphine", "type": "Opioid Partial Agonist" },
+        { "name": "Methadone", "type": "Opioid Agonist" },
+        { "name": "Naltrexone", "type": "Opioid Antagonist" }
+    ],
+    "self_harm_suicide": [
+        { "name": "Fluoxetine", "type": "SSRI" },
+        { "name": "Sertraline", "type": "SSRI" }
+    ]
 }

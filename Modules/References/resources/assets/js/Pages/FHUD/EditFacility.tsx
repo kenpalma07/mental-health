@@ -2,12 +2,13 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import type { FHUD } from '@/types';
+import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import rawLocationDataJson from './json/philippine_reg_prov_cit_brgy.json';
 
 const rawLocationData = rawLocationDataJson as unknown as LocationData;
 
-// 2. TypeScript Interfaces for rawLocationData
 interface MunicipalityMap {
     [municipalityName: string]: {
         barangay_list: string[];
@@ -29,28 +30,27 @@ type LocationData = {
     [regionCode: string]: Region;
 };
 
-type Props = {
+interface EditFacilityProps {
     isOpen: boolean;
     onClose: () => void;
+    facility: FHUD;
     onSubmit: (data: any) => void;
-};
+}
 
 type LocationItem = {
+    region_code: string;
     region_name: string;
     province_name: string;
     city_name: string;
     brgy_name: string;
 };
 
-// Memoizing the flattened locations to avoid recalculating on each render
-
 const flattenLocationData = (rawData: any): LocationItem[] => {
     const locations: LocationItem[] = [];
 
-    for (const regionKey in rawData) {
-        const region = rawData[regionKey];
-        const regionName = region?.region_name || regionKey;
-
+    for (const regionCode in rawData) {
+        const region = rawData[regionCode];
+        const regionName = region?.region_name || regionCode;
         const provinceList = region?.province_list;
         if (!provinceList || typeof provinceList !== 'object') continue;
 
@@ -59,11 +59,12 @@ const flattenLocationData = (rawData: any): LocationItem[] => {
 
             for (const cityKey in province) {
                 const municipality = province[cityKey];
-
                 const barangayList = municipality?.barangay_list;
+
                 if (Array.isArray(barangayList)) {
                     barangayList.forEach((barangay: string) => {
                         locations.push({
+                            region_code: regionCode,
                             region_name: regionName,
                             province_name: provinceKey,
                             city_name: cityKey,
@@ -78,24 +79,52 @@ const flattenLocationData = (rawData: any): LocationItem[] => {
     return locations;
 };
 
-const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
-    const [form, setForm] = useState({
-        fhudcode: '',
-        faccode: '',
-        facility_name: '',
-        provider_name: '',
-        facility_address: '',
-        date_mod: '',
-        regcode: '',
-        provcode: '',
-        citycode: '',
-        bgycode: '',
-        zipcode: '',
-        facility_stat: '',
-        facility_licno: '',
-        accreno: '',
+const EditFacility: React.FC<EditFacilityProps> = ({ isOpen, onClose, facility, onSubmit }) => {
+    const {
+        data: form,
+        setData: setForm,
+        reset,
+        errors,
+        processing,
+    } = useForm({
+        fhudcode: facility.fhudcode || '',
+        facility_name: facility.facility_name || '',
+        faccode: facility.faccode || '',
+        zipcode: facility.zipcode || '',
+        date_mod: facility.date_mod || '',
+        provider_name: facility.provider_name || '',
+        facility_address: facility.facility_address || '',
+        regcode: facility.regcode || '',
+        provcode: facility.provcode || '',
+        citycode: facility.citycode || '',
+        bgycode: facility.bgycode || '',
+        facility_stat: facility.facility_stat || '',
+        facility_licno: facility.facility_licno || '',
+        accreno: facility.accreno || '',
     });
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    useEffect(() => {
+        setForm({
+            fhudcode: facility.fhudcode || '',
+            facility_name: facility.facility_name || '',
+            faccode: facility.faccode || '',
+            zipcode: facility.zipcode || '',
+            date_mod: facility.date_mod || '',
+            provider_name: facility.provider_name || '',
+            facility_address: facility.facility_address || '',
+            regcode: facility.regcode || '',
+            provcode: facility.provcode || '',
+            citycode: facility.citycode || '',
+            bgycode: facility.bgycode || '',
+            facility_stat: facility.facility_stat || '',
+            facility_licno: facility.facility_licno || '',
+            accreno: facility.accreno || '',
+        });
+
+        return () => reset();
+    }, [facility.id]);
+
+    const [error, setError] = useState<{ [key: string]: string }>({});
     const [selectedProvince, setSelectedProvince] = useState('');
     const [selectedMunicipality, setSelectedMunicipality] = useState('');
     const [filteredProvinces, setFilteredProvinces] = useState<string[]>([]);
@@ -106,116 +135,24 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     const regions = React.useMemo(() => Array.from(new Set(flattenedLocations.map((item) => item.region_name))).sort(), []);
 
     useEffect(() => {
-        if (isOpen) {
-            setForm({
-                fhudcode: '',
-                faccode: '',
-                facility_name: '',
-                provider_name: '',
-                facility_address: '',
-                date_mod: getTodayDate(),
-                regcode: '',
-                provcode: '',
-                citycode: '',
-                bgycode: '',
-                zipcode: '',
-                facility_stat: '',
-                facility_licno: '',
-                accreno: '',
-            });
-            setErrors({});
-        }
-    }, [isOpen]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-
-        if (name === 'faccode') {
-            // Always update faccode
-            setForm((prev) => ({ ...prev, faccode: value }));
-    
-            // Extract last 7 digits from the value and update fhudcode
-            const match = value.match(/\d{7}$/);
-            if (match) {
-                setForm((prev) => ({ ...prev, fhudcode: match[0] }));
-            }
-            return;
-        }
-
-        if (name === 'fhudcode' || name === 'zipcode') {
-            const digitsOnly = value.replace(/\D/g, '');
-            if (digitsOnly.length <= 7) {
-                setForm((prev) => ({ ...prev, [name]: digitsOnly }));
-            }
-            return;
-        }
-
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const formErrors = validateForm();
-        setErrors(formErrors);
-
-        if (Object.keys(formErrors).length > 0) return;
-
-        try {
-            await onSubmit(form);
-            setErrors({});
-        } catch (error: any) {
-            if (error.response?.data?.errors) {
-                setErrors(error.response.data.errors);
-            }
-        }
-    };
-
-    const validateForm = () => {
-        const newErrors: { [key: string]: string } = {};
-        if (!form.fhudcode) {
-            newErrors.fhudcode = 'Facility Code is required';
-        } else if (!/^\d{7}$/.test(form.fhudcode)) {
-            newErrors.fhudcode = 'Facility Code must be exactly 7 digits';
-        }
-        if (!form.faccode) newErrors.faccode = 'Facility Code is required';
-        if (!form.facility_name) newErrors.facility_name = 'Facility Name is required';
-        if (!form.provider_name) newErrors.provider_name = 'Name of the Provider is required';
-        if (!form.facility_address) newErrors.facility_address = 'Facility Address is required';
-        if (!form.date_mod) newErrors.date_mod = 'Date is required';
-        if (!form.regcode) newErrors.regcode = 'Region is required';
-        if (!form.provcode) newErrors.provcode = 'Province is required';
-        if (!form.citycode) newErrors.citycode = 'City / Municipality is required';
-        if (!form.bgycode) newErrors.bgycode = 'Barangay is required';
-        if (!form.zipcode) newErrors.zipcode = 'Zipcode is required';
-        if (!form.facility_stat) newErrors.facility_stat = 'Status is required';
-
-        return newErrors;
-    };
-
-    function getTodayDate(): string {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    useEffect(() => {
         if (form.regcode) {
-            const provinces = flattenedLocations.filter((item) => item.region_name === form.regcode).map((item) => item.province_name);
+            const provinces = flattenedLocations.filter((item) => item.region_code === form.regcode).map((item) => item.province_name);
+
             setFilteredProvinces(Array.from(new Set(provinces)));
 
-            setSelectedProvince('');
-            setSelectedMunicipality('');
-        }
-    }, [form.regcode]);
+            if (form.provcode) {
+                const municipalities = flattenedLocations.filter((item) => item.province_name === form.provcode).map((item) => item.city_name);
 
-    useEffect(() => {
-        if (form.citycode) {
-            const barangays = flattenedLocations.filter((item) => item.city_name === form.citycode).map((item) => item.brgy_name);
-            setFilteredBarangays(Array.from(new Set(barangays)));
+                setFilteredMunicipalities(Array.from(new Set(municipalities)));
+            }
+
+            if (form.citycode) {
+                const barangays = flattenedLocations.filter((item) => item.city_name === form.citycode).map((item) => item.brgy_name);
+
+                setFilteredBarangays(Array.from(new Set(barangays)));
+            }
         }
-    }, [form.citycode]);
+    }, [form.regcode, form.provcode, form.citycode]);
 
     const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const province = e.target.value;
@@ -224,15 +161,51 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
         const municipalities = flattenedLocations.filter((item) => item.province_name === province).map((item) => item.city_name);
         setFilteredMunicipalities(Array.from(new Set(municipalities)));
 
-        setForm((prev) => ({ ...prev, provcode: province, citycode: '', brgycode: '' }));
+        setForm((prev) => ({ ...prev, provcode: province, citycode: '', bgycode: '' }));
     };
 
     const handleMunicipalityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const municipality = e.target.value;
         setSelectedMunicipality(municipality);
-        setForm((prev) => ({ ...prev, citycode: municipality, brgycode: '' }));
+        setForm((prev) => ({ ...prev, citycode: municipality, bgycode: '' }));
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        if (name === 'faccode') {
+            setForm((prev) => ({ ...prev, faccode: value }));
+            const match = value.match(/\d{7}$/);
+            if (match) {
+                setForm((prev) => ({ ...prev, fhudcode: match[0] }));
+            }
+            return;
+        }
+
+        if (name === 'fhudcode') {
+            const digitsOnly = value.replace(/\D/g, '');
+            if (digitsOnly.length <= 7) {
+                setForm((prev) => ({ ...prev, fhudcode: digitsOnly }));
+            }
+            return;
+        }
+
+        if (name === 'zipcode') {
+            const digitsOnly = value.replace(/\D/g, '');
+            if (digitsOnly.length <= 4) {
+                setForm((prev) => ({ ...prev, zipcode: digitsOnly }));
+            }
+            return;
+        }
+
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('Form submitted:', form);
+        onSubmit(form);
+    };
 
     if (!isOpen) return null;
 
@@ -242,15 +215,15 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
             <div className="fixed inset-0 bg-black/50" onClick={onClose} />
 
             {/* Modal */}
-            <div className="relative z-10 w-full max-w-5xl rounded-lg bg-white p-6 shadow-xl">
+            <div className="relative z-10 max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
                 <button className="absolute top-3 right-3 text-red-500" onClick={onClose} aria-label="Close">
                     ✕
                 </button>
 
-                <h2 className="mb-4 text-xl font-bold">Add FHUD Facility</h2>
+                <h2 className="mb-4 text-xl font-bold">Edit FHUD Facility</h2>
 
-                <form onSubmit={handleSubmit} className="2xl grid grid-cols-3 gap-4 text-sm">
-                    {/* Date and Location Fields */}
+                <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4 text-sm">
+                    {/* Date Modified */}
                     <div>
                         <Label htmlFor="date_mod">
                             Date <span className="font-bold text-red-600">*</span>
@@ -259,50 +232,34 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             id="date_mod"
                             type="date"
                             value={form.date_mod}
-                            onChange={handleChange}
+                            onChange={(e) => setForm('date_mod', e.target.value)}
                             className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
                         />
                         <InputError message={errors.date_mod} />
                     </div>
-
                     <div></div>
                     <div></div>
 
-                    {/* Code of Facility with 7 digits */}
+                    {/* FHUD Code */}
                     <div>
                         <Label htmlFor="fhudcode">
                             Code: <span className="font-bold text-red-600">*</span>
                             <small className="text-muted-foreground">Must be exactly 7 digits (ex. 000XXXX) </small>
                         </Label>
-                        <Input
-                            id="fhudcode"
-                            name="fhudcode"
-                            value={form.fhudcode}
-                            onChange={handleChange}
-                            placeholder="Code"
-                            inputMode="numeric"
-                            maxLength={7}
-                            className="text-dark-500 w-full rounded border bg-gray-100 p-2"
-                            readOnly
-                        />
+                        <Input id="fhudcode" name="fhudcode" value={form.fhudcode} onChange={handleChange} readOnly className="bg-gray-100" />
                         <InputError message={errors.fhudcode} />
                     </div>
-                    {/* Facility Code that registered from NHFR */}
+
+                    {/* Facility Code */}
                     <div>
                         <Label htmlFor="faccode">
                             Facility Code: <span className="font-bold text-red-600">*</span>
                             <small className="text-muted-foreground">Registered Facility Code from NHFR</small>
                         </Label>
-                        <Input
-                            id="faccode"
-                            name="faccode"
-                            placeholder="Facility Code"
-                            value={form.faccode}
-                            onChange={handleChange}
-                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
-                        />
+                        <Input id="faccode" name="faccode" value={form.faccode} onChange={handleChange} />
                         <InputError message={errors.faccode} />
                     </div>
+
                     {/* Facility Name */}
                     <div>
                         <Label htmlFor="facility_name">
@@ -313,9 +270,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             id="facility_name"
                             name="facility_name"
                             value={form.facility_name}
-                            onChange={handleChange}
-                            placeholder="FHUD Name"
-                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                            onChange={(e) => setForm('facility_name', e.target.value)}
                         />
                         <InputError message={errors.facility_name} />
                     </div>
@@ -352,6 +307,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         <InputError message={errors.facility_address} />
                     </div>
 
+                    {/* Region Code */}
                     <div>
                         <Label htmlFor="regcode">
                             Region: <span className="font-bold text-red-600">*</span>
@@ -405,7 +361,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         >
                             <option value="">Select Province</option>
                             {form.regcode &&
-                                Object.keys(rawLocationData[form.regcode as keyof typeof rawLocationData].province_list).map((provinceName) => (
+                                Object.keys(rawLocationData[form.regcode]?.province_list || {}).map((provinceName) => (
                                     <option key={provinceName} value={provinceName}>
                                         {provinceName}
                                     </option>
@@ -434,9 +390,8 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             <option value="">Select Municipality</option>
                             {form.regcode &&
                                 form.provcode &&
-                                rawLocationData[form.regcode].province_list[form.provcode].municipality_list.map(
+                                rawLocationData[form.regcode]?.province_list?.[form.provcode]?.municipality_list?.map(
                                     (mObj: Record<string, { barangay_list: string[] }>) => {
-                                        // each mObj is like { "TUBAJON": { barangay_list: [...] } }
                                         const name = Object.keys(mObj)[0];
                                         return (
                                             <option key={name} value={name}>
@@ -458,7 +413,13 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             id="bgycode"
                             name="bgycode"
                             value={form.bgycode}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setForm((prev) => ({
+                                    ...prev,
+                                    bgycode: val,
+                                }));
+                            }}
                             className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
                         >
                             <option value="">Select Barangay</option>
@@ -466,15 +427,11 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                 form.provcode &&
                                 form.citycode &&
                                 (() => {
-                                    const municipalities = rawLocationData[form.regcode].province_list[form.provcode].municipality_list as Record<
-                                        string,
-                                        { barangay_list: string[] }
-                                    >[];
+                                    const municipalities = rawLocationData[form.regcode]?.province_list?.[form.provcode]?.municipality_list || [];
 
-                                    // Find the object with the matching municipality name
                                     const found = municipalities.find((mObj) => Object.keys(mObj)[0] === form.citycode);
 
-                                    const barangays = found ? found[form.citycode].barangay_list : [];
+                                    const barangays = found?.[form.citycode]?.barangay_list || [];
 
                                     return barangays.map((brgy) => (
                                         <option key={brgy} value={brgy}>
@@ -484,24 +441,16 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                 })()}
                         </select>
 
-                        <InputError message={errors.brgycode} />
+                        <InputError message={errors.bgycode} />
                     </div>
 
+                    {/* Zipcode */}
                     <div>
                         <Label htmlFor="zipcode">
-                            Zipcode <span className="font-bold text-red-600">*</span>
+                            Zipcode: <span className="font-bold text-red-600">*</span>
                             <small className="text-muted-foreground">Must be exactly 4 digits </small>
                         </Label>
-                        <Input
-                            id="zipcode"
-                            name="zipcode"
-                            value={form.zipcode}
-                            onChange={handleChange}
-                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
-                            maxLength={4}
-                            inputMode="numeric"
-                            placeholder="Zipcode"
-                        />
+                        <Input id="zipcode" name="zipcode" value={form.zipcode} onChange={handleChange} />
                         <InputError message={errors.zipcode} />
                     </div>
 
@@ -513,7 +462,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                             id="facility_stat"
                             name="facility_stat"
                             value={form.facility_stat}
-                            onChange={handleChange}
+                            onChange={(e) => setForm('facility_stat', e.target.value as 'A' | 'I')}
                             className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
                         >
                             <option value="">Select Status</option>
@@ -524,9 +473,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                     </div>
 
                     <div>
-                        <Label htmlFor='facility_licno'>
-                            Facility License Number
-                        </Label>
+                        <Label htmlFor="facility_licno">Facility License Number</Label>
                         <Input
                             id="facility_licno"
                             name="facility_licno"
@@ -539,9 +486,7 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                     </div>
 
                     <div>
-                        <Label htmlFor='accreno'>
-                            PhilHealth Accreditation No
-                        </Label>
+                        <Label htmlFor="accreno">PhilHealth Accreditation No</Label>
                         <Input
                             id="accreno"
                             name="accreno"
@@ -553,12 +498,14 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         <InputError message={errors.accreno} />
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="col-span-3 mt-4 flex justify-end gap-2">
-                        <Button variant="outline" type="button" onClick={onClose}>
+                    {/* Buttons */}
+                    <div className="col-span-3 flex justify-end gap-2 pt-4">
+                        <Button type="button" variant="secondary" onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button type="submit">Save</Button>
+                        <Button type="submit" disabled={processing}>
+                            Update
+                        </Button>
                     </div>
                 </form>
             </div>
@@ -566,4 +513,4 @@ const AddFacilityModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     );
 };
 
-export default AddFacilityModal;
+export default EditFacility;
