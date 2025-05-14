@@ -35,31 +35,32 @@ const ReferralFormIndex: React.FC = () => {
     signature: '',
     signatureDate: '',
     // Back-referral section (if needed later)
-    backReferralFacility: '',
-    backTelNo: '',
-    replyName: '',
-    replyDate: '',
-    replyPosition: '',
-    replySpecialty: '',
-    toFacility: '',
-    backServiceUserName: '',
-    backIdentityNumber: '',
-    backAge: '',
-    backSex: '',
-    backAddress: '',
-    seenBy: '',
-    seenDate: '',
-    backHealthHistory: '',
-    backAssessmentFindings: '',
+    backreferralfacility: '',
+    backtelno: '',
+    replyname: '',
+    replydate: '',
+    replyposition: '',
+    replyspecialty: '',
+    tofacility: '',
+    backserviceusername: '',
+    backidentitynumber: '',
+    backage: '',
+    backsex: '',
+    backaddress: '',
+    seenby: '',
+    seendate: '',
+    backhealthhistory: '',
+    backassessmentfindings: '',
     diagnosis: '',
-    treatmentFollowUp: '',
-    medicationPrescribed: '',
-    psychologicalRecommendation: '',
-    continueWith: '',
-    referBackTo: '',
-    finalName: '',
-    finalSignature: '',
-    finalDate: '',
+    treatmentfollowup: '',
+    medicationprescribed: '',
+    psychologicalrecommendation: '',
+    continuewith: '',
+    referbackto: '',
+    referbacktodate:'',
+    finalname: '',
+    finalsignature: '',
+    finaldate: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -85,7 +86,7 @@ const ReferralFormIndex: React.FC = () => {
           onSubmit={handleSubmit}
           className="p-4 max-w-5xl mx-auto text-sm print:text-xs">
           <h2 className="font-bold text-lg mb-4 uppercase">Referral Form</h2>
-          <table className="w-auto table-fixed border border-collapse border-gray-700">
+          <table className="w-auto table-fixed border border-collapse border-gray-700 mb-8">
 
             <thead>
               <tr className="bg-gray-200">
@@ -157,178 +158,267 @@ const ReferralFormIndex: React.FC = () => {
                 </td>
                 <td className="border p-1 font-semibold" colSpan={2}>Age:
                   <input name="age"value={formData.age} onChange={handleChange}className="w-full p-1 mt-1"/>
-                  <label className="mr-2">
-                    <input type="radio"
-                      name="sex"
-                      value="M"
-                      checked={formData.sex === 'M'}
-                      onChange={handleChange}
-                      className="mr-1"
-                    />{' '}
-                    M
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="sex"
-                      value="F"
-                      checked={formData.sex === 'F'}
-                      onChange={handleChange}
-                      className="mr-1"
-                    />{' '}
-                    F
-                  </label>
+                    <label className="mr-2">
+                      <input type="radio" name="sex" value="M" checked={formData.sex === 'M'} onChange={handleChange} className="mr-1"/>{' '}M
+                    </label>
+                    <label>
+                      <input type="radio" name="sex" value="F" checked={formData.sex === 'F'} onChange={handleChange} className="mr-1"/>{' '} F
+                    </label>
                 </td>
               </tr>
-
+               {/* 7th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Address:
-                </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="address"
-                    placeholder="Address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td className="border p-1 font-semibold align-top" colSpan={2}>Address:</td>
+                <td colSpan={4} className="border p-1">
+                  <textarea name="address" value={formData.address} onChange={handleChange} className="w-full p-1" rows={2}/>
                 </td>
               </tr>
-
+               {/* 8th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Mental and physical health history <br />
-                  <small className="italic">
-                    (include substance use, medical history, family history)
-                  </small>
+                <td className="border p-1 font-semibold align-top">Mental and physical health history <br />
+                  <small className="italic">(include substance use, medical history, family history)</small>
                 </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="mentalHistory"
-                    placeholder="Health History"
-                    value={formData.mentalHistory}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td colSpan={5} className="border p-1">
+                  <textarea name="mentalHistory" value={formData.mentalHistory} onChange={handleChange} className="w-full p-1" rows={2}/>
                 </td>
               </tr>
-
+               {/* 9th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Assessment findings:
-                </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="assessmentFindings"
-                    placeholder="Assessment findings"
-                    value={formData.assessmentFindings}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td className="border p-1 font-semibold align-top">Assessment findings:</td>
+                <td colSpan={5} className="border p-1">
+                  <textarea name="assessmentFindings" value={formData.assessmentFindings}onChange={handleChange} className="w-full p-1" rows={2}/>
                 </td>
               </tr>
-
+               {/* 10th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Any treatment provided:
-                </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="treatmentProvided"
-                    placeholder="Treatment provided"
-                    value={formData.treatmentProvided}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td className="border p-1 font-semibold align-top">Any treatment provided:</td>
+                <td colSpan={5} className="border p-1">
+                  <textarea name="treatmentProvided" value={formData.treatmentProvided} onChange={handleChange} className="w-full p-1"rows={2}/>
                 </td>
               </tr>
-
+              {/* 11th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Reason for referral:
-                </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="referralReason"
-                    placeholder="Reason for referral"
-                    value={formData.referralReason}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td className="border p-1 font-semibold align-top">Reason for referral:</td>
+                <td colSpan={5} className="border p-1">
+                  <textarea name="referralReason" value={formData.referralReason} onChange={handleChange}className="w-full p-1" rows={2}/>
                 </td>
               </tr>
-
+              {/* 12th row */}
               <tr>
-                <td className="border p-1 font-semibold align-top">
-                  Documents accompanying referral:
+                <td className="border p-1 font-semibold align-top">Documents accompanying referral:
                 </td>
-                <td colSpan={6} className="border p-1">
-                  <textarea
-                    name="documents"
-                    placeholder="Documents"
-                    value={formData.documents}
-                    onChange={handleChange}
-                    className="w-full border p-1"
-                    rows={2}
-                  />
+                <td colSpan={5} className="border p-1">
+                  <textarea name="documents" value={formData.documents} onChange={handleChange} className="w-full p-1" rows={2}/>
                 </td>
               </tr>
-
+              {/* 13th row */}
               <tr>
-                <td className="border p-1 font-semibold">
-                  Print name, sign and date:
+                <td className="border p-1 font-semibold" colSpan={2}>Print name, sign and date:</td>
+                <td colSpan={2} className="border p-1 font-semibold w-1/3">Name:
+                  <input name="printedName" value={formData.printedName} onChange={handleChange} className="w-full p-1 mt-1"/>
                 </td>
+                <td className="border p-1 font-semibold" colSpan={1}>Signature:
+                  <input name="signature" value={formData.signature} onChange={handleChange}className="w-full p-1 mt-1"/>
+                </td>
+                <td className="border p-1 font-semibold" colSpan={1}>Date:
+                  <input type="date" name="signatureDate" value={formData.signatureDate}onChange={handleChange}className="w-full p-1 mt-1"/>
+                </td>
+              </tr>
+              </tbody>
+              </table>
+
+               {/* BACK REFERRAL */}
+               
+              <table className="w-full border-collapse">
+              <tbody>
+              {/* 1st row */}
+              <tr>
+                <td className="border p-1 font-bold w-1/3" colSpan={2}>Back-referral from facility<br>
+                </br>
+                <small className="italic">(name)</small>
+                </td>
+                <td className="border p-1 font-semibold w-1/3" colSpan={2}>
+                  <input name="backreferralfacility" value={formData.backreferralfacility} onChange={handleChange} className="w-full p-1 mt-1"/>
+                </td>
+                <td className="border p-1 font-semibold w-1/3" colSpan={2}>Tel No.:
+                  <input name="backtelno" value={formData.backtelno} onChange={handleChange} className="w-full p-1 mt-1"/>
+                </td>
+              </tr>
+               {/* 2nd row */}
+               <tr>
+                <td className="border p-1 font-bold w-1/3" rowSpan={2}>Reply from<br>
+                  <small className="italic">(person completing form)</small>
+                  </br>
+                </td>
+                <td className="border p-1" colSpan={4}>
+                  <label className="block font-semibold">Name:</label>
+                  <input className="w-full p-1 mt-1" name="replyname" value={formData.replyname} onChange={handleChange} />
+                </td>
+                <td className="border p-1" colSpan={2}>
+                  <label className="block font-semibold">Date</label>
+                  <input className="w-full p-1 mt-1" name="replydate" type="date" value={formData.replydate} onChange={handleChange} />
+                </td>
+              </tr>
+              <tr>
+                <td className="border p-1" colSpan={3}>
+                  <label className="block font-semibold">Position</label>
+                  <input className="w-full p-1 mt-1" name="replyposition" value={formData.replyposition} onChange={handleChange} />
+                </td>
+                <td className="border p-1" colSpan={2}>
+                  <label className="block font-semibold">Specialty</label>
+                  <input className="w-full p-1 mt-1" name="replyspecialty" value={formData.replyspecialty} onChange={handleChange} />
+                </td>
+              </tr>
+              {/* 3rd row */}
+              <tr>
+                <td className="border p-1 font-bold w-1/3" colSpan={2}>To initiating facility:<br>
+                </br>
+                <small className="italic">(name and address)</small>
+                </td>
+                <td colSpan={4} className="border p-1">
+                  <textarea name="tofacility"value={formData.tofacility} onChange={handleChange} className="w-full p-1 mt-1" rows={2}/>
+                </td>
+              </tr>
+              {/* 4th row */}
+              <tr>
+                <td className="border p-1 font-bold w-1/3" colSpan={2}>Service user name:
+                </td>
+                <td colSpan={4} className="border p-1">
+                <input name="backserviceusername" value={formData.backserviceusername} onChange={handleChange} className="w-full p-1 mt-1"/>
+                </td>
+              </tr>
+              {/* 5th row */}
+              <tr>
+                <td className="border p-1 font-semibold" colSpan={2}>Identity number:</td>
                 <td colSpan={2} className="border p-1">
-                  <input
-                    name="printedName"
-                    placeholder="Printed Name"
-                    value={formData.printedName}
-                    onChange={handleChange}
-                    className="w-full p-1 border"
-                  />
+                  <input name="backidentitynumber"value={formData.backidentitynumber} onChange={handleChange}className="w-full p-1 mt-1"/>
                 </td>
-                <td className="border p-1 font-semibold">Name:</td>
-                <td className="border p-1">
-                  <input
-                    name="signature"
-                    placeholder="Signature"
-                    value={formData.signature}
-                    onChange={handleChange}
-                    className="w-full p-1 border"
-                  />
-                </td>
-                <td className="border p-1 font-semibold">Date:</td>
-                <td className="border p-1">
-                  <input
-                    type="date"
-                    name="signatureDate"
-                    value={formData.signatureDate}
-                    onChange={handleChange}
-                    className="w-full p-1 border"
-                  />
+                <td className="border p-1 font-semibold" colSpan={2}>Age:
+                  <input name="backage" value={formData.backage} onChange={handleChange} className="w-full p-1 mt-1"/>
+                    <label className="mr-2">
+                      <input type="radio" name="backsex" value="M" checked={formData.sex === 'M'} onChange={handleChange} className="mr-1"/>{' '}M
+                    </label>
+                    <label>
+                      <input type="radio" name="backsex" value="F" checked={formData.sex === 'F'} onChange={handleChange} className="mr-1"/>{' '} F
+                    </label>
                 </td>
               </tr>
-            </tbody>
-          </table>
+               {/* 6th row */}
+               <tr>
+                <td className="border p-1 font-bold w-1/3" colSpan={2}>Address:
+                </td>
+                <td colSpan={4} className="border p-1">
+                <input name="backaddress" value={formData.backaddress} onChange={handleChange} className="w-full p-1 mt-1"/>
+                </td>
+              </tr>
+              {/* 7th row */}
+              <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>This person was seen by:<br>
+              </br>
+              <small className="italic">(name and position)</small>
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={3}>
+                <input name="backreferralfacility" value={formData.backreferralfacility} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+              <td className="border p-1 italic w-1/8" colSpan={1}>on date:
+                <input name="seendate" type="date" value={formData.seendate} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 8th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Mental and physical health history<br>
+              </br>
+              <small className="italic">(include substance use, medical history, family history)</small>
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="backhealthhistory" value={formData.backhealthhistory} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 9th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Assessment findings
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="backhealthhistory" value={formData.backhealthhistory} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 10th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Diagnosis
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="diagnosis" value={formData.diagnosis} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 11th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Treatment plan and follow-up
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="treatmentfollowup" value={formData.treatmentfollowup} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+             {/* 12th row */}
+             <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Medication prescribed
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="medicationprescribed" value={formData.medicationprescribed} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+             {/* 13th row */}
+             <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Psychological intervention recommended
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="psychologicalrecommendation" value={formData.psychologicalrecommendation} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 14th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Please continue with:<br>
+              <small className="italic">(medications, prescriptions, psychological care, follow-up)</small>
+              </br>
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={4}>
+                <textarea name="continuewith" value={formData.continuewith} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+            {/* 15th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Refer back to:
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={3}>
+                <input name="referbackto" value={formData.referbackto} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+              <td className="border p-1 italic w-1/8" colSpan={1}>on date:
+                <input name="referbacktodate" type="date" value={formData.referbacktodate} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
+             {/* 16th row */}
+             <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Refer back to:
+              </td>
+              <td className="border p-1 font-semibold w-1/3" colSpan={3}>
+                <input name="referbackto" value={formData.referbackto} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+              <td className="border p-1 italic w-1/8" colSpan={1}>on date:
+                <input name="referbacktodate" type="date" value={formData.referbacktodate} onChange={handleChange} className="w-full p-1 mt-1"/>
+              </td>
+            </tr>
 
-          <div className="mt-4 text-right">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Submit Form
-            </button>
-          </div>
-        </form>
-      </div>
-    </AppLayout>
-  );
-};
+            </tbody>
+            </table>
+            <div className="mt-4 text-right">
+              <button
+                type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit Form
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </AppLayout>
+     );
+  };
 
 export default ReferralFormIndex;
