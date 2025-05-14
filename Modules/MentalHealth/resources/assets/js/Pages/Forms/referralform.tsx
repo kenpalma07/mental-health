@@ -81,6 +81,20 @@ const ReferralFormIndex: React.FC = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Referral Form" />
       <div className="p-4 space-y-4">
+
+      <div className="w-[210mm] min-h-[297mm] p-8 mx-auto bg-white shadow-lg rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl print:scale-100 print:shadow-none print:rounded-none print:p-0 print:m-0">
+        <div className="w-full h-full border border-black text-black text-sm print:border-none p-4">
+
+           {/* Header */}
+        <div className="relative flex items-center justify-between mb-8">
+          <img src="/path-to-left-logo.png" alt="Left Logo" className="h-16 w-16 object-contain" />
+          <div className="flex flex-col items-center text-center">
+          <p className="text-sm text-gray-600">Republic of the Philippines</p>
+          <p className="text-sm text-gray-600">Department of Health</p>
+          <h1 className="font-bold uppercase text-lg text-gray-800">Center for Health Development - Caraga</h1>
+        </div>
+          <img src="/path-to-right-logo.png" alt="Right Logo" className="h-16 w-16 object-contain" />
+        </div>
         
         <form
           onSubmit={handleSubmit}
@@ -227,10 +241,10 @@ const ReferralFormIndex: React.FC = () => {
               </tbody>
               </table>
 
-               {/* BACK REFERRAL */}
+                {/* BACK REFERRAL */}
                
-              <table className="w-full border-collapse">
-              <tbody>
+            <table className="w-full border-collapse">
+            <tbody>
               {/* 1st row */}
               <tr>
                 <td className="border p-1 font-bold w-1/3" colSpan={2}>Back-referral from facility<br>
@@ -246,13 +260,12 @@ const ReferralFormIndex: React.FC = () => {
               </tr>
                {/* 2nd row */}
                <tr>
-                <td className="border p-1 font-bold w-1/3" rowSpan={2}>Reply from<br>
+                <td className="border p-1 font-bold w-1/3" rowSpan={2}>Reply from<br/>
                   <small className="italic">(person completing form)</small>
-                  </br>
                 </td>
                 <td className="border p-1" colSpan={4}>
                   <label className="block font-semibold">Name:</label>
-                  <input className="w-full p-1 mt-1" name="replyname" value={formData.replyname} onChange={handleChange} />
+                  <input className="w-full p-1 mt-1" name="replyname" value={formData.replyname} onChange={handleChange}/>
                 </td>
                 <td className="border p-1" colSpan={2}>
                   <label className="block font-semibold">Date</label>
@@ -269,17 +282,17 @@ const ReferralFormIndex: React.FC = () => {
                   <input className="w-full p-1 mt-1" name="replyspecialty" value={formData.replyspecialty} onChange={handleChange} />
                 </td>
               </tr>
-              {/* 3rd row */}
-              <tr>
+                {/* 3rd row */}
+                <tr>
                 <td className="border p-1 font-bold w-1/3" colSpan={2}>To initiating facility:<br>
                 </br>
                 <small className="italic">(name and address)</small>
                 </td>
                 <td colSpan={4} className="border p-1">
-                  <textarea name="tofacility"value={formData.tofacility} onChange={handleChange} className="w-full p-1 mt-1" rows={2}/>
+                    <textarea name="tofacility"value={formData.tofacility} onChange={handleChange} className="w-full p-1 mt-1" rows={2}/>
                 </td>
-              </tr>
-              {/* 4th row */}
+                </tr>
+                 {/* 4th row */}
               <tr>
                 <td className="border p-1 font-bold w-1/3" colSpan={2}>Service user name:
                 </td>
@@ -342,8 +355,8 @@ const ReferralFormIndex: React.FC = () => {
                 <textarea name="backhealthhistory" value={formData.backhealthhistory} onChange={handleChange} className="w-full p-1 mt-1"/>
               </td>
             </tr>
-            {/* 10th row */}
-            <tr>
+             {/* 10th row */}
+             <tr>
               <td className="border p-1 font-bold w-1/3" colSpan={2}>Diagnosis
               </td>
               <td className="border p-1 font-semibold w-1/3" colSpan={4}>
@@ -352,23 +365,23 @@ const ReferralFormIndex: React.FC = () => {
             </tr>
             {/* 11th row */}
             <tr>
-              <td className="border p-1 font-bold w-1/3" colSpan={2}>Treatment plan and follow-up
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Treatment plan and follow-up:
               </td>
               <td className="border p-1 font-semibold w-1/3" colSpan={4}>
                 <textarea name="treatmentfollowup" value={formData.treatmentfollowup} onChange={handleChange} className="w-full p-1 mt-1"/>
               </td>
             </tr>
-             {/* 12th row */}
-             <tr>
-              <td className="border p-1 font-bold w-1/3" colSpan={2}>Medication prescribed
+            {/* 12th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Medication prescribed:
               </td>
               <td className="border p-1 font-semibold w-1/3" colSpan={4}>
                 <textarea name="medicationprescribed" value={formData.medicationprescribed} onChange={handleChange} className="w-full p-1 mt-1"/>
               </td>
             </tr>
-             {/* 13th row */}
-             <tr>
-              <td className="border p-1 font-bold w-1/3" colSpan={2}>Psychological intervention recommended
+            {/* 13th row */}
+            <tr>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Psychological intervention recommended:
               </td>
               <td className="border p-1 font-semibold w-1/3" colSpan={4}>
                 <textarea name="psychologicalrecommendation" value={formData.psychologicalrecommendation} onChange={handleChange} className="w-full p-1 mt-1"/>
@@ -376,9 +389,8 @@ const ReferralFormIndex: React.FC = () => {
             </tr>
             {/* 14th row */}
             <tr>
-              <td className="border p-1 font-bold w-1/3" colSpan={2}>Please continue with:<br>
+              <td className="border p-1 font-bold w-1/3" colSpan={2}>Please continue with:<br/>
               <small className="italic">(medications, prescriptions, psychological care, follow-up)</small>
-              </br>
               </td>
               <td className="border p-1 font-semibold w-1/3" colSpan={4}>
                 <textarea name="continuewith" value={formData.continuewith} onChange={handleChange} className="w-full p-1 mt-1"/>
@@ -395,26 +407,31 @@ const ReferralFormIndex: React.FC = () => {
                 <input name="referbacktodate" type="date" value={formData.referbacktodate} onChange={handleChange} className="w-full p-1 mt-1"/>
               </td>
             </tr>
-             {/* 16th row */}
-             <tr>
-              <td className="border p-1 font-bold w-1/3" colSpan={2}>Refer back to:
-              </td>
-              <td className="border p-1 font-semibold w-1/3" colSpan={3}>
-                <input name="referbackto" value={formData.referbackto} onChange={handleChange} className="w-full p-1 mt-1"/>
-              </td>
-              <td className="border p-1 italic w-1/8" colSpan={1}>on date:
-                <input name="referbacktodate" type="date" value={formData.referbacktodate} onChange={handleChange} className="w-full p-1 mt-1"/>
-              </td>
+            {/* 16th row */}
+            <tr>
+            <td className="border p-1 font-semibold" colSpan={2}>Print name, sign and date:</td>
+            <td colSpan={2} className="border p-1 font-semibold w-1/3">Name:
+                <input name="finalname" value={formData.finalname} onChange={handleChange} className="w-full p-1 mt-1"/>
+            </td>
+            <td className="border p-1 font-semibold" colSpan={1}>Signature:
+                <input name="finalsignature" value={formData.finalsignature} onChange={handleChange}className="w-full p-1 mt-1"/>
+            </td>
+            <td className="border p-1 font-semibold" colSpan={1}>Date:
+                <input type="date" name="finaldate" value={formData.finaldate}onChange={handleChange}className="w-full p-1 mt-1"/>
+            </td>
             </tr>
 
             </tbody>
-            </table>
+            </table>  
             <div className="mt-4 text-right">
               <button
                 type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit Form
               </button>
             </div>
           </form>
+
+          </div>
+          </div>
 
         </div>
       </AppLayout>
