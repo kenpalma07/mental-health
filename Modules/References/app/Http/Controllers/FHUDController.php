@@ -33,21 +33,24 @@ class FHUDController extends Controller
         // Apply pagination
         $facilities = $query->paginate(10)->appends($request->only(['search', 'type']));
 
+        // Pass the URL for 'facilityhealth' route
         return inertia('References::FHUD/index', [
             'facility' => $facilities->items(),
             'pagination' => $facilities->toArray(),
             'filters' => $request->only(['search', 'type']),
+            'facilityHealthRoute' => route('facilityhealth'), // Pass the full URL here
         ]);
     }
+
 
 
     /**
      * Show the form for creating a new resource.
      */
-    // public function create()
-    // {
-    //     return view('references::create');
-    // }
+    public function create()
+    {
+        return view('references::create');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -95,10 +98,10 @@ class FHUDController extends Controller
     /**
      * Show the specified resource.
      */
-    // public function show($id)
-    // {
-    //     return view('references::show');
-    // }
+    public function show($id)
+    {
+        return view('references::show');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -155,5 +158,5 @@ class FHUDController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy($id) {}
+    public function destroy($id) {}
 }

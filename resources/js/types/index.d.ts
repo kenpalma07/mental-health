@@ -76,4 +76,26 @@ export interface FHUD {
     accreno: string;
     facility_licno: string;
     // …any other fields you need
-  }
+}
+
+export interface Employee {
+    id: number;
+    emp_id: string;
+    emp_fname: string;
+    emp_mname: string;
+    emp_lname: string;
+    emp_suffix: string;
+    emp_birthdate: string;
+    emp_sex: string;
+    emp_position: string;
+    emp_hireby: string;
+    employment_status: string;
+    emp_status: 'A' | 'I';
+    emp_prcno: string;
+    emp_ptrno: string;
+    emp_s2licno: string;
+    emp_phicno: string;
+    emp_phicaccreditno: string;
+    emp_tin: string;
+    registered_at: string;
+}
