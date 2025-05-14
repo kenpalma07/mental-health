@@ -3,12 +3,12 @@
 namespace Modules\MentalHealth\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 class MentalAssessmentForm extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = 'tbl_mental_assessment_form';
     protected $primaryKey = 'id';
@@ -16,8 +16,11 @@ class MentalAssessmentForm extends Model
 
     protected $fillable = [
         'consultation_id',
+        'consult_date_assess',
+        'pat_perm_id',
         'pat_temp_id',
-        'carer_name',
+        'carer_name_mot',
+        'carer_name_fat',
         'carer_address',
         'carer_mobile',
 
@@ -65,6 +68,7 @@ class MentalAssessmentForm extends Model
         'phar_durUnit',
         'phar_quantity',
         'phar_doc',
+        'is_dispense',
         'phar_remarks',
 
         'ref_choice',

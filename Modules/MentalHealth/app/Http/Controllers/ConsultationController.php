@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Modules\MentalHealth\Models\MasterPatient;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\Consultation;
+use Modules\MentalHealth\Models\MentalAssessmentForm;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class ConsultationController extends Controller
 {
@@ -15,12 +17,24 @@ class ConsultationController extends Controller
         $patient = MasterPatient::findOrFail($id);
         $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
     
+        $assessmentDates = MentalAssessmentForm::where('pat_perm_id', $patient->id)
+            ->pluck('consult_date_assess')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'))
+            ->toArray(); 
+    
+        $consultations = $consultations->map(function ($consultation) use ($assessmentDates) {
+            $consultation->hasAssessment = in_array($consultation->consult_date, $assessmentDates);
+            return $consultation;
+        });
+    
         return Inertia::render('MentalHealth::Consultation/index', [
             'patient' => $patient,
             'consultations' => $consultations,
+            'assessmentDates' => $assessmentDates,
         ]);
     }
     
+
 
     public function store(Request $request)
     {
@@ -53,6 +67,6 @@ class ConsultationController extends Controller
         $consultation = Consultation::create($validated);
 
         return redirect()->route('consultations.index', ['id' => $validated['consult_temp_id']])
-                         ->with('success', 'Consultation stored successfully!');
+            ->with('success', 'Consultation stored successfully!');
     }
 }

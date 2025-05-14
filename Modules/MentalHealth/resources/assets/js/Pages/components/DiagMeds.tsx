@@ -15,6 +15,8 @@ const DiagMeds = ({
     setSelectedDiagnosis,
     selectedIcdCode,
     setSelectedIcdCode,
+    selectedIcdCodeDescrip,
+    setSelectedIcdCodeDescrip,
     selectedMedicine,
     setSelectedMedicine,
     intake,
@@ -29,6 +31,14 @@ const DiagMeds = ({
     setDuration,
     durationUnit,
     setDurationUnit,
+    pharDate,
+    setPharDate,
+    quantity,
+    setQuantity,
+    doctor,
+    setDoctor,
+    dispense,
+    setDispense,
     remarks,
     setRemarks,
 }: {
@@ -37,6 +47,8 @@ const DiagMeds = ({
     selectedIcdCode: string;
     setSelectedIcdCode: React.Dispatch<React.SetStateAction<string>>;
     selectedMedicine: string;
+    selectedIcdCodeDescrip: string;
+    setSelectedIcdCodeDescrip: React.Dispatch<React.SetStateAction<string>>;
     setSelectedMedicine: React.Dispatch<React.SetStateAction<string>>;
     intake: string;
     setIntake: React.Dispatch<React.SetStateAction<string>>;
@@ -50,6 +62,14 @@ const DiagMeds = ({
     setDuration: React.Dispatch<React.SetStateAction<string>>;
     durationUnit: string;
     setDurationUnit: React.Dispatch<React.SetStateAction<string>>;
+    pharDate: string;
+    setPharDate: React.Dispatch<React.SetStateAction<string>>;
+    quantity: number;
+    setQuantity: React.Dispatch<React.SetStateAction<number>>;
+    doctor: string;
+    setDoctor: React.Dispatch<React.SetStateAction<string>>;
+    dispense: string;
+    setDispense: React.Dispatch<React.SetStateAction<string>>;
     remarks: string;
     setRemarks: React.Dispatch<React.SetStateAction<string>>;
 }) => {
@@ -69,10 +89,8 @@ const DiagMeds = ({
 
     useEffect(() => {
         const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description || '';
-        setIcd10Descrip(description);
+        setSelectedIcdCodeDescrip(description);
     }, [selectedDiagnosis, selectedIcdCode]);
-
-    const [icd10Descrip, setIcd10Descrip] = useState('');
 
     useEffect(() => {
         // console.log('Diagnosis selected:', selectedDiagnosis);
@@ -81,18 +99,6 @@ const DiagMeds = ({
     useEffect(() => {
         // console.log('ICD Code selected:', selectedIcdCode);
     }, [selectedIcdCode]);
-
-    useEffect(() => {
-        const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description;
-        if (description) {
-            // console.log('ICD-10 Description:', description);
-        }
-    }, [selectedDiagnosis, selectedIcdCode]);
-
-    const [dateIssued, setDateIssued] = useState('');
-    useEffect(() => {
-        // if (dateIssued) console.log('Date Issued:', dateIssued);
-    }, [dateIssued]);
 
     const doctors = [
         { id: 'doc1', name: 'Dr. Sample V. Quak' },
@@ -104,28 +110,25 @@ const DiagMeds = ({
         { id: 'N', name: 'No' },
     ];
 
-    const [selectedDoctor, setSelectedDoctor] = useState('');
-    const [selectedDispense, setSelectedDispsense] = useState('');
-
-    useEffect(() => {
-        const doctor = doctors.find((doc) => doc.id === selectedDoctor);
-        if (doctor) {
-            // console.log('Selected Doctor:', doctor);
-        }
-    }, [selectedDoctor]);
-
-    useEffect(() => {
-        const dispense = dispenses.find((dis) => dis.id === selectedDispense);
-        if (dispense) {
-            // console.log('Selected Doctor:', doctor);
-        }
-    }, [selectedDispense]);
-
-
     useEffect(() => {
         // if (remarks) //console.log('Remarks:', remarks);
     }, [remarks]);
 
+    useEffect(() => {
+        // if (remarks) //console.log('Remarks:', remarks);
+    }, [pharDate]);
+
+    useEffect(() => {
+        // console.log('Selected Doctor:', doctor);
+    }, [doctor]);
+
+    useEffect(() => {
+        // console.log('Selected Doctor:', doctor);
+    }, [dispense]);
+
+    useEffect(() => {
+        // console.log('Selected Doctor:', doctor);
+    }, [quantity]);
 
     useEffect(() => {
         // console.log('Medicine selected:', selectedMedicine);
@@ -176,8 +179,9 @@ const DiagMeds = ({
     };
 
     useEffect(() => {
-        const totalQuantity = calculateTotalQuantity();
-        // console.log('Total Quantity:', totalQuantity);
+        const totalQuantity = calculateTotalQuantity(); // Make sure this returns a number
+        setQuantity(totalQuantity);
+        console.log('Total Quantity:', totalQuantity);
     }, [intake, frequency, duration, frequencyUnit, durationUnit]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -234,12 +238,7 @@ const DiagMeds = ({
                     {/* Description Field */}
                     <div>
                         <Label className="text-sm font-medium text-gray-700">Description</Label>
-                        <Textarea
-                            className="mt-1 w-full rounded-md border p-2 text-sm"
-                            rows={6}
-                            readOnly
-                            value={icd10Descrip}
-                        />
+                        <Textarea className="mt-1 w-full rounded-md border p-2 text-sm" rows={6} readOnly value={selectedIcdCodeDescrip} />
                     </div>
                 </div>
             </div>
@@ -256,10 +255,11 @@ const DiagMeds = ({
                             id="phar_date"
                             name="phar_date"
                             className="w-full rounded-md border p-2"
-                            value={dateIssued}
-                            onChange={(e) => setDateIssued(e.target.value)}
+                            value={pharDate}
+                            onChange={(e) => setPharDate(e.target.value)}
                         />
                     </div>
+
                     <div className="flex-1">
                         <Label className="text-sm font-medium text-gray-700">Recommended Medicine</Label>
                         <Select value={selectedMedicine} onValueChange={setSelectedMedicine} name="recommended_medicine">
@@ -377,18 +377,19 @@ const DiagMeds = ({
                     {/* Total Quantity */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Total Quantity</h5>
-                        <Input className="w-full rounded-md border p-2" name="phar_quantity" value={calculateTotalQuantity()} readOnly />
+                        <Input className="w-full rounded-md border p-2" name="phar_quantity" value={quantity} readOnly />
                     </div>
+
                     {/* Doctor */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
-                        <Select onValueChange={setSelectedDoctor} name="phar_doc">
+                        <Select value={doctor} onValueChange={setDoctor}>
                             <SelectTrigger className="w-full rounded-md border p-2">
                                 <SelectValue placeholder="Select Doctor" />
                             </SelectTrigger>
                             <SelectContent>
                                 {doctors.map((doc) => (
-                                    <SelectItem key={doc.id} value={doc.id}>
+                                    <SelectItem key={doc.id} value={doc.name}>
                                         {doc.name}
                                     </SelectItem>
                                 ))}
@@ -399,13 +400,13 @@ const DiagMeds = ({
                     {/* if dispense */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Is Dispense?</h5>
-                        <Select onValueChange={setSelectedDispsense}>
+                        <Select onValueChange={setDispense}>
                             <SelectTrigger className="w-full rounded-md border p-2">
                                 <SelectValue placeholder="Select Choices" />
                             </SelectTrigger>
                             <SelectContent>
                                 {dispenses.map((dis) => (
-                                    <SelectItem key={dis.id} value={dis.id}>
+                                    <SelectItem key={dis.id} value={dis.name}>
                                         {dis.name}
                                     </SelectItem>
                                 ))}
@@ -416,7 +417,13 @@ const DiagMeds = ({
                     {/* Remarks */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Remarks</h5>
-                        <Textarea rows={3} className="w-full rounded-md border p-2" name='phar_remarks' value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+                        <Textarea
+                            rows={3}
+                            className="w-full rounded-md border p-2"
+                            name="phar_remarks"
+                            value={remarks}
+                            onChange={(e) => setRemarks(e.target.value)}
+                        />
                     </div>
                 </div>
 

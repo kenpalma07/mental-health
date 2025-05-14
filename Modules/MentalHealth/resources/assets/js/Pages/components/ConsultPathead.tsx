@@ -20,7 +20,8 @@ export default function ConsultPathead({ patient }: { patient: any }) {
     }
 
     return (
-        <div className="grid grid-cols-1 gap-4 rounded-xl border border-gray-300 bg-white p-4 text-sm shadow-sm md:grid-cols-3">
+        <div className="space-y-4 p-4">
+            <div className="grid grid-cols-1 gap-4 rounded-xl border border-gray-300 bg-white p-4 text-sm shadow-sm md:grid-cols-3">
             <div className="col-span-1 space-y-2">
                 <div className="mb-2 w-fit rounded bg-blue-500 px-3 py-1 text-sm font-semibold text-white">Personal Information</div>
                 <InfoRow icon={Hospital} label="ID:" value={`${patient.id}`} />
@@ -66,5 +67,6 @@ export default function ConsultPathead({ patient }: { patient: any }) {
                 />
             </div>
         </div>
+    </div>
     );
 }
