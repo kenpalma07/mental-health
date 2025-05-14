@@ -32,6 +32,9 @@ const fetchFhudCodes = async (inputValue: string): Promise<FacilityOption[]> => 
             params: { search: inputValue },
         });
 
+        console.log('Fetching FHUD codes with input:', inputValue);
+        console.log('Mapped FHUD options:', data);
+
         return Array.isArray(data)
             ? data
                   .filter((item: any) => item.facility_stat === 'A')
@@ -243,7 +246,7 @@ const FacilitySetup: React.FC<PageProps> = () => {
                                     getOptionLabel={(opt) => opt.label}
                                     placeholder="Search FHUD code..."
                                     isClearable
-                                    isDisabled={isDisabled}
+                                    // isDisabled={isDisabled}
                                 />
                             </div>
                             <div className="flex justify-end">

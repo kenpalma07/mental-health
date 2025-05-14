@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\MasterPatient;
 use Modules\MentalHealth\Models\FHUDFacility;
-use Carbon\Carbon;
+use Modules\MentalHealth\Models\Consultation;
+
 use Inertia\Inertia;
 
 class PatientController extends Controller

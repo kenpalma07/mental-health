@@ -37,14 +37,14 @@ class SetupController extends Controller
         return redirect()->route('facilitysetup')->with('success', 'Facility setup successfully!');
     }
 
-    public function edit($id)
-    {
-        $facilitySetup = FacilitySetup::findOrFail($id);
+    // public function edit($id)
+    // {
+    //     $facilitySetup = FacilitySetup::findOrFail($id);
 
-        return inertia('References::Setup/edit', [
-            'facilitySetup' => $facilitySetup,
-        ]);
-    }
+    //     return inertia('References::Setup/edit', [
+    //         'facilitySetup' => $facilitySetup,
+    //     ]);
+    // }
 
     public function update(Request $request, $id)
     {

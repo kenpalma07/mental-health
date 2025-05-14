@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, FHUD, PageProps } from '@/types';
+import type { BreadcrumbItem, Employee, PageProps } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import {
     ColumnDef,
@@ -15,54 +15,54 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import dayjs from 'dayjs';
 import { Edit2, MoreHorizontal, PlusCircleIcon } from 'lucide-react';
 import React from 'react';
-import AddFacility from '../FHUD/AddFacility';
-import EditFacility from '../FHUD/EditFacility';
+import AddEmployee from '../Employees/AddEmployee';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'References', href: '/references' },
-    { title: 'FHUD', href: '/references/fhud' },
+    { title: 'Employees', href: '/references/employees' },
 ];
 
-const FHUDIndex: React.FC = () => {
-    const { facility, pagination, filters, facilityHealthRoute } =
-        usePage<PageProps<{ facility: FHUD[]; pagination: any; filters: any; facilityHealthRoute: string }>>().props;
-    const [searchTerm, setSearchTerm] = React.useState(filters?.search || '');
+const EmployeeIndex: React.FC = () => {
+    const { employees = [] }: { employees?: Employee[] } = usePage<PageProps<{ employees?: Employee[] }>>().props;
+
+    const [searchTerm, setSearchTerm] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
+    const [view, setView] = React.useState<'table' | 'grid'>('table');
+    const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-    const [selectedFacility, setSelectedFacility] = React.useState<FHUD | null>(null);
+    const [selectedEmployee, setSelectedEmployee] = React.useState<Employee | null>(null);
 
-    const currentPage = pagination.current_page;
-    const lastPage = pagination.last_page;
-    const perPage = pagination.per_page;
+    const filteredEmployees = React.useMemo(() => {
+        const term = searchTerm.toLowerCase();
+        return employees.filter((emp) =>
+            [emp.emp_id, emp.emp_fname, emp.emp_mname, emp.emp_lname, emp.emp_position, emp.emp_status].some((field) =>
+                field?.toLowerCase().includes(term),
+            ),
+        );
+    }, [employees, searchTerm]);
 
-    const handleEdit = (fhud: FHUD) => {
-        setSelectedFacility(fhud);
+    const handleEdit = (employee: Employee) => {
+        setSelectedEmployee(employee);
+        console.log('Active Employee: ', employee);
         setIsEditModalOpen(true);
     };
 
-    const columns = React.useMemo<ColumnDef<FHUD>[]>(
+    const columns = React.useMemo<ColumnDef<Employee>[]>(
         () => [
-            { accessorKey: 'fhudcode', header: 'Code' },
-            { accessorKey: 'facility_name', header: 'Facility Name' },
-            { accessorKey: 'provider_name', header: 'Name of the Provider' },
-            { accessorKey: 'faccode', header: 'Facility Code' },
+            { accessorKey: 'emp_id', header: 'Employee ID' },
             {
-                accessorKey: 'date_mod',
-                header: 'Date Registered',
-                cell: ({ row }) => dayjs(row.original.date_mod).format('MM-DD-YYYY'),
-            },
-            {
-                accessorKey: 'facility_stat',
-                header: 'Status',
-                cell: ({ row }) => {
-                    const status = row.getValue('facility_stat');
-                    return status === 'A' ? 'Active' : status === 'I' ? 'Inactive' : status;
+                header: 'Full Name',
+                accessorFn: (row) => {
+                    const middle = row.emp_mname ? ` ${row.emp_mname}` : '';
+                    return `${row.emp_lname}, ${row.emp_fname}${middle}`.trim();
                 },
+                id: 'full_name',
             },
+            { accessorKey: 'emp_position', header: 'Position' },
+            { accessorKey: 'emp_status', header: 'Status' },
             {
                 id: 'actions',
                 header: 'Actions',
@@ -86,37 +86,40 @@ const FHUDIndex: React.FC = () => {
     );
 
     const table = useReactTable({
-        data: facility,
+        data: filteredEmployees,
         columns,
-        state: { sorting },
+        state: { sorting, pagination },
         onSortingChange: setSorting,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-        router.get(facilityHealthRoute, { search: value, page: 1 }, { preserveScroll: true, preserveState: true });
+    const handlePagination = (newPage: number) => {
+        const searchQuery = searchTerm ? `&search=${searchTerm}` : '';
+        const pageSize = pagination.pageSize;
+        const page = newPage ? `&page=${newPage}` : '';
+        window.location.href = `/references/employees?${searchQuery}${page}&per_page=${pageSize}`;
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="FHUD Facilities" />
+            <Head title="Employees" />
 
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <Input
-                            placeholder="Search by facility code..."
+                            placeholder="Search Employees"
                             value={searchTerm}
-                            onChange={handleSearchChange}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full max-w-md"
                         />
-                        <Button onClick={() => setIsModalOpen(true)} className="h-8 px-2 lg:px-3">
-                            <PlusCircleIcon className="mr-1 h-4 w-4" /> Add
+                        <Button onClick={() => setIsAddModalOpen(true)} className="h-8 px-2 lg:px-3">
+                            <PlusCircleIcon className="mr-2 h-4 w-4" />
+                            Add Employee
                         </Button>
                     </div>
                 </div>
@@ -131,8 +134,11 @@ const FHUDIndex: React.FC = () => {
                                             {header.isPlaceholder ? null : (
                                                 <div className="cursor-pointer select-none" onClick={header.column.getToggleSortingHandler()}>
                                                     {flexRender(header.column.columnDef.header, header.getContext())}
-                                                    {header.column.getIsSorted() === 'asc' && ' 🔼'}
-                                                    {header.column.getIsSorted() === 'desc' && ' 🔽'}
+                                                    {header.column.getIsSorted() === 'asc'
+                                                        ? ' 🔼'
+                                                        : header.column.getIsSorted() === 'desc'
+                                                          ? ' 🔽'
+                                                          : ''}
                                                 </div>
                                             )}
                                         </th>
@@ -144,7 +150,7 @@ const FHUDIndex: React.FC = () => {
                             {table.getRowModel().rows.length === 0 ? (
                                 <tr>
                                     <td colSpan={columns.length} className="py-6 text-center text-gray-500">
-                                        No facilities found.
+                                        No employees found.
                                     </td>
                                 </tr>
                             ) : (
@@ -164,24 +170,14 @@ const FHUDIndex: React.FC = () => {
 
                 <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-gray-600">
-                        Page {currentPage} of {lastPage}
+                        Page {pagination.pageIndex + 1} of {table.getPageCount()}
                     </div>
-                    <div className="text-sm text-gray-600">Total Facilities: {pagination.total}</div>
+                    <div className="text-sm text-gray-600">Total Employees: {filteredEmployees.length}</div>
 
                     <div className="flex gap-2">
                         <Select
-                            value={perPage.toString()}
-                            onValueChange={(value) =>
-                                router.get(
-                                    '/references/fhud',
-                                    {
-                                        search: searchTerm,
-                                        page: 1,
-                                        per_page: Number(value),
-                                    },
-                                    { preserveScroll: true },
-                                )
-                            }
+                            value={pagination.pageSize.toString()}
+                            onValueChange={(value) => setPagination((p) => ({ ...p, pageSize: Number(value) }))}
                         >
                             <SelectTrigger className="w-32">
                                 <SelectValue placeholder="Rows per page" />
@@ -194,36 +190,30 @@ const FHUDIndex: React.FC = () => {
                                 ))}
                             </SelectContent>
                         </Select>
-
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => router.get('/references/fhud', { page: 1, search: searchTerm })}
-                            disabled={currentPage === 1}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => handlePagination(1)} disabled={pagination.pageIndex === 0}>
                             First
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => router.get('/references/fhud', { page: currentPage - 1, search: searchTerm })}
-                            disabled={currentPage === 1}
+                            onClick={() => handlePagination(pagination.pageIndex - 1)}
+                            disabled={pagination.pageIndex === 0}
                         >
                             Prev
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => router.get('/references/fhud', { page: currentPage + 1, search: searchTerm })}
-                            disabled={currentPage === lastPage}
+                            onClick={() => handlePagination(pagination.pageIndex + 1)}
+                            disabled={pagination.pageIndex === table.getPageCount() - 1}
                         >
                             Next
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => router.get('/references/fhud', { page: lastPage, search: searchTerm })}
-                            disabled={currentPage === lastPage}
+                            onClick={() => handlePagination(table.getPageCount() - 1)}
+                            disabled={pagination.pageIndex === table.getPageCount() - 1}
                         >
                             Last
                         </Button>
@@ -231,42 +221,20 @@ const FHUDIndex: React.FC = () => {
                 </div>
             </div>
 
-            <AddFacility
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+            <AddEmployee
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
                 onSubmit={(data) =>
-                    router.post('/references/fhud', data, {
+                    router.post('/references/employees', data, {
                         onSuccess: () => {
-                            setIsModalOpen(false);
-                            setSearchTerm('');
+                            setIsAddModalOpen(false);
                             router.reload({ only: ['facility', 'pagination', 'filters'] });
                         },
                     })
                 }
             />
-
-            {selectedFacility && (
-                <EditFacility
-                    isOpen={isEditModalOpen}
-                    onClose={() => {
-                        setIsEditModalOpen(false);
-                        setSelectedFacility(null);
-                    }}
-                    facility={selectedFacility}
-                    onSubmit={(data) =>
-                        router.put(`/references/fhud/${selectedFacility.id}`, data, {
-                            onSuccess: () => {
-                                setIsEditModalOpen(false);
-                                setSelectedFacility(null);
-                                setSearchTerm('');
-                                router.reload({ only: ['facility', 'pagination', 'filters'] });
-                            },
-                        })
-                    }
-                />
-            )}
         </AppLayout>
     );
 };
 
-export default FHUDIndex;
+export default EmployeeIndex;

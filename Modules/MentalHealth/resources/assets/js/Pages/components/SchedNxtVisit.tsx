@@ -1,29 +1,22 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
-import { CalendarDays, CheckCircle } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function SchedNxtVisit() {
-    const { data, setData, post, processing, errors } = useForm({
-        date_nxt_visit: '',
-    });
-    // console.log('Scheduled Next Visit:', data.next_visit_date); // Log the next visit date
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post('/schedule/next-visit');
-    };
+type SchedNxtVisitProps = {
+    dateNxtVisit: string;
+    setDateNxtVisit: (value: string) => void;
+    errors?: Record<string, string>;
+};
 
-    // Sample data for the visits table
+export default function SchedNxtVisit({ dateNxtVisit, setDateNxtVisit, errors }: SchedNxtVisitProps) {
     const visits = [
         { id: 1, date: '2025-04-20', reason: '1st Visit Depression' },
         { id: 2, date: '2025-03-18', reason: 'Follow-up Depression Visit' },
         { id: 3, date: '2025-02-15', reason: 'Other Diagnosis' },
     ];
 
-    // State for the current time
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
     useEffect(() => {
@@ -33,22 +26,16 @@ export default function SchedNxtVisit() {
         return () => clearInterval(timer);
     }, []);
 
-    // Get current month and year
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
     const currentYear = new Date().getFullYear();
     const currentDay = new Date().getDate();
-
-    // Generate days for the current month
     const daysInMonth = new Date(currentYear, new Date().getMonth() + 1, 0).getDate();
-
-    // Determine the starting day of the month (e.g., Sunday, Monday)
     const startDay = new Date(currentYear, new Date().getMonth(), 1).getDay();
 
     return (
         <div className="space-y-6">
-            {/* Flex/Grid container for the cards */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {/* First Card: List of Visits */}
+                {/* First Card: Visit History */}
                 <Card className="rounded-2xl p-6 shadow-lg">
                     <CardContent>
                         <div className="mb-4 flex items-center gap-2 text-xl font-semibold">
@@ -79,7 +66,7 @@ export default function SchedNxtVisit() {
                 {/* Second Card: Schedule Next Visit */}
                 <Card className="rounded-2xl p-6 shadow-lg">
                     <CardContent>
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form className="space-y-4">
                             <div className="flex items-center gap-2 text-xl font-semibold">
                                 <CalendarDays className="text-blue-600" />
                                 <span>Schedule Next Visit</span>
@@ -93,23 +80,18 @@ export default function SchedNxtVisit() {
                                     type="date"
                                     id="date_nxt_visit"
                                     name="date_nxt_visit"
-                                    value={data.date_nxt_visit}
-                                    onChange={(e) => setData('date_nxt_visit', e.target.value)}
+                                    value={dateNxtVisit}
+                                    onChange={(e) => setDateNxtVisit(e.target.value)}
                                     className="mt-1"
                                 />
-                                {errors.date_nxt_visit && <p className="mt-1 text-sm text-red-500">{errors.date_nxt_visit}</p>}
+                                {errors?.date_nxt_visit && <p className="mt-1 text-sm text-red-500">{errors.date_nxt_visit}</p>}
                             </div>
-
-                            <Button type="submit" className="flex w-full items-center gap-2" disabled={processing}>
-                                <CheckCircle size={18} />
-                                Confirm Schedule
-                            </Button>
                         </form>
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Third Card: Calendar and Time Display */}
+            {/* Third Card: Calendar View */}
             <Card className="mx-auto max-w-sm rounded-2xl p-6 shadow-lg">
                 <CardContent>
                     <div className="mb-4 flex items-center justify-between">
@@ -122,21 +104,18 @@ export default function SchedNxtVisit() {
                         <div className="text-lg font-semibold">{currentTime}</div>
                     </div>
 
-                    {/* Calendar Layout */}
+                    {/* Calendar Grid */}
                     <div className="grid grid-cols-7 gap-1">
-                        {/* Render day labels (Sun, Mon, Tue...) */}
                         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
                             <div key={day} className="rounded bg-gray-100 py-2 text-center text-sm font-semibold">
                                 {day}
                             </div>
                         ))}
 
-                        {/* Render blank spaces before the start of the month */}
                         {Array.from({ length: startDay }).map((_, index) => (
-                            <div key={index} className="py-2 text-center text-sm"></div>
+                            <div key={`blank-${index}`} className="py-2 text-center text-sm"></div>
                         ))}
 
-                        {/* Render the days of the month */}
                         {Array.from({ length: daysInMonth }).map((_, index) => (
                             <div
                                 key={index}

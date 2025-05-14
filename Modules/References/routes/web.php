@@ -5,6 +5,7 @@ use Illuminate\Http\Request; // ✅ this is correct
 use Modules\References\Http\Controllers\ReferencesController;
 use Modules\References\Http\Controllers\FHUDController;
 use Modules\References\Http\Controllers\SetupController;
+use Modules\References\Http\Controllers\EmployeeController;
 use Modules\References\Models\FhudFacility;
 
 Route::get('/references', [ReferencesController::class, 'index']);
@@ -29,7 +30,7 @@ Route::get('/api/fhud-codes', function (Request $request) {
           ->orWhere('facility_name', 'like', "%{$search}%")
     )
     ->limit(10)
-    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address',]);
+    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode']);
 });
 
 Route::get('/api/facilities', function (Request $request) {
@@ -42,5 +43,12 @@ Route::get('/api/facilities', function (Request $request) {
     ->limit(10)
     ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode']);
 });
+
+// Employee
+Route::get('/references/employees', [EmployeeController::class, 'index'])->name('employees');
+Route::get('/references/employees/create', [EmployeeController::class, 'create'])->name('employee.create');
+Route::get('/references/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
+Route::put('/references/employees/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+Route::post('/references/employees', [EmployeeController::class, 'store'])->name('employee.store');
 
 ?>

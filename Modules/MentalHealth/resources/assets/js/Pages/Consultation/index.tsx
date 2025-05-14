@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Edit, Eye, Send, Stethoscope, Trash } from 'lucide-react';
+import { BookA, Edit, Eye, Send, Stethoscope, Trash } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -200,27 +200,6 @@ const ConsultationIndex: React.FC = () => {
             },
         });
     };
-
-    // const handleDelete = (index: number) => {
-    //     setConsultations((prev) => prev.filter((_, i) => i !== index));
-    // };
-
-    // const handleEdit = (index: number) => {
-    //     const consultation = consultations[index];
-    //     setFormData({
-    //         ...consultation,
-    //         pat_temperature: consultation.pat_temperature.toString(),
-    //         pat_heart_rate: consultation.pat_heart_rate.toString(),
-    //         pat_oxygen_sat: consultation.pat_oxygen_sat.toString(),
-    //         respiratoryRate: consultation.respiratoryRate.toString(),
-    //         pat_height: consultation.pat_height.toString(),
-    //         pat_weight: consultation.pat_weight.toString(),
-    //         pat_systolic_pres: consultation.pat_systolic_pres.toString(),
-    //         pat_diastolic_pres: consultation.pat_diastolic_pres.toString(),
-    //     });
-    //     setConsultations((prev) => prev.filter((_, i) => i !== index));
-    //     setShowForm(true);
-    // };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -423,37 +402,36 @@ const ConsultationIndex: React.FC = () => {
                                                 <td className="px-4 py-2">{item.type_service}</td>
                                                 <td className="px-4 py-2 text-center">
                                                     <div className="inline-flex items-center justify-center gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={() => (index)}
-                                                            className="text-blue-600 hover:bg-blue-500"
-                                                        >
+                                                        <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
                                                             <Eye size={16} />
                                                         </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={() => (index)}
-                                                            className="text-green-600 hover:bg-green-500"
-                                                        >
+                                                        <Button variant="outline" onClick={() => index} className="text-green-600 hover:bg-green-500">
                                                             <Edit size={16} />
                                                         </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={() => (index)}
-                                                            className="text-red-600 hover:bg-red-500"
-                                                        >
+                                                        {/* <Button variant="outline" onClick={() => index} className="text-red-600 hover:bg-red-500">
                                                             <Trash size={16} />
-                                                        </Button>
+                                                        </Button> */}
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-2">
-                                                    <Link
-                                                        href={`/assessment/${patient.id}/addAssessment`}
+                                                    {/* Conditionally render button based on hasAssessment flag */}
+                                                    {item.hasAssessment ? (
+                                                        <Link
+                                                        href={`/assessment/${patient.id}/PatAssessmentForm`}
                                                         className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
                                                     >
-                                                        <Stethoscope className="h-4 w-4" />
-                                                        Assessment Tool
-                                                    </Link>
+                                                        <BookA className="h-4 w-4" />
+                                                            View Form
+                                                        </Link>
+                                                    ) : (
+                                                        <Link
+                                                            href={`/assessment/${patient.id}/addAssessment`}
+                                                            className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                        >
+                                                            <Stethoscope className="h-4 w-4" />
+                                                            Assessment Tool
+                                                        </Link>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

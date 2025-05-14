@@ -4,6 +4,7 @@ namespace Modules\MentalHealth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Modules\MentalHealth\Models\Consultation;
 
 class MasterPatient extends Model
 {
@@ -47,4 +48,5 @@ class MasterPatient extends Model
             $model->ts_updated_at = $now;
         });
     }
+
 }
