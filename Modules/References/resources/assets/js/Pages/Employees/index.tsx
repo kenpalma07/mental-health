@@ -35,6 +35,21 @@ const EmployeeIndex: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedEmployee, setSelectedEmployee] = React.useState<Employee | null>(null);
 
+    const POSITION_LABELS: Record<string, string> = {
+        BHW: 'Barangay Health Worker',
+        DEN: 'Dentist',
+        MET: 'Medical Technologist',
+        MDW: 'Midwife',
+        NUR: 'Nurse',
+        NUT: 'Nutritionist',
+        PAT: 'Pathologist',
+        PHA: 'Pharmacist',
+        DOC: 'Physician/Doctor',
+        SAE: 'Sanitary Engineer',
+        SAI: 'Sanitary Inspector',
+        OTH: 'Others',
+    };
+
     const filteredEmployees = React.useMemo(() => {
         const term = searchTerm.toLowerCase();
         return employees.filter((emp) =>
@@ -61,7 +76,11 @@ const EmployeeIndex: React.FC = () => {
                 },
                 id: 'full_name',
             },
-            { accessorKey: 'emp_position', header: 'Position' },
+            {
+                header: 'Position',
+                accessorFn: (row) => POSITION_LABELS[row.emp_position] || row.emp_position || '-',
+                id: 'emp_position_display',
+            },
             { accessorKey: 'emp_status', header: 'Status' },
             {
                 id: 'actions',
