@@ -97,32 +97,29 @@ const AddEmployee: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+    const { name, value } = e.target;
 
-        // Special handling for TIN
-        if (name === 'emp_tin') {
-            // Remove all non-digit characters
-            const digitsOnly = value.replace(/\D/g, '');
+    // Special handling for TIN
+    if (name === 'emp_tin') {
+        const digitsOnly = value.replace(/\D/g, '');
+        const limitedDigits = digitsOnly.slice(0, 12);
+        const formatted = limitedDigits.replace(/(\d{3})(?=\d)/g, '$1-').replace(/-$/, '');
 
-            // Limit to 12 digits
-            const limitedDigits = digitsOnly.slice(0, 12);
+        setForm((prev) => ({ ...prev, [name]: formatted }));
+        return;
+    }
 
-            // Format as XXX-XXX-XXX-XXX
-            const formatted = limitedDigits.replace(/(\d{3})(?=\d)/g, '$1-').replace(/-$/, '');
+    // Convert value to uppercase for all other fields
+    const uppercaseValue = value.toUpperCase();
 
-            setForm((prev) => ({ ...prev, [name]: formatted }));
+    setForm((prev) => ({ ...prev, [name]: uppercaseValue }));
 
-            return;
-        }
+    // Clear error if exists
+    if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+};
 
-        // Update form normally
-        setForm((prev) => ({ ...prev, [name]: value }));
-
-        // Clear error if exists
-        if (errors[name]) {
-            setErrors((prev) => ({ ...prev, [name]: '' }));
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

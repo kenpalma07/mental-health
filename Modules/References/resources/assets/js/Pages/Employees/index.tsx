@@ -18,6 +18,7 @@ import {
 import { Edit2, MoreHorizontal, PlusCircleIcon } from 'lucide-react';
 import React from 'react';
 import AddEmployee from '../Employees/AddEmployee';
+import EditEmployee from '../Employees/EditEmployee';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'References', href: '/references' },
@@ -48,6 +49,11 @@ const EmployeeIndex: React.FC = () => {
         SAE: 'Sanitary Engineer',
         SAI: 'Sanitary Inspector',
         OTH: 'Others',
+    };
+
+    const STATUS_LABELS: Record<string, string> = {
+        A: 'Active',
+        I: 'Inactive',
     };
 
     const filteredEmployees = React.useMemo(() => {
@@ -81,7 +87,11 @@ const EmployeeIndex: React.FC = () => {
                 accessorFn: (row) => POSITION_LABELS[row.emp_position] || row.emp_position || '-',
                 id: 'emp_position_display',
             },
-            { accessorKey: 'emp_status', header: 'Status' },
+            {
+                header: 'Status',
+                accessorFn: (row) => STATUS_LABELS[row.emp_status] || row.emp_status || '-',
+                id: 'emp_status_display',
+            },
             {
                 id: 'actions',
                 header: 'Actions',
@@ -252,6 +262,27 @@ const EmployeeIndex: React.FC = () => {
                     })
                 }
             />
+
+            {selectedEmployee && (
+                <EditEmployee
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        setIsEditModalOpen(false);
+                        setSelectedEmployee(null);
+                    }}
+                    employee={selectedEmployee}
+                    onSubmit={(data) =>
+                        router.put(`/references/employees/${selectedEmployee.id}`, data, {
+                            onSuccess: () => {
+                                setIsEditModalOpen(false);
+                                setSelectedEmployee(null);
+                                setSearchTerm('');
+                                router.reload({ only: ['employee', 'pagination', 'filters'] });
+                            },
+                        })
+                    }
+                />
+            )}
         </AppLayout>
     );
 };

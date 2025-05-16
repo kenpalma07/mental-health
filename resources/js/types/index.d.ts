@@ -88,7 +88,7 @@ export interface Employee {
     emp_birthdate: string;
     emp_sex: string;
     emp_position: string;
-    emp_hireby: string;
+    emp_hiredby: string;
     employment_status: string;
     emp_status: 'A' | 'I';
     emp_prcno: string;

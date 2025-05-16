@@ -76,4 +76,10 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees')->with('success', 'Employee added succesfully!');
     }
+
+    public function edit($id)
+    {
+        $employee = Employee::find($id);
+        return response()->json($employee);
+    }
 }

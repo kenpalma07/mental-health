@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3a00bc025da3b3a998bcabd0c86f956",
+    "content-hash": "44fcf0e8438c5a47e42168c7bd867dc2",
     "packages": [
         {
             "name": "brick/math",
@@ -4398,16 +4398,16 @@
         },
         {
             "name": "spatie/laravel-csp",
-            "version": "3.11.0",
+            "version": "3.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-csp.git",
-                "reference": "81630c29d515510c873690a443368409b8ec5c0b"
+                "reference": "a6763abdeb95c79036a321b90ec299998ad762c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/81630c29d515510c873690a443368409b8ec5c0b",
-                "reference": "81630c29d515510c873690a443368409b8ec5c0b",
+                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/a6763abdeb95c79036a321b90ec299998ad762c1",
+                "reference": "a6763abdeb95c79036a321b90ec299998ad762c1",
                 "shasum": ""
             },
             "require": {
@@ -4471,7 +4471,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-csp/tree/3.11.0"
+                "source": "https://github.com/spatie/laravel-csp/tree/3.11.1"
             },
             "funding": [
                 {
@@ -4479,7 +4479,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-04-28T15:10:06+00:00"
+            "time": "2025-05-13T07:40:06+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -4544,16 +4544,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.17.0",
+            "version": "6.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "02ada8f638b643713fa2fb543384738e27346ddb"
+                "reference": "3c05f04d12275dfbe462c8b4aae3290e586c2dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/02ada8f638b643713fa2fb543384738e27346ddb",
-                "reference": "02ada8f638b643713fa2fb543384738e27346ddb",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/3c05f04d12275dfbe462c8b4aae3290e586c2dde",
+                "reference": "3c05f04d12275dfbe462c8b4aae3290e586c2dde",
                 "shasum": ""
             },
             "require": {
@@ -4615,7 +4615,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.17.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.18.0"
             },
             "funding": [
                 {
@@ -4623,7 +4623,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-08T15:06:14+00:00"
+            "time": "2025-05-14T03:32:23+00:00"
         },
         {
             "name": "symfony/clock",
