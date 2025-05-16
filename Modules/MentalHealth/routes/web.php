@@ -33,9 +33,9 @@ Route::get('/referralform', [OtherController::class, 'referralform']);
 
 //Reports
 Route::get('/mhtracker', [ReportController::class, 'mhtracker']);
-Route::get('/mhmasterlist', [ReportController::class, 'mhmasterlist']);
-Route::get('/schoolagesr', [ReportController::class, 'schoolagesr']);
-Route::get('/adultsr', [ReportController::class, 'adultsr']);
+Route::get('/reportmasterlist', [ReportController::class, 'mhmasterlist']);
+Route::get('/reportschoolagesr', [ReportController::class, 'schoolagesr']);
+Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 
 // Patient Assessment
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']); // <-- Add this!

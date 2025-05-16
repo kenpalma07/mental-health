@@ -6,7 +6,7 @@ import type { BreadcrumbItem } from '@/types';
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Suicide Report (School Age)',
-    href: '/schoolagesr',
+    href: '/reportschoolagesr',
   },
 ];
 
