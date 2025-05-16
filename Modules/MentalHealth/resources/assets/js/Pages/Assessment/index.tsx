@@ -1,6 +1,7 @@
 import { Head, PageProps, router } from '@inertiajs/react';
 import { Calendar, Clipboard, Heart, Stethoscope, User } from 'lucide-react';
 import { useState } from 'react';
+import axios from 'axios';
 
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
@@ -18,9 +19,10 @@ import type { BreadcrumbItem } from '@/types';
 interface Props extends PageProps {
     patient: any;
     consultation?: any;
+    facilities: any;
 }
 
-export default function AssessmentIndex({ patient, consultation }: Props) {
+export default function AssessmentIndex({ patient, consultation, facilities }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Mental Health', href: '/patients' },
         { title: 'Patient Consultation', href: `/consultations/${patient.id}` },
@@ -52,7 +54,6 @@ export default function AssessmentIndex({ patient, consultation }: Props) {
     const [frequencyUnit, setFrequencyUnit] = useState('day');
     const [duration, setDuration] = useState('');
     const [durationUnit, setDurationUnit] = useState('day');
-    // Add the following states for the doctor and remarks
     const [selectedPharDate, setPharDate] = useState('');
     const [selectedQuantity, setQuantity] = useState<number>(0);
     const [selectedDoctor, setDoctor] = useState('');
@@ -120,6 +121,7 @@ export default function AssessmentIndex({ patient, consultation }: Props) {
         if (isFormIncomplete()) return;
 
         const newAssessment = {
+            pat_temp_id: String(patient.id),
             consultation_id: consultation?.consult_perm_id || '',
             pat_perm_id: consultation?.consult_temp_id || '',
             consult_date_assess: consultation?.consult_date || '',
@@ -150,15 +152,23 @@ export default function AssessmentIndex({ patient, consultation }: Props) {
         };
 
 
-        router.post('/assessment/store', newAssessment, {
-            onSuccess: () => {
-                resetForm();
-                router.visit(`/consultations/${patient.id}`);
-            },
-            onError: (errors) => {
-                console.error(errors);
-            },
+        axios.post('/assessment/store', newAssessment)
+        .then((response) => {
+          if (response.data?.success && response.data.redirect_url) {
+            // reset form if needed
+            resetForm();
+      
+            // Optional: redirect current tab to consultation view
+            router.visit(`/consultations/${patient.id}`);
+      
+            // Open ITR form in a new tab
+            window.open(response.data.redirect_url, '_blank');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
         });
+        
     };
 
     return (
@@ -193,7 +203,7 @@ export default function AssessmentIndex({ patient, consultation }: Props) {
 
                 {currentStep === 0 && <AssessPhyHealth data={physicalHealthData} setData={setPhysicalHealthData} errors={physicalErrors} />}
                 {currentStep === 1 && <ConMNSAssess data={MNSData} setMNSData={setMNSData} />}
-                {currentStep === 2 && <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} />}
+                {currentStep === 2 && <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} facilities={facilities}/>}
                 {currentStep === 3 && (
                     <DiagMeds
                         selectedDiagnosis={selectedDiagnosis}

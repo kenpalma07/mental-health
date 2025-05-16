@@ -2,7 +2,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import React  from 'react';
+import React from 'react';
 
 type Group = {
     label: string;
@@ -30,7 +30,11 @@ const categories: Category[] = [
             {
                 label: 'Choices',
                 key: 'treat_choice',
-                items: ['Psychoeducation', 'Reduce stress and strengthen social support', 'Promote Exercise in daily activity'],
+                items: [
+                    'Psychoeducation',
+                    'Reduce stress and strengthen social support',
+                    'Promote Exercise in daily activity',
+                ],
             },
         ],
     },
@@ -55,7 +59,6 @@ const categories: Category[] = [
             {
                 label: 'Referred Facility',
                 key: 'ref_fhud',
-                items: ['sample hospital'],
                 isSelect: true,
             },
             {
@@ -105,12 +108,18 @@ const categories: Category[] = [
     },
 ];
 
+type Facility = {
+    id: number;
+    facility_name: string;
+};
+
 type Props = {
     data: Record<string, string[]>;
     setmanMNSData: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
+    facilities: Facility[];
 };
 
-const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
+const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData, facilities }) => {
     const handleChange = (key: string, item: string) => {
         setmanMNSData((prev) => {
             const current = prev[key] || [];
@@ -180,14 +189,29 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                                                 </label>
                                             ))}
 
-                                        {/* Select dropdown */}
-                                        {group.isSelect && (
+                                        {group.isSelect && group.key === 'ref_fhud' ? (
                                             <Select
                                                 value={data[group.key]?.[0] || ''}
                                                 onValueChange={(value) => handleSelectChange(group.key, value)}
                                             >
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue placeholder="Select Facility" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {facilities.map((facility) => (
+                                                        <SelectItem key={facility.id} value={facility.facility_name}>
+                                                            {facility.facility_name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        ) : group.isSelect && (
+                                            <Select
+                                                value={data[group.key]?.[0] || ''}
+                                                onValueChange={(value) => handleSelectChange(group.key, value)}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Select" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {group.items?.map((item) => (
@@ -198,6 +222,7 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                                                 </SelectContent>
                                             </Select>
                                         )}
+
 
                                         {/* Textarea input */}
                                         {group.isTextarea && (
@@ -234,7 +259,6 @@ const ManMNSAssess: React.FC<Props> = ({ data, setmanMNSData }) => {
                         </div>
                     </div>
                 ))}
-
             </div>
         </div>
     );

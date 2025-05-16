@@ -1,0 +1,3 @@
+
+
+pat_temp_id -- manually remove the primary key and foreign key

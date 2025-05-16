@@ -7,6 +7,7 @@ use Modules\MentalHealth\Http\Controllers\OtherController;
 use Modules\MentalHealth\Http\Controllers\ReportController;
 use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 use Modules\MentalHealth\Http\Controllers\AssessmentController; 
+use Modules\MentalHealth\Http\Controllers\FormController;
 
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
@@ -24,6 +25,9 @@ Route::post('/consultations/store', [ConsultationController::class, 'store'])->n
 // Patient Consent
 Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])->name('patients.consent');
 
+// Patient ITR Forms Needed
+Route::get('/patitrforms/{id}', [FormController::class, 'index'])->name('patitrforms.index');
+
 // Forms
 Route::get('/itr', [OtherController::class, 'itr']);
 Route::get('/medabstract', [OtherController::class, 'medabstract']);
@@ -38,6 +42,8 @@ Route::get('/schoolagesr', [ReportController::class, 'schoolagesr']);
 Route::get('/adultsr', [ReportController::class, 'adultsr']);
 
 // Patient Assessment
-Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']); // <-- Add this!
+Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
+Route::get('/assessment/{id}/history', [AssessmentController::class, 'show']);
+
 

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { BookA, Edit, Eye, Send, Stethoscope, Trash } from 'lucide-react';
+import { BookA, BookCheckIcon, Edit, Eye, Send, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -204,9 +204,8 @@ const ConsultationIndex: React.FC = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Consultations" />
+            <ConsultPathead patient={patient} />
             <div className="space-y-4 p-4">
-                <ConsultPathead patient={patient} />
-
                 <div className="space-y-4 rounded-xl border border-gray-300 bg-white p-4 text-sm shadow-sm">
                     <div className="w-fit rounded bg-blue-500 px-3 py-1 text-sm font-semibold text-white">Patient Consultations</div>
 
@@ -215,18 +214,15 @@ const ConsultationIndex: React.FC = () => {
                             <Stethoscope className="mr-2 h-4 w-4" /> {showForm ? 'Hide Assessment Form' : 'Add Consultation Form'}
                         </Button>
 
-                        <Button
-                            disabled={!consultations.length}
-                            className={`flex items-center ${
-                                consultations.length
-                                    ? 'bg-green-300 text-green-700 hover:bg-green-400'
-                                    : 'cursor-not-allowed bg-gray-200 text-gray-400'
+                        <Link
+                            href={`/assessment/${patient.id}/history`}
+                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${
+                                consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
                             }`}
-                            variant="outline"
                         >
-                            <Stethoscope className="mr-2 h-4 w-4" />
+                            <BookCheckIcon className="mr-2 h-4 w-4" />
                             Assessment List
-                        </Button>
+                        </Link>
                     </div>
 
                     {showForm && (
@@ -394,7 +390,7 @@ const ConsultationIndex: React.FC = () => {
                                     {[...consultations]
                                         .sort((a, b) => new Date(b.consult_date).getTime() - new Date(a.consult_date).getTime())
                                         .map((item, index) => (
-                                            <tr key={index} className="border-t bg-white hover:bg-gray-50">
+                                            <tr key={index} className="border-t bg-white hover:bg-gray-50 text-sm">
                                                 <td className="px-4 py-2 font-semibold">{item.consult_perm_id}</td>
                                                 <td className="px-4 py-2">{item.consult_date}</td>
                                                 <td className="px-4 py-2">{item.chief_complaint}</td>
@@ -417,10 +413,10 @@ const ConsultationIndex: React.FC = () => {
                                                     {/* Conditionally render button based on hasAssessment flag */}
                                                     {item.hasAssessment ? (
                                                         <Link
-                                                        href={`/assessment/${patient.id}/PatAssessmentForm`}
-                                                        className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
-                                                    >
-                                                        <BookA className="h-4 w-4" />
+                                                            href={`/assessment/${patient.id}/PatAssessmentForm`}
+                                                            className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                        >
+                                                            <BookA className="h-4 w-4" />
                                                             View Form
                                                         </Link>
                                                     ) : (

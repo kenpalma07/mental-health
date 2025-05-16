@@ -15,9 +15,9 @@ type GroupedItems = {
 };
 
 type Props = {
-  data: Record<string, GroupedItems[]>; // Existing data structure
-  setMNSData: React.Dispatch<React.SetStateAction<Record<string, GroupedItems[]>>>; // Set data function
-  setMNSDataFormatted?: (formatted: Record<string, string>) => void; // Function to format data
+  data: Record<string, GroupedItems[]>;
+  setMNSData: React.Dispatch<React.SetStateAction<Record<string, GroupedItems[]>>>; 
+  setMNSDataFormatted?: (formatted: Record<string, string>) => void; 
 };
 
 const ConMNSAssess: React.FC<Props> = ({ data, setMNSData, setMNSDataFormatted }) => {

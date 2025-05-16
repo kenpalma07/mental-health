@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Modules\MentalHealth\Models\MentalAssessmentForm;
 use Modules\MentalHealth\Models\MasterPatient;
 use Modules\MentalHealth\Models\Consultation;
+use Modules\References\Models\FHUD;
 use Carbon\Carbon;
 use Inertia\Inertia;
 
@@ -27,10 +28,32 @@ class AssessmentController extends Controller
             ->orderByDesc('ts_created_at')
             ->first();
 
+        // Get all facilities
+        $facilities = FHUD::orderBy('facility_name')->get();
+
         return Inertia::render('MentalHealth::Assessment/index', [
             'patient' => $patient,
             'consultation' => $latestConsultation,
             'consultDates' => $consultDates,
+            'facilities' => $facilities,
+        ]);
+    }
+
+    public function show($id)
+    {
+        $patient = MasterPatient::find($id);
+
+        if (!$patient) {
+            abort(404, 'Patient not found');
+        }
+
+        $assessments = MentalAssessmentForm::where('pat_perm_id', $id)
+            ->orderByDesc('consult_date_assess')
+            ->get();
+
+        return Inertia::render('MentalHealth::Consultation/Show', [
+            'patient' => $patient,
+            'assessments' => $assessments,
         ]);
     }
 
@@ -41,7 +64,7 @@ class AssessmentController extends Controller
             'consultation_id' => 'nullable|string|max:50',
             'consult_date_assess' => 'nullable|date',
             'pat_perm_id' => 'nullable|string|max:255',
-            'pat_temp_id' => 'nullable|string|max:50',
+            'pat_temp_id' => 'nullable|string',
             'carer_name_mot' => 'nullable|string|max:100',
             'carer_name_fat' => 'nullable|string|max:100',
             'carer_address' => 'nullable|string|max:250',
@@ -172,9 +195,11 @@ class AssessmentController extends Controller
             $assessData['preg_or_breastf_wom'] = 'Y';
         }
 
-        // Save to database
-        MentalAssessmentForm::create($assessData);
+        $assessment = MentalAssessmentForm::create($assessData);
 
-        return redirect()->back()->with('success', 'Assessment form saved successfully.');
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('patitrforms.index', $request->pat_temp_id),
+        ]);
     }
 }
