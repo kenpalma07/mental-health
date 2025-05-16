@@ -55,9 +55,9 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Mental Health Tracker', href: '/mhtracker' },
-            { title: 'Mental Health Masterlist', href: '/mhmasterlist' },
-            { title: 'Suicide Report (School Age)', href: '/schoolagesr' },
-            { title: 'Suicide Report (Adults)', href: '/adultsr' },
+            { title: 'Mental Health Masterlist', href: '/reportmasterlist' },
+            { title: 'Suicide Report (School Age)', href: '/reportschoolagesr' },
+            { title: 'Suicide Report (Adults)', href: '/reportadultsr' },
         ],
     },
     {
