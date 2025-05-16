@@ -56,10 +56,6 @@ const ConMNSAssess: React.FC<Props> = ({
   const [openModal, setOpenModal] = React.useState(false);
 
   useEffect(() => {
-    console.log('Current selfHarmData:', selfHarmData);
-  }, [selfHarmData]);
-
-  useEffect(() => {
     if (setMNSDataFormatted) {
       const result: Record<string, string> = {};
 
@@ -165,7 +161,6 @@ const ConMNSAssess: React.FC<Props> = ({
                                 />
                                 <span>{item}</span>
 
-                                {/* Show modal trigger button only for checked "Act of self-harm" */}
                                 {isSelfHarm && checked && (
                                   <Dialog open={openModal} onOpenChange={setOpenModal}>
                                     <DialogTrigger asChild>
@@ -173,13 +168,14 @@ const ConMNSAssess: React.FC<Props> = ({
                                         Add Data
                                       </Button>
                                     </DialogTrigger>
-                                    <DialogContent>
+                                    <DialogContent aria-describedby="self-harm-desc">
                                       <DialogHeader>
                                         <DialogTitle>Self-harm Details</DialogTitle>
                                       </DialogHeader>
                                       <div className="grid gap-3 py-2">
                                         <Input
                                           placeholder="School"
+                                          name="school_name"
                                           value={selfHarmData.school_name}
                                           onChange={(e) =>
                                             setSelfHarmData({
@@ -190,6 +186,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                         />
                                         <Input
                                           placeholder="Year/Grade"
+                                          name="grade_year"
                                           value={selfHarmData.grade_year}
                                           onChange={(e) =>
                                             setSelfHarmData({
@@ -200,6 +197,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                         />
                                         <Input
                                           placeholder="Place of Incidence"
+                                          name="place_inci"
                                           value={selfHarmData.place_inci}
                                           onChange={(e) =>
                                             setSelfHarmData({
@@ -210,6 +208,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                         />
                                         <Input
                                           placeholder="Means of Suicide"
+                                          name="self_sui_means"
                                           value={selfHarmData.self_sui_means}
                                           onChange={(e) =>
                                             setSelfHarmData({
@@ -220,6 +219,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                         />
                                         <Input
                                           placeholder="Remarks"
+                                          name="self_sui_remarks"
                                           value={selfHarmData.self_sui_remarks}
                                           onChange={(e) =>
                                             setSelfHarmData({
@@ -229,9 +229,17 @@ const ConMNSAssess: React.FC<Props> = ({
                                           }
                                         />
                                       </div>
+                                      <Button
+                                        onClick={() => {
+                                          setOpenModal(false);
+                                        }}
+                                      >
+                                        Save
+                                      </Button>
                                     </DialogContent>
                                   </Dialog>
                                 )}
+
                               </div>
                             );
                           })}

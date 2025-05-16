@@ -44,7 +44,7 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
   const [MNSData, setMNSData] = useState({});
   const [manMNSData, setmanMNSData] = useState({});
 
-  // Self-harm modal state
+
   const [selfHarmData, setSelfHarmData] = useState({
     school_name: '',
     grade_year: '',
@@ -168,11 +168,11 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
       phar_remarks: selectedRemarks,
       date_nxt_visit: dateNxtVisit,
       // Add self-harm modal data here
-      self_harm_school: selfHarmData.school_name,
-      self_harm_year_grade: selfHarmData.grade_year,
-      self_harm_place: selfHarmData.place_inci,
-      self_harm_means: selfHarmData.self_sui_means,
-      self_harm_remarks: selfHarmData.self_sui_remarks,
+      school_name: selfHarmData.school_name,
+      grade_year: selfHarmData.grade_year,
+      place_inci: selfHarmData.place_inci,
+      self_sui_means: selfHarmData.self_sui_means,
+      self_sui_remarks: selfHarmData.self_sui_remarks,
     };
 
     axios.post('/assessment/store', newAssessment)
