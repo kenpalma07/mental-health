@@ -23,6 +23,12 @@ class MentalAssessmentForm extends Model
         'carer_name_fat',
         'carer_address',
         'carer_mobile',
+        'selfharm_sui',
+        'grade_year',
+        'school_name',
+        'place_inci',
+        'self_sui_remarks',
+        'self_sui_means',
 
         'fam_hist_mns_cond_item',
         'fam_hist_mns_cond_label',

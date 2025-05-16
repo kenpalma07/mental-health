@@ -69,6 +69,12 @@ class AssessmentController extends Controller
             'carer_name_fat' => 'nullable|string|max:100',
             'carer_address' => 'nullable|string|max:250',
             'carer_mobile' => 'nullable|string|max:20',
+            'selfharm_sui' => 'nullable|in:Y,N',
+            'grade_year' => 'nullable|string|max:100',
+            'school_name' => 'nullable|string|max:100',
+            'place_inci' => 'nullable|string|max:100',
+            'self_sui_remarks' => 'nullable|string|max:100',
+            'self_sui_means' => 'nullable|string|max:100',
 
             // Fields from frontend as arrays
             'psycho_inter' => 'nullable|array',
@@ -109,6 +115,7 @@ class AssessmentController extends Controller
             'date_nxt_visit' => 'nullable|date',
         ]);
 
+        // Collect main assessment data keys to store
         $assessData = $request->only([
             'consultation_id',
             'consult_date_assess',
@@ -118,6 +125,12 @@ class AssessmentController extends Controller
             'carer_name_fat',
             'carer_address',
             'carer_mobile',
+            'selfharm_sui',
+            'grade_year',
+            'school_name',
+            'place_inci',
+            'self_sui_remarks',
+            'self_sui_means',
             'carer_relationship',
             'assessment_physical_health',
             'management_physical_health',
@@ -163,7 +176,6 @@ class AssessmentController extends Controller
             }
         }
 
-        // Handle label-item mapping
         $categories = [
             'fam_hist_mns_conditions' => ['item' => 'fam_hist_mns_cond_item', 'label' => 'fam_hist_mns_cond_label'],
             'general_health_history' => ['item' => 'gen_heal_hist_item', 'label' => 'gen_heal_hist_label'],
@@ -171,30 +183,38 @@ class AssessmentController extends Controller
             'presenting_complaint' => ['item' => 'pres_comp_item', 'label' => 'pres_comp_label'],
         ];
 
-        foreach ($categories as $key => $field) {
+        foreach ($categories as $key => $fields) {
             $section = $request->input($key);
-            $sectionData = is_array($section) && isset($section[0]) ? $section[0] : [];
 
-            $assessData[$field['item']] = isset($sectionData[$field['item']])
-                ? implode(', ', $sectionData[$field['item']])
-                : '';
+            $allItems = [];
+            $allLabels = [];
 
-            $assessData[$field['label']] = $sectionData[$field['label']] ?? '';
+            if (is_array($section)) {
+                foreach ($section as $group) {
+                    if (isset($group[$fields['item']])) {
+                        $allItems = array_merge($allItems, (array) $group[$fields['item']]);
+                    }
+
+                    if (!empty($group[$fields['label']])) {
+                        $allLabels[] = $group[$fields['label']];
+                    }
+                }
+            }
+
+            $assessData[$fields['item']] = implode(', ', $allItems);
+            $assessData[$fields['label']] = implode(', ', $allLabels);
+
+            if ($key === 'presenting_complaint') {
+                $assessData['selfharm_sui'] = in_array('Act of self-harm', $allItems) ? 'Y' : 'N';
+            }
         }
 
-        // Special population logic
-        if (in_array('Children and Adolescents', $request->special_pop)) {
-            $assessData['child_and_adolescent'] = 'Y';
-        }
+        $specialPop = $request->input('special_pop', []);
 
-        if (in_array('Older Adults', $request->special_pop)) {
-            $assessData['older_adults'] = 'Y';
-        }
-
-        if (in_array('Pregnant or Breastfeeding woman', $request->special_pop)) {
-            $assessData['preg_or_breastf_wom'] = 'Y';
-        }
-
+        $assessData['child_and_adolescent'] = in_array('Children and Adolescents', $specialPop) ? 'Y' : 'N';
+        $assessData['older_adults'] = in_array('Older Adults', $specialPop) ? 'Y' : 'N';
+        $assessData['preg_or_breastf_wom'] = in_array('Pregnant or Breastfeeding woman', $specialPop) ? 'Y' : 'N';
+        
         $assessment = MentalAssessmentForm::create($assessData);
 
         return response()->json([
