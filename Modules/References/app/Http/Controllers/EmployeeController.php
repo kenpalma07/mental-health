@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\References\Models\Employee;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -44,5 +45,35 @@ class EmployeeController extends Controller
             ],
             'filters' => $request->only(['search']),
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'registered_at' => 'required|date',
+            'emp_id' => 'required|string|max:100',
+            'emp_fname' => 'required|string|max:100',
+            'emp_mname' => 'required|string|max:100',
+            'emp_lname' => 'required|string|max:100',
+            'emp_position' => 'required|string|max:100',
+            'emp_suffix' => 'required|string|max:100',
+            'emp_sex' => 'required|string|max:2',
+            'emp_birthdate' => 'required|date',
+            'emp_hiredby' => 'required|string|max:100',
+            'employment_status' => 'required|string|max:100',
+            'emp_status' => 'required|string|max:2',
+            'emp_prcno' => 'nullable|string|max:100',
+            'emp_ptrno' => 'nullable|string|max:100',
+            'emp_s2licno' => 'nullable|string|max:100',
+            'emp_phicno' => 'nullable|string|max:100',
+            'emp_phicaccreditno' => 'nullable|string|max:100',
+            'emp_tin' => 'nullable|string|max:100',
+        ]);
+
+        $validated['registered_at'] = Carbon::parse($validated['registered_at'])->format('Y-m-d H:i:s');
+
+        Employee::create($validated);
+
+        return redirect()->route('employees')->with('success', 'Employee added succesfully!');
     }
 }

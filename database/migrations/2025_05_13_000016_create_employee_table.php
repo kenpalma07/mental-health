@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('emp_mname', 200)->nullable();
             $table->string('emp_lname', 200)->nullable();
             $table->string('emp_suffix', 5)->nullable();
-            $table->string('emp_postion', 5)->nullable();
+            $table->string('emp_position', 5)->nullable();
             $table->string('emp_sex', 10)->nullable();
             $table->date('emp_birthdate')->nullable();
             $table->string('emp_hiredby', 50)->nullable();
