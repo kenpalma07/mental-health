@@ -257,7 +257,7 @@ const ConsultationIndex: React.FC = () => {
                                             <SelectItem value="followupvisit">Follow-up Visit</SelectItem>
                                             <SelectItem value="visited">Visited</SelectItem>
                                             <SelectItem value="walkin">Walk-in</SelectItem>
-                                            <SelectItem value="referred">Referred</SelectItem>
+                                            <SelectItem value="referral">Referred</SelectItem>
                                             <SelectItem value="teleconsultation">Teleconsultation</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -295,6 +295,7 @@ const ConsultationIndex: React.FC = () => {
                                             <SelectItem value="dismeds">Dispensing Medicaton</SelectItem>
                                             <SelectItem value="psychoed">Psychoeducation</SelectItem>
                                             <SelectItem value="iniass">Initial Assessment</SelectItem>
+                                            <SelectItem value="referral">Referral</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

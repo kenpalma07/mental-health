@@ -1,6 +1,7 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -12,6 +13,14 @@ import { Input } from '@/components/ui/input';
 
 import React, { useEffect } from 'react';
 import categoriesData from '../json/categories.json';
+import {
+  Stethoscope,
+  School,
+  GraduationCap,
+  MapPin,
+  Syringe,
+  StickyNote,
+} from 'lucide-react';
 
 type GroupedItems = {
   pres_comp_label: string;
@@ -24,6 +33,10 @@ type GroupedItems = {
   fam_hist_mns_cond_item: string[];
 };
 
+interface Patient {
+  occupation_code: string;
+}
+
 interface Props {
   data: Record<string, GroupedItems[]>;
   setMNSData: React.Dispatch<React.SetStateAction<Record<string, GroupedItems[]>>>;
@@ -35,6 +48,7 @@ interface Props {
     self_sui_means: string;
     self_sui_remarks: string;
   };
+  patient: Patient;
   setSelfHarmData: React.Dispatch<
     React.SetStateAction<{
       school_name: string;
@@ -47,6 +61,7 @@ interface Props {
 }
 
 const ConMNSAssess: React.FC<Props> = ({
+  patient,
   data,
   setMNSData,
   setMNSDataFormatted,
@@ -165,77 +180,113 @@ const ConMNSAssess: React.FC<Props> = ({
                                   <Dialog open={openModal} onOpenChange={setOpenModal}>
                                     <DialogTrigger asChild>
                                       <Button variant="outline" size="sm" className="ml-2">
+                                        <Stethoscope className="w-4 h-4" />
                                         Add Data
                                       </Button>
                                     </DialogTrigger>
-                                    <DialogContent aria-describedby="self-harm-desc">
+                                    <DialogContent>
                                       <DialogHeader>
                                         <DialogTitle>Self-harm Details</DialogTitle>
                                       </DialogHeader>
                                       <div className="grid gap-3 py-2">
-                                        <Input
-                                          placeholder="School"
-                                          name="school_name"
-                                          value={selfHarmData.school_name}
-                                          onChange={(e) =>
-                                            setSelfHarmData({
-                                              ...selfHarmData,
-                                              school_name: e.target.value,
-                                            })
-                                          }
-                                        />
-                                        <Input
-                                          placeholder="Year/Grade"
-                                          name="grade_year"
-                                          value={selfHarmData.grade_year}
-                                          onChange={(e) =>
-                                            setSelfHarmData({
-                                              ...selfHarmData,
-                                              grade_year: e.target.value,
-                                            })
-                                          }
-                                        />
-                                        <Input
-                                          placeholder="Place of Incidence"
-                                          name="place_inci"
-                                          value={selfHarmData.place_inci}
-                                          onChange={(e) =>
-                                            setSelfHarmData({
-                                              ...selfHarmData,
-                                              place_inci: e.target.value,
-                                            })
-                                          }
-                                        />
-                                        <Input
-                                          placeholder="Means of Suicide"
-                                          name="self_sui_means"
-                                          value={selfHarmData.self_sui_means}
-                                          onChange={(e) =>
-                                            setSelfHarmData({
-                                              ...selfHarmData,
-                                              self_sui_means: e.target.value,
-                                            })
-                                          }
-                                        />
-                                        <Input
-                                          placeholder="Remarks"
-                                          name="self_sui_remarks"
-                                          value={selfHarmData.self_sui_remarks}
-                                          onChange={(e) =>
-                                            setSelfHarmData({
-                                              ...selfHarmData,
-                                              self_sui_remarks: e.target.value,
-                                            })
-                                          }
-                                        />
+                                        {/* School */}
+                                        <div className="flex items-center gap-2">
+                                          <School className="w-4 h-4 text-gray-500" />
+                                          <Input
+                                            placeholder="School"
+                                            name="school_name"
+                                            value={selfHarmData.school_name}
+                                            onChange={(e) =>
+                                              setSelfHarmData({
+                                                ...selfHarmData,
+                                                school_name: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+
+                                        {/* Year/Grade */}
+                                        <div className="flex items-center gap-2">
+                                          <GraduationCap className="w-4 h-4 text-gray-500" />
+                                          <Input
+                                            placeholder="Year/Grade"
+                                            name="grade_year"
+                                            value={selfHarmData.grade_year}
+                                            onChange={(e) =>
+                                              setSelfHarmData({
+                                                ...selfHarmData,
+                                                grade_year: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+                                        
+
+                                        {/* Place of Incidence */}
+                                        <div className="flex items-center gap-2">
+                                          <MapPin className="w-4 h-4 text-gray-500" />
+                                          <Input
+                                            placeholder="Place of Incidence"
+                                            name="place_inci"
+                                            value={selfHarmData.place_inci}
+                                            onChange={(e) =>
+                                              setSelfHarmData({
+                                                ...selfHarmData,
+                                                place_inci: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+
+                                        {/* Means of Suicide */}
+                                        <div className="flex items-center gap-2">
+                                          <Syringe className="w-4 h-4 text-gray-500" />
+                                          <Input
+                                            placeholder="Means of Suicide"
+                                            name="self_sui_means"
+                                            value={selfHarmData.self_sui_means}
+                                            onChange={(e) =>
+                                              setSelfHarmData({
+                                                ...selfHarmData,
+                                                self_sui_means: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+
+                                        {/* Remarks (Status: Attempted / Completed) */}
+                                        <div className="flex items-center gap-2">
+                                          <StickyNote className="w-4 h-4 text-gray-500" />
+                                          <Select
+                                            value={selfHarmData.self_sui_remarks}
+                                            onValueChange={(value) =>
+                                              setSelfHarmData({
+                                                ...selfHarmData,
+                                                self_sui_remarks: value,
+                                              })
+                                            }
+                                          >
+                                            <SelectTrigger className="w-full rounded-md border p-2">
+                                              <SelectValue placeholder="Select Status" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                              <SelectItem value="Attempted">Attempted</SelectItem>
+                                              <SelectItem value="Completed">Completed</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                        </div>
                                       </div>
+
                                       <Button
                                         onClick={() => {
                                           setOpenModal(false);
                                         }}
+                                        className="w-30 mx-auto flex justify-center items-center gap-2 mt-4"
                                       >
-                                        Save
+                                        <Stethoscope className="w-4 h-4" />
+                                        Save Details
                                       </Button>
+
                                     </DialogContent>
                                   </Dialog>
                                 )}
