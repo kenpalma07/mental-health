@@ -20,7 +20,7 @@
         { "name": "Valproic Acid", "type": "Anticonvulsant" },
         { "name": "Carbamazepine", "type": "Anticonvulsant" },
         { "name": "Lamotrigine", "type": "Anticonvulsant" },
-        { "name": "Divalproex Sodium ER", "type": "Mood Stabilizer / Anticonvulsant" }
+        { "name": "Divalproe X Sodium ER Tablet", "type": "Mood Stabilizer / Anticonvulsant" }
     ],
     "behavioral_disorder": [
         { "name": "Methylphenidate", "type": "Stimulant" },
