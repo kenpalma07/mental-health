@@ -359,10 +359,10 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                             </tbody>
                         </table>
                     </div>
-
+<br></br>
 
                     <ShowAssessmentForm assessments={assessments} patient={patient} />
-
+<br></br>
                     <TreatmentPlan assessments={assessments} patient={patient} />
                 </div>
             </div>
