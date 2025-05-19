@@ -216,9 +216,8 @@ const ConsultationIndex: React.FC = () => {
 
                         <Link
                             href={`/assessment/${patient.id}/history`}
-                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${
-                                consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
-                            }`}
+                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
+                                }`}
                         >
                             <BookCheckIcon className="mr-2 h-4 w-4" />
                             Assessment List
@@ -414,20 +413,22 @@ const ConsultationIndex: React.FC = () => {
                                                     {/* Conditionally render button based on hasAssessment flag */}
                                                     {item.hasAssessment ? (
                                                         <Link
-                                                            href={`/assessment/${patient.id}/PatAssessmentForm`}
+                                                            href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
                                                         >
                                                             <BookA className="h-4 w-4" />
                                                             View Form
                                                         </Link>
+
                                                     ) : (
                                                         <Link
-                                                            href={`/assessment/${patient.id}/addAssessment`}
+                                                            href={`/assessment/${patient.id}/addAssessment?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
                                                         >
                                                             <Stethoscope className="h-4 w-4" />
                                                             Assessment Tool
                                                         </Link>
+
                                                     )}
                                                 </td>
                                             </tr>

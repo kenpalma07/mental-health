@@ -13,7 +13,7 @@ use Inertia\Inertia;
 
 class AssessmentController extends Controller
 {
-    public function index($id)
+    public function index(Request $request, $id)
     {
         $patient = MasterPatient::find($id);
 
@@ -21,12 +21,20 @@ class AssessmentController extends Controller
             abort(404, 'Patient not found');
         }
 
-        $consultDates = Consultation::where('consult_temp_id', $patient->id)
-            ->get(['consult_date', 'consult_temp_id']);
+        $consultDate = $request->query('consult_date');
 
-        $latestConsultation = Consultation::where('consult_temp_id', $patient->id)
-            ->orderByDesc('ts_created_at')
-            ->first();
+        $consultDates = Consultation::where('consult_temp_id', $patient->id)
+            ->select('consult_date', 'consult_temp_id')
+            ->orderByDesc('consult_date')
+            ->get();
+
+        $latestConsultation = null;
+        if ($consultDate) {
+            $latestConsultation = Consultation::where('consult_temp_id', $patient->id)
+                ->whereDate('consult_date', $consultDate)
+                ->orderByDesc('date_entered')
+                ->first();
+        }
 
         // Get all facilities
         $facilities = FHUD::orderBy('facility_name')->get();
@@ -38,6 +46,7 @@ class AssessmentController extends Controller
             'facilities' => $facilities,
         ]);
     }
+
 
     public function show($id)
     {
@@ -214,7 +223,7 @@ class AssessmentController extends Controller
         $assessData['child_and_adolescent'] = in_array('Children and Adolescents', $specialPop) ? 'Y' : 'N';
         $assessData['older_adults'] = in_array('Older Adults', $specialPop) ? 'Y' : 'N';
         $assessData['preg_or_breastf_wom'] = in_array('Pregnant or Breastfeeding woman', $specialPop) ? 'Y' : 'N';
-        
+
         $assessment = MentalAssessmentForm::create($assessData);
 
         return response()->json([

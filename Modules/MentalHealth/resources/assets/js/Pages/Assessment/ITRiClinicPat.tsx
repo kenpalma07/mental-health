@@ -6,7 +6,7 @@ import ShowAssessmentForm from './ShowAssessmentForms';
 import TreatmentPlan from './TreatmentPlan';
 import AppLogos from '@/components/app-logo-itr';
 import { Button } from '@/components/ui/button';
-import { Printer, PrinterCheckIcon, Stethoscope } from 'lucide-react';
+import { PrinterCheckIcon } from 'lucide-react';
 
 
 
@@ -237,7 +237,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                     </td>
                                     <td className="border border-black p-1">Referred By</td>
                                     <td className="border border-black p-1 font-bold uppercase" colSpan={3}>
-                                        {latestAssessment.phar_doc}
+                                        {latestAssessment?.phar_doc}
                                     </td>
                                 </tr>
                             </tbody>
