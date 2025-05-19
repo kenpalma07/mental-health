@@ -73,6 +73,11 @@ const EmployeeIndex: React.FC = () => {
 
     const columns = React.useMemo<ColumnDef<Employee>[]>(
         () => [
+            {
+                header: 'No.',
+                id: 'row_number',
+                cell: ({ row }) => row.index + 1,
+            },
             { accessorKey: 'emp_id', header: 'Employee ID' },
             {
                 header: 'Full Name',
@@ -86,6 +91,14 @@ const EmployeeIndex: React.FC = () => {
                 header: 'Position',
                 accessorFn: (row) => POSITION_LABELS[row.emp_position] || row.emp_position || '-',
                 id: 'emp_position_display',
+            },
+            {
+                header: 'Date of Registration',
+                accessorFn: (row) => {
+                    // Safely extract only the date portion
+                    return row.registered_at ? row.registered_at.slice(0, 10) : '-';
+                },
+                id: 'registered_at_display',
             },
             {
                 header: 'Status',

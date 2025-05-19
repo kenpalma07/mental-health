@@ -152,7 +152,7 @@ class FHUDController extends Controller
         $facility = FHUD::findOrFail($id);
         $facility->update($validated);
 
-        return redirect()->route('facilityhealth')->with('success', 'Patient updated successfully!');
+        return redirect()->route('facilityhealth')->with('success', 'Facility updated successfully!');
     }
 
     /**

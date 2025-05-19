@@ -380,7 +380,6 @@ const AddEmployee: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         <br />
                         {/* Hired By */}
                         <div className="grid grid-cols-2 gap-3">
-                            {/* Label */}
                             <div>
                                 <Label htmlFor="emp_hiredby" className="pt-2 text-sm font-medium text-gray-700">
                                     Hired By
