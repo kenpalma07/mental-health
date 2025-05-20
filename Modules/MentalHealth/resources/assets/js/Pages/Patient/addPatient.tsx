@@ -47,10 +47,10 @@ interface PageProps {
 
 export default function AddPatient() {
     const { nextId, facilities } = usePage<PageProps>().props;
-    const [fhudcode, setFhudcode] = useState<string>('');
-    const [facilityName, setFacilityName] = useState<string>('');
-    const [facilityAddress, setFacilityAddress] = useState<string>('');
-    const [providerName, setProviderName] = useState<string>('');
+    // const [fhudcode, setFhudcode] = useState<string>('');
+    // const [facilityName, setFacilityName] = useState<string>('');
+    // const [facilityAddress, setFacilityAddress] = useState<string>('');
+    // const [providerName, setProviderName] = useState<string>('');
 
     const { data, setData, post, processing, errors } = useForm({
         master_patient_perm_id: nextId,
@@ -103,10 +103,10 @@ export default function AddPatient() {
 
     useEffect(() => {
         if (facilities && facilities.length > 0) {
-            setFhudcode(facilities[0].fhudcode);
-            setFacilityName(facilities[0].facility_name);
-            setFacilityAddress(facilities[0].facility_address);
-            setProviderName(facilities[0].provider_name);
+            // setFhudcode(facilities[0].fhudcode);
+            // setFacilityName(facilities[0].facility_name);
+            // setFacilityAddress(facilities[0].facility_address);
+            // setProviderName(facilities[0].provider_name);
             setData('fhudcode', facilities[0].fhudcode);
             setData('facility_name', facilities[0].facility_name);
             setData('facility_location', facilities[0].facility_address);
