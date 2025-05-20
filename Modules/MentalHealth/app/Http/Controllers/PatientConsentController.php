@@ -26,13 +26,14 @@ class PatientConsentController extends Controller
         return $pdf->stream("patient-consent-{$patient->master_patient_perm_id}.pdf");
     }
 
-    public function streamConsentPDF(MasterPatient $patient)
+    public function streamConsentPDF($id)
     {
-        $patient->load('fhudFacility'); // Eager load the FHUDFacility relationship
+        $patient = MasterPatient::findOrFail($id);
+        $facility = FHUDFacility::where('fhudcode', $patient->fhudcode)->firstOrFail();
 
         $pdf = Pdf::loadView('mentalhealth::pdfs.patient-consent', [
             'patient' => $patient,
-            'fhudFacility' => $patient->fhudFacility,
+            'facility' => $facility,
         ]);
 
         return $pdf->stream("patient-consent-{$patient->master_patient_perm_id}.pdf");

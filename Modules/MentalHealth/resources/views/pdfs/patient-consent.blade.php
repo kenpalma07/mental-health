@@ -1,40 +1,28 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
-    <title>Employee Consent</title>
+    <title>Patient Consent</title>
     <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        h1,
-        h2,
-        h3,
-        h5,
-        h6 {
-            text-align: center;
-        }
+        body { font-family: sans-serif; }
+        h5 { text-align: center; }
     </style>
 </head>
-
 <body>
-    <div></div>
+
     <h5>Republic of the Philippines</h5>
-    <h5>Province of {{ $patient->facility_name }}</h5>
-    <p>Facility Name: {{ $fhudFacility->facility_name }}</p>
-    <p>Facility Code: {{ $fhudFacility->code ?? 'N/A' }}</p>
+    <h5>Province of {{ $patient->facility_name ?? 'N/A' }}</h5>
+
+    <p><strong>Facility Code:</strong> {{ $facility->fhudcode ?? 'N/A' }}</p>
+    <p><strong>Facility Name:</strong> {{ $facility->facility_name ?? 'N/A' }}</p>
+    <p>Facility Name: {{ $patient?->facility_name ?? 'N/A' }}</p>
 
     <p>
-        I, <strong>{{ $patient->pat_fname }}</strong>,
-        working as a , hereby acknowledge that...
+        I, <strong>{{ $patient->pat_fname }}</strong>, hereby acknowledge that...
     </p>
-
-    <p>Status: </p>
 
     <br><br><br>
     <p>Signature: ______________________</p>
-</body>
 
+</body>
 </html>

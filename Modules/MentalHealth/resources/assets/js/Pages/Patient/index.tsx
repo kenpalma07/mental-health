@@ -138,10 +138,6 @@ const PatientIndex: React.FC = () => {
                                     <Printer className="h-4 w-4" />
                                     Sample Consent
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
-                                    <Printer className="h-4 w-4" />
-                                    With Modal
-                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     );
@@ -325,7 +321,7 @@ const PatientIndex: React.FC = () => {
                     />
                 )}
 
-                {selectedId && (
+                {showModal && selectedId !== null && (
                     <PatientConsentModal
                         open={showModal}
                         onClose={() => {

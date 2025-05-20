@@ -411,8 +411,8 @@ const AddEmployee: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                     className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
                                 >
                                     <option value="">Select</option>
-                                    <option value="contr">Contractual</option>
-                                    <option value="perma">Permanent</option>
+                                    <option value="CONTR">Contractual</option>
+                                    <option value="PERMA">Permanent</option>
                                 </select>
                                 <InputError message={errors.employment_status} className="text-xs" />
                             </div>

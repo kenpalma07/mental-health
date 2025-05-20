@@ -69,9 +69,8 @@ class MasterPatient extends Model
 
     public function fhudFacility()
     {
-        return $this->belongsTo(FHUDFacility::class, 'fhud_facility_id');
+        return $this->belongsTo(FHUDFacility::class, 'fhudcode', 'fhudcode');
     }
-
 
     protected static function boot()
     {
