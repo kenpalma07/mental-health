@@ -235,8 +235,7 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
             data={MNSData}
             setMNSData={setMNSData}
             selfHarmData={selfHarmData}
-            setSelfHarmData={setSelfHarmData}
-          />
+            setSelfHarmData={setSelfHarmData}/>
         )}
         {currentStep === 2 && (
           <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} facilities={facilities} />

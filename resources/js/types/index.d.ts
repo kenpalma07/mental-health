@@ -34,6 +34,7 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
+
 export interface User {
     id: number;
     username: string;

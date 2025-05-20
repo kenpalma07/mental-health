@@ -33,9 +33,7 @@ type GroupedItems = {
   fam_hist_mns_cond_item: string[];
 };
 
-interface Patient {
-  occupation_code: string;
-}
+
 
 interface Props {
   data: Record<string, GroupedItems[]>;
@@ -48,7 +46,7 @@ interface Props {
     self_sui_means: string;
     self_sui_remarks: string;
   };
-  patient: Patient;
+
   setSelfHarmData: React.Dispatch<
     React.SetStateAction<{
       school_name: string;
@@ -61,7 +59,6 @@ interface Props {
 }
 
 const ConMNSAssess: React.FC<Props> = ({
-  patient,
   data,
   setMNSData,
   setMNSDataFormatted,
