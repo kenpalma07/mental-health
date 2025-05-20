@@ -15,15 +15,22 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { Edit2, MoreHorizontal, PlusCircleIcon } from 'lucide-react';
+import { Edit2, MoreHorizontal, PlusCircleIcon, Printer } from 'lucide-react';
 import React from 'react';
 import AddEmployee from '../Employees/AddEmployee';
 import EditEmployee from '../Employees/EditEmployee';
+import EmployeeConsentModal from '../Forms/EmployeeConsentModal';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'References', href: '/references' },
     { title: 'Employees', href: '/references/employees' },
 ];
+
+export interface EmployeeConsentModalProps {
+    open: boolean;
+    onClose: () => void;
+    employeeId: number;
+}
 
 const EmployeeIndex: React.FC = () => {
     const { employees = [] }: { employees?: Employee[] } = usePage<PageProps<{ employees?: Employee[] }>>().props;
@@ -35,6 +42,14 @@ const EmployeeIndex: React.FC = () => {
     const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedEmployee, setSelectedEmployee] = React.useState<Employee | null>(null);
+    const [showModal, setShowModal] = React.useState(false);
+    const [selectedId, setSelectedId] = React.useState<number | null>(null);
+    const [isEmployeeModalOpen, setIsEmployeeModalOpen] = React.useState(false);
+
+    const openConsentModal = (employee: Employee) => {
+        setSelectedEmployee(employee);
+        setIsEmployeeModalOpen(true);
+    };
 
     const POSITION_LABELS: Record<string, string> = {
         BHW: 'Barangay Health Worker',
@@ -119,6 +134,18 @@ const EmployeeIndex: React.FC = () => {
                                 <Edit2 className="mr-2 h-4 w-4" />
                                 Edit
                             </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
+                                <Printer className="h-4 w-4" />
+                                Employee Consent
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleViewConsent(row.original.id)}>
+                                <Printer className="h-4 w-4" />
+                                Employee Consent
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => openConsentModal(row.original)}>
+                                <Printer className="h-4 w-4" />
+                                Patient Consent
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ),
@@ -140,16 +167,32 @@ const EmployeeIndex: React.FC = () => {
     });
 
     const handlePagination = (newPage: number) => {
-        const searchQuery = searchTerm ? `&search=${searchTerm}` : '';
-        const pageSize = pagination.pageSize;
-        const page = newPage ? `&page=${newPage}` : '';
-        window.location.href = `/references/employees?${searchQuery}${page}&per_page=${pageSize}`;
+        router.visit(`/references/employees`, {
+            data: {
+                page: newPage + 1,
+                per_page: pagination.pageSize,
+                search: searchTerm || undefined,
+            },
+            preserveState: true,
+        });
+    };
+
+    const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
+    const [consentEmployee, setConsentEmployee] = React.useState<Employee | null>(null);
+
+    const handleExportPDF = (employee: Employee) => {
+        const url = `/references/employees/${employee.id}/consent-pdf`;
+        window.open(url, '_blank'); // opens in new tab or starts download
+    };
+
+    const handleViewConsent = (id: number) => {
+        setSelectedId(id);
+        setShowModal(true);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
-
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -232,7 +275,7 @@ const EmployeeIndex: React.FC = () => {
                                 ))}
                             </SelectContent>
                         </Select>
-                        <Button variant="outline" size="sm" onClick={() => handlePagination(1)} disabled={pagination.pageIndex === 0}>
+                        <Button variant="outline" size="sm" onClick={() => handlePagination(0)} disabled={pagination.pageIndex === 0}>
                             First
                         </Button>
                         <Button
@@ -247,7 +290,7 @@ const EmployeeIndex: React.FC = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handlePagination(pagination.pageIndex + 1)}
-                            disabled={pagination.pageIndex === table.getPageCount() - 1}
+                            disabled={pagination.pageIndex >= table.getPageCount() - 1}
                         >
                             Next
                         </Button>
@@ -255,14 +298,13 @@ const EmployeeIndex: React.FC = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handlePagination(table.getPageCount() - 1)}
-                            disabled={pagination.pageIndex === table.getPageCount() - 1}
+                            disabled={pagination.pageIndex >= table.getPageCount() - 1}
                         >
                             Last
                         </Button>
                     </div>
                 </div>
             </div>
-
             <AddEmployee
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
@@ -275,7 +317,6 @@ const EmployeeIndex: React.FC = () => {
                     })
                 }
             />
-
             {selectedEmployee && (
                 <EditEmployee
                     isOpen={isEditModalOpen}
@@ -294,6 +335,17 @@ const EmployeeIndex: React.FC = () => {
                             },
                         })
                     }
+                />
+            )}
+
+            {selectedId && (
+                <EmployeeConsentModal
+                    open={showModal}
+                    onClose={() => {
+                        setShowModal(false);
+                        setSelectedId(null);
+                    }}
+                    employeeId={selectedId}
                 />
             )}
         </AppLayout>

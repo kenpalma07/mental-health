@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps } from '@/types';
-import type { MasterPatient } from '@/types/modules/mental-health';
-import { Head, Link, usePage } from '@inertiajs/react';
+import type { BreadcrumbItem, MasterPatient, PageProps } from '@/types';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     ColumnDef,
     flexRender,
@@ -12,22 +12,34 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    SortingState,
     useReactTable,
 } from '@tanstack/react-table';
 import { Edit2, Eye, MoreHorizontal, Printer, Stethoscope, UserPlus } from 'lucide-react';
 import * as React from 'react';
 import PatientConsent from '../Forms/PatientConsent';
+import PatientConsentModal from '../Forms/PatientConsentModal';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Patients', href: '/patients' }];
 
+export interface PatientConsentModalProps {
+    open: boolean;
+    onClose: () => void;
+    patientId: number;
+}
+
 const PatientIndex: React.FC = () => {
-    const { patients } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
+    const { patients = [] }: { patients?: MasterPatient[] } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
 
     const [searchTerm, setSearchTerm] = React.useState('');
     const [sexFilter, setSexFilter] = React.useState('');
-    const [sorting, setSorting] = React.useState([]);
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
     const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
     const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null);
+    const [showModal, setShowModal] = React.useState(false);
+    const [selectedId, setSelectedId] = React.useState<number | null>(null);
+    const [isPatientConsentModalOpen, setIsPatientConsentModalOpen] = React.useState(false);
 
     const openConsentModal = (patient: MasterPatient) => {
         setSelectedPatient(patient);
@@ -40,7 +52,7 @@ const PatientIndex: React.FC = () => {
     };
 
     const filteredPatients = React.useMemo(() => {
-        return patients.filter((patient) => {
+        return patients.filter((patient: MasterPatient) => {
             const fullName = `${patient.pat_fname} ${patient.pat_mname ?? ''} ${patient.pat_lname}`.toLowerCase();
             const facility = patient.facility_name?.toLowerCase() || '';
             const search = searchTerm.toLowerCase();
@@ -118,6 +130,18 @@ const PatientIndex: React.FC = () => {
                                         Patient Consent
                                     </Button>
                                 </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleViewConsent(patient.id)}>
+                                    <Printer className="h-4 w-4" />
+                                    Patient Consent
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
+                                    <Printer className="h-4 w-4" />
+                                    Sample Consent
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
+                                    <Printer className="h-4 w-4" />
+                                    With Modal
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     );
@@ -126,12 +150,6 @@ const PatientIndex: React.FC = () => {
         ],
         [],
     );
-
-    // after your other useState calls
-    const [pagination, setPagination] = React.useState({
-        pageIndex: 0,
-        pageSize: 20, // ← default rows per page
-    });
 
     const table = useReactTable({
         data: filteredPatients,
@@ -147,6 +165,27 @@ const PatientIndex: React.FC = () => {
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
+
+    const handlePagination = (newPage: number) => {
+        router.visit(`/patients`, {
+            data: {
+                page: newPage + 1,
+                per_page: pagination.pageSize,
+                search: searchTerm || undefined,
+            },
+            preserveState: true,
+        });
+    };
+
+    const handleViewConsent = (id: number) => {
+        setSelectedId(id);
+        setShowModal(true);
+    };
+
+    const handleExportPDF = (patient: MasterPatient) => {
+        const url = `/patients/${patient.id}/consent-pdf`;
+        window.open(url, '_blank'); // opens in new tab or starts download
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -168,13 +207,15 @@ const PatientIndex: React.FC = () => {
                         Patient Consultation
                     </Link>
                 </div>
-                <div className="flex gap-4">
+
+                <div className="flex items-center justify-between">
                     <Input
                         placeholder="Search by name or facility..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-1/3"
                     />
+                    <div className="text-sm text-gray-600">Total Patients: {filteredPatients.length}</div>
                 </div>
 
                 <div className="overflow-x-auto rounded-lg border bg-white shadow">
@@ -217,26 +258,53 @@ const PatientIndex: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* Pagination Controls */}
+
                 <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-gray-600">
-                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                        Page {pagination.pageIndex + 1} of {table.getPageCount()}
                     </div>
+                    <div className="text-sm text-gray-600">Total Employees: {filteredPatients.length}</div>
+
                     <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
+                        <Select
+                            value={pagination.pageSize.toString()}
+                            onValueChange={(value) => setPagination((p) => ({ ...p, pageSize: Number(value) }))}
+                        >
+                            <SelectTrigger className="w-32">
+                                <SelectValue placeholder="Rows per page" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[10, 20, 50, 100].map((size) => (
+                                    <SelectItem key={size} value={size.toString()}>
+                                        {size} rows
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Button variant="outline" size="sm" onClick={() => handlePagination(0)} disabled={pagination.pageIndex === 0}>
                             First
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePagination(pagination.pageIndex - 1)}
+                            disabled={pagination.pageIndex === 0}
+                        >
                             Prev
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePagination(pagination.pageIndex + 1)}
+                            disabled={pagination.pageIndex >= table.getPageCount() - 1}
+                        >
                             Next
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                            disabled={!table.getCanNextPage()}
+                            onClick={() => handlePagination(table.getPageCount() - 1)}
+                            disabled={pagination.pageIndex >= table.getPageCount() - 1}
                         >
                             Last
                         </Button>
@@ -244,7 +312,29 @@ const PatientIndex: React.FC = () => {
                 </div>
 
                 {/* PatientConsent modal */}
-                {isConsentModalOpen && selectedPatient && <PatientConsent patient={selectedPatient} onClose={closeConsentModal} />}
+                {isConsentModalOpen && selectedPatient && (
+                    <PatientConsent
+                        patient={{
+                            pat_fname: selectedPatient.pat_fname,
+                            pat_lname: selectedPatient.pat_lname,
+                            sex_code: selectedPatient.sex_code,
+                            pat_birthDate: selectedPatient.pat_birthDate,
+                            pat_mobile: selectedPatient.pat_mobile,
+                            patient_address: selectedPatient.patient_address,
+                        }}
+                    />
+                )}
+
+                {selectedId && (
+                    <PatientConsentModal
+                        open={showModal}
+                        onClose={() => {
+                            setShowModal(false);
+                            setSelectedId(null);
+                        }}
+                        patientId={selectedId}
+                    />
+                )}
             </div>
         </AppLayout>
     );

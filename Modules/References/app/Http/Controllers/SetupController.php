@@ -28,6 +28,7 @@ class SetupController extends Controller
             'fhudcode' => 'required|string|max:50',
             'faccode' => 'required|string|max:50',
             'facility_address' => 'required|string|max:255',
+            'provider_name' => 'required|string|max:255',
         ]);
 
         // If validation fails, Laravel will return a 422 error
