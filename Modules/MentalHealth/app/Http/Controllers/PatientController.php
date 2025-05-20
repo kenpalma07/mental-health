@@ -267,4 +267,6 @@ class PatientController extends Controller
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
     }
+
+    // Relationship methods like belongsTo should be defined in the Eloquent model, not in the controller.
 }
