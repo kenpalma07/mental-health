@@ -228,7 +228,7 @@ class AssessmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('patitrforms.index', $request->pat_temp_id),
-        ]);
+            'redirect_url' => route('patitrforms.index', $request->pat_temp_id) . '?consult_date=' . $request->consult_date,
+        ]);   
     }
 }
