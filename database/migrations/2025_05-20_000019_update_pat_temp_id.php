@@ -20,11 +20,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tbl_mental_assessment_form', function (Blueprint $table) {
-            // Re-add unique index
-            $table->unique('pat_temp_id');
+            $table->string('pat_temp_id', 50)->nullable()->unique()->change();
+        });
 
-            // Re-add foreign key (assuming it references pat_temp.id)
-            $table->foreign('pat_temp_id')->references('id')->on('pat_temp')->onDelete('cascade');
+        Schema::table('tbl_mental_assessment_form', function (Blueprint $table) {
+            $table->foreign('pat_temp_id')->references('pat_temp_id')->on('tbl_master_patient')
+                  ->onDelete('cascade') // Optional: Deletes the consultation record when the referenced master patient is deleted
+                  ->onUpdate('cascade'); // Optional: Updates the foreign key when the referenced master patient's pat_temp_id is updated
         });
     }
 };

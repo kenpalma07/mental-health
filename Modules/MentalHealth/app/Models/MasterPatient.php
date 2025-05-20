@@ -49,4 +49,5 @@ class MasterPatient extends Model
         });
     }
 
+
 }
