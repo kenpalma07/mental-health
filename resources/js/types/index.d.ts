@@ -59,6 +59,23 @@ export interface Permission {
     guard_name: string;
 }
 
+export interface MasterPatient {
+    id: number;
+    master_patient_perm_id: string;
+    fhudcode: string;
+    facility_name: string;
+    facility_location: string;
+    provider_name: string;
+    prefix_code: string;
+    pat_fname: string;
+    pat_mname: string;
+    pat_lname: string;
+    sex_code: 'M' | 'F';
+    pat_birthDate: string;
+    pat_mobile: string;
+    patient_address: string;
+}
+
 export interface FHUD {
     id: number;
     fhudcode: string;

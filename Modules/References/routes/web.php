@@ -50,5 +50,7 @@ Route::get('/references/employees/create', [EmployeeController::class, 'create']
 Route::get('/references/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
 Route::put('/references/employees/{id}', [EmployeeController::class, 'update'])->name('employee.update');
 Route::post('/references/employees', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'exportConsentPDF']);
+Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'streamConsentPDF']);
 
 ?>

@@ -17,6 +17,8 @@ Route::get('/patients/search', [PatientController::class, 'search']);
 Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
 Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{id}/view', [PatientController::class, 'view']);
+Route::get('/patients/{patient}/consent-pdf', [PatientConsentController::class, 'streamConsentPDF']);
+Route::get('/patients/{patient}/consent-pdf', [PatientConsentController::class, 'exportConsentPDF']);
 
 // Patient Consultation
 Route::get('/consultations/{id}', [ConsultationController::class, 'index'])->name('consultations.index');

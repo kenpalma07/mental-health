@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\References\Models\Employee;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EmployeeController extends Controller
 {
@@ -110,5 +111,17 @@ class EmployeeController extends Controller
         $employee->update($validated);
 
         return redirect()->route('employees')->with('success', 'Employee updated successfully!');
+    }
+
+    public function exportConsentPDF(Employee $employee)
+    {
+        $pdf = Pdf::loadView('references::pdfs.employee-consent', ['employee' => $employee]);
+        return $pdf->stream("employee-consent-{$employee->emp_id}.pdf");
+    }
+
+    public function streamConsentPDF(Employee $employee)
+    {
+        $pdf = Pdf::loadView('references::pdfs.employee-consent', ['employee' => $employee]);
+        return $pdf->stream("employee-consent-{$employee->emp_id}.pdf");
     }
 }

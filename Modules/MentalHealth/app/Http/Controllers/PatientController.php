@@ -14,6 +14,8 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
+
         $query = MasterPatient::query();
 
         // Apply search only if there's a search term
@@ -33,11 +35,16 @@ class PatientController extends Controller
         }
 
         // Apply pagination and append the current filters to the URL
-        $patients = $query->paginate(10)->appends($request->only(['search', 'sex']));
+        $patients = $query->paginate($perPage)->appends($request->only(['search', 'per_page']));
 
         return Inertia::render('MentalHealth::Patient/index', [
             'patients' => $patients->items(),
-            'pagination' => $patients->toArray(),
+            'pagination' => [
+                'current_page' => $patients->currentPage(),
+                'last_page' => $patients->lastPage(),
+                'per_page' => $perPage,
+                'total' => $patients->total(),
+            ],
             'filters' => $request->only(['search', 'sex']),
         ]);
     }
