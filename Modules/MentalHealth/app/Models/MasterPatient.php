@@ -83,6 +83,8 @@ class MasterPatient extends Model
         return $this->hasMany(MentalAssessmentForm::class, 'pat_temp_id', 'id');
     }
 
+    
+
     protected static function boot()
     {
         parent::boot();
