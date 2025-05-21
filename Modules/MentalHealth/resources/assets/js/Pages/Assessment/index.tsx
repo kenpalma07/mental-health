@@ -167,7 +167,6 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
       is_dispense: selectedDispense,
       phar_remarks: selectedRemarks,
       date_nxt_visit: dateNxtVisit,
-      // Add self-harm modal data here
       school_name: selfHarmData.school_name,
       grade_year: selfHarmData.grade_year,
       place_inci: selfHarmData.place_inci,
@@ -178,13 +177,11 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
     axios.post('/assessment/store', newAssessment)
       .then((response) => {
         if (response.data?.success && response.data.redirect_url) {
-          // reset form if needed
+
           resetForm();
 
-          // Optional: redirect current tab to consultation view
           router.visit(`/consultations/${patient.id}`);
 
-          // Open ITR form in a new tab
           window.open(response.data.redirect_url, '_blank');
         }
       })
