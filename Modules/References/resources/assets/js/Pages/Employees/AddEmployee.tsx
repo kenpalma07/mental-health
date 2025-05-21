@@ -188,13 +188,13 @@ const AddEmployee: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
             newErrors.emp_prcno = 'PRC License Number is required';
         }
 
-        if (isPTRRequired() && !form.emp_ptrno.trim()) {
-            newErrors.emp_ptrno = 'PTR Number is required';
-        }
+        // if (isPTRRequired() && !form.emp_ptrno.trim()) {
+        //     newErrors.emp_ptrno = 'PTR Number is required';
+        // }
 
-        if (isS2LicNoRequired() && !form.emp_s2licno.trim()) {
-            newErrors.emp_s2licno = 'S2 License Number is required';
-        }
+        // if (isS2LicNoRequired() && !form.emp_s2licno.trim()) {
+        //     newErrors.emp_s2licno = 'S2 License Number is required';
+        // }
         if (!form.emp_status.trim()) {
             newErrors.emp_status = 'Status is required';
         }

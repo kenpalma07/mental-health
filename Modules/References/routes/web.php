@@ -30,7 +30,7 @@ Route::get('/api/fhud-codes', function (Request $request) {
           ->orWhere('facility_name', 'like', "%{$search}%")
     )
     ->limit(10)
-    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode']);
+    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
 });
 
 Route::get('/api/facilities', function (Request $request) {
@@ -41,7 +41,7 @@ Route::get('/api/facilities', function (Request $request) {
           ->orWhere('facility_name', 'like', "%{$search}%")
     )
     ->limit(10)
-    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode']);
+    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
 });
 
 // Employee

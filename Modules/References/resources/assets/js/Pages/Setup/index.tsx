@@ -3,11 +3,9 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, PageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { MapPin, PlusCircleIcon } from 'lucide-react';
+import { Map, MapPin, PlusCircleIcon } from 'lucide-react';
 import * as React from 'react';
-import { useState } from 'react';
 import AsyncSelect from 'react-select/async';
-import rawLocationDataJson from './json/philippine_reg_prov_cit_brgy.json';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'References', href: '/references' },
@@ -22,9 +20,14 @@ type FacilityOption = {
     faccode: string;
     facility_address: string;
     provider_name: string;
+    regcode: string;
+    provcode: string;
+    citycode: string;
+    bgycode: string;
+    zipcode: string;
 };
 
-type FacilityList = FacilityOption & { id: number };
+type FacilityList = FacilityOption & { id: number; facility_email?: string };
 
 const fetchFhudCodes = async (inputValue: string): Promise<FacilityOption[]> => {
     try {
@@ -46,6 +49,11 @@ const fetchFhudCodes = async (inputValue: string): Promise<FacilityOption[]> => 
                       faccode: item.faccode,
                       facility_address: item.facility_address,
                       provider_name: item.provider_name,
+                      regcode: item.regcode,
+                      provcode: item.provcode,
+                      citycode: item.citycode,
+                      bgycode: item.bgycode,
+                      zipcode: item.zipcode,
                   }))
             : [];
     } catch (err) {
@@ -72,6 +80,11 @@ const fetchFacility = async (inputValue: string): Promise<FacilityList[]> => {
                       faccode: item.faccode,
                       facility_address: item.facility_address,
                       provider_name: item.provider_name,
+                      regcode: item.regcode,
+                      provcode: item.provcode,
+                      citycode: item.citycode,
+                      bgycode: item.bgycode,
+                      zipcode: item.zipcode,
                   }))
             : [];
     } catch (err) {
@@ -87,6 +100,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
     const [fhudCode, setFhuCode] = React.useState('');
     const [facilityAddress, setFacilityAddress] = React.useState('');
     const [providerName, setProviderName] = React.useState('');
+    const [regionName, setRegionName] = React.useState('');
+    const [provinceName, setProvinceName] = React.useState('');
+    const [cityName, setCityName] = React.useState('');
+    const [barangayName, setBarangayName] = React.useState('');
+    const [zipCode, setZipCode] = React.useState('');
+    const [facilityemail, setFacilityEmail] = React.useState('');
 
     const [saving, setSaving] = React.useState(false);
     const [updating, setUpdating] = React.useState(false);
@@ -103,7 +122,38 @@ const FacilitySetup: React.FC<PageProps> = () => {
     const [fhud_facilityCode, setFhud_facilityCode] = React.useState('');
     const [fhud_facilityAddress, setFhud_facilityAddress] = React.useState('');
     const [fhud_providerName, setFhud_providerName] = React.useState('');
+    const [fhud_regcode, setFhud_regcode] = React.useState('');
+    const [fhud_provcode, setFhud_provcode] = React.useState('');
+    const [fhud_citycode, setFhud_citycode] = React.useState('');
+    const [fhud_bgycode, setFhud_bgycode] = React.useState('');
+    const [fhud_zipcode, setFhud_zipcode] = React.useState('');
+    const [fhud_facilityemail, setFhud_facilityemail] = React.useState('');
 
+    const REGION_MAP: Record<string, string> = {
+        NCR: 'NATIONAL CAPITAL REGION',
+        CAR: 'CORDILLERA ADMINISTRATIVE REGION',
+        ARMM: 'AUTONOMOUS REGION IN MUSLIM MINDANAO',
+        BARMM: 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO',
+        NIR: 'Negros Island Region',
+        '13': 'CARAGA',
+        '12': 'SOCCSKSARGEN',
+        '11': 'DAVAO REGION',
+        '10': 'NORTHERN MINDANAO',
+        '09': 'ZAMBOANGA PENINSULA',
+        '08': 'EASTERN VISAYAS',
+        '07': 'CENTRAL VISAYAS',
+        '06': 'WESTERN VISAYAS',
+        '05': 'BICOL REGION',
+        '4B': 'MIMAROPA REGION',
+        '4A': 'CALABARZON',
+        '03': 'CENTRAL LUZON',
+        '02': 'CAGAYAN VALLEY',
+        '01': 'ILOCOS REGION',
+    };
+
+    const getRegionName = (regcode: string): string => {
+        return REGION_MAP[regcode] || 'Unknown Region';
+    };
 
     const handleSaveChanges = (opt: FacilityOption | null) => {
         setSelectedOption(opt);
@@ -113,6 +163,11 @@ const FacilitySetup: React.FC<PageProps> = () => {
             setFhuCode('');
             setFacilityAddress('');
             setProviderName('');
+            setRegionName('');
+            setProvinceName('');
+            setCityName('');
+            setBarangayName('');
+            setZipCode('');
             return;
         }
 
@@ -121,6 +176,11 @@ const FacilitySetup: React.FC<PageProps> = () => {
         setFhuCode(opt.fhudcode);
         setFacilityAddress(opt.facility_address);
         setProviderName(opt.provider_name);
+        setRegionName(opt.regcode);
+        setProvinceName(opt.provcode);
+        setCityName(opt.citycode);
+        setBarangayName(opt.bgycode);
+        setZipCode(opt.zipcode);
     };
 
     const handleUpdateChanges = (opt: FacilityList | null) => {
@@ -131,6 +191,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
             setFhud_fhudcode('');
             setFhud_facilityAddress('');
             setFhud_providerName('');
+            setFhud_regcode('');
+            setFhud_provcode('');
+            setFhud_citycode('');
+            setFhud_bgycode('');
+            setFhud_zipcode('');
+            setFhud_facilityemail('');
             return;
         }
 
@@ -139,6 +205,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
         setFhud_fhudcode(opt.fhudcode);
         setFhud_facilityAddress(opt.facility_address);
         setFhud_providerName(opt.provider_name);
+        setFhud_regcode(opt.regcode);
+        setFhud_provcode(opt.provcode);
+        setFhud_citycode(opt.citycode);
+        setFhud_bgycode(opt.bgycode);
+        setFhud_zipcode(opt.zipcode);
+        setFhud_facilityemail(opt.facility_email ?? '');
     };
 
     const saveFacilitySetup = async () => {
@@ -148,6 +220,11 @@ const FacilitySetup: React.FC<PageProps> = () => {
             faccode: facilityCode,
             facility_address: facilityAddress,
             provider_name: providerName,
+            regcode: regionName,
+            provcode: provinceName,
+            citycode: cityName,
+            bgycode: barangayName,
+            zipcode: zipCode,
         };
 
         setSaving(true);
@@ -175,6 +252,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
             faccode: fhud_facilityCode,
             facility_address: fhud_facilityAddress,
             provider_name: fhud_providerName,
+            regcode: fhud_regcode,
+            provcode: fhud_provcode,
+            citycode: fhud_citycode,
+            bgycode: fhud_bgycode,
+            zipcode: fhud_zipcode,
+            facility_email: fhud_facilityemail,
             _method: 'PUT',
         };
 
@@ -203,6 +286,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
                 faccode: setup.faccode,
                 facility_address: setup.facility_address,
                 provider_name: setup.provider_name,
+                regcode: setup.regcode,
+                provcode: setup.provcode,
+                citycode: setup.citycode,
+                bgycode: setup.bgycode,
+                zipcode: setup.zipcode,
+                facility_email: setup.facility_email,
             };
             setSelectedFacility(defaultFacility);
             setFhud_facilityName(defaultFacility.facility_name);
@@ -210,6 +299,12 @@ const FacilitySetup: React.FC<PageProps> = () => {
             setFhud_fhudcode(defaultFacility.fhudcode);
             setFhud_facilityAddress(defaultFacility.facility_address);
             setFhud_providerName(defaultFacility.provider_name);
+            setFhud_regcode(defaultFacility.regcode);
+            setFhud_provcode(defaultFacility.provcode);
+            setFhud_citycode(defaultFacility.citycode);
+            setFhud_bgycode(defaultFacility.bgycode);
+            setFhud_zipcode(defaultFacility.zipcode);
+            setFhud_facilityemail(defaultFacility.facility_email ?? '');
         }
     }, [setup]);
 
@@ -269,6 +364,10 @@ const FacilitySetup: React.FC<PageProps> = () => {
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
                     <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
                         <div className="space-y-4">
+                            <div className="flex items-center gap-1">
+                                <Map className="h-4 w-4 text-gray-600" />
+                                <h2 className="text-md font-semibold">General Setup</h2>
+                            </div>
                             <div>
                                 <label className="w-40 text-sm font-medium text-gray-700">Select Facility: </label>
                                 <AsyncSelect<FacilityList, false>
@@ -338,9 +437,61 @@ const FacilitySetup: React.FC<PageProps> = () => {
                                     disabled={isEmpty}
                                 />
                             </div>
+                            <div className="flex items-center gap-1">
+                                <label className="w-40 text-sm font-medium text-gray-700">Region: </label>
+                                <input
+                                    type="text"
+                                    value={getRegionName(fhud_regcode)}
+                                    className="text-dark-500 w-full rounded border bg-gray-100 p-2"
+                                    readOnly
+                                />
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <label className="w-40 text-sm font-medium text-gray-700">Province: </label>
+                                <input type="text" value={fhud_provcode} className="text-dark-500 w-full rounded border bg-gray-100 p-2" readOnly />
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <label className="w-40 text-sm font-medium text-gray-700">City: </label>
+                                <input type="text" value={fhud_citycode} className="text-dark-500 w-full rounded border bg-gray-100 p-2" readOnly />
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <label className="w-40 text-sm font-medium text-gray-700">Barangay: </label>
+                                <input type="text" value={fhud_bgycode} className="text-dark-500 w-full rounded border bg-gray-100 p-2" readOnly />
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <label className="w-40 text-sm font-medium text-gray-700">Zipcode: </label>
+                                <input type="text" value={fhud_zipcode} className="text-dark-500 w-full rounded border bg-gray-100 p-2" readOnly />
+                            </div>
                         </div>
                     </div>
-                    <div></div>
+                    <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-1">
+                                <Map className="h-4 w-4 text-gray-600" />
+                                <h2 className="text-md font-semibold">Other Information</h2>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <label className="w-40 text-sm font-medium text-gray-700">Facility License No.</label>
+                                <input
+                                    type="email"
+                                    value={fhud_facilityemail}
+                                    onChange={(e) => setFhud_facilityemail(e.target.value)}
+                                    className="text-dark-500 w-full rounded border p-2"
+                                />
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <label className="w-40 text-sm font-medium text-gray-700">Email</label>
+                                <input
+                                    type="email"
+                                    value={fhud_facilityemail}
+                                    onChange={(e) => setFhud_facilityemail(e.target.value)}
+                                    className="text-dark-500 w-full rounded border p-2"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AppLayout>

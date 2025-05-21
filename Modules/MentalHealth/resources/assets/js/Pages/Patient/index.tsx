@@ -259,7 +259,7 @@ const PatientIndex: React.FC = () => {
                     <div className="text-sm text-gray-600">
                         Page {pagination.pageIndex + 1} of {table.getPageCount()}
                     </div>
-                    <div className="text-sm text-gray-600">Total Employees: {filteredPatients.length}</div>
+                    <div className="text-sm text-gray-600">Total Patients: {filteredPatients.length}</div>
 
                     <div className="flex gap-2">
                         <Select

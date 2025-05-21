@@ -29,11 +29,15 @@ class PatientConsentController extends Controller
     public function streamConsentPDF($id)
     {
         $patient = MasterPatient::findOrFail($id);
+        // $facilities = FHUDFacility::all(); // <- correct variable name
         $facility = FHUDFacility::where('fhudcode', $patient->fhudcode)->firstOrFail();
+        $age = \Carbon\Carbon::parse($patient->pat_birthDate)->age;
+
 
         $pdf = Pdf::loadView('mentalhealth::pdfs.patient-consent', [
             'patient' => $patient,
-            'facility' => $facility,
+            'facility' => $facility, // <- passed as 'facilities'
+            'age' => $age,
         ]);
 
         return $pdf->stream("patient-consent-{$patient->master_patient_perm_id}.pdf");

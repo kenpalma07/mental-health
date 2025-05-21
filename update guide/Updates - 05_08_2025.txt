@@ -1,3 +1,4 @@
-Install these features
+Install these features for the pdf print
 
 1. npm install react-to-print
+2. composer require barryvdh/laravel-dompdf
