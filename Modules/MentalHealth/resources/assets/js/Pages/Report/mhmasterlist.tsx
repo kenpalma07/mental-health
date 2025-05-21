@@ -81,15 +81,14 @@ const mhmasterlistindex: React.FC = () => {
             </thead>
             <tbody>
               {paginatedData.map((item, index) => {
-                const form = item.mental_assessment_form || {};
-                const followUps = form.follow_ups || {}; // Expected format: { JANUARY: [{ consult_date, type_service }, ...], ... }
+                const form = item.follow_ups || {};
                 const diagnosisArray = item.diagnosis ? item.diagnosis.toLowerCase().split(',').map(d => d.trim()) : [];
 
                 return (
                   <tr key={index} className="hover:bg-gray-50 text-center">
                     <td className="border p-2">{item.master_patient_perm_id}</td>
                     <td className="border p-2">{item.date_entered || 'N/A'}</td>
-                    <td className="border p-2">{item.provider_name || 'N/A'}</td>
+                    <td className="border p-2">{item.phar_doc || 'N/A'}</td>
                     <td className="border p-2">{item.pat_lname}</td>
                     <td className="border p-2">{item.pat_fname}</td>
                     <td className="border p-2">{item.pat_mname}</td>
@@ -108,8 +107,8 @@ const mhmasterlistindex: React.FC = () => {
                     <td className="border p-2 text-center">{diagnosisArray.includes('substance use') ? '✔' : ''}</td>
                     <td className="border p-2 text-center">{diagnosisArray.includes('self-harm') ? '✔' : ''}</td>
 
-                    <td className="border p-2">{form.others || 'N/A'}</td>
-                    <td className="border p-2">{form.medications || 'N/A'}</td>
+                    <td className="border p-2">{item.others || 'N/A'}</td>
+                    <td className="border p-2">{item.medications || 'N/A'}</td>
 
                     <td className="border p-2">{item.phar_doc}</td>
                     <td className="border p-2">{item.pat_mobile}</td>
@@ -118,23 +117,22 @@ const mhmasterlistindex: React.FC = () => {
 
                     {months.map((month) => {
                       const consults = followUps[month] || [];
-                      console.log(followUps)
 
                       return (
                         <td key={month} className="border p-1">
                           {consults.length > 0 ? (
-                            consults.map((consult, index) => (
-                              <div key={index} className="mb-1">
+                            consults.map((consult, idx) => (
+                              <div key={idx} className="mb-1">
                                 <input
                                   type="date"
                                   className="w-full border px-1 py-0.5 mb-1 text-[10px]"
-                                  value={consult.consult_date}
+                                  value={consult.date}
                                   readOnly
                                 />
                                 <input
                                   type="text"
                                   className="w-full border px-1 py-0.5 text-[10px]"
-                                  value={consult.type_service}
+                                  value={consult.service}
                                   readOnly
                                 />
                               </div>
