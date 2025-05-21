@@ -2,7 +2,8 @@
 namespace Modules\MentalHealth\Http\Controllers;
 use Modules\MentalHealth\Models\MasterPatient;
 use Modules\MentalHealth\Models\MentalAssessmentForm;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use Modules\MentalHealth\Models\Consultation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -12,7 +13,14 @@ class ReportController extends Controller
 {
     public function mhtracker()
     {
-        return Inertia::render('MentalHealth::Report/mhtracker');
+        $consultationPatientIds = Consultation::pluck('consult_temp_id')->toArray();
+        $assessmentPatientIds = MentalAssessmentForm::pluck('pat_temp_id')->toArray();
+        $allPatientIds = array_unique(array_merge($consultationPatientIds, $assessmentPatientIds));
+        $patients = MasterPatient::whereIn('id', $allPatientIds)->get();
+    
+        return Inertia::render('MentalHealth::Report/mhtracker', [
+            'patients' => $patients,
+        ]);
     }
 
     public function mhmasterlist()

@@ -27,7 +27,7 @@ Route::post('/consultations/store', [ConsultationController::class, 'store'])->n
 // Patient Consent
 Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])->name('patients.consent');
 
-// Patient ITR Forms Needed
+// Patient ITR/assessment/treatment plan Forms Needed
 Route::get('/patitrforms/{id}', [FormController::class, 'index'])->name('patitrforms.index');
 
 // Forms

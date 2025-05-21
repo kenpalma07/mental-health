@@ -72,7 +72,7 @@ React.useEffect(() => {
                   <thead className="bg-black text-xs text-white border-b">
                     <tr className="bg-black text-white text-center">
                       <th rowSpan={3} className="border border-black p-2 rounded-tl-lg">Date of Entry</th>
-                      <th rowSpan={3} className="border border-black p-2">No.</th>
+                      <th rowSpan={3} className="border border-black p-2">Tracking#</th>
                       <th rowSpan={3} className="border border-black p-2">PhilHealth No.</th>
                       <th rowSpan={3} className="border border-black p-2">Membership Type</th>
                       <th colSpan={3} className="border border-black p-2">Patient Name</th>
@@ -97,17 +97,17 @@ React.useEffect(() => {
                   <tbody>
                     {paginatedData.map((item, index) => (
                       <tr key={item.id} className="hover:bg-gray-50 text-center">
-                        <td className="border p-2">{item.date}</td>
-                        <td className="border p-2">{item.id}</td>
-                        <td className="border p-2">{item.philHealthNo}</td>
-                        <td className="border p-2">{item.membership}</td>
-                        <td className="border p-2">{item.name[0]}</td>
-                        <td className="border p-2">{item.name[1]}</td>
-                        <td className="border p-2">{item.name[2]}</td>
-                        <td className="border p-2">{item.address}</td>
-                        <td className="border p-2">{item.birthdate}</td>
-                        <td className="border p-2">{item.age}</td>
-                        <td className="border p-2">{item.sex}</td>
+                        <td className="border p-2">patient.date_entered</td>
+                        <td className="border p-2">consultation.consult_perm_id</td>
+                        <td className="border p-2">patient.phil_health</td>
+                        <td className="border p-2">patient.phil_member</td>
+                        <td className="border p-2">patient.pat_fname</td>
+                        <td className="border p-2">patient.pat_mname</td>
+                        <td className="border p-2">patient.pat_lname</td>
+                        <td className="border p-2">patient.pat_address</td>
+                        <td className="border p-2">patient.pat_birthDate</td>
+                        <td className="border p-2">Calculatedagebased on birthdate</td>
+                        <td className="border p-2">patient.sex_code</td>
                         <td className="border p-2">{item.oral}</td>
                         <td className="border p-2">{item.injectable}</td>
                         <td className="border p-2">{item.visit}</td>

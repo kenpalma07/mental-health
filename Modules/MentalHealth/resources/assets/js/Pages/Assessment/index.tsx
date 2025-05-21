@@ -20,9 +20,10 @@ interface Props extends PageProps {
   patient: any;
   consultation?: any;
   facilities: any;
+  employees: any;
 }
 
-export default function AssessmentIndex({ patient, consultation, facilities }: Props) {
+export default function AssessmentIndex({ patient, consultation, facilities, employees }: Props) {
   const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
     { title: 'Patient Consultation', href: `/consultations/${patient.id}` },
@@ -76,7 +77,6 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
     { label: 'Manage Assessment', icon: Heart },
     { label: 'Diagnosis and Medicine', icon: Stethoscope },
     { label: 'Schedule Next Visit', icon: Calendar },
-    // { label: 'Treatment Plan', icon: Stethoscope },
   ];
 
   const nextStep = () => {
@@ -242,6 +242,7 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
         )}
         {currentStep === 3 && (
           <DiagMeds
+            employees={employees}
             selectedDiagnosis={selectedDiagnosis}
             setSelectedDiagnosis={setSelectedDiagnosis}
             selectedIcdCodeDescrip={selectedIcdCodeDescrip}
@@ -277,7 +278,6 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
         {currentStep === 4 && (
           <SchedNxtVisit dateNxtVisit={dateNxtVisit} setDateNxtVisit={setDateNxtVisit} />
         )}
-        {/* {currentStep === 5 && <TreatmentPlan />} */}
       </div>
     </AppLayout>
   );
