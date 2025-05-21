@@ -8,6 +8,8 @@ use Modules\MentalHealth\Models\MentalAssessmentForm;
 use Modules\MentalHealth\Models\MasterPatient;
 use Modules\MentalHealth\Models\Consultation;
 use Modules\References\Models\FHUD;
+use Modules\References\Models\Employee;
+
 use Carbon\Carbon;
 use Inertia\Inertia;
 
@@ -36,16 +38,30 @@ class AssessmentController extends Controller
                 ->first();
         }
 
-        // Get all facilities
         $facilities = FHUD::orderBy('facility_name')->get();
+
+        $employees = Employee::whereIn('emp_position', ['PHA', 'DOC'])
+            ->orderBy('emp_fname')
+            ->orderBy('emp_mname')
+            ->orderBy('emp_lname')
+            ->get()
+            ->map(function ($emp) {
+                return [
+                    'id' => $emp->id,
+                    'name' => trim($emp->emp_fname . ' ' . $emp->emp_mname . ' ' . $emp->emp_lname),
+                    'position' => $emp->emp_position,
+                ];
+            });
 
         return Inertia::render('MentalHealth::Assessment/index', [
             'patient' => $patient,
             'consultation' => $latestConsultation,
             'consultDates' => $consultDates,
             'facilities' => $facilities,
+            'employees' => $employees,
         ]);
     }
+
 
 
     public function show($id)
@@ -230,5 +246,6 @@ class AssessmentController extends Controller
             'success' => true,
             'redirect_url' => route('patitrforms.index', $request->pat_temp_id) . '?consult_date_assess=' . $request->consult_date_assess,
         ]);   
+
     }
 }

@@ -296,6 +296,7 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
                                 <div className="space-y-1">
                                     <div><span className="font-semibold">Grade/Year:</span> {latestAssessment.grade_year || ''}</div>
                                     <div><span className="font-semibold">School:</span> {latestAssessment.school_name || ''}</div>
+                                    <div><span className="font-semibold">Occupation:</span> {patient.occupation_code || ''}</div>
                                     <div><span className="font-semibold">Place of Incidence:</span> {latestAssessment.place_inci || ''}</div>
                                     <div><span className="font-semibold">Means of Suicide:</span> {latestAssessment.self_sui_means || ''}</div>
                                     <div><span className="font-semibold">Remarks:</span> {latestAssessment.self_sui_remarks || ''}</div>

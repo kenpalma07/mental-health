@@ -64,7 +64,7 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
   return (
     <>
       <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-start justify-center pt-5">
-      <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
+        <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
         <Dialog.Panel className="bg-white rounded-lg p-6 max-w-xl z-50 shadow-lg relative w-full">
           <div className="flex justify-between items-center mb-4">
             <Dialog.Title className="text-lg font-semibold">SEARCH EXISTING PATIENT</Dialog.Title>
@@ -78,13 +78,13 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
               onChange={e => setForm(prev => ({ ...prev, master_patient_perm_id: e.target.value }))}
               className="border rounded px-3 py-2 w-full placeholder:italic"
             />
-
             <Input
-              placeholder="First Name"
-              value={form.pat_fname}
-              onChange={e => setForm(prev => ({ ...prev, pat_fname: e.target.value }))}
+              placeholder="Last Name"
+              value={form.pat_lname}
+              onChange={e => setForm(prev => ({ ...prev, pat_lname: e.target.value }))}
               className="border rounded px-3 py-2 w-full placeholder:italic"
             />
+
             <Input
               placeholder="Middle Name"
               value={form.pat_mname}
@@ -92,11 +92,12 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
               className="border rounded px-3 py-2 w-full placeholder:italic"
             />
             <Input
-              placeholder="Last Name"
-              value={form.pat_lname}
-              onChange={e => setForm(prev => ({ ...prev, pat_lname: e.target.value }))}
+              placeholder="First Name"
+              value={form.pat_fname}
+              onChange={e => setForm(prev => ({ ...prev, pat_fname: e.target.value }))}
               className="border rounded px-3 py-2 w-full placeholder:italic"
             />
+
             <Input
               type="date"
               value={form.pat_birthDate}
@@ -136,7 +137,7 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
         onClose={() => setShowResultModal(false)}
         patients={patients} onRegisterNewPatient={function (): void {
           throw new Error('Function not implemented.');
-        } }      />
+        }} />
     </>
   );
 };

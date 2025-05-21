@@ -10,7 +10,14 @@ import mentalHealthMeds from '../json/mental_health_meds.json'; // Medicine Data
 import ModalDiagMedsEnc from '../modal/ModalDiagMedsEnc';
 import ModalRXDiagMeds from '../modal/ModalRXDiagMeds';
 
+interface Employee {
+    id: number;
+    name: string;
+    position: string;
+}
+
 const DiagMeds = ({
+    employees,
     selectedDiagnosis,
     setSelectedDiagnosis,
     selectedIcdCode,
@@ -37,11 +44,11 @@ const DiagMeds = ({
     setQuantity,
     doctor,
     setDoctor,
-    dispense,
     setDispense,
     remarks,
     setRemarks,
 }: {
+    employees: Employee[];
     selectedDiagnosis: string;
     setSelectedDiagnosis: React.Dispatch<React.SetStateAction<string>>;
     selectedIcdCode: string;
@@ -87,6 +94,7 @@ const DiagMeds = ({
 
     const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
 
+
     useEffect(() => {
         const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description || '';
         setSelectedIcdCodeDescrip(description);
@@ -100,51 +108,12 @@ const DiagMeds = ({
         // console.log('ICD Code selected:', selectedIcdCode);
     }, [selectedIcdCode]);
 
-    const doctors = [
-        { id: 'doc1', name: 'Dr. Sample V. Quak' },
-        { id: 'doc2', name: 'Dr. Jane Doe' },
-        { id: 'doc3', name: 'Dr. John Smith' },
-    ];
     const dispenses = [
         { id: 'Y', name: 'Yes' },
         { id: 'N', name: 'No' },
     ];
 
-    useEffect(() => {
-        // if (remarks) //console.log('Remarks:', remarks);
-    }, [remarks]);
 
-    useEffect(() => {
-        // if (remarks) //console.log('Remarks:', remarks);
-    }, [pharDate]);
-
-    useEffect(() => {
-        // console.log('Selected Doctor:', doctor);
-    }, [doctor]);
-
-    useEffect(() => {
-        // console.log('Selected Doctor:', doctor);
-    }, [dispense]);
-
-    useEffect(() => {
-        // console.log('Selected Doctor:', doctor);
-    }, [quantity]);
-
-    useEffect(() => {
-        // console.log('Medicine selected:', selectedMedicine);
-    }, [selectedMedicine]);
-
-    useEffect(() => {
-        // console.log('Intake:', intake, intakeUnit);
-    }, [intake, intakeUnit]);
-
-    useEffect(() => {
-        // console.log('Frequency:', frequency, frequencyUnit);
-    }, [frequency, frequencyUnit]);
-
-    useEffect(() => {
-        // console.log('Duration:', duration, durationUnit);
-    }, [duration, durationUnit]);
 
     // Function to convert any unit to hours
     const convertToHours = (value: number, unit: string) => {
@@ -380,22 +349,23 @@ const DiagMeds = ({
                         <Input className="w-full rounded-md border p-2" name="phar_quantity" value={quantity} readOnly />
                     </div>
 
-                    {/* Doctor */}
+                    {/* Employee (Doctor/PHA) */}
                     <div className="flex-1">
                         <h5 className="text-sm font-medium text-gray-700">Issued By</h5>
                         <Select value={doctor} onValueChange={setDoctor}>
                             <SelectTrigger className="w-full rounded-md border p-2">
-                                <SelectValue placeholder="Select Doctor" />
+                                <SelectValue placeholder="Select Employee" />
                             </SelectTrigger>
                             <SelectContent>
-                                {doctors.map((doc) => (
-                                    <SelectItem key={doc.id} value={doc.name}>
-                                        {doc.name}
+                                {employees.map((emp) => (
+                                    <SelectItem key={emp.id} value={emp.name}>
+                                        {emp.name} ({emp.position})
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
+
 
                     {/* if dispense */}
                     <div className="flex-1">

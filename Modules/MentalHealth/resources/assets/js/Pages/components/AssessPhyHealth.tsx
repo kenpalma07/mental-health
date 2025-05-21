@@ -20,7 +20,6 @@ interface Props {
 
 const AssessPhyHealth: React.FC<Props> = ({ data, setData, errors = {} }) => {
     useEffect(() => {
-        // console.log('AssessPhyHealth data:', data);
     }, [data]);
 
     return (

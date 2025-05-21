@@ -20,9 +20,10 @@ interface Props extends PageProps {
   patient: any;
   consultation?: any;
   facilities: any;
+  employees: any;
 }
 
-export default function AssessmentIndex({ patient, consultation, facilities }: Props) {
+export default function AssessmentIndex({ patient, consultation, facilities, employees }: Props) {
   const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
     { title: 'Patient Consultation', href: `/consultations/${patient.id}` },
@@ -76,7 +77,6 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
     { label: 'Manage Assessment', icon: Heart },
     { label: 'Diagnosis and Medicine', icon: Stethoscope },
     { label: 'Schedule Next Visit', icon: Calendar },
-    // { label: 'Treatment Plan', icon: Stethoscope },
   ];
 
   const nextStep = () => {
@@ -167,7 +167,6 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
       is_dispense: selectedDispense,
       phar_remarks: selectedRemarks,
       date_nxt_visit: dateNxtVisit,
-      // Add self-harm modal data here
       school_name: selfHarmData.school_name,
       grade_year: selfHarmData.grade_year,
       place_inci: selfHarmData.place_inci,
@@ -178,13 +177,11 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
     axios.post('/assessment/store', newAssessment)
       .then((response) => {
         if (response.data?.success && response.data.redirect_url) {
-          // reset form if needed
+
           resetForm();
 
-          // Optional: redirect current tab to consultation view
           router.visit(`/consultations/${patient.id}`);
 
-          // Open ITR form in a new tab
           window.open(response.data.redirect_url, '_blank');
         }
       })
@@ -242,6 +239,7 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
         )}
         {currentStep === 3 && (
           <DiagMeds
+            employees={employees}
             selectedDiagnosis={selectedDiagnosis}
             setSelectedDiagnosis={setSelectedDiagnosis}
             selectedIcdCodeDescrip={selectedIcdCodeDescrip}
@@ -277,7 +275,6 @@ export default function AssessmentIndex({ patient, consultation, facilities }: P
         {currentStep === 4 && (
           <SchedNxtVisit dateNxtVisit={dateNxtVisit} setDateNxtVisit={setDateNxtVisit} />
         )}
-        {/* {currentStep === 5 && <TreatmentPlan />} */}
       </div>
     </AppLayout>
   );

@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -181,9 +182,12 @@ const ConMNSAssess: React.FC<Props> = ({
                                         Add Data
                                       </Button>
                                     </DialogTrigger>
-                                    <DialogContent>
+                                    <DialogContent forceMount>
                                       <DialogHeader>
                                         <DialogTitle>Self-harm Details</DialogTitle>
+                                        <DialogDescription>
+                                          Please fill in the following information related to the self-harm incident.
+                                        </DialogDescription>
                                       </DialogHeader>
                                       <div className="grid gap-3 py-2">
                                         {/* School */}
@@ -217,7 +221,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                             }
                                           />
                                         </div>
-                                        
+
 
                                         {/* Place of Incidence */}
                                         <div className="flex items-center gap-2">
@@ -276,6 +280,8 @@ const ConMNSAssess: React.FC<Props> = ({
 
                                       <Button
                                         onClick={() => {
+                                          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                                          document.activeElement instanceof HTMLElement && document.activeElement.blur();
                                           setOpenModal(false);
                                         }}
                                         className="w-30 mx-auto flex justify-center items-center gap-2 mt-4"
@@ -283,6 +289,7 @@ const ConMNSAssess: React.FC<Props> = ({
                                         <Stethoscope className="w-4 h-4" />
                                         Save Details
                                       </Button>
+
 
                                     </DialogContent>
                                   </Dialog>
