@@ -32,7 +32,29 @@ class ReportController extends Controller
         ]);
     }
     
+<<<<<<< HEAD
+    public function mhmasterlist()
+    {
+        $patients = MasterPatient::with([
+            'consultation' => fn ($q) => $q->orderBy('consult_date', 'desc'),
+            'assessment' => fn ($q) => $q->orderBy('consult_date_assess', 'desc')->limit(1),
+        ])
+        ->whereHas('consultation')
+        ->orWhereHas('assessment')
+        ->get()
+        ->map(function ($patient) {
+            $patient->assessment = $patient->assessment->first();
+            return $patient;
+        });
+    
+        return Inertia::render('MentalHealth::Report/mhmasterlist', [
+            'patients' => $patients,
+        ]);
+    }
+    
+=======
 
+>>>>>>> 6d71bb1c618249c2ab816c84af4af1b0017a8ffe
     public function schoolagesr()
     {
         return Inertia::render('MentalHealth::Report/schoolagesr');
