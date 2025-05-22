@@ -90,6 +90,10 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
       <Head title="Mental Health Tracker" />
       <div className="p-4 space-y-6">
         <div className="bg-white rounded-2xl shadow-lg p-6">
+        <div className="text-sm mb-4">
+            <span>Mental Health Tracker:</span>{' '}
+            <span className='font-semibold'>{new Date().getFullYear()}</span>
+          </div>
           <div className="flex flex-col mb-6">
             <div className="flex items-center gap-3 mt-3">
               <p className="text-sm text-gray-600 whitespace-nowrap">Search Patient:</p>
@@ -102,12 +106,11 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
               />
             </div>
           </div>
-
           <div className="overflow-x-auto bg-white border rounded-lg shadow">
             <table className="min-w-full text-sm text-left text-gray-700">
               <thead className="bg-black text-xs text-white border-b">
                 <tr className="text-center">
-                  <th rowSpan={3} className="border p-2 rounded-tl-lg">
+                  <th rowSpan={2} className="border p-2">
                     Date of Entry
                   </th>
                   <th rowSpan={3} className="border p-2">
@@ -163,8 +166,8 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
                   </tr>
                 ) : (
                   paginatedData.map((p) => (
-                    <tr key={p.id} className="text-center hover:bg-gray-50">
-                      <td className="border p-2">{p.date_entered}</td>
+                    <tr key={p.id} className="text-center text-[10px] hover:bg-gray-50">
+                      <td className="border p-2 ">{p.date_entered}</td>
                       <td className="border p-2">
                         {p.consultation && p.consultation.length > 0
                           ? p.consultation[0].consult_perm_id

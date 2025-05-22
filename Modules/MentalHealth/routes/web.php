@@ -8,6 +8,7 @@ use Modules\MentalHealth\Http\Controllers\ReportController;
 use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 use Modules\MentalHealth\Http\Controllers\AssessmentController; 
 use Modules\MentalHealth\Http\Controllers\FormController;
+use Modules\MentalHealth\Http\Controllers\MedicalRecordsController;
 
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
@@ -30,6 +31,10 @@ Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])-
 // Patient ITR/assessment/treatment plan Forms Needed
 Route::get('/patitrforms/{id}', [FormController::class, 'index'])->name('patitrforms.index');
 
+
+//patient medical records
+Route::get('/medrecords', [MedicalRecordsController::class, 'index'])->name('patients.index');
+
 // Forms
 Route::get('/itr', [OtherController::class, 'itr']);
 Route::get('/medabstract', [OtherController::class, 'medabstract']);
@@ -46,6 +51,6 @@ Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 // Patient Assessment
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
-Route::get('/assessment/{id}/history', [AssessmentController::class, 'show']);
+Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->name('assessment.show');
 
 
