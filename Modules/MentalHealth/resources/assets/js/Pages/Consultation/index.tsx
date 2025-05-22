@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { BookA, BookCheckIcon, Edit, Eye, Send, Stethoscope } from 'lucide-react';
+import { BookCheckIcon, BookOpenText, Edit, Eye, NotebookPen, Send, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -416,8 +416,8 @@ const ConsultationIndex: React.FC = () => {
                                                             href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
                                                         >
-                                                            <BookA className="h-4 w-4" />
-                                                            View Form
+                                                            <BookOpenText className="h-4 w-4" />
+                                                            Done | View Form
                                                         </Link>
 
                                                     ) : (
@@ -425,8 +425,8 @@ const ConsultationIndex: React.FC = () => {
                                                             href={`/assessment/${patient.id}/addAssessment?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
                                                         >
-                                                            <Stethoscope className="h-4 w-4" />
-                                                            Assessment Tool
+                                                            <NotebookPen className="h-4 w-4" />
+                                                            Fill Assessment Tool
                                                         </Link>
 
                                                     )}

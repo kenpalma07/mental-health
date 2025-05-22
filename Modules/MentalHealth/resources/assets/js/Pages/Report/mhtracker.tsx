@@ -6,6 +6,7 @@ import type { BreadcrumbItem } from '@/types';
 type Consultation = {
   consult_perm_id: string;
   consult_date: string;
+  phar_intakeUnit?: string;
 };
 
 type Patient = {
@@ -20,9 +21,6 @@ type Patient = {
   pat_birthDate: string;
   sex_code: string;
   consultation?: Consultation[];
-  assessment?: {
-    phar_intakeUnit: string;
-  };
 };
 
 interface Props {
@@ -41,6 +39,21 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const itemsPerPage = 5;
 
+  React.useEffect(() => {
+    patients.forEach((patient) => {
+      console.log(`Patient ${patient.id} - ${patient.pat_fname} ${patient.pat_lname} consultations:`);
+      patient.consultation?.forEach((consult) => {
+        console.log(`  consult_perm_id: ${consult.consult_perm_id}, phar_intakeUnit: ${consult.phar_intakeUnit}`);
+      });
+    });
+  }, [patients]);
+
+  const hasOral = (consultations?: Consultation[]) =>
+    !!consultations?.some((c) => c.phar_intakeUnit === 'tablet');
+
+  const hasAmpule = (consultations?: Consultation[]) =>
+    !!consultations?.some((c) => c.phar_intakeUnit === 'ampule');
+
   const calculateAge = (birthDate: string) => {
     const birth = new Date(birthDate);
     const now = new Date();
@@ -52,17 +65,20 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
     return age;
   };
 
-  // Filter patients by full name
-  const filteredData = patients.filter((p) =>
-    `${p.pat_fname} ${p.pat_mname} ${p.pat_lname}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+  const filteredData = React.useMemo(
+    () =>
+      patients.filter((p) =>
+        `${p.pat_fname} ${p.pat_mname} ${p.pat_lname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      ),
+    [patients, searchTerm]
   );
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const paginatedData = React.useMemo(
+    () => filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+    [filteredData, currentPage, itemsPerPage]
   );
 
   React.useEffect(() => {
@@ -74,6 +90,10 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
       <Head title="Mental Health Tracker" />
       <div className="p-4 space-y-6">
         <div className="bg-white rounded-2xl shadow-lg p-6">
+        <div className="text-sm mb-4">
+            <span>Mental Health Tracker:</span>{' '}
+            <span className='font-semibold'>{new Date().getFullYear()}</span>
+          </div>
           <div className="flex flex-col mb-6">
             <div className="flex items-center gap-3 mt-3">
               <p className="text-sm text-gray-600 whitespace-nowrap">Search Patient:</p>
@@ -86,23 +106,43 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
               />
             </div>
           </div>
-
-          {/* Table */}
           <div className="overflow-x-auto bg-white border rounded-lg shadow">
             <table className="min-w-full text-sm text-left text-gray-700">
               <thead className="bg-black text-xs text-white border-b">
                 <tr className="text-center">
-                  <th rowSpan={3} className="border p-2 rounded-tl-lg">Date of Entry</th>
-                  <th rowSpan={3} className="border p-2">Tracking#</th>
-                  <th rowSpan={3} className="border p-2">PhilHealth No.</th>
-                  <th rowSpan={3} className="border p-2">Membership Type</th>
-                  <th colSpan={3} className="border p-2">Patient Name</th>
-                  <th rowSpan={3} className="border p-2">Address</th>
-                  <th rowSpan={3} className="border p-2">Birthdate</th>
-                  <th rowSpan={3} className="border p-2">Age</th>
-                  <th rowSpan={3} className="border p-2">Sex</th>
-                  <th colSpan={2} className="border p-2">Medicine</th>
-                  <th colSpan={12} className="border p-2 rounded-tr-lg">Visitation</th>
+                  <th rowSpan={2} className="border p-2">
+                    Date of Entry
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Tracking#
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    PhilHealth No.
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Membership Type
+                  </th>
+                  <th colSpan={3} className="border p-2">
+                    Patient Name
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Address
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Birthdate
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Age
+                  </th>
+                  <th rowSpan={3} className="border p-2">
+                    Sex
+                  </th>
+                  <th colSpan={2} className="border p-2">
+                    Medicine
+                  </th>
+                  <th colSpan={12} className="border p-2 rounded-tr-lg">
+                    Visitation
+                  </th>
                 </tr>
                 <tr className="text-center">
                   <th className="border p-2">Family Name</th>
@@ -111,60 +151,66 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
                   <th className="border p-2">Oral</th>
                   <th className="border p-2">Injectables</th>
                   {Array.from({ length: 12 }, (_, index) => (
-                    <th key={index} className="border p-2">{new Date(0, index).toLocaleString('default', { month: 'short' })}</th>
+                    <th key={index} className="border p-2">
+                      {new Date(0, index).toLocaleString('default', { month: 'short' })}
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {paginatedData.map((p) => (
-                  <tr key={p.id} className="text-center hover:bg-gray-50">
-                    <td className="border p-2">{p.date_entered}</td>
-                    <td className="border p-2">{p.consultation && p.consultation.length > 0 ? p.consultation[0].consult_perm_id : '—'}</td>
-                    <td className="border p-2">{p.phil_health || '—'}</td>
-                    <td className="border p-2">{p.phil_member || '—'}</td>
-                    <td className="border p-2">{p.pat_lname}</td>
-                    <td className="border p-2">{p.pat_fname}</td>
-                    <td className="border p-2">{p.pat_mname}</td>
-                    <td className="border p-2">{p.patient_address}</td>
-                    <td className="border p-2">{p.pat_birthDate}</td>
-                    <td className="border p-2">{calculateAge(p.pat_birthDate)}</td>
-                    <td className="border p-2">{p.sex_code}</td>
-                    <td className="border p-2">
-                      {p.assessment?.phar_intakeUnit === 'tablet' ? '✔' : ''}
+                {paginatedData.length === 0 ? (
+                  <tr>
+                    <td colSpan={18} className="text-center p-4 text-gray-500">
+                      No patients found.
                     </td>
-                    <td className="border p-2">
-                      {p.assessment?.phar_intakeUnit === 'ampules' ? '✔' : ''}
-                    </td>
-
-                    {/* Visitation: Show consultation dates in their respective month columns */}
-                    {Array.from({ length: 12 }, (_, monthIndex) => {
-                      const consultationsThisMonth = p.consultation?.filter((c) => {
-                        const month = new Date(c.consult_date).getMonth();
-                        return month === monthIndex;
-                      }) ?? [];
-
-                      return (
-                        <td key={monthIndex} className="border p-2">
-                          {consultationsThisMonth.length > 0
-                            ? consultationsThisMonth
+                  </tr>
+                ) : (
+                  paginatedData.map((p) => (
+                    <tr key={p.id} className="text-center text-[10px] hover:bg-gray-50">
+                      <td className="border p-2 ">{p.date_entered}</td>
+                      <td className="border p-2">
+                        {p.consultation && p.consultation.length > 0
+                          ? p.consultation[0].consult_perm_id
+                          : '—'}
+                      </td>
+                      <td className="border p-2">{p.phil_health || '—'}</td>
+                      <td className="border p-2">{p.phil_member || '—'}</td>
+                      <td className="border p-2">{p.pat_lname}</td>
+                      <td className="border p-2">{p.pat_fname}</td>
+                      <td className="border p-2">{p.pat_mname}</td>
+                      <td className="border p-2">{p.patient_address}</td>
+                      <td className="border p-2">{p.pat_birthDate}</td>
+                      <td className="border p-2">{calculateAge(p.pat_birthDate)}</td>
+                      <td className="border p-2">{p.sex_code}</td>
+                      <td className="border p-2">{hasOral(p.consultation) ? '✔' : ''}</td>
+                      <td className="border p-2">{hasAmpule(p.consultation) ? '✔' : ''}</td>
+                      {Array.from({ length: 12 }, (_, monthIndex) => {
+                        const consultationsThisMonth =
+                          p.consultation?.filter(
+                            (c) => new Date(c.consult_date).getMonth() === monthIndex
+                          ) ?? [];
+                        return (
+                          <td key={monthIndex} className="border p-2">
+                            {consultationsThisMonth.length > 0
+                              ? consultationsThisMonth
                                 .map((c) =>
                                   new Date(c.consult_date).toLocaleDateString()
                                 )
                                 .join(', ')
-                            : '—'}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
+                              : '—'}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
 
-          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <p className="text-sm text-gray-600">
-              Page {currentPage} of {totalPages}
+              Page {currentPage} of {totalPages || 1}
             </p>
             <div className="flex gap-2">
               <button
@@ -176,7 +222,7 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
               </button>
               <button
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                disabled={currentPage === totalPages}
+                disabled={currentPage === totalPages || totalPages === 0}
                 className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm"
               >
                 Next

@@ -29,9 +29,6 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient List',  href: '/patients' },
-            // { title: 'Add Patient',  href: '/patients/create' },
-            // { title: 'Consultations', href: '/consultations' },
-            // { title: 'Assessment', href: '/assessment' },
         ],
     },
 
@@ -41,6 +38,7 @@ const mainNavItems: NavItem[] = [
         icon: Folder,
         isActive: true,
         items: [
+            { title: 'Patient Medical Records', href: '/medrecords' },
             { title: '(ITR)-Individual Treatment Record', href: '/itr' },
             { title: 'Medical Abstract', href: '/medabstract' },
             { title: 'Treatment Card', href: '/treatmentcard' },
