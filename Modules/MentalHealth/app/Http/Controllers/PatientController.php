@@ -114,6 +114,7 @@ class PatientController extends Controller
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
             'registered_at' => 'nullable|date',
+            'phic_member' => 'nullable|in:Y,N',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',

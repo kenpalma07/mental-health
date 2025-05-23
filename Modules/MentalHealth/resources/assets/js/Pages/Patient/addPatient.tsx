@@ -101,7 +101,7 @@ export default function AddPatient() {
         fat_deceased_status: '',
         trackno: '',
 
-        
+        phic_member: 'N',
     });
 
     useEffect(() => {
@@ -1449,16 +1449,30 @@ export default function AddPatient() {
                             {/* Philhealth Member */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-49 text-sm font-medium text-red-500">
+                                    <Label htmlFor="phic_member" className="w-49 text-sm font-medium text-red-500">
                                         Philhealth Member?:
                                     </Label>
 
                                     <label className="flex items-center gap-1 text-sm text-red-500">
-                                        <input type="radio" name="indigenous" value="N" className="accent-blue-600" />
+                                        <input
+                                            type="radio"
+                                            name="phic_member"
+                                            value="N"
+                                            checked={data.phic_member === 'N'}
+                                            className="accent-black-600"
+                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                        />
                                         No
                                     </label>
                                     <label className="flex items-center gap-1 text-sm text-red-500">
-                                        <input type="radio" name="indigenous" value="Y" className="accent-blue-600" />
+                                        <input
+                                            type="radio"
+                                            name="phic_member"
+                                            value="Y"
+                                            checked={data.phic_member === 'Y'}
+                                            className="accent-black-600"
+                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                        />
                                         Yes
                                     </label>
                                 </div>
