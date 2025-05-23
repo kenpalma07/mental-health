@@ -1502,7 +1502,7 @@ export default function AddPatient() {
                             {/* Philhealth Status Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="philhealth_status_code" className="w-70 text-sm font-medium text-black-500">
+                                    <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
                                         Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select
@@ -1513,8 +1513,8 @@ export default function AddPatient() {
                                         className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Philhealth Status Type --</option>
-                                        <option value="D">Dependent</option>
-                                        <option value="M">Member</option>
+                                        <option value="D">DEPENDENT</option>
+                                        <option value="M">MEMBER</option>
                                     </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -1523,10 +1523,26 @@ export default function AddPatient() {
                                 </div>
                             </div>
 
+                            {/* Membership Info */}
+                            <div hidden={!(data.philhealth_status_code === 'D')}>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
+                                            Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.philhealth_status_code} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Philhealth Category Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-black-500">
+                                    <Label htmlFor="type_of_membership" className="text-black-500 w-70 text-sm font-medium">
                                         Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select
