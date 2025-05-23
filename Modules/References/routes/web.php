@@ -25,23 +25,27 @@ Route::put('/references/setup/{id}', [SetupController::class, 'update'])->name('
 Route::get('/api/fhud-codes', function (Request $request) {
     $search = $request->get('search');
 
-    return FhudFacility::when($search, fn($q) =>
+    return FhudFacility::when(
+        $search,
+        fn($q) =>
         $q->where('fhudcode', 'like', "%{$search}%")
-          ->orWhere('facility_name', 'like', "%{$search}%")
+            ->orWhere('facility_name', 'like', "%{$search}%")
     )
-    ->limit(10)
-    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
+        ->limit(10)
+        ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
 });
 
 Route::get('/api/facilities', function (Request $request) {
     $search = $request->get('search');
 
-    return FhudFacility::when($search, fn($q) =>
+    return FhudFacility::when(
+        $search,
+        fn($q) =>
         $q->where('fhudcode', 'like', "%{$search}%")
-          ->orWhere('facility_name', 'like', "%{$search}%")
+            ->orWhere('facility_name', 'like', "%{$search}%")
     )
-    ->limit(10)
-    ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
+        ->limit(10)
+        ->get(['id', 'fhudcode', 'facility_name', 'faccode', 'provider_name', 'facility_address', 'facility_stat', 'regcode', 'provcode', 'citycode', 'bgycode', 'zipcode', 'facility_licno', 'accreno']);
 });
 
 // Employee
@@ -52,5 +56,3 @@ Route::put('/references/employees/{id}', [EmployeeController::class, 'update'])-
 Route::post('/references/employees', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'exportConsentPDF']);
 Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'streamConsentPDF']);
-
-?>

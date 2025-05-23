@@ -124,6 +124,7 @@ class PatientController extends Controller
             'pat_fname' => 'First Name',
             'pat_mname' => 'Middle Name',
             'suffix_code' => 'Suffix',
+            'pat_birthDate' => 'Birth Date',
             'sex_code' => 'Sex',
             'civil_stat_code' => 'Civil Status',
             'pat_birthdate' => 'Birthdate',

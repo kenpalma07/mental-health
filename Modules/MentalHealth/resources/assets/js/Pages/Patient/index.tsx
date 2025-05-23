@@ -121,7 +121,7 @@ const PatientIndex: React.FC = () => {
                                         Edit
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
+                                {/* <DropdownMenuItem asChild>
                                     <Button
                                         onClick={() => openConsentModal(patient)}
                                         className="flex items-center gap-2 bg-transparent text-black hover:bg-gray-100"
@@ -129,15 +129,15 @@ const PatientIndex: React.FC = () => {
                                         <Printer className="h-4 w-4" />
                                         Patient Consent
                                     </Button>
-                                </DropdownMenuItem>
+                                </DropdownMenuItem> */}
                                 <DropdownMenuItem onClick={() => handleViewConsent(patient.id)}>
                                     <Printer className="h-4 w-4" />
                                     Patient Consent
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
+                                {/* <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
                                     <Printer className="h-4 w-4" />
                                     Sample Consent
-                                </DropdownMenuItem>
+                                </DropdownMenuItem> */}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     );

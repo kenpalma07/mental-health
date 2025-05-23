@@ -31,11 +31,13 @@ class SetupController extends Controller
             'regcode' => 'required|string|max:50',
             'provcode' => 'required|string|max:255',
             'citycode' => 'required|string|max:255',
-            'bgycode' => 'require|string|max:255',
-            'zipcode' => 'required|string|max:4',
+            'bgycode' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:255',
             'facility_licno' => 'nullable|string|max:255',
             'accreno' => 'nullable|string|max:255',
             'facility_email' => 'nullable|string|max:255',
+            'facility_contact' => 'nullable|string|max:255',
+            'facility_fax' => 'nullable|string|max:255',
         ]);
 
         FacilitySetup::create($data);
@@ -68,6 +70,8 @@ class SetupController extends Controller
             'facility_licno' => 'nullable|string|max:255',
             'accreno' => 'nullable|string|max:255',
             'facility_email' => 'nullable|string|max:255',
+            'facility_contact' => 'nullable|string|max:255',
+            'facility_fax' => 'nullable|string|max:255',
         ]);
 
         $facilitySetup = FacilitySetup::findOrFail($id);

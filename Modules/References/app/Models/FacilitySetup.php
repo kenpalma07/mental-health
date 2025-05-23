@@ -25,6 +25,8 @@ class FacilitySetup extends Model
         'facility_licno',
         'accreno',
         'facility_email',
+        'facility_contact',
+        'facility_fax',
     ];
 
     public $timestamps = false;
