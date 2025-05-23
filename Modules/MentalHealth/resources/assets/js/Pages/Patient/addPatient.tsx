@@ -48,11 +48,6 @@ interface PageProps {
 
 export default function AddPatient() {
     const { nextId, facilities } = usePage<PageProps>().props;
-    // const [fhudcode, setFhudcode] = useState<string>('');
-    // const [facilityName, setFacilityName] = useState<string>('');
-    // const [facilityAddress, setFacilityAddress] = useState<string>('');
-    // const [providerName, setProviderName] = useState<string>('');
-
     const { data, setData, post, processing, errors } = useForm({
         master_patient_perm_id: nextId,
         fhudcode: '',
@@ -102,14 +97,13 @@ export default function AddPatient() {
         trackno: '',
 
         phic_member: 'N',
+        pat_philhealth: '',
+        type_of_membership: '',
+        philhealth_status_code: '',
     });
 
     useEffect(() => {
         if (facilities && facilities.length > 0) {
-            // setFhudcode(facilities[0].fhudcode);
-            // setFacilityName(facilities[0].facility_name);
-            // setFacilityAddress(facilities[0].facility_address);
-            // setProviderName(facilities[0].provider_name);
             setData('fhudcode', facilities[0].fhudcode);
             setData('facility_name', facilities[0].facility_name);
             setData('facility_location', facilities[0].facility_address);
@@ -351,14 +345,14 @@ export default function AddPatient() {
                                         id="prefix_code"
                                         value={data.prefix_code}
                                         onChange={(e) => setData('prefix_code', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Prefix --</option>
-                                        <option value="Mr">Mr</option>
-                                        <option value="Ms">Ms</option>
-                                        <option value="Mrs">Mrs</option>
-                                        <option value="Dr">Dr</option>
-                                        <option value="NA">Not Applicable</option>
+                                        <option value="Mr">MR</option>
+                                        <option value="Ms">MS</option>
+                                        <option value="Mrs">MRS</option>
+                                        <option value="Dr">DR</option>
+                                        <option value="NA">NOT APPLICABLE</option>
                                     </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -479,7 +473,7 @@ export default function AddPatient() {
                                         id="suffix_code"
                                         value={data.suffix_code}
                                         onChange={(e) => setData('suffix_code', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Suffix --</option>
                                         <option value="NA">N/A</option>
@@ -508,7 +502,7 @@ export default function AddPatient() {
                                         id="sex_code"
                                         value={data.sex_code}
                                         onChange={(e) => setData('sex_code', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Sex --</option>
                                         <option value="M">Male</option>
@@ -618,7 +612,7 @@ export default function AddPatient() {
                                         id="civil_stat_code"
                                         value={data.civil_stat_code}
                                         onChange={(e) => setData('civil_stat_code', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Civil Status --</option>
                                         <option value="sin">Single</option>
@@ -643,7 +637,7 @@ export default function AddPatient() {
                                         id="educattainment"
                                         value={data.educattainment}
                                         onChange={(e) => setData('educattainment', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Educational Attainment --</option>
                                         <option value="01">Advance Learning System</option>
@@ -680,7 +674,7 @@ export default function AddPatient() {
                                         // value={data.educattainment}
                                         // onChange={(e) => setData('educattainment', e.target.value)}
                                         disabled={true}
-                                        className="block w-full rounded-md border px-3 py-2 text-gray-500 shadow-sm disabled:bg-gray-100"
+                                        className="block w-full rounded-md border px-3 py-2 text-sm text-gray-500 shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Employment --</option>
                                         <option value="01">Employed</option>
@@ -702,7 +696,7 @@ export default function AddPatient() {
                                         id="religion_code"
                                         value={data.religion_code}
                                         onChange={(e) => setData('religion_code', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Religion --</option>
                                         <option value="Chri">Christian</option>
@@ -730,7 +724,7 @@ export default function AddPatient() {
                                         id="nationality"
                                         value={data.nationality}
                                         onChange={(e) => setData('nationality', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select Nationality --</option>
                                         <option value="PH">Filipino</option>
@@ -773,7 +767,7 @@ export default function AddPatient() {
                                         // value={data.nationality}
                                         // onChange={(e) => setData('nationality', e.target.value)}
                                         disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-gray-500 shadow-sm disabled:bg-gray-100"
+                                        className="block w-full rounded-md border px-3 py-2 text-sm text-gray-500 shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Ethnic Group --</option>
                                         <option value="">No Data</option>
@@ -812,7 +806,7 @@ export default function AddPatient() {
                                         // value={data.nationality}
                                         // onChange={(e) => setData('nationality', e.target.value)}
                                         disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-gray-500 shadow-sm disabled:bg-gray-100"
+                                        className="block w-full rounded-md border px-3 py-2 text-sm text-gray-500 shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Blood Type --</option>
                                         <option value="A+">A+</option>
@@ -856,7 +850,7 @@ export default function AddPatient() {
                                         onChange={(e) => setData('patient_address', e.target.value)}
                                         placeholder="House # / Lot # / Street Name / Building / Purok # / Village Name"
                                     />
-                                    <InputError message={errors.patient_address} />
+                                    <InputError message={errors.patient_address} className="text-[10px] text-red-600" />
                                 </div>
 
                                 {/* Region */}
@@ -877,7 +871,7 @@ export default function AddPatient() {
                                             setData('citycode', '');
                                             setData('bgycode', '');
                                         }}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 w-full rounded border p-2 text-sm"
                                     >
                                         <option value="">Select Region</option>
                                         {Object.entries(locationData).map(([code, info]) => {
@@ -889,7 +883,7 @@ export default function AddPatient() {
                                             );
                                         })}
                                     </Select>
-                                    <InputError message={errors.regcode} />
+                                    <InputError message={errors.regcode} className="text-[10px] text-red-600" />
                                 </div>
 
                                 {/* Province */}
@@ -908,7 +902,7 @@ export default function AddPatient() {
                                             setData('citycode', '');
                                             setData('bgycode', '');
                                         }}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedRegion ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedRegion ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Province --</option>
                                         {selectedRegion &&
@@ -918,7 +912,7 @@ export default function AddPatient() {
                                                 </option>
                                             ))}
                                     </Select>
-                                    <InputError message={errors.provcode} />
+                                    <InputError message={errors.provcode} className="text-[10px] text-red-600" />
                                 </div>
 
                                 {/* City/Municipality */}
@@ -935,7 +929,7 @@ export default function AddPatient() {
                                             setData('citycode', val);
                                             setData('bgycode', '');
                                         }}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedProvince ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedProvince ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">Select City/Municipality</option>
                                         {selectedRegion &&
@@ -949,7 +943,7 @@ export default function AddPatient() {
                                                 );
                                             })}
                                     </Select>
-                                    <InputError message={errors.citycode} />
+                                    <InputError message={errors.citycode} className="text-[10px] text-red-600" />
                                 </div>
 
                                 {/* Barangay */}
@@ -961,7 +955,7 @@ export default function AddPatient() {
                                         id="bgycode"
                                         value={data.bgycode}
                                         onChange={(e) => setData('bgycode', e.target.value)}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedCity ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedCity ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">Select Barangay</option>
                                         {selectedRegion &&
@@ -975,7 +969,7 @@ export default function AddPatient() {
                                                     </option>
                                                 ))}
                                     </Select>
-                                    <InputError message={errors.bgycode} />
+                                    <InputError message={errors.bgycode} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
@@ -1012,7 +1006,7 @@ export default function AddPatient() {
                                                 id="country_code"
                                                 value={data.country_code}
                                                 onChange={(e) => setData('country_code', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                             >
                                                 <option value="">-- Select Country --</option>
                                                 <option value="PH">Philippines</option>
@@ -1257,7 +1251,7 @@ export default function AddPatient() {
                                                 id="mot_deceased_status"
                                                 value={data.mot_deceased_status}
                                                 onChange={(e) => setData('mot_deceased_status', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                             >
                                                 <option value="">-- Select Status --</option>
                                                 <option value="1">Yes</option>
@@ -1405,7 +1399,7 @@ export default function AddPatient() {
                                                 id="fat_deceased_status"
                                                 value={data.fat_deceased_status}
                                                 onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                             >
                                                 <option value="">-- Select Status --</option>
                                                 <option value="1">Yes</option>
@@ -1477,66 +1471,70 @@ export default function AddPatient() {
                                     </label>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.phic_member} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
-                            {/* Philhealth Member */}
+                            {/* Philhealth Number */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Number:
+                                    <Label htmlFor="pat_philhealth" className="w-70 text-sm font-medium">
+                                        Philhealth Number: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
-
-                                    <Input
-                                        // id="fat_contact"
-                                        className="text-dark-500 rounded-md border px-3 py-2 shadow"
-                                        // value={data.fat_contact}
-                                        // onChange={(e) => setData('fat_contact', e.target.value)}
-                                        placeholder="PhilHealth Number"
-                                    />
+                                    <div className={`w-full ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                        <Input
+                                            id="pat_philhealth"
+                                            className="text-dark-500 rounded-md border px-3 py-2 shadow"
+                                            value={data.pat_philhealth}
+                                            onChange={(e) => setData('pat_philhealth', e.target.value)}
+                                            placeholder="PhilHealth Number"
+                                            disabled={!(data.phic_member === 'Y')}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.pat_philhealth} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
                             {/* Philhealth Status Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Status Type:
+                                    <Label htmlFor="philhealth_status_code" className="w-70 text-sm font-medium text-black-500">
+                                        Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select
-                                        // id="fat_deceased_status"
-                                        // value={data.fat_deceased_status}
-                                        // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        id="philhealth_status_code"
+                                        value={data.philhealth_status_code}
+                                        onChange={(e) => setData('philhealth_status_code', e.target.value)}
+                                        disabled={!(data.phic_member === 'Y')}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Philhealth Status Type --</option>
-                                        <option value="DEP">Dependent</option>
-                                        <option value="MEM">Member</option>
+                                        <option value="D">Dependent</option>
+                                        <option value="M">Member</option>
                                     </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.philhealth_status_code} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
                             {/* Philhealth Category Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Category Type:
+                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-black-500">
+                                        Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select
-                                        // id="fat_deceased_status"
-                                        // value={data.fat_deceased_status}
-                                        // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        id="type_of_membership"
+                                        value={data.type_of_membership}
+                                        onChange={(e) => setData('type_of_membership', e.target.value)}
+                                        disabled={!(data.phic_member === 'Y')}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Philhealth Category Type --</option>
                                         <option value="FEEO">FE - ENTERPRISE OWNER</option>
@@ -1570,8 +1568,8 @@ export default function AddPatient() {
                                     </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.type_of_membership} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
@@ -1585,7 +1583,7 @@ export default function AddPatient() {
                                         // id="fat_deceased_status"
                                         // value={data.fat_deceased_status}
                                         // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select eKonsulta Eligible --</option>
                                         <option value="Yes">Yes</option>

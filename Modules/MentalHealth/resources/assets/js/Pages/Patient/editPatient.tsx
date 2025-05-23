@@ -82,6 +82,11 @@ interface PatientProps {
         fat_deceased_status?: string;
         fat_address?: string;
         id: string;
+
+        phic_member: string;
+        pat_philhealth: string;
+        type_of_membership: string;
+        philhealth_status_code: string;
     };
 }
 
@@ -139,6 +144,11 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
         fat_contact: patient.fat_contact || '',
         fat_deceased_status: patient.fat_deceased_status || '',
         fat_address: patient.fat_address || '',
+
+        phic_member: patient.phic_member || '',
+        pat_philhealth: patient.pat_philhealth || '',
+        type_of_membership: patient.type_of_membership || '',
+        philhealth_status_code: patient.philhealth_status_code || '',
     });
 
     const [selectedRegion, setSelectedRegion] = useState('');
@@ -239,11 +249,12 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
         className?: string;
         id?: string; // Add this if missing
         children?: React.ReactNode;
+        disabled?: boolean;
     }
 
-    const Select: React.FC<SelectProps> = ({ id, value, onChange, className, children }) => {
+    const Select: React.FC<SelectProps> = ({ id, value, onChange, className, children, disabled }) => {
         return (
-            <select id={id} value={value} onChange={onChange} className={className}>
+            <select id={id} value={value} onChange={onChange} className={className} disabled={disabled}>
                 {children}
             </select>
         );
@@ -1407,7 +1418,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                                 id="fat_deceased_status"
                                                 value={data.fat_deceased_status}
                                                 onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                             >
                                                 <option value="">-- Select Status --</option>
                                                 <option value="1">Yes</option>
@@ -1454,16 +1465,30 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                             {/* Philhealth Member */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-49 text-sm font-medium text-red-500">
+                                    <Label htmlFor="phic_member" className="w-49 text-sm font-medium text-red-500">
                                         Philhealth Member?:
                                     </Label>
 
                                     <label className="flex items-center gap-1 text-sm text-red-500">
-                                        <input type="radio" name="indigenous" value="No" className="accent-blue-600" />
+                                        <input
+                                            type="radio"
+                                            name="phic_member"
+                                            value="N"
+                                            checked={data.phic_member === 'N'}
+                                            className="accent-black-600"
+                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                        />
                                         No
                                     </label>
                                     <label className="flex items-center gap-1 text-sm text-red-500">
-                                        <input type="radio" name="indigenous" value="Yes" className="accent-blue-600" />
+                                        <input
+                                            type="radio"
+                                            name="phic_member"
+                                            value="Y"
+                                            checked={data.phic_member === 'Y'}
+                                            className="accent-black-600"
+                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                        />
                                         Yes
                                     </label>
                                 </div>
@@ -1473,96 +1498,100 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                 </div>
                             </div>
 
-                            {/* Philhealth Member */}
+                            {/* Philhealth Number */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Number:
+                                    <Label htmlFor="pat_philhealth" className="w-70 text-sm font-medium">
+                                        Philhealth Number: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
-
-                                    <Input
-                                        // id="fat_contact"
-                                        className="text-dark-500 rounded-md border px-3 py-2 shadow"
-                                        // value={data.fat_contact}
-                                        // onChange={(e) => setData('fat_contact', e.target.value)}
-                                        placeholder="PhilHealth Number"
-                                    />
+                                    <div className={`w-full ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                        <Input
+                                            id="pat_philhealth"
+                                            className="text-dark-500 rounded-md border px-3 py-2 shadow"
+                                            value={data.pat_philhealth}
+                                            onChange={(e) => setData('pat_philhealth', e.target.value)}
+                                            placeholder="PhilHealth Number"
+                                            disabled={!(data.phic_member === 'Y')}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.pat_philhealth} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
                             {/* Philhealth Status Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Status Type:
+                                    <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
+                                        Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
-                                    <select
-                                        // id="fat_deceased_status"
-                                        // value={data.fat_deceased_status}
-                                        // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                    <Select
+                                        id="philhealth_status_code"
+                                        value={data.philhealth_status_code}
+                                        onChange={(e) => setData('philhealth_status_code', e.target.value)}
+                                        disabled={!(data.phic_member === 'Y')}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Philhealth Status Type --</option>
-                                        <option value="DEP">Dependent</option>
-                                        <option value="MEM">Member</option>
-                                    </select>
+                                        <option value="D">DEPENDENT</option>
+                                        <option value="M">MEMBER</option>
+                                    </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.philhealth_status_code} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
                             {/* Philhealth Category Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-70 text-sm font-medium text-red-500">
-                                        Philhealth Category Type:
+                                    <Label htmlFor="type_of_membership" className="text-black-500 w-70 text-sm font-medium">
+                                        Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
-                                    <select
-                                        // id="fat_deceased_status"
-                                        // value={data.fat_deceased_status}
-                                        // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                    <Select
+                                        id="type_of_membership"
+                                        value={data.type_of_membership}
+                                        onChange={(e) => setData('type_of_membership', e.target.value)}
+                                        disabled={!(data.phic_member === 'Y')}
+                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
                                         <option value="">-- Select Philhealth Category Type --</option>
-                                        <option value="">FE - ENTERPRISE OWNER</option>
-                                        <option value="">FE - FAMILY DRIVER</option>
-                                        <option value="">FE - GOVT - CASUAL</option>
-                                        <option value="">FE - GOVT - CONTRACT/PROJECT BASED</option>
-                                        <option value="">FE - GOVT - PERMANENT REGULAR</option>
-                                        <option value="">FE - HOUSEHOLD HELP/KASAMBAHAY</option>
-                                        <option value="">FE - PRIVATE - CASUAL</option>
-                                        <option value="">FE - PRIVATE - CONTRACT/PROJECT BASED</option>
-                                        <option value="">FE - PRIVATE - PERMANENT REGULAR</option>
-                                        <option value="">IE - CITIZEN OF OTHER COUNRIES WORKING/RESIDING/STUDYING IN THE PHILIPPINES</option>
-                                        <option value="">IE - FILIPINO WITH DUAL CITIZENSHIP</option>
-                                        <option value="">IE - INFORMAL SECTOR</option>
-                                        <option value="">IE - MIGRANT WORKER - LAND BASED</option>
-                                        <option value="">IE - MIGRANT WORKER - SEA BASED</option>
-                                        <option value="">IE - NATURALIZED FILIPINO CITIZEN</option>
-                                        <option value="">IE - ORGANIZED GROUP</option>
-                                        <option value="">IE - SELF EARNING INDIVIDUAL</option>
-                                        <option value="">INDIGENT - NHTS-PR</option>
-                                        <option value="">INDIRECT CONTRIBUTOR - LISTAHAN</option>
-                                        <option value="">INDIRECT CONTRIBUTOR - PERSON WITH DISABILITY</option>
-                                        <option value="">INDIRECT CONTRIBUTOR - FINANCIALLY INCAPABLE</option>
-                                        <option value="">LIFETIME MEMBER - RETIREE/PENSIONER</option>
-                                        <option value="">LIFETIME MEMBER - WITH 120 MONTHS CONTRIBUTION AND HAS REACHED RETIREMENT AGE</option>
-                                        <option value="">SENIOR CITIZEN</option>
-                                        <option value="">SPONSORED - LGU</option>
-                                        <option value="">SPONSORED - NGA</option>
-                                        <option value="">SPONSORED - OTHERS</option>
-                                        <option value="">SPONSORED - POS - FINANCIALLY INCAPABLE</option>
-                                    </select>
+                                        <option value="FEEO">FE - ENTERPRISE OWNER</option>
+                                        <option value="FEFD">FE - FAMILY DRIVER</option>
+                                        <option value="FEGC">FE - GOVT - CASUAL</option>
+                                        <option value="FEGCB">FE - GOVT - CONTRACT/PROJECT BASED</option>
+                                        <option value="FEGPR">FE - GOVT - PERMANENT REGULAR</option>
+                                        <option value="FEHK">FE - HOUSEHOLD HELP/KASAMBAHAY</option>
+                                        <option value="FEPC">FE - PRIVATE - CASUAL</option>
+                                        <option value="FEPCB">FE - PRIVATE - CONTRACT/PROJECT BASED</option>
+                                        <option value="FEPPR">FE - PRIVATE - PERMANENT REGULAR</option>
+                                        <option value="IECCP">IE - CITIZEN OF OTHER COUNRIES WORKING/RESIDING/STUDYING IN THE PHILIPPINES</option>
+                                        <option value="IEFDC">IE - FILIPINO WITH DUAL CITIZENSHIP</option>
+                                        <option value="IEIS">IE - INFORMAL SECTOR</option>
+                                        <option value="IEMWLB">IE - MIGRANT WORKER - LAND BASED</option>
+                                        <option value="IEMWSB">IE - MIGRANT WORKER - SEA BASED</option>
+                                        <option value="IENFC">IE - NATURALIZED FILIPINO CITIZEN</option>
+                                        <option value="IEOG">IE - ORGANIZED GROUP</option>
+                                        <option value="IESEI">IE - SELF EARNING INDIVIDUAL</option>
+                                        <option value="INP">INDIGENT - NHTS-PR</option>
+                                        <option value="ICL">INDIRECT CONTRIBUTOR - LISTAHAN</option>
+                                        <option value="ICP">INDIRECT CONTRIBUTOR - PERSON WITH DISABILITY</option>
+                                        <option value="ICF">INDIRECT CONTRIBUTOR - FINANCIALLY INCAPABLE</option>
+                                        <option value="LMR">LIFETIME MEMBER - RETIREE/PENSIONER</option>
+                                        <option value="LMW">LIFETIME MEMBER - WITH 120 MONTHS CONTRIBUTION AND HAS REACHED RETIREMENT AGE</option>
+                                        <option value="SC">SENIOR CITIZEN</option>
+                                        <option value="SLGU">SPONSORED - LGU</option>
+                                        <option value="SNGA">SPONSORED - NGA</option>
+                                        <option value="SOTH">SPONSORED - OTHERS</option>
+                                        <option value="SPOS">SPONSORED - POS - FINANCIALLY INCAPABLE</option>
+                                    </Select>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    <InputError className="text-[10px] text-red-600" />
+                                    <div className="w-49 text-sm font-medium text-gray-700" />
+                                    <InputError message={errors.type_of_membership} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
@@ -1576,7 +1605,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                         // id="fat_deceased_status"
                                         // value={data.fat_deceased_status}
                                         // onChange={(e) => setData('fat_deceased_status', e.target.value)}
-                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                     >
                                         <option value="">-- Select eKonsulta Eligible --</option>
                                         <option value="Yes">Yes</option>

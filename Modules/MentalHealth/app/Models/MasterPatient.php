@@ -67,6 +67,9 @@ class MasterPatient extends Model
         'fat_contact',
         'fat_deceased_status',
         'phic_member',
+        'pat_philhealth',
+        'type_of_membership',
+        'philhealth_status_code',
     ];
 
     public function fhudFacility()

@@ -114,7 +114,11 @@ class PatientController extends Controller
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
             'registered_at' => 'nullable|date',
+
             'phic_member' => 'nullable|in:Y,N',
+            'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'philhealth_status_code' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
@@ -135,6 +139,10 @@ class PatientController extends Controller
             'bgycode' => 'Barangay',
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
+
+            'pat_philhealth' => 'PhilHealth Number',
+            'type_of_membership' => 'PhilHealth Category Type',
+            'philhealth_status_code' => 'PhilHealth Status Type',
         ]);
         // $timestamp = $request->input('registered_at');
         // $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
@@ -162,13 +170,12 @@ class PatientController extends Controller
 
     private function generatePatientRecordNumber()
     {
-        // Fetch the highest master_patient_perm_id
         $latestPatient = MasterPatient::orderBy('master_patient_perm_id', 'desc')->first();
 
         if ($latestPatient && is_numeric($latestPatient->master_patient_perm_id)) {
             $nextNumber = (int) $latestPatient->master_patient_perm_id + 1;
         } else {
-            $nextNumber = 1; // First record
+            $nextNumber = 1;
         }
 
         return str_pad($nextNumber, 10, '0', STR_PAD_LEFT);
@@ -262,6 +269,35 @@ class PatientController extends Controller
             'fat_address' => 'nullable|string|max:255', //Added by Ken
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
+
+            'phic_member' => 'nullable|in:Y,N',
+            'pat_philhealth' => 'required|string|max:255',
+            'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'philhealth_status_code' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+        ], [], [
+            'facility_name' => 'Facility Name',
+            'facility_location' => 'Facility Location',
+            'provider_name' => 'Name of Provider',
+
+            'prefix_code' => 'Prefix',
+            'pat_lname' => 'Last Name',
+            'pat_fname' => 'First Name',
+            'pat_mname' => 'Middle Name',
+            'suffix_code' => 'Suffix',
+            'pat_birthDate' => 'Birth Date',
+            'sex_code' => 'Sex',
+            'civil_stat_code' => 'Civil Status',
+            'pat_birthdate' => 'Birthdate',
+            'regcode' => 'Region',
+            'provcode' => 'Province',
+            'citycode' => 'City',
+            'bgycode' => 'Barangay',
+            'zipcode' => 'Zipcode',
+            'country_code' => 'Country',
+            'pat_philhealth' => 'PhilHealth Number',
+            'type_of_membership' => 'PhilHealth Category Type',
+            'philhealth_status_code' => 'PhilHealth Status Type',
         ]);
 
         $patient = MasterPatient::findOrFail($id);
