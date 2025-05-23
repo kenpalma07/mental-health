@@ -32,7 +32,6 @@ class ReportController extends Controller
         ]);
     }
     
-<<<<<<< HEAD
     public function mhmasterlist()
     {
         $patients = MasterPatient::with([
@@ -52,9 +51,6 @@ class ReportController extends Controller
         ]);
     }
     
-=======
-
->>>>>>> 6d71bb1c618249c2ab816c84af4af1b0017a8ffe
     public function schoolagesr()
     {
         return Inertia::render('MentalHealth::Report/schoolagesr');
