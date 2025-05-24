@@ -35,7 +35,6 @@ const ViewPatientDetails = ({ patient }: { patient: Patient }) => {
             <Head title="Patient Details" />
             <div className="container mx-auto p-6">
                 {/* Patient Info Cards */}
-                <h2 className="mb-4 text-lg font-semibold">Patient Information</h2>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <div className="transform overflow-hidden rounded-lg bg-white shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl">
                         <div className="flex items-center justify-center bg-blue-500 p-4">

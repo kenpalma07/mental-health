@@ -7,6 +7,7 @@ type Consultation = {
   consult_perm_id: string;
   consult_date: string;
   phar_intakeUnit?: string;
+
 };
 
 type Patient = {
@@ -20,6 +21,9 @@ type Patient = {
   patient_address: string;
   pat_birthDate: string;
   sex_code: string;
+  pat_philhealth: string;
+  philhealth_status_code: string;
+  phar_intakeUnit: string;
   consultation?: Consultation[];
 };
 
@@ -40,12 +44,6 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
   const itemsPerPage = 5;
 
   React.useEffect(() => {
-    patients.forEach((patient) => {
-      console.log(`Patient ${patient.id} - ${patient.pat_fname} ${patient.pat_lname} consultations:`);
-      patient.consultation?.forEach((consult) => {
-        console.log(`  consult_perm_id: ${consult.consult_perm_id}, phar_intakeUnit: ${consult.phar_intakeUnit}`);
-      });
-    });
   }, [patients]);
 
   const hasOral = (consultations?: Consultation[]) =>
@@ -90,7 +88,7 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
       <Head title="Mental Health Tracker" />
       <div className="p-4 space-y-6">
         <div className="bg-white rounded-2xl shadow-lg p-6">
-        <div className="text-sm mb-4">
+          <div className="text-sm mb-4">
             <span>Mental Health Tracker:</span>{' '}
             <span className='font-semibold'>{new Date().getFullYear()}</span>
           </div>
@@ -173,8 +171,15 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
                           ? p.consultation[0].consult_perm_id
                           : '—'}
                       </td>
-                      <td className="border p-2">{p.phil_health || '—'}</td>
-                      <td className="border p-2">{p.phil_member || '—'}</td>
+                      <td className="border p-2">{p.pat_philhealth || '—'}</td>
+                      <td className="border p-2">
+                        {p.philhealth_status_code === 'M'
+                          ? 'Member'
+                          : p.philhealth_status_code === 'D'
+                            ? 'Dependent'
+                            : '—'}
+                      </td>
+
                       <td className="border p-2">{p.pat_lname}</td>
                       <td className="border p-2">{p.pat_fname}</td>
                       <td className="border p-2">{p.pat_mname}</td>

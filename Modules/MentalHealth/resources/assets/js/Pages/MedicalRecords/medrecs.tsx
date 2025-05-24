@@ -10,10 +10,13 @@ import {
   SyringeIcon,
   StethoscopeIcon,
   SaveAllIcon,
+  Eye,
+  Edit
 } from 'lucide-react';
 import { Head, PageProps, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -35,7 +38,7 @@ interface Patient {
 
 interface PatMedicalRecordsProps extends PageProps {
   patient: Patient;
-  consultation?: any;
+  consultation: any[];
   assessments: any[];
 }
 
@@ -50,7 +53,7 @@ const calculateAge = (birthDate: string) => {
   return age;
 };
 
-const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessments }) => {
+const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessments, consultation }) => {
   const age = calculateAge(patient.pat_birthDate);
 
 
@@ -127,7 +130,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                 Treatment Card
               </Link>
               <Link
-                 href={`/medcard/${patient.id}?consult_date=${assessments[0]?.consult_date_assess}`}
+                href={`/medcard/${patient.id}?consult_date=${assessments[0]?.consult_date_assess}`}
                 className="inline-flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
               >
                 <StethoscopeIcon className="h-4 w-4" />
@@ -148,11 +151,14 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                 Medical Abstract
               </Link>
             </div>
-
+            {/* Assessment List */}
+            <div className="mb-1 mt-4 text-sm text-gray-700">
+              <span>Assessment List</span>
+            </div>
             {assessments.length > 0 ? (
               <div className="overflow-x-auto rounded-lg shadow">
                 <table className="min-w-full border text-sm text-gray-700">
-                  <thead className="text-white-500 bg-green-100 text-xs uppercase">
+                  <thead className="bg-green-100 text-xs uppercase text-gray-700">
                     <tr>
                       <th className="px-2 py-2 text-left">Tracking #</th>
                       <th className="px-2 py-2 text-left">Date</th>
@@ -178,7 +184,6 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                             >
                               <BookOpenText className="h-4 w-4" />
                             </Link>
-
                           </div>
                         </td>
                       </tr>
@@ -187,8 +192,51 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                 </table>
               </div>
             ) : (
-              <p className="text-gray-500">No assessments found.</p>
+              <p className="text-gray-500 text-sm">No assessments found.</p>
             )}
+
+            {/* Consultation List */}
+            <div className="mb-1 mt-6 text-sm text-gray-700">
+              <span>Consultation List</span>
+            </div>
+            {consultation.length > 0 ? (
+              <div className="overflow-x-auto rounded-lg shadow">
+                <table className="min-w-full border text-sm text-gray-700">
+                  <thead className="bg-green-100 text-xs uppercase text-gray-700">
+                    <tr>
+                      <th className="px-2 py-2 text-left">Health #</th>
+                      <th className="px-2 py-2 text-left">Consult Date</th>
+                      <th className="px-2 py-2 text-left">Consultation Type</th>
+                      <th className="px-2 py-2 text-left">Service Type</th>
+                      <th className="px-2 py-2 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white text-sm">
+                    {consultation.map((c, index) => (
+                      <tr key={index} className="border-t bg-white hover:bg-gray-50">
+                        <td className="px-2 py-2 font-semibold">{c.consult_perm_id}</td>
+                        <td className="px-2 py-2">{c.consult_date}</td>
+                        <td className="px-2 py-2">{c.consult_type_code}</td>
+                        <td className="px-2 py-2">{c.type_service}</td>
+                        <td className="px-2 py-2">
+                          <div className="inline-flex items-center justify-center gap-2">
+                            <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
+                              <Eye size={16} />
+                            </Button>
+                            <Button variant="outline" onClick={() => index} className="text-green-600 hover:bg-green-500">
+                              <Edit size={16} />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">No consultations found.</p>
+            )}
+
           </div>
         </div>
       </div>

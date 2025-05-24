@@ -96,32 +96,32 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                 </div>
 
                 {/* Patient Info */}
-                <div className="w-1/3 p-4 border border-gray-200 rounded-xl shadow-sm bg-gray-50">
+                <div className="w-1/3 p-4 border border-white rounded-xl shadow-sm bg-gray-50">
                   <h2 className="font-bold mb-2 text-gray-800">Patient Info</h2>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Name</label>
-                    <p className="border border-gray-300 rounded-md p-1 bg-white">{fullName}</p>
+                    <label className="block text-sm font-semibold text-white-700">Name</label>
+                    <p className="w-full border-b border-black px-1 py-0.5 text-sm">{fullName}</p>
                   </div>
 
                   <div className="mb-2">
                     <label className="block text-sm font-semibold text-gray-700">Address</label>
-                    <p className="border border-gray-300 rounded-md p-1 bg-white">{fullAddress}</p>
+                    <p className="w-full border-b border-black px-1 py-0.5 text-sm">{fullAddress}</p>
                   </div>
 
                   <div className="mb-2">
                     <label className="block text-sm font-semibold text-gray-700">Phone</label>
-                    <p className="border border-gray-300 rounded-md p-1 bg-white">{patient.pat_mobile ?? ''}</p>
+                    <p className="w-full border-b border-black px-1 py-0.5 text-sm">{patient.pat_mobile ?? ''}</p>
                   </div>
 
                   <div className="mb-2">
                     <label className="block text-sm font-semibold text-gray-700">Birthdate</label>
-                    <p className="border border-gray-300 rounded-md p-1 bg-white">{patient.pat_birthDate ?? ''}</p>
+                    <p className="w-full border-b border-black px-1 py-0.5 text-sm">{patient.pat_birthDate ?? ''}</p>
                   </div>
 
                   <div className="mb-2">
                     <label className="block text-sm font-semibold text-gray-700">Doctor</label>
-                    <p className="border border-gray-300 rounded-md p-1 bg-white">{phar_doc}</p>
+                    <p className="w-full border-b border-black px-1 py-0.5 text-sm">{phar_doc}</p>
                   </div>
                 </div>
 
@@ -180,6 +180,7 @@ const medcardindex: React.FC<MedicationCardProps> = ({
               </div>
             </div>
           </div>
+          
 
         </div>
       </div>

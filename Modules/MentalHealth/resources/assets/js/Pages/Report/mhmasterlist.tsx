@@ -144,38 +144,38 @@ const MhMasterlistIndex: React.FC = () => {
 
                 return (
                   <tr key={p.id} className="hover:bg-gray-50 text-center text-xs">
-                    <td className="border p-2">
+                    <td className="border p-2 text-xs">
                       {p.consultation && p.consultation.length > 0
                         ? p.consultation[0].consult_perm_id
                         : '—'}
                     </td>
-                    <td className="border p-2">{p.date_entered || 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_doc || 'N/A'}</td>
-                    <td className="border p-2">{p.pat_lname}</td>
-                    <td className="border p-2">{p.pat_fname}</td>
-                    <td className="border p-2">{p.pat_mname}</td>
-                    <td className="border p-2">{p.patient_address}</td>
-                    <td className="border p-2">{p.pat_birthDate ? getAge(p.pat_birthDate) : ''}</td>
-                    <td className="border p-2">{p.sex_code === 'M' ? '✔' : ''}</td>
-                    <td className="border p-2">{p.sex_code === 'F' ? '✔' : ''}</td>
-                    <td className="border p-2">{p.occupation_code}</td>
-                    <td className="border p-2">{p.pat_mobile ?? 'N/A'}</td>
-                    <td className="border p-2">{hasDiagnosis('depression') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('psychoses') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('epilepsy') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('child') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('dementia') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('substance use') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('self-harm') ? '✔' : ''}</td>
-                    <td className="border p-2">{p.others ?? 'N/A'}</td>
-                    <td className="border p-2">{meds || 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_doc || 'N/A'}</td>
-                    <td className="border p-2">{p.pat_mobile ?? 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_remarks || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.date_entered || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_doc || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.pat_lname}</td>
+                    <td className="border p-2 text-xs">{p.pat_fname}</td>
+                    <td className="border p-2 text-xs">{p.pat_mname}</td>
+                    <td className="border p-2 text-xs">{p.patient_address}</td>
+                    <td className="border p-2 text-xs">{p.pat_birthDate ? getAge(p.pat_birthDate) : ''}</td>
+                    <td className="border p-2 text-xs">{p.sex_code === 'M' ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.sex_code === 'F' ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.occupation_code}</td>
+                    <td className="border p-2 text-xs">{p.pat_mobile ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('depression') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('psychoses') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('epilepsy') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('child') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('dementia') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('substance use') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('self-harm') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.others ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{meds || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_doc || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.pat_mobile ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_remarks || 'N/A'}</td>
                     {Array.from({ length: 12 }, (_, i) => {
                       const consultations = p.consultation?.filter(c => new Date(c.consult_date).getMonth() === i) || [];
                       return (
-                        <td key={i} className="border p-2">
+                        <td key={i} className="border p-2 text-xs">
                           {consultations.length
                             ? consultations.map(c => new Date(c.consult_date).toLocaleDateString()).join(', ')
                             : '—'}
