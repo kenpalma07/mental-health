@@ -168,7 +168,7 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                           <td className="border border-gray-300 p-1">{med.phar_med}</td>
                           <td className="border border-gray-300 p-1">{med.phar_date}</td>
                           <td className="border border-gray-300 p-1">
-                            {`${formatNum(med.phar_intake)} ${med.phar_intakeUnit} - ${formatNum(med.phar_freq)} ${med.phar_freqUnit} - ${formatNum(med.phar_dur)} ${med.phar_durUnit}`}
+                            {`${formatNum(med.phar_intake)} ${med.phar_intakeUnit} in every ${formatNum(med.phar_freq)} ${med.phar_freqUnit} for ${formatNum(med.phar_dur)} ${med.phar_durUnit}`}
                           </td>
                           <td className="border border-gray-300 p-1">{formatNum(med.phar_quantity)}</td>
                           <td className="border border-gray-300 p-1">{phar_doc}</td>

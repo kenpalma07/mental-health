@@ -206,9 +206,6 @@ const SchoolAgeSRIndex: React.FC = () => {
           </div>
 
           <div className="mt-6 flex justify-end">
-            <button className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition">
-              Print Report
-            </button>
           </div>
         </div>
       </div>
