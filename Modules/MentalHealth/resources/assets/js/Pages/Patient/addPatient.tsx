@@ -100,6 +100,9 @@ export default function AddPatient() {
         pat_philhealth: '',
         type_of_membership: '',
         philhealth_status_code: '',
+        pDependentType_code: '',
+        pMemberLname: '',
+        pMemberFname: '',
     });
 
     useEffect(() => {
@@ -115,6 +118,7 @@ export default function AddPatient() {
     const [selectedProvince, setSelectedProvince] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [age, setAge] = useState({ years: '', months: '', days: '' });
+    const isEnabled = data.philhealth_status_code === 'D' && data.phic_member === 'Y';
 
     function getAgeBreakdown(birthDate: string) {
         if (!birthDate) return { years: '', months: '', days: '' };
@@ -986,8 +990,14 @@ export default function AddPatient() {
                                                 id="zipcode"
                                                 className="text-dark-500"
                                                 value={data.zipcode}
-                                                onChange={(e) => setData('zipcode', e.target.value)}
+                                                onChange={(e) => {
+                                                    const value = e.target.value.replace(/\D/g, '');
+                                                    if (value.length <= 4) {
+                                                        setData('zipcode', value);
+                                                    }
+                                                }}
                                                 placeholder="Zip Code"
+                                                maxLength={4}
                                             />
                                         </div>
                                         <div className="flex items-center gap-2">
@@ -1454,7 +1464,17 @@ export default function AddPatient() {
                                             value="N"
                                             checked={data.phic_member === 'N'}
                                             className="accent-black-600"
-                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                            onChange={(e) => {
+                                                setData({
+                                                    ...data,
+                                                    phic_member: e.target.value,
+                                                    pat_philhealth: '',
+                                                    philhealth_status_code: '',
+                                                    pDependentType_code: '',
+                                                    pMemberLname: '',
+                                                    type_of_membership: '',
+                                                });
+                                            }}
                                         />
                                         No
                                     </label>
@@ -1508,7 +1528,19 @@ export default function AddPatient() {
                                     <Select
                                         id="philhealth_status_code"
                                         value={data.philhealth_status_code}
-                                        onChange={(e) => setData('philhealth_status_code', e.target.value)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            // Always update the status code
+                                            setData({
+                                                ...data,
+                                                philhealth_status_code: value,
+                                                ...(value === 'M' && {
+                                                    pDependentType_code: '',
+                                                    pMemberLname: '',
+                                                }),
+                                            });
+                                        }}
                                         disabled={!(data.phic_member === 'Y')}
                                         className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
@@ -1524,17 +1556,54 @@ export default function AddPatient() {
                             </div>
 
                             {/* Membership Info */}
-                            <div hidden={!(data.philhealth_status_code === 'D')}>
+                            <div className="space-y-3">
+                                {/* <div hidden={!(data.philhealth_status_code === 'D')} className='space-y-3'> */}
+
+                                {/* Relationship to Member */}
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
-                                            Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
+                                        <Label htmlFor="pDependentType_code" className="text-black-500 w-70 text-sm font-medium">
+                                            Relationship to Member: <span className="text-sm font-medium text-red-500">*</span>
                                         </Label>
-                                        
+                                        <Select
+                                            id="philhealth_status_code"
+                                            value={data.pDependentType_code}
+                                            onChange={(e) => setData('pDependentType_code', e.target.value)}
+                                            disabled={!isEnabled}
+                                            className={`text-dark-500 w-full rounded border p-2 text-sm ${!isEnabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        >
+                                            <option value="">-- Select Relationship to Member --</option>
+                                            <option value="C">CHILD</option>
+                                            <option value="P">PARENT</option>
+                                            <option value="S">SPOUSE</option>
+                                        </Select>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-49 text-sm font-medium text-gray-700" />
-                                        <InputError message={errors.philhealth_status_code} className="text-[10px] text-red-600" />
+                                        <InputError message={errors.pDependentType_code} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* Member's Last Name */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberLname" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Last Name: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberLname"
+                                                value={data.pMemberLname}
+                                                onChange={(e) => setData('pMemberLname', e.target.value)}
+                                                placeholder="Member's Last Name"
+                                                disabled={!isEnabled}
+                                                className="text-dark-500 w-full rounded border p-2 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberLname} className="text-[10px] text-red-600" />
                                     </div>
                                 </div>
                             </div>
@@ -1542,7 +1611,7 @@ export default function AddPatient() {
                             {/* Philhealth Category Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="type_of_membership" className="text-black-500 w-70 text-sm font-medium">
+                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-red-500">
                                         Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select

@@ -87,6 +87,8 @@ interface PatientProps {
         pat_philhealth: string;
         type_of_membership: string;
         philhealth_status_code: string;
+        pDependentType_code: string;
+        pMemberLname: string;
     };
 }
 
@@ -149,12 +151,26 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
         pat_philhealth: patient.pat_philhealth || '',
         type_of_membership: patient.type_of_membership || '',
         philhealth_status_code: patient.philhealth_status_code || '',
+        pDependentType_code: patient.pDependentType_code || '',
+        pMemberLname: patient.pMemberLname || '',
     });
 
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedProvince, setSelectedProvince] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [age, setAge] = useState({ years: '', months: '', days: '' });
+    const isEnabled = data.philhealth_status_code === 'D' && data.phic_member === 'Y';
+    const [originalPhilhealth, setOriginalPhilhealth] = useState({
+        pat_philhealth: data.pat_philhealth,
+        philhealth_status_code: data.philhealth_status_code,
+        pDependentType_code: data.pDependentType_code,
+        pMemberLname: data.pMemberLname,
+        type_of_membership: data.type_of_membership,
+    });
+    const [originalDependentData, setOriginalDependentData] = useState({
+        pDependentType_code: data.pDependentType_code,
+        pMemberLname: data.pMemberLname,
+    });
 
     useEffect(() => {
         if (data.regcode) {
@@ -1476,7 +1492,24 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                             value="N"
                                             checked={data.phic_member === 'N'}
                                             className="accent-black-600"
-                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                            onChange={(e) => {
+                                                setOriginalPhilhealth({
+                                                    pat_philhealth: data.pat_philhealth,
+                                                    philhealth_status_code: data.philhealth_status_code,
+                                                    pDependentType_code: data.pDependentType_code,
+                                                    pMemberLname: data.pMemberLname,
+                                                    type_of_membership: data.type_of_membership,
+                                                });
+                                                setData({
+                                                    ...data,
+                                                    phic_member: e.target.value,
+                                                    pat_philhealth: '',
+                                                    philhealth_status_code: '',
+                                                    pDependentType_code: '',
+                                                    pMemberLname: '',
+                                                    type_of_membership: '',
+                                                });
+                                            }}
                                         />
                                         No
                                     </label>
@@ -1487,7 +1520,13 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                             value="Y"
                                             checked={data.phic_member === 'Y'}
                                             className="accent-black-600"
-                                            onChange={(e) => setData('phic_member', e.target.value)}
+                                            onChange={(e) => {
+                                                setData({
+                                                    ...data,
+                                                    phic_member: e.target.value,
+                                                    ...originalPhilhealth,
+                                                });
+                                            }}
                                         />
                                         Yes
                                     </label>
@@ -1530,7 +1569,34 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                     <Select
                                         id="philhealth_status_code"
                                         value={data.philhealth_status_code}
-                                        onChange={(e) => setData('philhealth_status_code', e.target.value)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            if (value === 'M') {
+                                                // Save before clearing
+                                                setOriginalDependentData({
+                                                    pDependentType_code: data.pDependentType_code,
+                                                    pMemberLname: data.pMemberLname,
+                                                });
+
+                                                // Clear all dependent fields
+                                                setData({
+                                                    ...data,
+                                                    philhealth_status_code: value,
+                                                    pDependentType_code: '',
+                                                    pMemberLname: '',
+                                                });
+                                            } else if (value === 'D') {
+                                                // Restore the fields
+                                                setData({
+                                                    ...data,
+                                                    philhealth_status_code: value,
+                                                    ...originalDependentData, // restore snapshot
+                                                });
+                                            } else {
+                                                setData('philhealth_status_code', value);
+                                            }
+                                        }}
                                         disabled={!(data.phic_member === 'Y')}
                                         className={`text-dark-500 w-full rounded border p-2 text-sm ${data.phic_member !== 'Y' ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
@@ -1542,6 +1608,58 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                                 <div className="flex items-center gap-2">
                                     <div className="w-49 text-sm font-medium text-gray-700" />
                                     <InputError message={errors.philhealth_status_code} className="text-[10px] text-red-600" />
+                                </div>
+                            </div>
+
+                            {/* Membership Info */}
+                            <div className="space-y-3">
+                                {/* <div hidden={!(data.philhealth_status_code === 'D')} className="space-y-3"> */}
+                                {/* Relationship to Member */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pDependentType_code" className="text-black-500 w-70 text-sm font-medium">
+                                            Relationship to Member: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <Select
+                                            id="pDependentType_code"
+                                            value={data.pDependentType_code}
+                                            onChange={(e) => setData('pDependentType_code', e.target.value)}
+                                            disabled={!isEnabled}
+                                            className={`text-dark-500 w-full rounded border p-2 text-sm ${!isEnabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        >
+                                            <option value="">-- Select Relationship to Member --</option>
+                                            <option value="C">CHILD</option>
+                                            <option value="P">PARENT</option>
+                                            <option value="S">SPOUSE</option>
+                                        </Select>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pDependentType_code} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* Member's Last Name */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberLname" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Last Name: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberLname"
+                                                value={data.pMemberLname}
+                                                onChange={(e) => setData('pMemberLname', e.target.value)}
+                                                placeholder="Member's Last Name"
+                                                disabled={!(data.philhealth_status_code === 'D')}
+                                                className="text-dark-500 w-full rounded border p-2 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberLname} className="text-[10px] text-red-600" />
+                                    </div>
                                 </div>
                             </div>
 

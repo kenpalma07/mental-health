@@ -106,7 +106,7 @@ class PatientController extends Controller
             'mot_address' => 'nullable|string|max:255', //Added by Ken
             'mot_contact' => 'nullable|string|max:20', //Added by Ken
             'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
-            'fat_fname' => 'nullable|string|max:255',
+            'fat_fname' => 'nullable|string|max:255', 
             'fat_mname' => 'nullable|string|max:255',
             'fat_lname' => 'nullable|string|max:255',
             'fat_birthdate' => 'nullable|date',
@@ -119,6 +119,9 @@ class PatientController extends Controller
             'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'philhealth_status_code' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'pDependentType_code' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberLname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberFname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
@@ -143,6 +146,9 @@ class PatientController extends Controller
             'pat_philhealth' => 'PhilHealth Number',
             'type_of_membership' => 'PhilHealth Category Type',
             'philhealth_status_code' => 'PhilHealth Status Type',
+            'pDependentType_code' => 'Relationship to Member',
+            'pMemberLname' => 'Member\'s Last Name',
+            'pMemberFname' => 'Member\'s First Name',
         ]);
         // $timestamp = $request->input('registered_at');
         // $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
@@ -170,7 +176,7 @@ class PatientController extends Controller
 
     private function generatePatientRecordNumber()
     {
-        $latestPatient = MasterPatient::orderBy('master_patient_perm_id', 'desc')->first();
+        $latestPatient = MasterPatient::orderBy('master_patient_perm_id', 'desc')->first();         
 
         if ($latestPatient && is_numeric($latestPatient->master_patient_perm_id)) {
             $nextNumber = (int) $latestPatient->master_patient_perm_id + 1;
@@ -275,6 +281,9 @@ class PatientController extends Controller
             'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'philhealth_status_code' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
+            'pDependentType_code' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberLname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            // 'pMemberFname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
@@ -298,6 +307,9 @@ class PatientController extends Controller
             'pat_philhealth' => 'PhilHealth Number',
             'type_of_membership' => 'PhilHealth Category Type',
             'philhealth_status_code' => 'PhilHealth Status Type',
+            'pDependentType_code' => 'Relationship to Member',
+            'pMemberLname' => 'Member\'s Last Name',
+            // 'pMemberFname' => 'Member\'s First Name',
         ]);
 
         $patient = MasterPatient::findOrFail($id);
@@ -305,6 +317,4 @@ class PatientController extends Controller
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
     }
-
-    // Relationship methods like belongsTo should be defined in the Eloquent model, not in the controller.
 }
