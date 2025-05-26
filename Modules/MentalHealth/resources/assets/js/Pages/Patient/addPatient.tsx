@@ -1497,7 +1497,7 @@ export default function AddPatient() {
                             </div>
 
                             {/* Philhealth Number */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
                                     <Label htmlFor="pat_philhealth" className="w-70 text-sm font-medium">
                                         Philhealth Number: <span className="text-sm font-medium text-red-500">*</span>
@@ -1520,7 +1520,7 @@ export default function AddPatient() {
                             </div>
 
                             {/* Philhealth Status Type */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
                                     <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
                                         Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
@@ -1556,8 +1556,8 @@ export default function AddPatient() {
                             </div>
 
                             {/* Membership Info */}
-                            <div className="space-y-3">
-                                {/* <div hidden={!(data.philhealth_status_code === 'D')} className='space-y-3'> */}
+                            {/* <div className="space-y-3"> */}
+                                <div hidden={!(data.philhealth_status_code === 'D')} className='space-y-3'>
 
                                 {/* Relationship to Member */}
                                 <div>
@@ -1609,9 +1609,9 @@ export default function AddPatient() {
                             </div>
 
                             {/* Philhealth Category Type */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-red-500">
+                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-black-500">
                                         Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select
