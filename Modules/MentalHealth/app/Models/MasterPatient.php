@@ -4,6 +4,7 @@ namespace Modules\MentalHealth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\MentalHealth\Models\Consultation;
 use Modules\MentalHealth\Models\MentalAssessmentForm;
 
@@ -91,7 +92,6 @@ class MasterPatient extends Model
         return $this->hasMany(MentalAssessmentForm::class, 'pat_temp_id', 'id');
     }
 
-    
 
     protected static function boot()
     {

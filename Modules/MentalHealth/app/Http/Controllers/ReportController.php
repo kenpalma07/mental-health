@@ -16,52 +16,105 @@ class ReportController extends Controller
     public function mhtracker()
     {
         $patients = MasterPatient::with([
-            'consultation' => fn ($q) => $q->orderBy('consult_date', 'desc'),
-            'assessment' => fn ($q) => $q->orderBy('consult_date_assess', 'desc')->limit(1),
+            'consultation' => fn($q) => $q->orderBy('consult_date', 'desc'),
+            'assessment' => fn($q) => $q->orderBy('consult_date_assess', 'desc')->limit(1),
         ])
-        ->whereHas('consultation')
-        ->orWhereHas('assessment')
-        ->get()
-        ->map(function ($patient) {
-            $patient->assessment = $patient->assessment->first();
-            return $patient;
-        });
+            ->whereHas('consultation')
+            ->orWhereHas('assessment')
+            ->get()
+            ->map(function ($patient) {
+                $patient->assessment = $patient->assessment->first();
+                return $patient;
+            });
 
         return Inertia::render('MentalHealth::Report/mhtracker', [
             'patients' => $patients,
         ]);
     }
-    
-<<<<<<< HEAD
+
     public function mhmasterlist()
     {
         $patients = MasterPatient::with([
-            'consultation' => fn ($q) => $q->orderBy('consult_date', 'desc'),
-            'assessment' => fn ($q) => $q->orderBy('consult_date_assess', 'desc')->limit(1),
+            'consultation' => fn($q) => $q->orderBy('consult_date', 'desc'),
+            'assessment' => fn($q) => $q->orderBy('consult_date_assess', 'desc')->limit(1),
         ])
-        ->whereHas('consultation')
-        ->orWhereHas('assessment')
-        ->get()
-        ->map(function ($patient) {
-            $patient->assessment = $patient->assessment->first();
-            return $patient;
-        });
-    
+            ->whereHas('consultation')
+            ->orWhereHas('assessment')
+            ->get()
+            ->map(function ($patient) {
+                $patient->assessment = $patient->assessment->first();
+                return $patient;
+            });
+
         return Inertia::render('MentalHealth::Report/mhmasterlist', [
             'patients' => $patients,
         ]);
     }
-    
-=======
 
->>>>>>> 6d71bb1c618249c2ab816c84af4af1b0017a8ffe
     public function schoolagesr()
     {
-        return Inertia::render('MentalHealth::Report/schoolagesr');
+        $patients = MasterPatient::with([
+            'consultation' => fn($q) => $q->orderBy('consult_date', 'desc'),
+            'assessment' => fn($q) => $q->orderBy('consult_date_assess', 'desc'),
+        ])
+            ->whereHas('consultation')
+            ->orWhereHas('assessment')
+            ->get()
+            ->map(function ($patient) {
+
+                $birthDate = \Carbon\Carbon::parse($patient->pat_birthDate);
+                $age = $birthDate->age;
+
+                if ($age > 19) return null;
+
+                $patient->suicideAssessments = $patient->assessment->filter(function ($assess) {
+                    return !empty($assess->self_sui_means);
+                })->values();
+
+                if ($patient->suicideAssessments->isEmpty()) return null;
+
+                unset($patient->assessment);
+                return $patient;
+            })
+            ->filter() 
+            ->values();
+
+        return Inertia::render('MentalHealth::Report/schoolagesr', [
+            'patients' => $patients,
+        ]);
     }
+
 
     public function adultsr()
     {
-        return Inertia::render('MentalHealth::Report/adultsr');
+        $patients = MasterPatient::with([
+            'consultation' => fn($q) => $q->orderBy('consult_date', 'desc'),
+            'assessment' => fn($q) => $q->orderBy('consult_date_assess', 'desc'),
+        ])
+            ->whereHas('consultation')
+            ->orWhereHas('assessment')
+            ->get()
+            ->map(function ($patient) {
+
+                $birthDate = \Carbon\Carbon::parse($patient->pat_birthDate);
+                $age = $birthDate->age;
+
+                if ($age <= 19) return null;
+
+                $patient->suicideAssessments = $patient->assessment->filter(function ($assess) {
+                    return !empty($assess->self_sui_means);
+                })->values();
+
+                if ($patient->suicideAssessments->isEmpty()) return null;
+
+                unset($patient->assessment);
+                return $patient;
+            })
+            ->filter() 
+            ->values();
+
+        return Inertia::render('MentalHealth::Report/adultsr', [
+            'patients' => $patients,
+        ]);
     }
 }

@@ -39,11 +39,7 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient Medical Records', href: '/medrecords' },
-            { title: '(ITR)-Individual Treatment Record', href: '/itr' },
             { title: 'Medical Abstract', href: '/medabstract' },
-            { title: 'Treatment Card', href: '/treatmentcard' },
-            { title: 'Medication Card', href: '/medcard' },
-            { title: 'Referral Forms', href: '/referralform' },
         ],
     },
     {

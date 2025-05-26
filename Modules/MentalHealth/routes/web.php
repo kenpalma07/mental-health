@@ -34,13 +34,14 @@ Route::get('/patitrforms/{id}', [FormController::class, 'index'])->name('patitrf
 
 //patient medical records
 Route::get('/medrecords', [MedicalRecordsController::class, 'index'])->name('patients.index');
+Route::get('/medrecords/{id}', [MedicalRecordsController::class, 'show'])->name('medrecords.show');
 
 // Forms
-Route::get('/itr', [OtherController::class, 'itr']);
+Route::get('/enctr/{id}', [OtherController::class, 'encounter'])->name('enc.encounter');
 Route::get('/medabstract', [OtherController::class, 'medabstract']);
-Route::get('/treatmentcard', [OtherController::class, 'treatmentcard']);
-Route::get('/medcard', [OtherController::class, 'medcard']);
-Route::get('/referralform', [OtherController::class, 'referralform']);
+Route::get('/treatmentcard/{id}', [OtherController::class, 'treatmentcard'])->name('show.treatmentcard');
+Route::get('/medcard/{id}', [OtherController::class, 'medcard'])->name('show.medcard');
+Route::get('/referralform/{id}', [OtherController::class, 'referralform'])->name('show.referralform');
 
 //Reports
 Route::get('/mhtracker', [ReportController::class, 'mhtracker']);

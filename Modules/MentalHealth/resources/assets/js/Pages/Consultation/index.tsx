@@ -204,7 +204,9 @@ const ConsultationIndex: React.FC = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Consultations" />
+
             <ConsultPathead patient={patient} />
+            
             <div className="space-y-4 p-4">
                 <div className="space-y-4 rounded-xl border border-gray-300 bg-white p-4 text-sm shadow-sm">
                     <div className="w-fit rounded bg-blue-500 px-3 py-1 text-sm font-semibold text-white">Patient Consultations</div>

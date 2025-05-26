@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dialog } from '@headlessui/react';
-import { X, Stethoscope } from 'lucide-react';
+import { X, EyeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Patient {
@@ -20,9 +20,9 @@ interface Props {
   onRegisterNewPatient: () => void;
 }
 
-const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
+const PatientResultModal_MedRecs: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
   const handleConsultation = (id: number) => {
-    window.location.href = `/consultations/${id}`;
+    window.location.href = `/medrecords/${id}`;
   };
 
   const handleRegister = () => {
@@ -54,8 +54,8 @@ const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegist
                     onClick={() => handleConsultation(patient.id)}
                     className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transform hover:scale-108 transition-all duration-200"
                   >
-                    <Stethoscope className="w-4 h-4" />
-                    Proceed to Consultation
+                    <EyeIcon className="w-4 h-4" />
+                    View Details
                   </Button>
                 </div>
               </div>
@@ -79,4 +79,4 @@ const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegist
   );
 };
 
-export default PatientResultModal;
+export default PatientResultModal_MedRecs;

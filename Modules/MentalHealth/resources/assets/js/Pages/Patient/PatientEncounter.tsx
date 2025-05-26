@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dialog } from '@headlessui/react';
-import { X, Stethoscope } from 'lucide-react';
+import { X, BookCopyIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Patient {
@@ -20,9 +20,9 @@ interface Props {
   onRegisterNewPatient: () => void;
 }
 
-const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
+const PatientEncounter: React.FC<Props> = ({ open, onClose, patients, onRegisterNewPatient }) => {
   const handleConsultation = (id: number) => {
-    window.location.href = `/consultations/${id}`;
+    window.location.href = `/medrecords/${id}`;
   };
 
   const handleRegister = () => {
@@ -65,15 +65,14 @@ const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegist
                       {patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'Other'}
                     </td>
                     <td className="px-4 py-2 text-right">
-                      <Button
+                    <Button
                         variant="outline"
                         onClick={() => handleConsultation(patient.id)}
                         className="flex items-center gap-1 text-xs  text-black rounded hover:bg-green-400 px-3 py-1"
                       >
-                        <Stethoscope className="w-2 h-2" />
-                        Add Consultation
+                        <BookCopyIcon className="w-2 h-2" />
+                        -Medical Records
                       </Button>
-
                     </td>
                   </tr>
                 ))}
@@ -93,9 +92,10 @@ const PatientResultModal: React.FC<Props> = ({ open, onClose, patients, onRegist
             </div>
           </div>
         )}
+
       </Dialog.Panel>
     </Dialog>
   );
 };
 
-export default PatientResultModal;
+export default PatientEncounter;

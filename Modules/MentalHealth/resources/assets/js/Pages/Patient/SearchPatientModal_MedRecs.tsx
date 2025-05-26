@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Dialog } from '@headlessui/react';
 import { X, Search, Eraser } from 'lucide-react';
 import axios from 'axios';
-import PatientResultModal from './PatientResultModal';
+// import PatientResultModal from './PatientResultModal_MedRecs';
+import PatientResultModal from './PatientEncounter';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select } from '@headlessui/react';
@@ -22,7 +23,7 @@ interface Patient {
   pat_birthDate: string;
 }
 
-const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
+const SearchPatientModal_MedRecs: React.FC<Props> = ({ open, onClose }) => {
   const [form, setForm] = React.useState({
     master_patient_perm_id: '',
     pat_fname: '',
@@ -67,7 +68,7 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
         <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
         <Dialog.Panel className="bg-white rounded-lg p-6 max-w-xl z-50 shadow-lg relative w-full">
           <div className="flex justify-between items-center mb-4">
-            <Dialog.Title className="text-lg font-semibold">SEARCH EXISTING PATIENT</Dialog.Title>
+            <Dialog.Title className="text-lg font-semibold">SEARCH PATIENT</Dialog.Title>
             <Button onClick={onClose}><X className="w-5 h-5" /></Button>
           </div>
 
@@ -142,4 +143,4 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
   );
 };
 
-export default SearchPatientModal;
+export default SearchPatientModal_MedRecs;

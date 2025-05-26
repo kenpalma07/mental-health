@@ -3,6 +3,8 @@ import { usePage, Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { useState, useMemo } from 'react';
+import AppLogoDOH from '@/components/app-logo-assess_doh';
+import AppLogoBP from '@/components/app-logo-assess_bp';
 
 type Consultation = {
   consult_perm_id: string;
@@ -24,7 +26,7 @@ type Patient = {
   pat_mobile: string;
   others: string;
   medications?: string;
-  
+
 
   consultation?: Consultation[];
   assessment?: {
@@ -75,9 +77,12 @@ const MhMasterlistIndex: React.FC = () => {
       <Head title="Mental Health Masterlist" />
       <div className="p-4 space-y-4">
         <div className="overflow-x-auto bg-white border rounded-2xl shadow-lg p-6 w-auto">
-          {/* Header */}
-          <div className="relative flex items-center justify-between mb-6">
-            <img src="/path-to-left-logo.png" alt="Left Logo" className="h-16 w-16 object-contain" />
+
+          <div className="flex items-center justify-center space-x-4 mb-6">
+            {/* DOH Logo */}
+            <AppLogoDOH className="h-16 w-auto" />
+
+            {/* Center Text */}
             <div className="flex flex-col items-center text-center">
               <p className="text-sm text-gray-600">Republic of the Philippines</p>
               <p className="text-sm text-gray-600">Department of Health</p>
@@ -85,8 +90,11 @@ const MhMasterlistIndex: React.FC = () => {
               <p className="text-sm text-gray-600">National Mental Health Program</p>
               <p className="text-sm font-medium uppercase text-gray-700">Mental Health Client Masterlist</p>
             </div>
-            <img src="/path-to-right-logo.png" alt="Right Logo" className="h-16 w-16 object-contain" />
+
+            {/* BP Logo */}
+            <AppLogoBP className="h-16 w-auto" />
           </div>
+
 
           {/* Table */}
           <table className="min-w-full text-sm text-left text-gray-800 border-collapse">
@@ -108,7 +116,7 @@ const MhMasterlistIndex: React.FC = () => {
                 <th rowSpan={3} className="border p-2 w-40">Remarks</th>
                 <th colSpan={12} className="border p-2 w-250">Follow-up</th>
               </tr>
-              <tr className="text-center">
+              <tr className="text-center text-xs">
                 <th className="border p-2">Family Name</th>
                 <th className="border p-2">Given Name</th>
                 <th className="border p-2">Middle Name</th>
@@ -129,41 +137,45 @@ const MhMasterlistIndex: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-            {paginatedData.map((p) => {
+              {paginatedData.map((p) => {
                 const diagnosis = p.assessment?.diagnosis?.toLowerCase() || '';
                 const hasDiagnosis = (d: string) => diagnosis.includes(d);
                 const meds = `${p.assessment?.phar_med ?? ''} ${p.assessment?.phar_intakeUnit ?? ''} ${p.assessment?.phar_freqUnit ?? ''}`.trim();
 
                 return (
-                  <tr key={p.id} className="hover:bg-gray-50 text-center">
-                    <td className="border p-2">{p.id}</td>
-                    <td className="border p-2">{p.date_entered || 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_doc || 'N/A'}</td>
-                    <td className="border p-2">{p.pat_lname}</td>
-                    <td className="border p-2">{p.pat_fname}</td>
-                    <td className="border p-2">{p.pat_mname}</td>
-                    <td className="border p-2">{p.patient_address}</td>
-                    <td className="border p-2">{p.pat_birthDate ? getAge(p.pat_birthDate) : ''}</td>
-                    <td className="border p-2">{p.sex_code === 'M' ? '✔' : ''}</td>
-                    <td className="border p-2">{p.sex_code === 'F' ? '✔' : ''}</td>
-                    <td className="border p-2">{p.occupation_code}</td>
-                    <td className="border p-2">{p.pat_mobile ?? 'N/A'}</td>
-                    <td className="border p-2">{hasDiagnosis('depression') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('psychoses') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('epilepsy') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('child') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('dementia') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('substance use') ? '✔' : ''}</td>
-                    <td className="border p-2">{hasDiagnosis('self-harm') ? '✔' : ''}</td>
-                    <td className="border p-2">{p.others ?? 'N/A'}</td>
-                    <td className="border p-2">{meds || 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_doc || 'N/A'}</td>
-                    <td className="border p-2">{p.pat_mobile ?? 'N/A'}</td>
-                    <td className="border p-2">{p.assessment?.phar_remarks || 'N/A'}</td>
+                  <tr key={p.id} className="hover:bg-gray-50 text-center text-xs">
+                    <td className="border p-2 text-xs">
+                      {p.consultation && p.consultation.length > 0
+                        ? p.consultation[0].consult_perm_id
+                        : '—'}
+                    </td>
+                    <td className="border p-2 text-xs">{p.date_entered || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_doc || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.pat_lname}</td>
+                    <td className="border p-2 text-xs">{p.pat_fname}</td>
+                    <td className="border p-2 text-xs">{p.pat_mname}</td>
+                    <td className="border p-2 text-xs">{p.patient_address}</td>
+                    <td className="border p-2 text-xs">{p.pat_birthDate ? getAge(p.pat_birthDate) : ''}</td>
+                    <td className="border p-2 text-xs">{p.sex_code === 'M' ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.sex_code === 'F' ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.occupation_code}</td>
+                    <td className="border p-2 text-xs">{p.pat_mobile ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('depression') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('psychoses') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('epilepsy') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('child') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('dementia') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('substance use') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{hasDiagnosis('self-harm') ? '✔' : ''}</td>
+                    <td className="border p-2 text-xs">{p.others ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{meds || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_doc || 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.pat_mobile ?? 'N/A'}</td>
+                    <td className="border p-2 text-xs">{p.assessment?.phar_remarks || 'N/A'}</td>
                     {Array.from({ length: 12 }, (_, i) => {
                       const consultations = p.consultation?.filter(c => new Date(c.consult_date).getMonth() === i) || [];
                       return (
-                        <td key={i} className="border p-2">
+                        <td key={i} className="border p-2 text-xs">
                           {consultations.length
                             ? consultations.map(c => new Date(c.consult_date).toLocaleDateString()).join(', ')
                             : '—'}
@@ -185,10 +197,10 @@ const MhMasterlistIndex: React.FC = () => {
             </div>
           </div>
 
-          {/* Print Button */}
+          {/* Print Button
           <div className="mt-6 flex justify-end">
             <button onClick={() => window.print()} className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition">Print Report</button>
-          </div>
+          </div> */}
         </div>
       </div>
     </AppLayout>
