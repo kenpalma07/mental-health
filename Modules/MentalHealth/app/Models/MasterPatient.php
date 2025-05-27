@@ -34,6 +34,7 @@ class MasterPatient extends Model
         'pat_birthDate',
         'educattainment',
         'occupation_code',
+        'bloodtype_code',
         'regcode',
         'provcode',
         'citycode',

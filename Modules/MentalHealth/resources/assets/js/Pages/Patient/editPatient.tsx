@@ -59,6 +59,8 @@ interface PatientProps {
         nationality?: string;
         educattainment?: string;
         occupation_code?: string;
+        bloodtype_code?: string;
+
         pat_mobile?: string;
         pat_landline?: string;
         is_deceased?: boolean;
@@ -67,6 +69,7 @@ interface PatientProps {
         pat_street?: string;
         pat_houseno?: string;
         patient_address?: string;
+
         mot_fname?: string;
         mot_mname?: string;
         mot_lname?: string;
@@ -121,6 +124,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
         nationality: patient.nationality || '',
         educattainment: patient.educattainment || '',
         occupation_code: patient.occupation_code || '',
+        bloodtype_code: patient.bloodtype_code || '',
         pat_mobile: patient.pat_mobile || '',
         pat_landline: patient.pat_landline || '',
         is_deceased: patient.is_deceased || false,
@@ -835,15 +839,15 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                             {/* Blood Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="blood_type" className="w-40 text-sm font-medium text-gray-700">
+                                    <Label htmlFor="bloodtype_code" className="w-40 text-sm font-medium text-gray-700">
                                         Blood Type:
                                     </Label>
                                     <select
-                                        // id="nationality"
-                                        // value={data.nationality}
-                                        // onChange={(e) => setData('nationality', e.target.value)}
-                                        disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-gray-500 shadow-sm disabled:bg-gray-100"
+                                        id="bloodtype_code"
+                                        value={data.bloodtype_code}
+                                        onChange={(e) => setData('bloodtype_code', e.target.value)}
+                                        // disabled={true} // or based on some state, e.g. disabled={isReadOnly}
+                                        className="block w-full rounded-md border px-3 py-2 text-sm text-dark-500 shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Blood Type --</option>
                                         <option value="A+">A+</option>

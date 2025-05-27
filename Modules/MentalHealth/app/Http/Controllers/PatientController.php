@@ -90,6 +90,7 @@ class PatientController extends Controller
             'pat_birthDate' => 'required|date',
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
+            'bloodtype_code' => 'nullable|string|max:11',
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -99,20 +100,22 @@ class PatientController extends Controller
             'patient_address' => 'nullable|string|max:255',
             'pat_mobile' => 'nullable|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
+
+            //Parents Information
             'mot_fname' => 'nullable|string|max:255',
             'mot_mname' => 'nullable|string|max:255',
             'mot_lname' => 'nullable|string|max:255',
             'mot_birthdate' => 'nullable|date',
-            'mot_address' => 'nullable|string|max:255', //Added by Ken
-            'mot_contact' => 'nullable|string|max:20', //Added by Ken
-            'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
+            'mot_address' => 'nullable|string|max:255',
+            'mot_contact' => 'nullable|string|max:20',
+            'mot_deceased_status' => 'nullable|string|max:1',
             'fat_fname' => 'nullable|string|max:255', 
             'fat_mname' => 'nullable|string|max:255',
             'fat_lname' => 'nullable|string|max:255',
             'fat_birthdate' => 'nullable|date',
-            'fat_address' => 'nullable|string|max:255', //Added by Ken
-            'fat_contact' => 'nullable|string|max:20', //Added by Ken
-            'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
+            'fat_address' => 'nullable|string|max:255',
+            'fat_contact' => 'nullable|string|max:20',
+            'fat_deceased_status' => 'nullable|string|max:1',
             'registered_at' => 'nullable|date',
 
             'phic_member' => 'nullable|in:Y,N',
@@ -249,6 +252,7 @@ class PatientController extends Controller
             'pat_birthDate' => 'required|date',
             'educattainment' => 'required|string|max:2',
             'occupation_code' => 'required|string|max:255',
+            'bloodtype_code' => 'required|string|max:11',
 
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
