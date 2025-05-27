@@ -1606,6 +1606,30 @@ export default function AddPatient() {
                                         <InputError message={errors.pMemberLname} className="text-[10px] text-red-600" />
                                     </div>
                                 </div>
+
+                                {/* Member's First Name */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberFname" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's First Name: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberFname"
+                                                value={data.pMemberFname}
+                                                onChange={(e) => setData('pMemberFname', e.target.value)}
+                                                placeholder="Member's First Name"
+                                                disabled={!isEnabled}
+                                                className="text-dark-500 w-full rounded border p-2 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberFname} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
                             </div>
 
                             {/* Philhealth Category Type */}

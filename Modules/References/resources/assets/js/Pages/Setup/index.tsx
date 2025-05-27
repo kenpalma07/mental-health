@@ -37,8 +37,8 @@ const fetchFhudCodes = async (inputValue: string): Promise<FacilityOption[]> => 
             params: { search: inputValue },
         });
 
-        console.log('Fetching FHUD codes with input:', inputValue);
-        console.log('Mapped FHUD options:', data);
+        // console.log('Fetching FHUD codes with input:', inputValue);
+        // console.log('Mapped FHUD options:', data);
 
         return Array.isArray(data)
             ? data
@@ -288,7 +288,7 @@ const FacilitySetup: React.FC<PageProps> = () => {
             accreno: fhud_accreno,
             _method: 'PUT',
         };
-        console.log(payload);
+        // console.log(payload);
         setUpdating(true);
         try {
             await axios.post(`/references/setup/${setup.id}`, payload);

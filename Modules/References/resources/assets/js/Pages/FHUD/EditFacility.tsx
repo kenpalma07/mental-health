@@ -203,7 +203,7 @@ const EditFacility: React.FC<EditFacilityProps> = ({ isOpen, onClose, facility, 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', form);
+        // console.log('Form submitted:', form);
         onSubmit(form);
     };
 

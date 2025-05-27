@@ -82,7 +82,7 @@ const EmployeeIndex: React.FC = () => {
 
     const handleEdit = (employee: Employee) => {
         setSelectedEmployee(employee);
-        console.log('Active Employee: ', employee);
+        // console.log('Active Employee: ', employee);
         setIsEditModalOpen(true);
     };
 

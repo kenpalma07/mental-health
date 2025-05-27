@@ -75,6 +75,7 @@ class MasterPatient extends Model
         'philhealth_status_code', //PhilHealth Status Type
         'pDependentType_code', //Relationship to Member
         'pMemberLname', //Member's Last Name
+        'pMemberFname', //Member's First Name
     ];
 
     public function fhudFacility()
