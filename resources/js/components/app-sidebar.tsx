@@ -33,7 +33,7 @@ const mainNavItems: NavItem[] = [
     },
 
     {
-        title: 'Forms',
+        title: 'Medical Records',
         href: '#',
         icon: Folder,
         isActive: true,

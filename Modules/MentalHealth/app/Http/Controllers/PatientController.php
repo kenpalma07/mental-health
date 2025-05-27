@@ -317,4 +317,10 @@ class PatientController extends Controller
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
     }
+
+    
+    public function patenroll()
+    {
+        return Inertia::render('MentalHealth::MedicalRecords/patientenrollment');
+    }
 }

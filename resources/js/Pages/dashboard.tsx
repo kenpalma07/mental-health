@@ -57,7 +57,7 @@ export default function Dashboard({
             <Stethoscope className="h-24 w-24 text-primary" />
             <div className="flex flex-col">
               <p className="text-5xl font-bold">{consultationCount}</p>
-              <p className="text-lg text-muted-foreground">Total Patients Consulted</p>
+              <p className="text-lg text-muted-foreground">Total Consultations</p>
             </div>
           </div>
 
@@ -66,7 +66,7 @@ export default function Dashboard({
             <NotebookPen className="h-24 w-24 text-primary" />
             <div className="flex flex-col">
               <p className="text-5xl font-bold">{assessmentCount}</p>
-              <p className="text-lg text-muted-foreground">Total Form Assessment</p>
+              <p className="text-lg text-muted-foreground">Total Assessments</p>
             </div>
           </div>
         </div>
