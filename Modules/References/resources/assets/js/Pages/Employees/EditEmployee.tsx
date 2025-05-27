@@ -122,7 +122,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ isOpen, onClose, employee, 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted: ', form);
+        // console.log('Form submitted: ', form);
         onSubmit(form);
     };
 

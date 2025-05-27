@@ -140,7 +140,7 @@ const AddEmployee: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
 
         // Step 5: Submit form data to the `onSubmit` callback
         try {
-            console.log('Form data to be submitted:', formData); // Use formData for logging
+            // console.log('Form data to be submitted:', formData); // Use formData for logging
             await onSubmit(formData); // Call the onSubmit function with the complete form data
             setErrors({}); // Clear errors on successful submit
         } catch (error: any) {

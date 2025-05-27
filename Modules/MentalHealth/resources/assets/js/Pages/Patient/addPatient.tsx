@@ -69,6 +69,7 @@ export default function AddPatient() {
         nationality: '',
         educattainment: '',
         occupation_code: '',
+        bloodtype_code: '',
 
         patient_address: '',
         regcode: '',
@@ -802,15 +803,15 @@ export default function AddPatient() {
                             {/* Blood Type */}
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="blood_type" className="w-40 text-sm font-medium text-gray-700">
+                                    <Label htmlFor="bloodtype_code" className="w-40 text-sm font-medium text-gray-700">
                                         Blood Type:
                                     </Label>
                                     <Select
-                                        // id="nationality"
-                                        // value={data.nationality}
-                                        // onChange={(e) => setData('nationality', e.target.value)}
-                                        disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-sm text-gray-500 shadow-sm disabled:bg-gray-100"
+                                        id="bloodtype_code"
+                                        value={data.bloodtype_code}
+                                        onChange={(e) => setData('bloodtype_code', e.target.value)}
+                                        // disabled={true} // or based on some state, e.g. disabled={isReadOnly}
+                                        className="block w-full rounded-md border px-3 py-2 text-sm text-dark-500 shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Blood Type --</option>
                                         <option value="A+">A+</option>
@@ -1429,6 +1430,181 @@ export default function AddPatient() {
                     </div>
                 </div>
 
+                {/* Guardian's Information */}
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
+                    <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-1">
+                                <UserPlus className="h-4 w-4 text-gray-600" />
+                                <h2 className="text-md w-50 font-semibold">Guardian's Information</h2>
+                                <small className="text-red-600">Note: Guardian must be alive</small>
+                            </div>
+                            <hr />
+
+                            {/* Guardian's First Name */}
+                            <div>
+                                <div className="flex items-center gap-1">
+                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
+                                        First Name <span className="font-bold text-red-600">*</span>
+                                    </Label>
+                                    <Input
+                                        // id="mot_fname"
+                                        className="text-dark-500"
+                                        // value={data.mot_fname}
+                                        // onChange={(e) => setData('mot_fname', e.target.value)}
+                                        placeholder="Guardian's First Name"
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-33 text-sm font-medium text-gray-700" />
+                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
+                                </div>
+                            </div>
+
+                            {/* Guardian's Middle Name */}
+                            <div>
+                                <div className="flex items-center gap-1">
+                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
+                                        Middle Name <span className="font-bold text-red-600">*</span>
+                                    </Label>
+                                    <Input
+                                        // id="mot_fname"
+                                        className="text-dark-500"
+                                        // value={data.mot_fname}
+                                        // onChange={(e) => setData('mot_fname', e.target.value)}
+                                        placeholder="Guardian's Middle Name"
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-33 text-sm font-medium text-gray-700" />
+                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
+                                </div>
+                            </div>
+
+                            {/* Guardian's Last Name */}
+                            <div>
+                                <div className="flex items-center gap-1">
+                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
+                                        Last Name <span className="font-bold text-red-600">*</span>
+                                    </Label>
+                                    <Input
+                                        // id="mot_fname"
+                                        className="text-dark-500"
+                                        // value={data.mot_fname}
+                                        // onChange={(e) => setData('mot_fname', e.target.value)}
+                                        placeholder="Guardian's Last Name"
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-33 text-sm font-medium text-gray-700" />
+                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
+                                <div className="col-span-1">
+                                    {/* Guardian's Birthdate */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="fat_birthdate" className="w-62 text-sm font-medium text-gray-700">
+                                                Birth Date: <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Input
+                                                // id="fat_birthdate"
+                                                className="text-dark-500"
+                                                type="date"
+                                                // value={data.fat_birthdate}
+                                                // onChange={(e) => setData('fat_birthdate', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            {/* <InputError message={errors.fat_birthdate} className="text-[10px] text-red-600" /> */}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-span-2">
+                                    {/* Guardians's Address */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="fat_address" className="w-30 text-sm font-medium text-gray-700">
+                                                Address: <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Input
+                                                // id="fat_address"
+                                                className="text-dark-500"
+                                                // value={data.fat_address}
+                                                // onChange={(e) => setData('fat_address', e.target.value)}
+                                                placeholder="Guardian's Address"
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            {/* <InputError message={errors.fat_address} className="text-[10px] text-red-600" /> */}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
+                                {/* Relationship to the Patient */}
+                                <div>
+                                    <div className="flex items-center gap-1">
+                                        <Label htmlFor="fat_address" className="w-48 text-sm font-medium text-gray-700">
+                                            Relationship to the Patient: *
+                                        </Label>
+                                        <Select
+                                            // id="fat_deceased_status"
+                                            // value={data.fat_deceased_status}
+                                            // onChange={(e) => setData('fat_deceased_status', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
+                                        >
+                                            <option value="">-- Select Relationship to the Patient --</option>
+                                            <option value="FAT">Father</option>
+                                            <option value="MOT">Mother</option>
+                                            <option value="BRO">Brother</option>
+                                            <option value="SIS">Sister</option>
+                                            <option value="GRD">Grandparent</option>
+                                            <option value="COU">Cousin</option>
+                                            <option value="FRA">Friend</option>
+                                            <option value="SPO">Spouse</option>
+                                            <option value="CHI">Child</option>
+                                            <option value="AUN">Aunt</option>
+                                            <option value="UNC">Uncle</option>
+                                            <option value="GUA">Guardian</option>
+                                            <option value="OTH">Other</option>
+                                        </Select>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-33 text-sm font-medium text-gray-700" />
+                                        {/* <InputError message={errors.fat_address} className="text-[10px] text-red-600" /> */}
+                                    </div>
+                                </div>
+
+                                {/* Contact Number */}
+                                <div>
+                                    <div className="flex items-center gap-1">
+                                        <Label htmlFor="mot_fname" className="w-35 text-sm font-medium text-gray-700">
+                                            Mobile <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Input
+                                            // id="mot_fname"
+                                            className="text-dark-500"
+                                            // value={data.mot_fname}
+                                            // onChange={(e) => setData('mot_fname', e.target.value)}
+                                            placeholder="Guardian's Last Name"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-33 text-sm font-medium text-gray-700" />
+                                        {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Other Information */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
                     <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
@@ -1497,7 +1673,7 @@ export default function AddPatient() {
                             </div>
 
                             {/* Philhealth Number */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
                                     <Label htmlFor="pat_philhealth" className="w-70 text-sm font-medium">
                                         Philhealth Number: <span className="text-sm font-medium text-red-500">*</span>
@@ -1520,7 +1696,7 @@ export default function AddPatient() {
                             </div>
 
                             {/* Philhealth Status Type */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
                                     <Label htmlFor="philhealth_status_code" className="text-black-500 w-70 text-sm font-medium">
                                         Philhealth Status Type: <span className="text-sm font-medium text-red-500">*</span>
@@ -1556,9 +1732,8 @@ export default function AddPatient() {
                             </div>
 
                             {/* Membership Info */}
-                            <div className="space-y-3">
-                                {/* <div hidden={!(data.philhealth_status_code === 'D')} className='space-y-3'> */}
-
+                            {/* <div className="space-y-3"> */}
+                            <div hidden={!(data.philhealth_status_code === 'D')} className="space-y-3">
                                 {/* Relationship to Member */}
                                 <div>
                                     <div className="flex items-center gap-2">
@@ -1606,12 +1781,35 @@ export default function AddPatient() {
                                         <InputError message={errors.pMemberLname} className="text-[10px] text-red-600" />
                                     </div>
                                 </div>
+
+                                {/* Member's First Name */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberFname" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's First Name: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberFname"
+                                                value={data.pMemberFname}
+                                                onChange={(e) => setData('pMemberFname', e.target.value)}
+                                                placeholder="Member's First Name"
+                                                disabled={!isEnabled}
+                                                className="text-dark-500 w-full rounded border p-2 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberFname} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Philhealth Category Type */}
-                            <div>
+                            <div hidden={!(data.phic_member === 'Y')}>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor="type_of_membership" className="w-70 text-sm font-medium text-red-500">
+                                    <Label htmlFor="type_of_membership" className="text-black-500 w-70 text-sm font-medium">
                                         Philhealth Category Type: <span className="text-sm font-medium text-red-500">*</span>
                                     </Label>
                                     <Select

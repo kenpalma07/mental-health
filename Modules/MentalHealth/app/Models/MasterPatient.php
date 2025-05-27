@@ -34,6 +34,7 @@ class MasterPatient extends Model
         'pat_birthDate',
         'educattainment',
         'occupation_code',
+        'bloodtype_code',
         'regcode',
         'provcode',
         'citycode',
@@ -75,6 +76,7 @@ class MasterPatient extends Model
         'philhealth_status_code', //PhilHealth Status Type
         'pDependentType_code', //Relationship to Member
         'pMemberLname', //Member's Last Name
+        'pMemberFname', //Member's First Name
     ];
 
     public function fhudFacility()

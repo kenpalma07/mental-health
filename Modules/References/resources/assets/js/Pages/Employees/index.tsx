@@ -82,7 +82,7 @@ const EmployeeIndex: React.FC = () => {
 
     const handleEdit = (employee: Employee) => {
         setSelectedEmployee(employee);
-        console.log('Active Employee: ', employee);
+        // console.log('Active Employee: ', employee);
         setIsEditModalOpen(true);
     };
 
@@ -134,7 +134,7 @@ const EmployeeIndex: React.FC = () => {
                                 <Edit2 className="mr-2 h-4 w-4" />
                                 Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
+                            {/* <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
                                 <Printer className="h-4 w-4" />
                                 Employee Consent
                             </DropdownMenuItem>
@@ -145,7 +145,7 @@ const EmployeeIndex: React.FC = () => {
                             <DropdownMenuItem onClick={() => openConsentModal(row.original)}>
                                 <Printer className="h-4 w-4" />
                                 Patient Consent
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ),
