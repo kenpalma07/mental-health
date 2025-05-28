@@ -9,7 +9,6 @@ const steps = [
     { label: 'Manage Assessment', icon: Heart },
     { label: 'Diagnosis and Medicine', icon: Stethoscope },
     { label: 'Schedule Next Visit', icon: Calendar },
-    { label: 'Treatment Plan', icon: Stethoscope },
 ];
 
 interface StepperProps {

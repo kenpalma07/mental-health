@@ -21,14 +21,14 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
-    
+
     {
         title: 'Mental Health',
         href: '#',
         icon: MonitorDot,
         isActive: true,
         items: [
-            { title: 'Patient List',  href: '/patients' },
+            { title: 'Patient List', href: '/patients' },
         ],
     },
 
@@ -75,6 +75,7 @@ const footerNavItems: NavItem[] = [
         icon: Settings,
         isActive: true,
         items: [
+            { title: 'Migrations Version', href: '/migration/version' },
             { title: 'FHUD', href: '/references/fhud' },
             { title: 'Employees', href: '/references/employees' },
             { title: 'Setup', href: '/references/setup' },
