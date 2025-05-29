@@ -62,7 +62,7 @@ Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->n
 //pharma
 Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');
 Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
-Route::get('/RxPrintView', [PharmaController::class, 'RxPrintView']);
+Route::get('/RxPrint/{id}', [PharmaController::class, 'RxPrint']);
 
 
 

@@ -48,8 +48,21 @@ class PharmaController extends Controller
         ]);
     }
 
-    public function RxPrintView()
+    public function RxPrint($id, Request $request)
     {
-        return Inertia::render('MentalHealth::Modal/RxPrintView');
+        $date = $request->query('date');
+        $meds = Pharma::where('pat_perm_id', $id)->where('phar_date', $date)->get();
+
+        $patient = MasterPatient::find($id);
+
+        if (!$patient) {
+            abort(404, 'Patient not found.');
+        }
+
+        return Inertia::render('MentalHealth::MedicalRecords/RxPrint', [
+            'patient' => $patient,
+            'date' => $date,
+            'meds' => $meds,
+        ]);
     }
 }

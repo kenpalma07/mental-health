@@ -173,7 +173,7 @@ const DiagMeds = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isrxModalOpen, setRxIsModalOpen] = useState(false);
     const [rxList, setRxList] = useState();
-    
+
 
     const fetchRxList = async () => {
         try {
@@ -474,7 +474,7 @@ const DiagMeds = ({
                                 ✕
                             </Button>
                         </div>
-                        <ModalRXDiagMeds meds={rxList} />
+                        <ModalRXDiagMeds meds={rxList} patientId={patient.id} />
                     </div>
                 </div>
             )}
