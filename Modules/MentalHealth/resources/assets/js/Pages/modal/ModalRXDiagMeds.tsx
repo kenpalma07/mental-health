@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Printer, Pencil, Trash2 } from 'lucide-react';
-import { router } from '@inertiajs/react';
 
 type PharmaType = {
   phar_id: number;
@@ -18,7 +17,7 @@ type PharmaType = {
 
 interface ModalRXDiagMedsProps {
   meds?: PharmaType[];
-  patientId: number; // <-- Add this prop
+  patientId: number;
 }
 
 const formatNumber = (value: string | number) => {
@@ -27,10 +26,6 @@ const formatNumber = (value: string | number) => {
 };
 
 const ModalRXDiagMeds: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patientId }) => {
-  const handlePrint = (date: string) => {
-    router.get(`/RxPrint/${patientId}?date=${encodeURIComponent(date)}`);
-  };
-
   return (
     <div className="printable max-h-[70vh] overflow-auto">
       <table className="w-full text-sm border mb-4 border-collapse">
@@ -55,13 +50,19 @@ const ModalRXDiagMeds: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patientId 
                 <td className="border p-2 text-xs">{formatNumber(med.phar_quantity)}</td>
                 <td className="border p-2 space-x-2">
                   <Button
+                    asChild
                     variant="ghost"
                     size="icon"
                     className="text-blue-600"
                     title="Print"
-                    onClick={() => handlePrint(med.phar_date)}
                   >
-                    <Printer size={20} />
+                    <a
+                      href={`/RxPrint/${patientId}?date=${encodeURIComponent(med.phar_date)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Printer size={20} />
+                    </a>
                   </Button>
                   <Button variant="ghost" size="icon" className="text-yellow-600" title="Edit">
                     <Pencil size={20} />

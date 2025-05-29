@@ -28,7 +28,7 @@ const mainNavItems: NavItem[] = [
         icon: MonitorDot,
         isActive: true,
         items: [
-            { title: 'Patient List', href: '/patients' },
+            { title: 'Mental Assessment', href: '/patients' },
         ],
     },
 
@@ -39,8 +39,6 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient Medical Records', href: '/medrecords' },
-            { title: 'Medical Abstract', href: '/medabstract' },
-            {title: 'Rx View', href: '/RxPrint'},
         ],
     },
     {
