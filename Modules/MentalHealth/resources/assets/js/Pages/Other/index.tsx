@@ -15,7 +15,7 @@ const OtherIndex: React.FC = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Others" />
       <div className="p-4 space-y-4">
-        <h1 className="text-2xl font-semibold">other dispay here </h1>
+        <h1 className="text-2xl font-semibold">other display here </h1>
         {/* Add more content here later */}
       </div>
     </AppLayout>

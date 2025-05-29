@@ -122,4 +122,8 @@ export interface Consultations {
     consult_perm_id: string;
     consult_temp_id: string;
     consult_date: string;
+    consult_time: string;
+    consult_type_code: string;
+    to_consult_code: string;
+    type_service: string;
 }
