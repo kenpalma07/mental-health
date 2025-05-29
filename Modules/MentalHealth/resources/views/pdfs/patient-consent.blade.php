@@ -128,7 +128,7 @@
 
             <p>
                 I understand that neither the attending physician(s) nor the PCF personnel will be held liable for any charges, provided
-                there is no negligence on their part.
+                there is no negligence on their part. 
             </p>
 
             <p>

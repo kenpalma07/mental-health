@@ -15,7 +15,7 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { Edit2, Eye, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus } from 'lucide-react';
+import { Edit2, Eye, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus, File } from 'lucide-react';
 import * as React from 'react';
 import PatientConsent from '../Forms/PatientConsent';
 import PatientConsentModal from '../Forms/PatientConsentModal';
@@ -125,6 +125,12 @@ const PatientIndex: React.FC = () => {
                                     <Link href={`/enctr/${patient.id}`} className="flex items-center gap-2">
                                         <MailPlus className="h-4 w-4" />
                                         Referral Form
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link href={`/patients/${patient.id}/patenroll`} className="flex items-center gap-2">
+                                        <File className="h-4 w-4" />
+                                        Enrollment Form
                                     </Link>
                                 </DropdownMenuItem>
                                 {/* <DropdownMenuItem asChild>

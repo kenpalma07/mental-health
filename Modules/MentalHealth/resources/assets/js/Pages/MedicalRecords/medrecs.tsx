@@ -137,7 +137,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                 Medication Card
               </Link>
               <Link
-                href="#"
+                href={`/patients/${patient.id}/patenroll`}
                 className="inline-flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
               >
                 <SaveAllIcon className="h-4 w-4" />

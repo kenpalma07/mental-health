@@ -2,13 +2,16 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@headlessui/react';
+import { Input } from '@/components/ui/input';
 import { NotebookPen, Send } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import icd10Data from '../json/Mental_Health_icd_10_code.json'; // ICD-10 Codes Data
-import mentalHealthMeds from '../json/mental_health_meds.json'; // Medicine Data
+import icd10Data from '../json/Mental_Health_icd_10_code.json';
+import mentalHealthMeds from '../json/mental_health_meds.json';
 import ModalDiagMedsEnc from '../modal/ModalDiagMedsEnc';
 import ModalRXDiagMeds from '../modal/ModalRXDiagMeds';
+import { router } from '@inertiajs/react';
+import axios from 'axios';
+
 
 interface Employee {
     id: number;
@@ -16,8 +19,20 @@ interface Employee {
     position: string;
 }
 
+interface Consultation {
+    consult_perm_id: string;
+    consult_temp_id: string;
+}
+
+interface Patient {
+    id: number;
+}
+
+
 const DiagMeds = ({
     employees,
+    consultation,
+    patient,
     selectedDiagnosis,
     setSelectedDiagnosis,
     selectedIcdCode,
@@ -49,6 +64,8 @@ const DiagMeds = ({
     setRemarks,
 }: {
     employees: Employee[];
+    consultation: Consultation;
+    patient: Patient;
     selectedDiagnosis: string;
     setSelectedDiagnosis: React.Dispatch<React.SetStateAction<string>>;
     selectedIcdCode: string;
@@ -108,11 +125,11 @@ const DiagMeds = ({
         // console.log('ICD Code selected:', selectedIcdCode);
     }, [selectedIcdCode]);
 
+
     const dispenses = [
         { id: 'Y', name: 'Yes' },
         { id: 'N', name: 'No' },
     ];
-
 
 
     // Function to convert any unit to hours
@@ -125,7 +142,7 @@ const DiagMeds = ({
             case 'week':
                 return value * 7 * 24;
             case 'month':
-                return value * 30 * 24; // approx
+                return value * 30 * 24;
             default:
                 return 0;
         }
@@ -155,6 +172,52 @@ const DiagMeds = ({
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isrxModalOpen, setRxIsModalOpen] = useState(false);
+    const [rxList, setRxList] = useState();
+    
+
+    const fetchRxList = async () => {
+        try {
+            const response = await axios.get(`/pharma/rxView/${patient.id}`);
+            const meds = response.data.meds;
+
+            console.log("Successfully fetched RX data:", meds);
+            setRxList(meds);
+            setRxIsModalOpen(true);
+        } catch (error) {
+            console.error("Error fetching RX data:", error);
+        }
+    };
+
+
+    const handleSaveMedicine = () => {
+        const payload = {
+            patient_assess_phar_id: consultation.consult_perm_id,
+            phar_date: pharDate,
+            pat_perm_id: String(patient.id),
+            phar_med: selectedMedicine,
+            phar_intake: intake,
+            phar_intakeUnit: intakeUnit,
+            phar_freq: frequency,
+            phar_freqUnit: frequencyUnit,
+            phar_dur: duration,
+            phar_durUnit: durationUnit,
+            phar_quantity: quantity,
+            phar_doc: doctor,
+            phar_remarks: remarks,
+            registered_at: pharDate,
+        };
+
+        router.post('/pharma/store', payload, {
+            onSuccess: () => {
+                alert('Medicine Successfully Save!');
+
+            },
+            onError: (errors) => {
+                console.error(errors);
+                alert('Error saving medicine');
+            },
+        });
+    };
 
     return (
         <div className="bg-gray-48 mt-2 space-y-3 rounded-lg border p-4">
@@ -221,8 +284,6 @@ const DiagMeds = ({
                         <h5 className="text-sm font-medium text-gray-700">Date Issued</h5>
                         <Input
                             type="date"
-                            id="phar_date"
-                            name="phar_date"
                             className="w-full rounded-md border p-2"
                             value={pharDate}
                             onChange={(e) => setPharDate(e.target.value)}
@@ -248,14 +309,14 @@ const DiagMeds = ({
                     <div className="w-80">
                         <Label className="text-sm font-medium text-gray-700">Rx Prescription List</Label>
                         <Button
-                            type="button"
-                            onClick={() => setRxIsModalOpen(true)}
+                            onClick={fetchRxList}
                             className="flex w-full items-center gap-2 rounded-md bg-green-600 p-2 text-sm text-white hover:bg-green-700"
                         >
                             <NotebookPen size={16} className="text-white" />
                             Rx List
                         </Button>
                     </div>
+
                     <div className="w-80">
                         <Label className="text-sm font-medium text-gray-700">Medication Dispense History</Label>
                         <Button
@@ -397,13 +458,13 @@ const DiagMeds = ({
                     </div>
                 </div>
 
-                <Button>
+                <Button onClick={handleSaveMedicine}>
                     <Send size={16} className="mr-2" />
                     Save Meds
                 </Button>
+
             </div>
 
-            {/* Rx List Modal */}
             {isrxModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                     <div className="relative w-full max-w-3xl rounded-xl bg-white p-6 shadow-xl">
@@ -413,8 +474,7 @@ const DiagMeds = ({
                                 ✕
                             </Button>
                         </div>
-
-                        <ModalRXDiagMeds />
+                        <ModalRXDiagMeds meds={rxList} />
                     </div>
                 </div>
             )}

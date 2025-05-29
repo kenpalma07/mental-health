@@ -9,6 +9,7 @@ use Modules\MentalHealth\Http\Controllers\PatientConsentController;
 use Modules\MentalHealth\Http\Controllers\AssessmentController; 
 use Modules\MentalHealth\Http\Controllers\FormController;
 use Modules\MentalHealth\Http\Controllers\MedicalRecordsController;
+use Modules\MentalHealth\Http\Controllers\PharmaController;
 
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
@@ -19,6 +20,7 @@ Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('pat
 Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{id}/view', [PatientController::class, 'view']);
 Route::get('/patients/{patient}/consent-pdf', [PatientConsentController::class, 'streamConsentPDF']);
+Route::get('/patients/{id}/patenroll', [PatientController::class, 'patenroll'])->name('view.patenroll');
 // Route::get('/patients/{patient}/export-consent-pdf', [PatientConsentController::class, 'exportConsentPDF']);
 
 // Patient Consultation
@@ -55,5 +57,17 @@ Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
 Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->name('assessment.show');
+
+
+//pharma
+Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');
+Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
+Route::get('/RxPrintView', [PharmaController::class, 'RxPrintView']);
+
+
+
+
+
+
 
 
