@@ -30,6 +30,14 @@ const PatientResultModal_MedRecs: React.FC<Props> = ({ open, onClose, patients, 
     onRegisterNewPatient();
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+};
+
   return (
     <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-start justify-center pt-5">
       <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
@@ -47,7 +55,7 @@ const PatientResultModal_MedRecs: React.FC<Props> = ({ open, onClose, patients, 
               <div key={patient.id} className="border p-3 rounded shadow-sm bg-gray-50">
                 <p><strong>Patient ID:</strong> {patient.master_patient_perm_id}</p>
                 <p><strong>Name:</strong> {patient.pat_lname}, {patient.pat_fname} {patient.pat_mname}</p>
-                <p><strong>Birthdate:</strong> {patient.pat_birthDate}</p>
+                <p><strong>Birthdate:</strong> {patient.pat_birthDate ? formatDate(patient.pat_birthDate) : ''}</p>
                 <p><strong>Sex:</strong> {patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'Other'}</p>
                 <div className="flex justify-end mt-2">
                   <Button

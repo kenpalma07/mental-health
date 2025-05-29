@@ -1,10 +1,9 @@
-import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { Head, PageProps } from '@inertiajs/react';
-import ConsultPathead from '../components/ConsultPathead';
-import { Stethoscope, Eye, Edit } from "lucide-react";
 import { Button } from '@headlessui/react';
+import { Head, PageProps } from '@inertiajs/react';
+import { Edit, Eye, Stethoscope } from 'lucide-react';
+import ConsultPathead from '../components/ConsultPathead';
 
 interface Props extends PageProps {
     patient: any;
@@ -29,6 +28,14 @@ export default function AssessmentShow({ patient, assessments }: Props) {
     const handleEdit = (assessment: any) => {
         console.log('Edit assessment:', assessment);
         // Navigate or open modal
+    };
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
     };
 
     return (
@@ -59,7 +66,7 @@ export default function AssessmentShow({ patient, assessments }: Props) {
                                     {assessments.map((a, index) => (
                                         <tr key={index} className="border-t bg-white hover:bg-gray-50">
                                             <td className="px-2 py-2 font-semibold">{a.consultation_id}</td>
-                                            <td className="px-2 py-2">{a.consult_date_assess}</td>
+                                            <td className="px-2 py-2">{a.consult_date_assess ? formatDate(a.consult_date_assess) : ''}</td>
                                             <td className="px-2 py-2 text-center">{a.treat_avail}</td>
                                             <td className="px-2 py-2">{a.treat_choice}</td>
                                             <td className="px-2 py-2">{a.diagnosis}</td>

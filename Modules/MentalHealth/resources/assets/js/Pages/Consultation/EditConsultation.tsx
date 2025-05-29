@@ -24,6 +24,10 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
         consult_perm_id: editconsultation.consult_perm_id || '',
         consult_temp_id: editconsultation.consult_temp_id || '',
         consult_date: editconsultation.consult_date || '',
+        consult_time: editconsultation.consult_time || '',
+        consult_type_code: editconsultation.consult_type_code || '',
+        to_consult_code: editconsultation.to_consult_code || '',
+        type_service: editconsultation.type_service || '',
     });
 
     useEffect(() => {
@@ -31,6 +35,10 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
             consult_perm_id: editconsultation.consult_perm_id || '',
             consult_temp_id: editconsultation.consult_temp_id || '',
             consult_date: editconsultation.consult_date || '',
+            consult_time: editconsultation.consult_time || '',
+            consult_type_code: editconsultation.consult_type_code || '',
+            to_consult_code: editconsultation.to_consult_code || '',
+            type_service: editconsultation.type_service || '',
         });
 
         return () => reset();
@@ -56,45 +64,121 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
 
                 <h2 className="mb-4 text-xl font-semibold text-gray-800">Edit Consultation</h2>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-6 text-sm">
+                <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-2 gap-6 text-sm">
+                        <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                                {/* Date of Consultation */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="consult_date" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Date of Consultation:
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Input
+                                            id="consult_date"
+                                            type="date"
+                                            value={form.consult_date}
+                                            onChange={(e) => setForm('consult_date', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputError message={errors.consult_date} className="text-xs" />
+                                    </div>
+                                </div>
 
-                    {/*  */}
-                    <div className="space-y-3">
-                        <div>
-                            <Label htmlFor="consult_date" className="w-50 pt-2 text-sm font-medium text-gray-700">
-                                Date of Registration:
-                                <span className="font-bold text-red-600">*</span>
-                            </Label>
-                            <Input 
-                            id="consult_date" 
-                            type="date" 
-                            value={form.consult_date}
-                            className="text-dark-500 block w-full rounded-md border shadow-sm" />
-                        </div>
-                        <div>
-                            <InputError message={errors.consult_date} className="text-xs" />
-                        </div>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Consultation Permanent ID</label>
-                        <input
-                            type="text"
-                            value={form.consult_perm_id}
-                            onChange={(e) => setForm('consult_perm_id', e.target.value)}
-                            className="mt-1 w-full rounded border border-gray-300 p-2 text-sm"
-                        />
-                        {errors.consult_perm_id && <p className="text-xs text-red-600">{errors.consult_perm_id}</p>}
-                    </div>
+                                {/* Time of Consultation */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="consult_time" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Time of Consultation:
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Input
+                                            id="consult_time"
+                                            type="time"
+                                            value={form.consult_time}
+                                            onChange={(e) => setForm('consult_time', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputError message={errors.consult_time} className="text-xs" />
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Consultation Temporary ID</label>
-                        <input
-                            type="text"
-                            value={form.consult_temp_id}
-                            onChange={(e) => setForm('consult_temp_id', e.target.value)}
-                            className="mt-1 w-full rounded border border-gray-300 p-2 text-sm"
-                        />
-                        {errors.consult_temp_id && <p className="text-xs text-red-600">{errors.consult_temp_id}</p>}
+                            {/* Next Row */}
+                            <div className="grid grid-cols-2 gap-3">
+
+                                {/* Consultation Type */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="consult_type_code" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Consultation Type:
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <select
+                                            id="consult_type_code"
+                                            name="consult_type_code"
+                                            value={form.consult_type_code}
+                                            onChange={(e) => setForm('consult_type_code', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        >
+                                            <option value="newconsultation">New Consultation</option>
+                                            <option value="followupvisit">Follow-up Visit</option>
+                                            <option value="visited">Visited</option>
+                                            <option value="walkin">Walk-in</option>
+                                            <option value="referral">Referred</option>
+                                            <option value="teleconsultation">Teleconsultation</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Consultation Case */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="to_consult_code" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Consultation Case:
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <select
+                                            id="to_consult_code"
+                                            name="to_consult_code"
+                                            value={form.to_consult_code}
+                                            onChange={(e) => setForm('to_consult_code', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        >
+                                            <option value="mentalhealth">Mental Health</option>
+                                            <option value="other">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Type of Services */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="type_service" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Consultation Case:
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <select
+                                            id="type_service"
+                                            name="type_service"
+                                            value={form.type_service}
+                                            onChange={(e) => setForm('type_service', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
+                                        >
+                                            <option value="mentalhealth">Mental Health</option>
+                                            <option value="other">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* End of Code */}
+                        </div>
                     </div>
 
                     <div className="col-span-4 mt-4 flex justify-end gap-2">

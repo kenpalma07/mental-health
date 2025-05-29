@@ -15,7 +15,7 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { Edit2, Eye, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus, File } from 'lucide-react';
+import { Edit2, Eye, File, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus } from 'lucide-react';
 import * as React from 'react';
 import PatientConsent from '../Forms/PatientConsent';
 import PatientConsentModal from '../Forms/PatientConsentModal';
@@ -89,7 +89,17 @@ const PatientIndex: React.FC = () => {
             {
                 accessorKey: 'pat_birthDate',
                 header: 'Birthdate',
+                cell: ({ row }) => {
+                    const date = row.original.pat_birthDate;
+                    if (!date) return '';
+                    const d = new Date(date);
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const yyyy = d.getFullYear();
+                    return `${mm}/${dd}/${yyyy}`;
+                },
             },
+
             {
                 accessorKey: 'facility_name',
                 header: 'Facility',

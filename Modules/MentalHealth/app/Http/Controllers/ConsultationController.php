@@ -77,9 +77,15 @@ class ConsultationController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'consult_date' => 'requried|date',
+            'consult_date' => 'required|date',
+            'consult_time' => 'required',
+            'consult_type_code' => 'required|string',
+            'to_consult_code' => 'required|string',
         ]);
 
         $consultation = Consultation::findOrFail($id);
+        $consultation->update($validated);
+
+        return redirect()->route('consultations.index', ['id' => $id])->with('success', 'Employee updated successfully!');
     }
 }

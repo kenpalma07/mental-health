@@ -211,6 +211,23 @@ const ConsultationIndex: React.FC = () => {
         });
     };
 
+    const CONSULT_TYPE_LABELS: Record<string, string> = {
+        followupvisit: 'Follow-up Visit',
+        newconsultation: 'New Consultation',
+        visited: 'Visited',
+        walkin: 'Walk-in',
+        referral: 'Referral',
+        teleconsultation: 'Teleconsultation',
+    };
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Consultations" />
@@ -405,9 +422,9 @@ const ConsultationIndex: React.FC = () => {
                                         .map((item, index) => (
                                             <tr key={index} className="border-t bg-white text-sm hover:bg-gray-50">
                                                 <td className="px-4 py-2 font-semibold">{item.consult_perm_id}</td>
-                                                <td className="px-4 py-2">{item.consult_date}</td>
+                                                <td className="px-4 py-2">{item.consult_date ? formatDate(item.consult_date) : ''}</td>
                                                 <td className="px-4 py-2">{item.chief_complaint}</td>
-                                                <td className="px-4 py-2">{item.consult_type_code}</td>
+                                                <td className="px-4 py-2">{CONSULT_TYPE_LABELS[item.consult_type_code] || item.consult_type_code}</td>
                                                 <td className="px-4 py-2">{item.type_service}</td>
                                                 <td className="px-4 py-2 text-center">
                                                     <div className="inline-flex items-center justify-center gap-2">
@@ -476,7 +493,7 @@ const ConsultationIndex: React.FC = () => {
                             onSuccess: () => {
                                 setIsEditModalOpen(false);
                                 setSelectedConsultation(null);
-                                router.reload({ only: ['consultations'] });
+                                router.visit(window.location.href, { replace: true });
                             },
                         })
                     }
