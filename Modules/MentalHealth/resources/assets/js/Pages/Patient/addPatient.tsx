@@ -104,6 +104,10 @@ export default function AddPatient() {
         pDependentType_code: '',
         pMemberLname: '',
         pMemberFname: '',
+        pMemberMname: '',
+        pMemberSuffix: '',
+        pMemberBdate: '',
+        pMemberSex: '',
     });
 
     useEffect(() => {
@@ -811,7 +815,7 @@ export default function AddPatient() {
                                         value={data.bloodtype_code}
                                         onChange={(e) => setData('bloodtype_code', e.target.value)}
                                         // disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-sm text-dark-500 shadow-sm disabled:bg-gray-100"
+                                        className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm disabled:bg-gray-100"
                                     >
                                         <option value="">-- Select Blood Type --</option>
                                         <option value="A+">A+</option>
@@ -1648,6 +1652,11 @@ export default function AddPatient() {
                                                     philhealth_status_code: '',
                                                     pDependentType_code: '',
                                                     pMemberLname: '',
+                                                    pMemberFname: '',
+                                                    pMemberMname: '',
+                                                    pMemberSuffix: '',
+                                                    pMemberBdate: '',
+                                                    pMemberSex: '',
                                                     type_of_membership: '',
                                                 });
                                             }}
@@ -1714,6 +1723,11 @@ export default function AddPatient() {
                                                 ...(value === 'M' && {
                                                     pDependentType_code: '',
                                                     pMemberLname: '',
+                                                    pMemberFname: '',
+                                                    pMemberMname: '',
+                                                    pMemberSuffix: '',
+                                                    pMemberBdate: '',
+                                                    pMemberSex: '',
                                                 }),
                                             });
                                         }}
@@ -1734,14 +1748,15 @@ export default function AddPatient() {
                             {/* Membership Info */}
                             {/* <div className="space-y-3"> */}
                             <div hidden={!(data.philhealth_status_code === 'D')} className="space-y-3">
+                                <hr />
                                 {/* Relationship to Member */}
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <Label htmlFor="pDependentType_code" className="text-black-500 w-70 text-sm font-medium">
+                                        <Label htmlFor="pDependentType_code" className="text-black-500 w-71 text-sm font-medium">
                                             Relationship to Member: <span className="text-sm font-medium text-red-500">*</span>
                                         </Label>
                                         <Select
-                                            id="philhealth_status_code"
+                                            id="pDependentType_code"
                                             value={data.pDependentType_code}
                                             onChange={(e) => setData('pDependentType_code', e.target.value)}
                                             disabled={!isEnabled}
@@ -1793,7 +1808,7 @@ export default function AddPatient() {
                                                 id="pMemberFname"
                                                 value={data.pMemberFname}
                                                 onChange={(e) => setData('pMemberFname', e.target.value)}
-                                                placeholder="Member's First Name"
+                                                placeholder="Member's Last Name"
                                                 disabled={!isEnabled}
                                                 className="text-dark-500 w-full rounded border p-2 text-sm"
                                             />
@@ -1804,6 +1819,122 @@ export default function AddPatient() {
                                         <InputError message={errors.pMemberFname} className="text-[10px] text-red-600" />
                                     </div>
                                 </div>
+
+                                {/* Member's Middle Name */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberMname" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Middle Name: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberMname"
+                                                value={data.pMemberMname}
+                                                onChange={(e) => setData('pMemberMname', e.target.value)}
+                                                placeholder="Member's Middle Name"
+                                                disabled={!isEnabled}
+                                                className="text-dark-500 w-full rounded border p-2 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberMname} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* Member's Suffix */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberSuffix" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Suffix: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Select
+                                                id="pMemberSuffix"
+                                                value={data.pMemberSuffix}
+                                                onChange={(e) => setData('pMemberSuffix', e.target.value)}
+                                                disabled={!isEnabled}
+                                                className={`text-dark-500 w-full rounded border p-2 text-sm ${!isEnabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                                            >
+                                                <option value="">-- Select Suffix --</option>
+                                                <option value="I">I</option>
+                                                <option value="II">II</option>
+                                                <option value="III">III</option>
+                                                <option value="IV">IV</option>
+                                                <option value="IX">IX</option>
+                                                <option value="JR">JR</option>
+                                                <option value="JR.">JR.</option>
+                                                <option value="JR II">JR II</option>
+                                                <option value="JRA">JRA</option>
+                                                <option value="SR">SR</option>
+                                                <option value="SR.">SR.</option>
+                                                <option value="V">V</option>
+                                                <option value="VI">VI</option>
+                                                <option value="VII">VII</option>
+                                                <option value="VIII">VIII</option>
+                                                <option value="X">X</option>
+                                                <option value="XI">XI</option>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberSuffix} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* Member's Birth Date */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberBdate" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Birth Date: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Input
+                                                id="pMemberBdate"
+                                                type="date"
+                                                value={data.pMemberBdate}
+                                                onChange={(e) => setData('pMemberBdate', e.target.value)}
+                                                disabled={!isEnabled}
+                                                className={`text-dark-500 w-full rounded border p-2 text-sm ${!isEnabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-49 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberBdate} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* Sex */}
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <Label htmlFor="pMemberSex" className="text-black-500 w-70 text-sm font-medium">
+                                            Member's Sex: <span className="text-sm font-medium text-red-500">*</span>
+                                        </Label>
+                                        <div className={`w-full ${data.philhealth_status_code !== 'D' ? 'cursor-not-allowed opacity-100' : ''}`}>
+                                            <Select
+                                                id="pMemberSex"
+                                                value={data.pMemberSex}
+                                                onChange={(e) => setData('pMemberSex', e.target.value)}
+                                                disabled={!isEnabled}
+                                                className={`text-dark-500 w-full rounded border p-2 text-sm ${!isEnabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                                            >
+                                                <option value="">-- Select Sex --</option>
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-33 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.pMemberSex} className="text-[10px] text-red-600" />
+                                    </div>
+                                </div>
+
+                                {/* End of Code */}
+                                <hr />
                             </div>
 
                             {/* Philhealth Category Type */}

@@ -77,6 +77,10 @@ class MasterPatient extends Model
         'pDependentType_code', //Relationship to Member
         'pMemberLname', //Member's Last Name
         'pMemberFname', //Member's First Name
+        'pMemberMname', //Member's Middle Name
+        'pMemberSuffix', //Member's Suffix
+        'pMemberBdate', //Member's Birth Date
+        'pMemberSex', //Member's Sex
     ];
 
     public function fhudFacility()

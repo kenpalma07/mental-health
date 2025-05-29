@@ -24,6 +24,8 @@ Route::get('/patients/{patient}/consent-pdf', [PatientConsentController::class, 
 // Patient Consultation
 Route::get('/consultations/{id}', [ConsultationController::class, 'index'])->name('consultations.index');
 Route::post('/consultations/store', [ConsultationController::class, 'store'])->name('consultations.store');
+Route::get('/consultations/{id}/edit-consultation', [ConsultationController::class, 'edit'])->name('consultation.edit');
+Route::put('/consultations/{id}', [ConsultationController::class, 'update'])->name('consultations.update');
 
 // Patient Consent
 Route::get('/patients/{id}/consent', [PatientConsentController::class, 'show'])->name('patients.consent');
