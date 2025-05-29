@@ -126,4 +126,12 @@ export interface Consultations {
     consult_type_code: string;
     to_consult_code: string;
     type_service: string;
+    pat_temperature: string;
+    pat_heart_rate: string;
+    pat_oxygen_sat: string;
+    respiratoryRate: string;
+    pat_height: string;
+    pat_weight: string;
+    pat_systolic_pres: string;
+    pat_diastolic_pres: string;
 }

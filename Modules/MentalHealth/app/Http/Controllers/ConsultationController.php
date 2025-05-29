@@ -81,6 +81,7 @@ class ConsultationController extends Controller
             'consult_time' => 'required',
             'consult_type_code' => 'required|string',
             'to_consult_code' => 'required|string',
+            'type_service' => 'required|string',
         ]);
 
         $consultation = Consultation::findOrFail($id);
