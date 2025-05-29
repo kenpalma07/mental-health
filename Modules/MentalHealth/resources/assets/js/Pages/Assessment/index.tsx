@@ -240,6 +240,8 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
         {currentStep === 3 && (
           <DiagMeds
             employees={employees}
+            consultation={consultation}
+            patient={patient}
             selectedDiagnosis={selectedDiagnosis}
             setSelectedDiagnosis={setSelectedDiagnosis}
             selectedIcdCodeDescrip={selectedIcdCodeDescrip}

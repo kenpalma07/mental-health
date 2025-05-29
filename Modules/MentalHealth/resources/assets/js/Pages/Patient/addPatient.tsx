@@ -1437,7 +1437,7 @@ export default function AddPatient() {
                             <div className="flex items-center gap-1">
                                 <UserPlus className="h-4 w-4 text-gray-600" />
                                 <h2 className="text-md w-50 font-semibold">Guardian's Information</h2>
-                                <small className="text-red-600">Note: Guardian must be alive</small>
+                                <small className="text-red-600 italic">Note: Guardian must be alive</small>
                             </div>
                             <hr />
 

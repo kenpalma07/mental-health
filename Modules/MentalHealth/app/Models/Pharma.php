@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\MentalHealth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -16,6 +16,8 @@ class Pharma extends Model
 
     protected $fillable = [
         'patient_assess_phar_id',
+        'phar_date',
+        'pat_perm_id',
         'date_entered',
         'time_entered',
         'phar_med',
@@ -52,4 +54,6 @@ class Pharma extends Model
             $model->ts_updated_at = $now;
         });
     }
+
+
 }

@@ -40,6 +40,7 @@ const mainNavItems: NavItem[] = [
         items: [
             { title: 'Patient Medical Records', href: '/medrecords' },
             { title: 'Medical Abstract', href: '/medabstract' },
+            {title: 'Rx View', href: '/RxPrintView'},
         ],
     },
     {
