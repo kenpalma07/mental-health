@@ -111,7 +111,6 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
 
                             {/* Next Row */}
                             <div className="grid grid-cols-2 gap-3">
-
                                 {/* Consultation Type */}
                                 <div>
                                     <div>
@@ -178,6 +177,12 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                             </div>
 
                             {/* End of Code */}
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                                Hello
+                            </div>
                         </div>
                     </div>
 
