@@ -1,6 +1,6 @@
+import { PageProps as InertiaPageProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
-import { PageProps as InertiaPageProps } from '@inertiajs/react';
 
 export interface Auth {
     user: User;
@@ -33,7 +33,6 @@ export interface SharedData {
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }
-
 
 export interface User {
     id: number;
@@ -83,7 +82,7 @@ export interface FHUD {
     faccode: string;
     facility_name: string;
     provider_name: string;
-    facility_address: string,
+    facility_address: string;
     regcode: string;
     provcode: string;
     citycode: string;
@@ -116,4 +115,11 @@ export interface Employee {
     emp_phicaccreditno: string;
     emp_tin: string;
     registered_at: string;
+}
+
+export interface Consultations {
+    id: number;
+    consult_perm_id: string;
+    consult_temp_id: string;
+    consult_date: string;
 }

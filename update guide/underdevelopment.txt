@@ -1,5 +1,11 @@
 
 
+insttall npm install react-to-print@latest
+
+
+
+fix- referral form -fetch only if referred
+
 Medical Abstract
 Patient Enrollment
 Meds Rx Prescription

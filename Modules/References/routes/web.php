@@ -7,6 +7,8 @@ use Modules\References\Http\Controllers\FHUDController;
 use Modules\References\Http\Controllers\SetupController;
 use Modules\References\Http\Controllers\EmployeeController;
 use Modules\References\Models\FhudFacility;
+use Modules\References\Http\Controllers\MigrationController;
+
 
 Route::get('/references', [ReferencesController::class, 'index']);
 
@@ -56,3 +58,7 @@ Route::put('/references/employees/{id}', [EmployeeController::class, 'update'])-
 Route::post('/references/employees', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'exportConsentPDF']);
 Route::get('/references/employees/{employee}/consent-pdf', [EmployeeController::class, 'streamConsentPDF']);
+
+
+//Migration Version
+Route::get('/migration/version', [MigrationController::class, 'version']);

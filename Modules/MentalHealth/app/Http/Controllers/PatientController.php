@@ -90,6 +90,7 @@ class PatientController extends Controller
             'pat_birthDate' => 'required|date',
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
+            'bloodtype_code' => 'nullable|string|max:11',
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -99,20 +100,22 @@ class PatientController extends Controller
             'patient_address' => 'nullable|string|max:255',
             'pat_mobile' => 'nullable|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
+
+            //Parents Information
             'mot_fname' => 'nullable|string|max:255',
             'mot_mname' => 'nullable|string|max:255',
             'mot_lname' => 'nullable|string|max:255',
             'mot_birthdate' => 'nullable|date',
-            'mot_address' => 'nullable|string|max:255', //Added by Ken
-            'mot_contact' => 'nullable|string|max:20', //Added by Ken
-            'mot_deceased_status' => 'nullable|string|max:1', //Added by Ken
+            'mot_address' => 'nullable|string|max:255',
+            'mot_contact' => 'nullable|string|max:20',
+            'mot_deceased_status' => 'nullable|string|max:1',
             'fat_fname' => 'nullable|string|max:255', 
             'fat_mname' => 'nullable|string|max:255',
             'fat_lname' => 'nullable|string|max:255',
             'fat_birthdate' => 'nullable|date',
-            'fat_address' => 'nullable|string|max:255', //Added by Ken
-            'fat_contact' => 'nullable|string|max:20', //Added by Ken
-            'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
+            'fat_address' => 'nullable|string|max:255',
+            'fat_contact' => 'nullable|string|max:20',
+            'fat_deceased_status' => 'nullable|string|max:1',
             'registered_at' => 'nullable|date',
 
             'phic_member' => 'nullable|in:Y,N',
@@ -122,6 +125,10 @@ class PatientController extends Controller
             'pDependentType_code' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
             'pMemberLname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
             'pMemberFname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberMname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberSuffix' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberBdate' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberSex' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
@@ -149,6 +156,10 @@ class PatientController extends Controller
             'pDependentType_code' => 'Relationship to Member',
             'pMemberLname' => 'Member\'s Last Name',
             'pMemberFname' => 'Member\'s First Name',
+            'pMemberMname' => 'Member\'s Middle Name',
+            'pMemberSuffix' => 'Member\'s Suffix',
+            'pMemberBdate' => 'Member\'s Birth Date',
+            'pMemberSex' => 'Member\'s Sex',
         ]);
         // $timestamp = $request->input('registered_at');
         // $timestamp = Carbon::parse($timestamp)->format('Y/m/dH:i:s');
@@ -247,8 +258,9 @@ class PatientController extends Controller
             'religion_code' => 'required|string|max:5',
             'nationality' => 'required|string|max:5',
             'pat_birthDate' => 'required|date',
-            'educattainment' => 'required|string|max:2',
-            'occupation_code' => 'required|string|max:255',
+            'educattainment' => 'nullable|string|max:2',
+            'occupation_code' => 'nullable|string|max:255',
+            'bloodtype_code' => 'nullable|string|max:11',
 
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
@@ -283,7 +295,11 @@ class PatientController extends Controller
             'philhealth_status_code' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'pDependentType_code' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
             'pMemberLname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
-            // 'pMemberFname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberFname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberMname' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberSuffix' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberBdate' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
+            'pMemberSex' => $request->philhealth_status_code === 'D' ? 'required|string' : 'nullable|string',
         ], [], [
             'facility_name' => 'Facility Name',
             'facility_location' => 'Facility Location',
@@ -304,12 +320,17 @@ class PatientController extends Controller
             'bgycode' => 'Barangay',
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
+
             'pat_philhealth' => 'PhilHealth Number',
             'type_of_membership' => 'PhilHealth Category Type',
             'philhealth_status_code' => 'PhilHealth Status Type',
             'pDependentType_code' => 'Relationship to Member',
             'pMemberLname' => 'Member\'s Last Name',
-            // 'pMemberFname' => 'Member\'s First Name',
+            'pMemberFname' => 'Member\'s First Name',
+            'pMemberMname' => 'Member\'s Middle Name',
+            'pMemberSuffix' => 'Member\'s Suffix',
+            'pMemberBdate' => 'Member\'s Birth Date',
+            'pMemberSex' => 'Member\'s Sex',
         ]);
 
         $patient = MasterPatient::findOrFail($id);
@@ -317,4 +338,14 @@ class PatientController extends Controller
 
         return redirect()->route('patients')->with('success', 'Patient updated successfully!');
     }
+
+
+        public function patenroll($id)
+    {
+        $patient = MasterPatient::findOrFail($id);
+        return Inertia::render('MentalHealth::MedicalRecords/patientenrollment', [
+            'patient' => $patient,
+        ]);
+    }
+    
 }

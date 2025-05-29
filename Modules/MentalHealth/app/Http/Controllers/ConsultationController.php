@@ -16,25 +16,23 @@ class ConsultationController extends Controller
     {
         $patient = MasterPatient::findOrFail($id);
         $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
-    
+
         $assessmentDates = MentalAssessmentForm::where('pat_perm_id', $patient->id)
             ->pluck('consult_date_assess')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'))
-            ->toArray(); 
-    
+            ->toArray();
+
         $consultations = $consultations->map(function ($consultation) use ($assessmentDates) {
             $consultation->hasAssessment = in_array($consultation->consult_date, $assessmentDates);
             return $consultation;
         });
-    
+
         return Inertia::render('MentalHealth::Consultation/index', [
             'patient' => $patient,
             'consultations' => $consultations,
             'assessmentDates' => $assessmentDates,
         ]);
     }
-    
-
 
     public function store(Request $request)
     {
@@ -68,5 +66,20 @@ class ConsultationController extends Controller
 
         return redirect()->route('consultations.index', ['id' => $validated['consult_temp_id']])
             ->with('success', 'Consultation stored successfully!');
+    }
+
+    public function edit($id)
+    {
+        $consultations = Consultation::find($id);
+        return response()->json($consultations);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'consult_date' => 'requried|date',
+        ]);
+
+        $consultation = Consultation::findOrFail($id);
     }
 }

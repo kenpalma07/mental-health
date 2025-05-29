@@ -23,10 +23,29 @@ interface Patient {
     city: string;
     province: string;
     region: string;
+    citycode: string;
+    provcode: string;
+    regcode: string;
     parent_name: string;
     parent_contact: string;
     parent_address: string;
     parent_deceased: boolean;
+    pat_mobile: string;
+    pat_landline: string;
+    fat_fname: string;
+    fat_mname: string;
+    fat_lname: string;
+    fat_birthdate: string;
+    fat_contact: string;
+    fat_address: string;
+    fat_deceased: boolean;
+    mot_fname: string;
+    mot_mname: string;
+    mot_lname: string;
+    mot_birthdate: string;
+    mot_contact: string;
+    mot_address: string;
+    mot_deceased: boolean;
 }
 
 const ViewPatientDetails = ({ patient }: { patient: Patient }) => {

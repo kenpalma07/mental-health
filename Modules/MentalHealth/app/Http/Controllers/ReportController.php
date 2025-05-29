@@ -65,7 +65,7 @@ class ReportController extends Controller
                 $birthDate = \Carbon\Carbon::parse($patient->pat_birthDate);
                 $age = $birthDate->age;
 
-                if ($age > 19) return null;
+                if ($age > 18) return null;
 
                 $patient->suicideAssessments = $patient->assessment->filter(function ($assess) {
                     return !empty($assess->self_sui_means);
@@ -99,7 +99,7 @@ class ReportController extends Controller
                 $birthDate = \Carbon\Carbon::parse($patient->pat_birthDate);
                 $age = $birthDate->age;
 
-                if ($age <= 19) return null;
+                if ($age <= 18) return null;
 
                 $patient->suicideAssessments = $patient->assessment->filter(function ($assess) {
                     return !empty($assess->self_sui_means);

@@ -63,11 +63,11 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
                         </td>
                         <td className="p-2 border border-black">
                             <td className="font-semibold">Facility location:</td>
-                            <div> {patient.provider_name || 'N/A'}</div>
+                            <div> {patient.facility_location || 'N/A'}</div>
                         </td>
                         <td className="p-2 border border-black">
                             <td className="font-semibold">Name of provider:</td>
-                            <div> {patient.facility_location || 'N/A'}</div>
+                            <div> {patient.provider_name || 'N/A'}</div>
                         </td>
                         <td className="p-2 border border-black">
                             <td className="font-semibold">Date intake:</td>

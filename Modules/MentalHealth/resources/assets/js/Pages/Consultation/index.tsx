@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Consultations } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import * as React from 'react';
 
@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { BookCheckIcon, BookOpenText, Edit, Eye, NotebookPen, Send, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
+import EditConsultation from '../Consultation/EditConsultation';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
@@ -64,6 +65,7 @@ const ConsultationIndex: React.FC = () => {
         BMI_cat_code: string;
         pat_systolic_pres: number;
         pat_diastolic_pres: number;
+        hasAssessment?: boolean;
     };
 
     const [consultations, setConsultations] = React.useState<Consultation[]>(props.consultations || []);
@@ -86,6 +88,14 @@ const ConsultationIndex: React.FC = () => {
         pat_diastolic_pres: '',
         pat_systolic_pres: '',
     });
+
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [selectedConsultation, setSelectedConsultation] = React.useState<Consultations | null>(null);
+
+    const handleEdit = (editconsultation: Consultations) => {
+        setSelectedConsultation(editconsultation);
+        setIsEditModalOpen(true);
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -206,7 +216,7 @@ const ConsultationIndex: React.FC = () => {
             <Head title="Consultations" />
 
             <ConsultPathead patient={patient} />
-            
+
             <div className="space-y-4 p-4">
                 <div className="space-y-4 rounded-xl border border-gray-300 bg-white p-4 text-sm shadow-sm">
                     <div className="w-fit rounded bg-blue-500 px-3 py-1 text-sm font-semibold text-white">Patient Consultations</div>
@@ -218,8 +228,9 @@ const ConsultationIndex: React.FC = () => {
 
                         <Link
                             href={`/assessment/${patient.id}/history`}
-                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
-                                }`}
+                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${
+                                consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
+                            }`}
                         >
                             <BookCheckIcon className="mr-2 h-4 w-4" />
                             Assessment List
@@ -392,7 +403,7 @@ const ConsultationIndex: React.FC = () => {
                                     {[...consultations]
                                         .sort((a, b) => new Date(b.consult_date).getTime() - new Date(a.consult_date).getTime())
                                         .map((item, index) => (
-                                            <tr key={index} className="border-t bg-white hover:bg-gray-50 text-sm">
+                                            <tr key={index} className="border-t bg-white text-sm hover:bg-gray-50">
                                                 <td className="px-4 py-2 font-semibold">{item.consult_perm_id}</td>
                                                 <td className="px-4 py-2">{item.consult_date}</td>
                                                 <td className="px-4 py-2">{item.chief_complaint}</td>
@@ -403,7 +414,18 @@ const ConsultationIndex: React.FC = () => {
                                                         <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
                                                             <Eye size={16} />
                                                         </Button>
-                                                        <Button variant="outline" onClick={() => index} className="text-green-600 hover:bg-green-500">
+                                                        <Button
+                                                            variant="outline"
+                                                            onClick={() => {
+                                                                setSelectedConsultation({
+                                                                    ...item,
+                                                                    id: (item as any).id ?? '', // fallback if id is missing
+                                                                    consult_temp_id: (item as any).consult_temp_id ?? '',
+                                                                });
+                                                                setIsEditModalOpen(true);
+                                                            }}
+                                                            className="text-green-600 hover:bg-green-500"
+                                                        >
                                                             <Edit size={16} />
                                                         </Button>
                                                         {/* <Button variant="outline" onClick={() => index} className="text-red-600 hover:bg-red-500">
@@ -421,7 +443,6 @@ const ConsultationIndex: React.FC = () => {
                                                             <BookOpenText className="h-4 w-4" />
                                                             Done | View Form
                                                         </Link>
-
                                                     ) : (
                                                         <Link
                                                             href={`/assessment/${patient.id}/addAssessment?consult_date=${item.consult_date}`}
@@ -430,7 +451,6 @@ const ConsultationIndex: React.FC = () => {
                                                             <NotebookPen className="h-4 w-4" />
                                                             Fill Assessment Tool
                                                         </Link>
-
                                                     )}
                                                 </td>
                                             </tr>
@@ -443,6 +463,25 @@ const ConsultationIndex: React.FC = () => {
                     )}
                 </div>
             </div>
+            {selectedConsultation && (
+                <EditConsultation
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        setIsEditModalOpen(false);
+                        setSelectedConsultation(null);
+                    }}
+                    editconsultation={selectedConsultation}
+                    onSubmit={(data) =>
+                        router.put(`/consultations/${selectedConsultation.id}`, data, {
+                            onSuccess: () => {
+                                setIsEditModalOpen(false);
+                                setSelectedConsultation(null);
+                                router.reload({ only: ['consultations'] });
+                            },
+                        })
+                    }
+                />
+            )}
         </AppLayout>
     );
 };
