@@ -74,7 +74,7 @@ const footerNavItems: NavItem[] = [
         icon: Settings,
         isActive: true,
         items: [
-            { title: 'Migrations Version', href: '/migration/version' },
+            { title: 'Migration Version', href: '/migration/version' },
             { title: 'FHUD', href: '/references/fhud' },
             { title: 'Employees', href: '/references/employees' },
             { title: 'Setup', href: '/references/setup' },
