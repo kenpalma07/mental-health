@@ -220,6 +220,14 @@ const ConsultationIndex: React.FC = () => {
         teleconsultation: 'Teleconsultation',
     };
 
+    const SERVICE_TYPE_LABELS: Record<string, string> = {
+        reass: 'Re-Assessment',
+        dismeds: 'Dispensing Medicaton',
+        psychoed: 'Psychoeducation',
+        iniass: 'Initial Assessment',
+        referral: 'Referral',
+    };
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -425,7 +433,7 @@ const ConsultationIndex: React.FC = () => {
                                                 <td className="px-4 py-2">{item.consult_date ? formatDate(item.consult_date) : ''}</td>
                                                 <td className="px-4 py-2">{item.chief_complaint}</td>
                                                 <td className="px-4 py-2">{CONSULT_TYPE_LABELS[item.consult_type_code] || item.consult_type_code}</td>
-                                                <td className="px-4 py-2">{item.type_service}</td>
+                                                <td className="px-4 py-2">{SERVICE_TYPE_LABELS[item.type_service]}</td>
                                                 <td className="px-4 py-2 text-center">
                                                     <div className="inline-flex items-center justify-center gap-2">
                                                         <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
@@ -436,8 +444,17 @@ const ConsultationIndex: React.FC = () => {
                                                             onClick={() => {
                                                                 setSelectedConsultation({
                                                                     ...item,
-                                                                    id: (item as any).id ?? '', // fallback if id is missing
+                                                                    id: (item as any).id ?? '',
+                                                                    consult_perm_id: (item as any).consult_perm_id ?? '',
                                                                     consult_temp_id: (item as any).consult_temp_id ?? '',
+                                                                    pat_temperature: String(item.pat_temperature ?? ''),
+                                                                    pat_heart_rate: String(item.pat_heart_rate ?? ''),
+                                                                    pat_oxygen_sat: String(item.pat_oxygen_sat ?? ''),
+                                                                    respiratoryRate: String(item.respiratoryRate ?? ''),
+                                                                    pat_height: String(item.pat_height ?? ''),
+                                                                    pat_weight: String(item.pat_weight ?? ''),
+                                                                    pat_systolic_pres: String(item.pat_systolic_pres ?? ''),
+                                                                    pat_diastolic_pres: String(item.pat_diastolic_pres ?? ''),
                                                                 });
                                                                 setIsEditModalOpen(true);
                                                             }}

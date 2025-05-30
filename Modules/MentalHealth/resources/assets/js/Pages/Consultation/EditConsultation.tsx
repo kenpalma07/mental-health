@@ -28,6 +28,8 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
         consult_type_code: editconsultation.consult_type_code || '',
         to_consult_code: editconsultation.to_consult_code || '',
         type_service: editconsultation.type_service || '',
+        pat_temperature: editconsultation.pat_temperature || '',
+        pat_heart_rate: editconsultation.pat_heart_rate || '',
     });
 
     useEffect(() => {
@@ -39,6 +41,8 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
             consult_type_code: editconsultation.consult_type_code || '',
             to_consult_code: editconsultation.to_consult_code || '',
             type_service: editconsultation.type_service || '',
+            pat_temperature: editconsultation.pat_temperature || '',
+            pat_heart_rate: editconsultation.pat_heart_rate || '',
         });
 
         return () => reset();
@@ -65,9 +69,9 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                 <h2 className="mb-4 text-xl font-semibold text-gray-800">Edit Consultation</h2>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-2 gap-6 text-sm">
+                    <div>
                         <div className="space-y-3">
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-4 gap-3">
                                 {/* Date of Consultation */}
                                 <div>
                                     <div>
@@ -110,7 +114,7 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                             </div>
 
                             {/* Next Row */}
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-4 gap-3">
                                 {/* Consultation Type */}
                                 <div>
                                     <div>
@@ -133,6 +137,9 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                                             <option value="teleconsultation">Teleconsultation</option>
                                         </select>
                                     </div>
+                                    <div>
+                                        <InputError message={errors.consult_type_code} className="text-xs" />
+                                    </div>
                                 </div>
 
                                 {/* Consultation Case */}
@@ -153,13 +160,16 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                                             <option value="other">Others</option>
                                         </select>
                                     </div>
+                                    <div>
+                                        <InputError message={errors.to_consult_code} className="text-xs" />
+                                    </div>
                                 </div>
 
                                 {/* Type of Services */}
                                 <div>
                                     <div>
                                         <Label htmlFor="type_service" className="w-50 pt-2 text-sm font-medium text-gray-700">
-                                            Consultation Case:
+                                            Type of Services:
                                             <span className="font-bold text-red-600">*</span>
                                         </Label>
                                         <select
@@ -169,20 +179,67 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
                                             onChange={(e) => setForm('type_service', e.target.value)}
                                             className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
                                         >
-                                            <option value="mentalhealth">Mental Health</option>
-                                            <option value="other">Others</option>
+                                            <option value="reass">Re-Assessment</option>
+                                            <option value="dismeds">Dispensing Medicaton</option>
+                                            <option value="psychoed">Psychoeducation</option>
+                                            <option value="iniass">Initial Assessment</option>
+                                            <option value="referral">Referral</option>
                                         </select>
+                                    </div>
+                                    <div>
+                                        <InputError message={errors.type_service} className="text-xs" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <hr />
+
+                            {/* Next Row */}
+                            {/* Vital Sign */}
+                            <h5 className="text-sm font-semibold text-gray-500">Vital Sign</h5>
+                            <div className="grid grid-cols-4 gap-3">
+                                {/* Temp (°C) */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="pat_temperature" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Temp (°C):
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Input
+                                            id="pat_temperature"
+                                            name="pat_temperature"
+                                            value={form.pat_temperature}
+                                            onChange={(e) => setForm('pat_temperature', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputError message={errors.pat_temperature} className="text-xs" />
+                                    </div>
+                                </div>
+
+                                {/* Heart Rate (bpm) */}
+                                <div>
+                                    <div>
+                                        <Label htmlFor="pat_heart_rate" className="w-50 pt-2 text-sm font-medium text-gray-700">
+                                            Heart Rate (bpm):
+                                            <span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Input
+                                            id="pat_heart_rate"
+                                            name="pat_heart_rate"
+                                            value={form.pat_heart_rate}
+                                            onChange={(e) => setForm('pat_heart_rate', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputError message={errors.pat_heart_rate} className="text-xs" />
                                     </div>
                                 </div>
                             </div>
 
                             {/* End of Code */}
-                        </div>
-
-                        <div className="space-y-3">
-                            <div className="grid grid-cols-2 gap-3">
-                                Hello
-                            </div>
                         </div>
                     </div>
 
