@@ -60,7 +60,7 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient Schedule List', href: '/mentalhealth/conLogBook' },
-            { title: 'Incoming Referrals', href: '/mentalhealth/monthReports' },
+            { title: 'Incoming Referrals', href: '/incReferral' },
             { title: 'Outgoing Referrals', href: '/mentalhealth/quartReports' },
         ],
     },

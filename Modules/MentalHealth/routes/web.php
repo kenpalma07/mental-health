@@ -10,6 +10,7 @@ use Modules\MentalHealth\Http\Controllers\AssessmentController;
 use Modules\MentalHealth\Http\Controllers\FormController;
 use Modules\MentalHealth\Http\Controllers\MedicalRecordsController;
 use Modules\MentalHealth\Http\Controllers\PharmaController;
+use Modules\MentalHealth\Http\Controllers\ReferralController;
 
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
@@ -63,6 +64,9 @@ Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->n
 Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');
 Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
 Route::get('/RxPrint/{id}', [PharmaController::class, 'RxPrint']);
+
+//referral
+Route::get('/incReferral', [ReferralController::class, 'index'])->name('incReferral.index');
 
 
 
