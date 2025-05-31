@@ -59,9 +59,9 @@ const mainNavItems: NavItem[] = [
         icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Patient Schedule List', href: '/mentalhealth/conLogBook' },
+            { title: 'Patient Schedule List', href: '/#' },
             { title: 'Incoming Referrals', href: '/incReferral' },
-            { title: 'Outgoing Referrals', href: '/mentalhealth/quartReports' },
+            { title: 'Outgoing Referrals', href: '/outReferral' },
         ],
     },
 

@@ -11,7 +11,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-// Example referral type
+
 type Referral = {
   id: number;
   patient_name: string;

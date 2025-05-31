@@ -15,4 +15,9 @@ class ReferralController extends Controller
     {
         return inertia::render('MentalHealth::Referral/index');
     }
+
+    public function outref()
+    {
+        return inertia::render('MentalHealth::Referral/outRef');
+    }
 }
