@@ -142,13 +142,13 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
 
             {/* Header */}
             <div className="relative flex items-center justify-between mb-8 px-2">
-              <AppLogoDOH className="h-16 w-auto" />
+              <AppLogoDOH/>
               <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
                 <h1 className="font-bold text-lg uppercase">Municipal Health Office</h1>
                 <h2 className="uppercase text-sm">{patient.provider_name}</h2>
                 <h3 className="font-semibold text-xl mt-1 uppercase">Psychiatric Treatment Card</h3>
               </div>
-              <AppLogoBP className="h-16 w-auto" />
+              <AppLogoBP/>
             </div>
 
             {/* Personal Info */}
@@ -222,13 +222,13 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
             <div className="overflow-x-auto mb-6 break-inside-avoid">
               <table className="w-full table-fixed border border-black border-collapse text-xs text-center">
                 <thead>
-                  <tr className="border border-black bg-gray-100">
-                    <th className="w-[20%] border border-black px-1 py-1">Medication</th>
-                    <th className="w-[20%] border border-black px-1 py-1">Dosage / Intake / Duration / Frequency / Quantity</th>
-                    <th className="w-[15%] border border-black px-1 py-1">Date</th>
-                    <th className="w-[15%] border border-black px-1 py-1">Appointment</th>
-                    <th className="w-[15%] border border-black px-1 py-1">Medication</th>
-                    <th className="w-[15%] border border-black px-1 py-1">Dosage / Intake / Duration / Frequency / Quantity</th>
+                  <tr className="bg-black text-white">
+                    <th className="w-[20%] border border-gray-300 px-2 py-1 text-xs">Medication</th>
+                    <th className="w-[20%] border border-gray-300 px-2 py-1 ftext-xs">Dosage / Intake / Duration / Frequency / Quantity</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Date</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 ftext-xs">Appointment</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Medication</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Dosage / Intake / Duration / Frequency / Quantity</th>
                   </tr>
                 </thead>
                 <tbody>

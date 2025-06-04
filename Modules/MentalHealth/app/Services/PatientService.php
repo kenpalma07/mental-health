@@ -14,7 +14,7 @@ class PatientService
                   ->orWhere('pat_fname', 'like', "%$search%");
         }
 
-        return $query->paginate(10); // Adjust pagination as needed
+        return $query->paginate(10);
     }
 }
 ?>

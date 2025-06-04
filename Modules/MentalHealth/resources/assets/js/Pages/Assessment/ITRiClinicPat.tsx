@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -133,7 +132,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                         <table className="table-auto w-full border border-black text-left">
                             <thead>
                                 <tr>
-                                    <th colSpan={6} className="border border-black p-1 bg-gray-200 font-semibold uppercase">
+                                    <th colSpan={6} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         I. Patient Information (Impormasyon ng Pasyente)
                                     </th>
                                 </tr>
@@ -164,7 +163,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                         <table className="table-auto w-full border border-black text-left">
                             <thead>
                                 <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-gray-200 font-semibold uppercase">
+                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         II. For CHU / RHU Personnel Only (para sa kinatawan ng CHU / RHU lamang)
                                     </th>
                                 </tr>
@@ -266,7 +265,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-gray-200 font-semibold uppercase">Type of Consultation/Purpose of Visit</th>
+                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase"> III. Type of Consultation/Purpose of Visit</th>
                                 </tr>
                                 <tr>
                                     <td className="border border-black p-1" colSpan={4}>
@@ -282,7 +281,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                                         type="checkbox"
                                                         className="mr-1"
                                                         checked={
-                                                            item === 'Mental Health' // Always check Mental Health
+                                                            item === 'Mental Health'
                                                                 ? true
                                                                 : consultation?.to_consult_code?.includes(item)
                                                         }
@@ -296,14 +295,14 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
 
                                 </tr>
                                 <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-gray-200 font-semibold uppercase">Diagnosis:</th>
+                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">IV. Diagnosis</th>
                                 </tr>
                                 <tr>
-                                    <td className="align-top">
+                                    <td className="align-top h-[90px] align-top">
                                         <div className="flex gap-4 flex-wrap">
                                             <div className="font-bold uppercase">{latestAssessment?.diagnosis || ''}</div>
                                             <div>
-                                                ICD 10: <span className="font-bold uppercase">{latestAssessment?.icd_10_code || ''}</span>
+                                                ICD 10: <span className="font-bold uppercase text-xs">{latestAssessment?.icd_10_code || ''}</span>
                                             </div>
                                             <div className="text-sm">
                                                 Description: <span className="font-bold uppercase text-xs">{latestAssessment?.icd_10_descrip || ''}</span>
@@ -312,10 +311,10 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th className="border border-black p-1 bg-gray-200 font-semibold uppercase">
-                                        Medication/Treatment:
+                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                        V. Medication/Treatment:
                                     </th>
-                                    <th className="border border-black p-1 bg-gray-200 font-semibold uppercase">
+                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         Name of Health Care Provider:
                                     </th>
                                 </tr>
@@ -340,10 +339,10 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
 
 
                                 <tr>
-                                    <th className="border border-black p-1 bg-gray-200 font-semibold uppercase">
-                                        Laboratory Findings/Impression:
+                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                        VI. Laboratory Findings/Impression:
                                     </th>
-                                    <th className="border border-black p-1 bg-gray-200 font-semibold uppercase">
+                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         Performed Laboratory Test:
                                     </th>
                                 </tr>
@@ -359,10 +358,10 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                             </tbody>
                         </table>
                     </div>
-<br></br>
+                    <br></br>
 
                     <ShowAssessmentForm assessments={assessments} patient={patient} />
-<br></br>
+                    <br></br>
                     <TreatmentPlan assessments={assessments} patient={patient} />
                 </div>
             </div>

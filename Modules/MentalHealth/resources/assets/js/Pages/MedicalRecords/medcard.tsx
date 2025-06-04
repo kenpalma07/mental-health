@@ -128,8 +128,8 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                 {/* Logos and Header */}
                 <div className="w-1/3 p-4 border border-gray-200 rounded-xl shadow-sm bg-gray-50 text-center">
                   <div className="flex items-center justify-between mb-2">
-                    <AppLogoDOH className="h-16 w-auto" />
-                    <AppLogoBP className="h-16 w-auto" />
+                    <AppLogoDOH/>
+                    <AppLogoBP/>
                   </div>
                   <h6 className="text-lg font-bold text-gray-900">MEDICATION CARD</h6>
                   <p className="mt-2 text-sm text-gray-700">{patient.provider_name}</p>
@@ -149,7 +149,7 @@ const medcardindex: React.FC<MedicationCardProps> = ({
               <div className="overflow-x-auto">
                 <table className="table-auto w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-gray-100 text-gray-700">
+                    <tr className="bg-black text-white">
                       {["Name of Drug", "Date", "Dose/Strength", "Given/ Total Quantity", "Signature"].map((label, idx) => (
                         <th key={idx} className="border border-gray-300 px-2 py-1 font-semibold">{label}</th>
                       ))}
