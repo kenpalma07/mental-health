@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MasterPatient } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import AppLogos from '@/components/app-logo-itr';
@@ -14,44 +14,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Patient {
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    suffix_code: string;
-    sex_code: string;
-    civil_stat_code: string;
-    provider_name: string;
-    pat_birthplace: string;
-    bloodtype_code: string;
-    type_of_membership: string;
-    pat_philhealth: string;
-    phic_member: string;
-    philhealth_status_code: string;
-    occupation_code: string;
-    pat_mobile: string;
-    pat_address: string;
-    bgycode: string;
-    citycode: string;
-    provcode: string;
-    regcode: string;
-    fat_fname: string;
-    fat_mname: string;
-    fat_lname: string;
-    pat_birthDate: string;
-    fat_birthdate: string;
-    fat_contact: string;
-    fat_address: string;
-    mot_fname: string;
-    mot_mname: string;
-    mot_lname: string;
-    mot_birthdate: string;
-    mot_contact: string;
-    mot_address: string;
-}
-
 interface PatEnrollmentProps {
-    patient: Patient;
+    patient: MasterPatient;
 }
 
 const calculateAge = (birthDate: string) => {
@@ -85,7 +49,7 @@ const renderCheckbox = (label: string, selectedList: string) => {
     );
 };
 
-const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: Patient }) => {
+const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: MasterPatient }) => {
     const age = calculateAge(patient.pat_birthDate);
     console.log('Patient Data:', patient);
     return (
@@ -184,7 +148,7 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                 <td className="border border-black p-1 text-xs">BirthDate <br></br><small className='italic'>(Petsa ng Kapanganakan/Edad)</small></td>
                                 <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{age}</td>
                                 <td rowSpan={3} className="border border-black p-1 text-xs">Residential Address <br></br><small className='italic'>(Tirahan o Lokasyon)</small></td>
-                                <td rowSpan={3} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_address}
+                                <td rowSpan={3} className="border border-black p-1 font-bold uppercase text-xs">{patient.patient_address}
                                     {patient.bgycode} {patient.citycode} {patient.provcode} {patient.regcode}
                                 </td>
                             </tr>

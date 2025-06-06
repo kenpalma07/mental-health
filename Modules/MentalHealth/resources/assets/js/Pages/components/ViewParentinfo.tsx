@@ -1,20 +1,9 @@
 import { Label } from '@/components/ui/label';
+import { MasterPatient } from '@/types';
 import { Cake, CalendarDays, PhoneCall, User } from 'lucide-react';
 
-interface Patient {
-    fat_fname: string;
-    fat_mname: string;
-    fat_lname: string;
-    fat_birthdate: string;
-    fat_contact: string;
-    mot_fname: string;
-    mot_mname: string;
-    mot_lname: string;
-    mot_birthdate: string;
-    mot_contact: string;
-}
 
-const ViewParentinfo = ({ patient }: { patient: Patient }) => {
+const ViewParentinfo = ({ patient }: { patient: MasterPatient }) => {
     const calculateAge = (birthDate: string) => {
         const birth = new Date(birthDate);
         const today = new Date();

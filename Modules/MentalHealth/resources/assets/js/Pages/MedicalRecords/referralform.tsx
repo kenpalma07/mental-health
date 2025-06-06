@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import React from 'react';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MasterPatient, MedicationRecord, MentalAssessmentForm } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 
@@ -12,64 +12,14 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-interface Patient {
-  id: number;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  pat_birthDate: string;
-  patient_address: string;
-  bgycode?: string;
-  citycode?: string;
-  provcode?: string;
-  pat_mobile?: string;
-  provider_name?: string;
-  sex_code: string;
-}
-interface Assessment {
-  consultation_id: string;
-  icd_10_code: string;
-  icd_10_descrip: string;
-  diagnosis: string;
-  phar_doc: string;
-  consult_date_assess: string;
-  ref_fhud: string;
-  assessment_physical_health: string;
-  management_physical_health: string;
-  phar_med: string;
-  phar_intake: string;
-  phar_intakeUnit: string;
-  phar_dur: string;
-  phar_durUnit: string;
-  phar_freq: string;
-  phar_frequnit: string;
-  phar_quantity: string;
-  ref_reason: string;
-}
-
-
-interface MedicationRecord {
-  phar_med: string;
-  phar_date: string;
-  phar_intake: string;
-  phar_intakeUnit: string;
-  phar_dur: string;
-  phar_durUnit: string;
-  phar_freq: string;
-  phar_freqUnit: string;
-  phar_quantity: string;
-  given: string;
-  personnel: string;
-}
 
 interface ReferralFormProps {
-  patient: Patient;
-  assessments: Assessment[];
+  patient: MasterPatient;
+  assessments: MentalAssessmentForm[];
   medicationRecords?: MedicationRecord[];
 }
 
 const ReferralFormIndex: React.FC<ReferralFormProps> = ({
-
   patient,
   assessments,
 }) => {
@@ -205,7 +155,7 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                           {assessments[0].phar_med},{" "}
                           {parseFloat(assessments[0].phar_intake).toString()} {assessments[0].phar_intakeUnit},{" "}
                           {parseFloat(assessments[0].phar_dur).toString()} {assessments[0].phar_durUnit},{" "}
-                          {parseFloat(assessments[0].phar_freq).toString()} {assessments[0].phar_frequnit},{" "}
+                          {parseFloat(assessments[0].phar_freq).toString()} {assessments[0].phar_freqUnit},{" "}
                           <strong>Total:</strong> {parseFloat(assessments[0].phar_quantity).toString()}
                         </>
                       ) : (

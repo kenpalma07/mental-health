@@ -1,39 +1,11 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MasterPatient, PharmaType } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 
-type PharmaType = {
-    phar_id: number;
-    phar_date: string;
-    phar_med: string;
-    phar_intake: string;
-    phar_intakeUnit: string;
-    phar_freq: string;
-    phar_freqUnit: string;
-    phar_dur: string;
-    phar_durUnit: string;
-    phar_quantity: string;
-    phar_remarks?: string;
-    phar_doc: string;
-};
-
 interface RxPrintProps {
-    patient: {
-        pat_fname: string;
-        pat_mname: string;
-        pat_lname: string;
-        pat_address: string;
-        bgycode: string;
-        citycode: string;
-        provcode: string;
-        regcode: string;
-        pat_birthDate: string;
-        facility_name: string;
-        provider_name: string;
-        facility_location: string;
-    };
+    patient: MasterPatient
     date: string;
     meds: PharmaType[];
 }
@@ -121,7 +93,7 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                             </div>
                             <div>
                                 <span className="font-semibold text-xs">Address:</span>
-                                <span className='text-xs'>{patient.pat_address} {patient.bgycode} {patient.citycode} {patient.provcode} {patient.regcode}</span>
+                                <span className='text-xs'>{patient.patient_address} {patient.bgycode} {patient.citycode} {patient.provcode} {patient.regcode}</span>
                             </div>
                             <div>
                                 <span className="font-semibold text-xs">Age:</span>{' '}

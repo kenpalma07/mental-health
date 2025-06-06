@@ -1,38 +1,11 @@
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLayout from '@/layouts/app-layout';
+import { MentalAssessmentForm, ReportPatient } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
 
-type Assessment = {
-    diagnosis: string;
-    phar_med: string;
-    phar_intakeUnit: string;
-    phar_freqUnit: string;
-    phar_doc: string;
-    phar_remarks: string;
-    consult_date_assess: string;
-    grade_year: string;
-    school_name: string;
-    place_inci: string;
-    self_sui_means: string;
-    self_sui_remarks: string;
-};
 
-type Patient = {
-    id: number;
-    date_entered: string;
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    patient_address: string;
-    pat_birthDate: string;
-    sex_code: string;
-    occupation_code: string;
-    pat_mobile: string;
-    others: string;
-    suicideAssessments: Assessment[];
-};
 
 const calculateAge = (birthDate: string): number => {
     const birth = new Date(birthDate);
@@ -43,7 +16,7 @@ const calculateAge = (birthDate: string): number => {
     return age;
 };
 
-// Helper: get quarter string from a date string
+
 const getQuarterFromDate = (dateStr: string): string | null => {
     if (!dateStr) return null;
     const date = new Date(dateStr);
@@ -57,15 +30,14 @@ const getQuarterFromDate = (dateStr: string): string | null => {
 
 const AdultsrIndex: React.FC = () => {
     const { props } = usePage();
-    const patients = props.patients as Patient[];
+    const patients = props.patients as ReportPatient[];
 
     const [currentPage, setCurrentPage] = React.useState(1);
     const [selectedQuarter, setSelectedQuarter] = React.useState<string>('');
     const itemsPerPage = 10;
 
-    // Flatten all suicide assessments from patients into rows with patient info
     const allRows = React.useMemo(() => {
-        const rows: { patient: Patient; assessment: Assessment }[] = [];
+        const rows: { patient: ReportPatient; assessment: MentalAssessmentForm }[] = [];
         patients.forEach((patient) => {
             if (patient.suicideAssessments && patient.suicideAssessments.length > 0) {
                 patient.suicideAssessments.forEach((assessment) => {
@@ -76,7 +48,6 @@ const AdultsrIndex: React.FC = () => {
         return rows;
     }, [patients]);
 
-    // Filter rows by selected quarter (if any)
     const filteredRows = React.useMemo(() => {
         if (!selectedQuarter) return allRows;
         return allRows.filter(({ assessment }) => {
@@ -91,7 +62,6 @@ const AdultsrIndex: React.FC = () => {
         return filteredRows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     }, [filteredRows, currentPage]);
 
-    // When quarter changes, reset to page 1
     React.useEffect(() => {
         setCurrentPage(1);
     }, [selectedQuarter]);
@@ -112,14 +82,14 @@ const AdultsrIndex: React.FC = () => {
                 <div className="rounded-2xl bg-white p-4 shadow-lg">
                     <div className="mb-4 flex flex-col items-center">
                         <div className="mb-4 flex w-full items-center justify-center gap-x-4">
-                            <AppLogoDOH className="h-14 w-auto" />
+                            <AppLogoDOH/>
 
                             <div className="text-center">
                                 <h1 className="block text-xl font-semibold text-gray-800 uppercase">Suicide Incidence Report</h1>
                                 <span className="block text-sm text-gray-600">(Adult Age)</span>
                             </div>
 
-                            <AppLogoBP className="h-14 w-auto" />
+                            <AppLogoBP/>
                         </div>
 
                         <div className="mt-2 flex items-center gap-2">

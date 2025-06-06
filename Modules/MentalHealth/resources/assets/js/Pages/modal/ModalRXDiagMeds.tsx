@@ -1,19 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { PharmaType } from '@/types';
 import { Pencil, Printer, Trash2 } from 'lucide-react';
 import React from 'react';
 
-type PharmaType = {
-    phar_id: number;
-    phar_date: string;
-    phar_med: string;
-    phar_intake: string;
-    phar_intakeUnit: string;
-    phar_freq: string;
-    phar_freqUnit: string;
-    phar_dur: string;
-    phar_durUnit: string;
-    phar_quantity: string;
-};
 
 interface ModalRXDiagMedsProps {
     meds?: PharmaType[];

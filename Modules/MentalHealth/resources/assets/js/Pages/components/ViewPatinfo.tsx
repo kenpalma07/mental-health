@@ -8,19 +8,11 @@ import {
   Venus,
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { MasterPatient } from '@/types';
 
-interface Patient {
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  pat_birthDate: string;
-  sex_code: string;
-  pat_mobile: string;
-  pat_landline: string;
-}
 
 interface ViewPatinfoProps {
-  patient: Patient;
+  patient: MasterPatient;
 }
 
 const calculateAge = (birthDate: string) => {
@@ -34,7 +26,7 @@ const calculateAge = (birthDate: string) => {
   return age;
 };
 
-const ViewPatinfo: React.FC<ViewPatinfoProps> = ({ patient }: { patient: Patient }) => {
+const ViewPatinfo: React.FC<ViewPatinfoProps> = ({ patient }: { patient: MasterPatient }) => {
   const age = calculateAge(patient.pat_birthDate);
 
   return (

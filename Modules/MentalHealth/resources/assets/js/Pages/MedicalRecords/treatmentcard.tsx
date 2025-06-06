@@ -1,42 +1,17 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, PageProps } from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient, MentalAssessmentForm, PageProps, TreatMedicationRecord } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Forms', href: '#' },
   { title: 'Medical Records', href: '/medrecords' },
   { title: 'Treatment Card', href: '/treatmentcard' },
 ];
-
-interface Patient {
-  id: number;
-  provider_name: string;
-  pat_philhealth: string;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  pat_birthDate: string;
-  pat_birthplace?: string;
-  patient_address: string;
-  bgycode?: string;
-  citycode?: string;
-  provcode?: string;
-  regcode?: string;
-  religion_code?: string;
-  sex_code?: string;
-  civil_stat_code?: string;
-  pat_mobile?: string;
-  fat_fname?: string;
-  fat_mname?: string;
-  fat_lname?: string;
-  mot_fname?: string;
-  mot_mname?: string;
-  mot_lname?: string;
-}
 
 const religionMap: { [key: string]: string } = {
   Chri: 'Christian',
@@ -60,32 +35,15 @@ const civilStatusMap: { [key: string]: string } = {
   wid: 'Widow/Widower',
 };
 
-interface Assessment {
-  consultation_id: string;
-  icd_10_code: string;
-  icd_10_descrip: string;
-  diagnosis: string;
-}
-
-interface MedicationRecord {
-  phar_med?: string;
-  phar_intake?: string;
-  phar_intakeUnit?: string;
-  phar_dur?: string;
-  phar_durUnit?: string;
-  phar_freq?: string;
-  phar_freqUnit?: string;
-  phar_date?: string;
-  appointment?: string;
-  phar_quantity?: string;
-}
-
 interface TreatmentCardProps extends PageProps {
-  patient: Patient;
-  consultation?: any;
-  assessments: Assessment[];
-  medicationRecords?: MedicationRecord[];
+  patient: MasterPatient;
+  consultation?: Consultations;
+  assessments: MentalAssessmentForm[];
+  medicationRecords?: TreatMedicationRecord[];
 }
+
+const underlineInputClass =
+  "w-full border-0 border-b border-black rounded-none px-1 py-0.5 focus:ring-0 focus:border-b-2 focus:border-blue-600 bg-transparent";
 
 const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
   patient,
@@ -108,7 +66,7 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
   const icd_10_descrip = assessments[0]?.icd_10_descrip || '';
   const diagnosis = assessments[0]?.diagnosis || '';
 
-  const chunkedMedication: MedicationRecord[][] = [];
+  const chunkedMedication: TreatMedicationRecord[][] = [];
   for (let i = 0; i < medicationRecords.length; i += 2) {
     chunkedMedication.push(medicationRecords.slice(i, i + 2));
   }
@@ -116,7 +74,7 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
     chunkedMedication.push([]);
   }
 
-  function renderDosage(record: MedicationRecord) {
+  function renderDosage(record: TreatMedicationRecord) {
     const formatNumber = (value: string | undefined) => {
       if (!value || parseFloat(value) === 0) return '';
       const floatVal = parseFloat(value);
@@ -155,47 +113,47 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
             <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm mb-6 break-inside-avoid">
               <div>
                 <label className="block font-semibold mb-1">Case #:</label>
-                <input readOnly type="text" defaultValue={assessments[0]?.consultation_id || ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={assessments[0]?.consultation_id || ''} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">PhilHealth #:</label>
-                <input readOnly type="text" defaultValue={patient.pat_philhealth} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={patient.pat_philhealth} className={underlineInputClass} />
               </div>
               <div className="col-span-2">
                 <label className="block font-semibold mb-1">Name:</label>
-                <input readOnly type="text" defaultValue={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`} className={underlineInputClass} />
               </div>
               <div className="col-span-2">
                 <label className="block font-semibold mb-1">Address:</label>
-                <input readOnly type="text" defaultValue={`${patient.patient_address}, ${patient.bgycode ?? ''}, ${patient.citycode ?? ''}, ${patient.provcode ?? ''}`} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={`${patient.patient_address}, ${patient.bgycode ?? ''}, ${patient.citycode ?? ''}, ${patient.provcode ?? ''}`} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Age:</label>
-                <input readOnly type="text" defaultValue={age.toString()} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={age.toString()} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Birthdate:</label>
-                <input readOnly type="text" defaultValue={patient.pat_birthDate} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={patient.pat_birthDate} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Birthplace:</label>
-                <input readOnly type="text" defaultValue={patient.pat_birthplace ?? ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={patient.pat_birthplace ?? ''} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Religion:</label>
-                <input readOnly type="text" defaultValue={religionMap[capitalizeFirstLetter(patient.religion_code ?? '')] ?? patient.religion_code ?? ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={religionMap[capitalizeFirstLetter(patient.religion_code ?? '')] ?? patient.religion_code ?? ''} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Sex:</label>
-                <input readOnly type="text" defaultValue={patient.sex_code?.toUpperCase() === 'M' ? 'Male' : patient.sex_code?.toUpperCase() === 'F' ? 'Female' : ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={patient.sex_code?.toUpperCase() === 'M' ? 'Male' : patient.sex_code?.toUpperCase() === 'F' ? 'Female' : ''} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Civil Status:</label>
-                <input readOnly type="text" defaultValue={civilStatusMap[patient.civil_stat_code?.toLowerCase() ?? ''] ?? patient.civil_stat_code ?? ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={civilStatusMap[patient.civil_stat_code?.toLowerCase() ?? ''] ?? patient.civil_stat_code ?? ''} className={underlineInputClass} />
               </div>
               <div>
                 <label className="block font-semibold mb-1">Contact No.:</label>
-                <input readOnly type="text" defaultValue={patient.pat_mobile ?? ''} className="w-full border-b border-black px-1 py-0.5" />
+                <Input readOnly type="text" defaultValue={patient.pat_mobile ?? ''} className={underlineInputClass} />
               </div>
             </div>
 
@@ -205,15 +163,15 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
               <div className="grid grid-cols-3 gap-x-4 gap-y-2">
                 <div>
                   <label className="block font-semibold mb-1">Father's Name:</label>
-                  <input readOnly type="text" defaultValue={`${patient.fat_fname ?? ''} ${patient.fat_mname ?? ''} ${patient.fat_lname ?? ''}`} className="w-full border-b border-black px-1 py-0.5" />
+                  <Input readOnly type="text" defaultValue={`${patient.fat_fname ?? ''} ${patient.fat_mname ?? ''} ${patient.fat_lname ?? ''}`} className={underlineInputClass} />
                 </div>
                 <div>
                   <label className="block font-semibold mb-1">Mother's Name:</label>
-                  <input readOnly type="text" defaultValue={`${patient.mot_fname ?? ''} ${patient.mot_mname ?? ''} ${patient.mot_lname ?? ''}`} className="w-full border-b border-black px-1 py-0.5" />
+                  <Input readOnly type="text" defaultValue={`${patient.mot_fname ?? ''} ${patient.mot_mname ?? ''} ${patient.mot_lname ?? ''}`} className={underlineInputClass} />
                 </div>
                 <div>
                   <label className="block font-semibold mb-1">Contact No.:</label>
-                  <input readOnly type="text" className="w-full border-b border-black px-1 py-0.5" />
+                  <Input readOnly type="text" className={underlineInputClass} />
                 </div>
               </div>
             </div>
@@ -251,15 +209,15 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
               <div className="grid grid-cols-3 gap-x-4">
                 <div>
                   <label className="block font-semibold mb-1">ICD-10 Code:</label>
-                  <input readOnly type="text" defaultValue={icd_10_code} className="w-full border-none border-b border-black focus:outline-none px-1 py-0.5" />
+                  <Input readOnly type="text" defaultValue={icd_10_code} className={underlineInputClass} />
                 </div>
                 <div className="col-span-2">
                   <label className="block font-semibold mb-1">Diagnosis:</label>
-                  <input readOnly type="text" defaultValue={diagnosis} className="w-full border-none border-b border-black focus:outline-none px-1 py-0.5" />
+                  <Input readOnly type="text" defaultValue={diagnosis} className={underlineInputClass} />
                 </div>
                 <div className="col-span-3">
                   <label className="block font-semibold mb-1">ICD-10 Description:</label>
-                  <Textarea readOnly defaultValue={icd_10_descrip} className="w-full border-none border-b border-black focus:outline-none px-1 py-0.5" rows={3} />
+                  <Textarea readOnly defaultValue={icd_10_descrip} className={underlineInputClass} rows={3} />
                 </div>
               </div>
             </div>

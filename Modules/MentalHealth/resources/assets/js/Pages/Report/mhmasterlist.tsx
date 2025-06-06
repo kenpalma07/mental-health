@@ -1,42 +1,11 @@
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MHMasterPatient } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 
-type Consultation = {
-    consult_perm_id: string;
-    consult_date: string;
-    type_service: string;
-    chief_complaint: string;
-};
-
-type Patient = {
-    id: number;
-    date_entered: string;
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    patient_address: string;
-    pat_birthDate: string;
-    sex_code: string;
-    occupation_code: string;
-    pat_mobile: string;
-    others: string;
-    medications?: string;
-
-    consultation?: Consultation[];
-    assessment?: {
-        diagnosis: string;
-        phar_med: string;
-        phar_intakeUnit: string;
-        phar_freqUnit: string;
-        phar_doc: string;
-        phar_remarks: string;
-    };
-};
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Mental Health Masterlist', href: '/mhmasterlist' }];
 
@@ -55,7 +24,7 @@ function getAge(birthDateString: string): number {
 
 const MhMasterlistIndex: React.FC = () => {
     const { props } = usePage();
-    const patients = props.patients as Patient[];
+    const patients = props.patients as MHMasterPatient[];
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
@@ -81,7 +50,7 @@ const MhMasterlistIndex: React.FC = () => {
                 <div className="w-auto overflow-x-auto rounded-2xl border bg-white p-6 shadow-lg">
                     <div className="mb-6 flex items-center justify-center space-x-4">
                         {/* DOH Logo */}
-                        <AppLogoDOH className="h-16 w-auto" />
+                        <AppLogoDOH/>
 
                         {/* Center Text */}
                         <div className="flex flex-col items-center text-center">
@@ -93,7 +62,7 @@ const MhMasterlistIndex: React.FC = () => {
                         </div>
 
                         {/* BP Logo */}
-                        <AppLogoBP className="h-16 w-auto" />
+                        <AppLogoBP/>
                     </div>
 
                     {/* Table */}
@@ -227,17 +196,6 @@ const MhMasterlistIndex: React.FC = () => {
                                             );
                                         })}
 
-                                        {/* For Temporary */}
-                                        {/* {Array.from({ length: 12 }, (_, i) => {
-                                            const consultations = p.consultation?.filter((c) => new Date(c.consult_date).getMonth() === i) || [];
-                                            return (
-                                                <td key={i} className="border p-2 text-xs">
-                                                    {consultations.length
-                                                        ? consultations.map((c) => new Date(c.consult_date).toLocaleDateString()).join(', ')
-                                                        : '—'}
-                                                </td>
-                                            );
-                                        })} */}
                                     </tr>
                                 );
                             })}
@@ -267,10 +225,6 @@ const MhMasterlistIndex: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Print Button
-          <div className="mt-6 flex justify-end">
-            <button onClick={() => window.print()} className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition">Print Report</button>
-          </div> */}
                 </div>
             </div>
         </AppLayout>

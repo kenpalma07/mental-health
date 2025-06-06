@@ -1,5 +1,7 @@
-// ConsultPathead.tsx
+import { MasterPatient } from '@/types';
 import { ArrowRight, Cake, CalendarDays, Home, Hospital, User, Venus } from 'lucide-react';
+
+
 
 const InfoRow = ({ icon: Icon, label, value, withArrow = false }: { icon: React.ElementType; label: string; value: string; withArrow?: boolean }) => (
     <div className="flex items-start space-x-2 text-sm">
@@ -10,7 +12,7 @@ const InfoRow = ({ icon: Icon, label, value, withArrow = false }: { icon: React.
     </div>
 );
 
-export default function ConsultPathead({ patient }: { patient: any }) {
+export default function ConsultPathead({ patient }: { patient: MasterPatient }) {
     const birthDate = new Date(patient.pat_birthDate);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();

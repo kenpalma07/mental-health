@@ -1,14 +1,14 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient, MentalAssessmentForm, PageProps } from '@/types';
 import { Button } from '@headlessui/react';
-import { Head, PageProps } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { Edit, Eye, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 
 interface Props extends PageProps {
-    patient: any;
-    consultation?: any;
-    assessments: any[];
+    patient: MasterPatient;
+    consultation?: Consultations;
+    assessments: MentalAssessmentForm[];
 }
 
 export default function AssessmentShow({ patient, assessments }: Props) {
@@ -20,12 +20,12 @@ export default function AssessmentShow({ patient, assessments }: Props) {
     ];
 
     // Placeholder handlers
-    const handleView = (assessment: any) => {
+    const handleView = (assessment: MentalAssessmentForm) => {
         console.log('View assessment:', assessment);
         // You can show a modal or redirect here
     };
 
-    const handleEdit = (assessment: any) => {
+    const handleEdit = (assessment: MentalAssessmentForm) => {
         console.log('Edit assessment:', assessment);
         // Navigate or open modal
     };

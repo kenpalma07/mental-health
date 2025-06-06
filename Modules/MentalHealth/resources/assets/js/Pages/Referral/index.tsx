@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Referral } from '@/types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -12,17 +12,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 
-type Referral = {
-  id: number;
-  patient_name: string;
-  referred_to: string;
-  referral_date: string;
-  status: string;
-};
+interface ReferralPageProps {
+  referrals?: Referral[];
+  [key: string]: unknown;
+}
 
 const ReferralIndex: React.FC = () => {
-  // Get referrals from Inertia page props
-  const { referrals = [] } = usePage().props as { referrals: Referral[] };
+  const { referrals = [] } = usePage<ReferralPageProps>().props;
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>

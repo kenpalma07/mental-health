@@ -1,16 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps } from '@/types';
+import type { BreadcrumbItem, PageProps, MentalAssessmentForm } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
 
-interface Assessment {
-    id: number; // assessment id for React keys
-    pat_temp_id: number; // patient id
-    consult_date_assess: string;
-    ref_choice: string;
-    ref_fhud: string;
-    ref_reason: string;
-}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const OtherIndex: React.FC = () => {
-    const { assessments } = usePage<PageProps<{ assessments: Assessment[] }>>().props;
+    const { assessments } = usePage<PageProps<{ assessments: MentalAssessmentForm[] }>>().props;
     const [showModal, setShowModal] = React.useState(true);
 
     const closeModal = () => setShowModal(false);
@@ -57,11 +49,11 @@ const OtherIndex: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {assessments.map((item) => (
+                                {assessments.map((item: MentalAssessmentForm) => (
                                     <tr
                                         key={item.id}
                                         className="cursor-pointer text-xs hover:bg-gray-100"
-                                        onClick={() => {
+                                        onClick={(): void => {
                                             window.open(`/referralform/${item.pat_temp_id}?consult_date=${item.consult_date_assess}`, '_blank');
                                             setShowModal(false);
                                             window.location.href = '/patients';

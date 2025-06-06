@@ -32,6 +32,7 @@ type GroupedItems = {
   mns_hist_item: string[];
   fam_hist_mns_cond_label: string;
   fam_hist_mns_cond_item: string[];
+  [key: string]: string | string[];
 };
 
 
@@ -79,8 +80,8 @@ const ConMNSAssess: React.FC<Props> = ({
           let firstLabel = '';
 
           groups.forEach((group) => {
-            firstLabel = group[`${columnPrefix}_label`];
-            allItems.push(...group[`${columnPrefix}_item`]);
+            firstLabel = group[`${columnPrefix}_label` as keyof GroupedItems] as string;
+            allItems.push(...(group[`${columnPrefix}_item` as keyof GroupedItems] as string[]));
           });
 
           result[`${columnPrefix}_label`] = firstLabel;
@@ -105,15 +106,17 @@ const ConMNSAssess: React.FC<Props> = ({
         updatedGroups.push({ [labelColumn]: label, [itemColumn]: [item] } as GroupedItems);
       } else {
         const group = updatedGroups[groupIndex];
-        const itemIndex = group[itemColumn]?.findIndex((i) => i === item);
+        const itemsArray = Array.isArray(group[itemColumn]) ? group[itemColumn] as string[] : [];
+        const itemIndex = itemsArray.findIndex((i) => i === item);
         if (itemIndex === -1) {
-          group[itemColumn]?.push(item);
+          itemsArray.push(item);
         } else {
-          group[itemColumn]?.splice(itemIndex, 1);
-          if (group[itemColumn]?.length === 0) {
+          itemsArray.splice(itemIndex, 1);
+          if (itemsArray.length === 0) {
             updatedGroups.splice(groupIndex, 1);
           }
         }
+        group[itemColumn] = itemsArray;
       }
 
       return {
@@ -148,8 +151,9 @@ const ConMNSAssess: React.FC<Props> = ({
             </div>
             <div className="mt-2 flex flex-wrap gap-4">
               {groups.map((group, groupIndex) => {
-                const label = group[`${columnPrefix}_label`];
-                const items = group[`${columnPrefix}_item`];
+                const typedGroup = group as GroupedItems;
+                const label = typedGroup[`${columnPrefix}_label` as keyof GroupedItems] as string;
+                const items = typedGroup[`${columnPrefix}_item` as keyof GroupedItems] as string[];
 
                 return (
                   <div key={groupIndex} className="min-w-[250px] flex-1">

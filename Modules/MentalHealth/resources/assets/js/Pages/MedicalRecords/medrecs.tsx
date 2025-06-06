@@ -13,11 +13,11 @@ import {
   Eye,
   Edit
 } from 'lucide-react';
-import { Head, PageProps, Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient, MentalAssessmentForm, PageProps} from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -25,22 +25,13 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Medical Records', href: '/medrecords' },
 ];
 
-interface Patient {
-  id: number;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  pat_birthDate: string;
-  sex_code: string;
-  pat_mobile: string;
-  pat_landline: string;
-}
 
 interface PatMedicalRecordsProps extends PageProps {
-  patient: Patient;
-  consultation: any[];
-  assessments: any[];
+  patient: MasterPatient;
+  consultation: Consultations[];
+  assessments: MentalAssessmentForm[];
 }
+
 
 const calculateAge = (birthDate: string) => {
   const birth = new Date(birthDate);

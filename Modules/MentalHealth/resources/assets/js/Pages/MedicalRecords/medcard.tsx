@@ -69,8 +69,8 @@ const medcardindex: React.FC<MedicationCardProps> = ({
     .filter(Boolean)
     .join(', ');
 
-  const formatNum = (value: any) => {
-    const num = parseFloat(value);
+  const formatNum = (value: string | number | undefined) => {
+    const num = typeof value === 'number' ? value : parseFloat(value ?? '');
     if (isNaN(num)) return value ?? '';
     return Number.isInteger(num) ? num.toString() : num.toFixed(2).replace(/\.00$/, '');
   };

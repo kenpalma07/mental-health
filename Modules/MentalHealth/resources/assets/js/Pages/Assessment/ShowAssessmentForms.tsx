@@ -1,11 +1,12 @@
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
+import type { PageProps, MasterPatient, Consultations, MentalAssessmentForm} from '@/types';
 
 
 interface Props extends PageProps {
-    patient: any;
-    consultation?: any;
-    assessments: any[];
+    patient: MasterPatient;
+    consultation?: Consultations;
+    assessments: MentalAssessmentForm[];
 }
 
 export default function ShowAssessmentForm({ patient, assessments }: Props) {

@@ -1,33 +1,10 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MHTrackConsultation, MHTrackPatient } from '@/types';
 import { Head } from '@inertiajs/react';
 import * as React from 'react';
 
-type Consultation = {
-    consult_perm_id: string;
-    consult_date: string;
-    phar_intakeUnit?: string;
-};
-
-type Patient = {
-    id: number;
-    date_entered: string;
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    phil_health?: string;
-    phil_member?: string;
-    patient_address: string;
-    pat_birthDate: string;
-    sex_code: string;
-    pat_philhealth: string;
-    philhealth_status_code: string;
-    phar_intakeUnit: string;
-    consultation?: Consultation[];
-};
-
 interface Props {
-    patients: Patient[];
+    patients: MHTrackPatient[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -44,9 +21,9 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
 
     React.useEffect(() => {}, [patients]);
 
-    const hasOral = (consultations?: Consultation[]) => !!consultations?.some((c) => c.phar_intakeUnit === 'tablet');
+    const hasOral = (consultations?: MHTrackConsultation[]) => !!consultations?.some((c) => c.phar_intakeUnit === 'tablet');
 
-    const hasAmpule = (consultations?: Consultation[]) => !!consultations?.some((c) => c.phar_intakeUnit === 'ampule');
+    const hasAmpule = (consultations?: MHTrackConsultation[]) => !!consultations?.some((c) => c.phar_intakeUnit === 'ampule');
 
     const calculateAge = (birthDate: string) => {
         const birth = new Date(birthDate);
@@ -201,20 +178,6 @@ const TrackerIndex: React.FC<Props> = ({ patients }) => {
                                                 );
                                             })}
 
-                                            {/* For temporary change */}
-                                            {/* {Array.from({ length: 12 }, (_, monthIndex) => {
-                                                const consultationsThisMonth =
-                                                    p.consultation?.filter((c) => new Date(c.consult_date).getMonth() === monthIndex) ?? [];
-                                                return (
-                                                    <td key={monthIndex} className="border p-2">
-                                                        {consultationsThisMonth.length > 0
-                                                            ? consultationsThisMonth
-                                                                  .map((c) => new Date(c.consult_date).toLocaleDateString())
-                                                                  .join(', ')
-                                                            : '—'}
-                                                    </td>
-                                                );
-                                            })} */}
                                         </tr>
                                     ))
                                 )}

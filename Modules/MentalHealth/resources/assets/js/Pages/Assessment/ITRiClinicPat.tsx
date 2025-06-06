@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, PageProps, MasterPatient, Consultations, MentalAssessmentForm} from '@/types';
 import { Head } from '@inertiajs/react';
 import ShowAssessmentForm from './ShowAssessmentForms';
 import TreatmentPlan from './TreatmentPlan';
@@ -10,9 +10,9 @@ import { PrinterCheckIcon } from 'lucide-react';
 
 
 interface Props extends PageProps {
-    patient: any;
-    consultation?: any;
-    assessments: any[];
+    patient: MasterPatient;
+    consultation?: Consultations;
+    assessments: MentalAssessmentForm[];
 }
 
 export default function ITRiClinicPat({ patient, consultation, assessments }: Props) {
@@ -29,26 +29,26 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
         { title: 'ITR & Assessment Forms & Treatment Plan', href: '#' },
     ];
 
-    const renderCheckbox = (label: string, selectedList: string) => {
-        const normalizedSelected =
-            selectedList?.split(',').map(item => item.trim().toLowerCase().replace(/[\s-]/g, '')) || [];
-        const normalizedLabel = label.toLowerCase().replace(/[\s-]/g, '');
-
-        // Special logic for "Visited"
-        const isVisited = normalizedLabel === 'visited' &&
-            (normalizedSelected.includes('followupvisit') ||
-                normalizedSelected.includes('newadmission') ||
-                normalizedSelected.includes('newconsultation'));
-
-        const isChecked = normalizedSelected.includes(normalizedLabel) || isVisited;
-
-        return (
-            <label key={label} className="flex items-center gap-1">
-                <input type="checkbox" checked={isChecked} readOnly />
-                <span className="font-bold">{label}</span>
-            </label>
-        );
-    };
+    const renderCheckbox = (label: string, selectedList: string | undefined) => {
+            const normalizedSelected =
+                selectedList?.split(',').map(item => item.trim().toLowerCase().replace(/[\s-]/g, '')) || [];
+            const normalizedLabel = label.toLowerCase().replace(/[\s-]/g, '');
+    
+            // Special logic for "Visited"
+            const isVisited = normalizedLabel === 'visited' &&
+                (normalizedSelected.includes('followupvisit') ||
+                    normalizedSelected.includes('newadmission') ||
+                    normalizedSelected.includes('newconsultation'));
+    
+            const isChecked = normalizedSelected.includes(normalizedLabel) || isVisited;
+    
+            return (
+                <label key={label} className="flex items-center gap-1">
+                    <input type="checkbox" checked={isChecked} readOnly />
+                    <span className="font-bold">{label}</span>
+                </label>
+            );
+        };
 
 
 
@@ -148,7 +148,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                 </tr>
                                 <tr>
                                     <td className="border border-black p-1">Suffix</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{patient.suffix || 'N/A'}</td>
+                                    <td className="border border-black p-1 font-bold uppercase">{patient.suffix_code || 'N/A'}</td>
                                     <td className="border border-black p-1">Age</td>
                                     <td className="border border-black p-1 font-bold uppercase">{calculateAge(patient.pat_birthDate)}</td>
                                     <td className="border border-black p-1">Residential Address</td>

@@ -2,15 +2,10 @@ import { Home } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea'; // Importing Textarea
+import { MasterPatient } from '@/types';
 
-interface Patient {
-    patient_address: string;
-    citycode: string;
-    provcode: string;
-    regcode: string;
-}
 
-const ViewDemoinfo = ({ patient }: { patient: Patient }) => {
+const ViewDemoinfo = ({ patient }: { patient: MasterPatient }) => {
     return (
         <div className="p-6">
             <div className="space-y-4">

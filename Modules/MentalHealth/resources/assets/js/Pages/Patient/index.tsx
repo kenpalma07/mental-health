@@ -32,24 +32,13 @@ const PatientIndex: React.FC = () => {
     const { patients = [] }: { patients?: MasterPatient[] } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
 
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [sexFilter, setSexFilter] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
-    const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
-    const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null);
+    const [isConsentModalOpen] = React.useState(false);
+    const [selectedPatient] = React.useState<MasterPatient | null>(null);
     const [showModal, setShowModal] = React.useState(false);
     const [selectedId, setSelectedId] = React.useState<number | null>(null);
-    const [isPatientConsentModalOpen, setIsPatientConsentModalOpen] = React.useState(false);
 
-    const openConsentModal = (patient: MasterPatient) => {
-        setSelectedPatient(patient);
-        setIsConsentModalOpen(true);
-    };
-
-    const closeConsentModal = () => {
-        setIsConsentModalOpen(false);
-        setSelectedPatient(null);
-    };
 
     const filteredPatients = React.useMemo(() => {
         return patients.filter((patient: MasterPatient) => {
@@ -58,11 +47,10 @@ const PatientIndex: React.FC = () => {
             const search = searchTerm.toLowerCase();
 
             const matchesSearch = fullName.includes(search) || facility.includes(search);
-            const matchesSex = sexFilter ? patient.sex_code === sexFilter : true;
 
-            return matchesSearch && matchesSex;
+            return matchesSearch;
         });
-    }, [patients, searchTerm, sexFilter]);
+    }, [patients, searchTerm]);
 
     const columns = React.useMemo<ColumnDef<MasterPatient>[]>(
         () => [
@@ -143,23 +131,10 @@ const PatientIndex: React.FC = () => {
                                         Enrollment Form
                                     </Link>
                                 </DropdownMenuItem>
-                                {/* <DropdownMenuItem asChild>
-                                    <Button
-                                        onClick={() => openConsentModal(patient)}
-                                        className="flex items-center gap-2 bg-transparent text-black hover:bg-gray-100"
-                                    >
-                                        <Printer className="h-4 w-4" />
-                                        Patient Consent
-                                    </Button>
-                                </DropdownMenuItem> */}
                                 <DropdownMenuItem onClick={() => handleViewConsent(patient.id)}>
                                     <Printer className="h-4 w-4" />
                                     Patient Consent
                                 </DropdownMenuItem>
-                                {/* <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
-                                    <Printer className="h-4 w-4" />
-                                    Sample Consent
-                                </DropdownMenuItem> */}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     );
@@ -200,10 +175,6 @@ const PatientIndex: React.FC = () => {
         setShowModal(true);
     };
 
-    const handleExportPDF = (patient: MasterPatient) => {
-        const url = `/patients/${patient.id}/consent-pdf`;
-        window.open(url, '_blank'); // opens in new tab or starts download
-    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -332,14 +303,7 @@ const PatientIndex: React.FC = () => {
                 {/* PatientConsent modal */}
                 {isConsentModalOpen && selectedPatient && (
                     <PatientConsent
-                        patient={{
-                            pat_fname: selectedPatient.pat_fname,
-                            pat_lname: selectedPatient.pat_lname,
-                            sex_code: selectedPatient.sex_code,
-                            pat_birthDate: selectedPatient.pat_birthDate,
-                            pat_mobile: selectedPatient.pat_mobile,
-                            patient_address: selectedPatient.patient_address,
-                        }}
+                        patient={selectedPatient}
                     />
                 )}
 

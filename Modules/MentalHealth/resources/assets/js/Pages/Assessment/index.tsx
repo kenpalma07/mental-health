@@ -1,4 +1,4 @@
-import { Head, PageProps, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Calendar, Clipboard, Heart, Stethoscope, User } from 'lucide-react';
 import { useState } from 'react';
 import axios from 'axios';
@@ -12,15 +12,13 @@ import ManMNSAssess from '../components/ManMNSAssess';
 import SchedNxtVisit from '../components/SchedNxtVisit';
 import Stepper from '../components/Stepper';
 import PatientInfoHead from '../Forms/PatientInfoHead';
-// import TreatmentPlan from '../components/TreatmentPlan';
-
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, PageProps, MasterPatient, Consultations, Employee, FHUD } from '@/types';
 
 interface Props extends PageProps {
-  patient: any;
-  consultation?: any;
-  facilities: any;
-  employees: any;
+  patient: MasterPatient;
+  consultation?: Consultations;
+  facilities: FHUD;
+  employees: Employee[];
 }
 
 export default function AssessmentIndex({ patient, consultation, facilities, employees }: Props) {
@@ -81,13 +79,12 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
 
   const nextStep = () => {
     if (currentStep === 0) {
-      const errors: any = {};
-      if (!physicalHealthData.assessment_physical_health)
-        errors.assessment_physical_health = 'Assessment in Physical Health is required.';
-      if (!physicalHealthData.management_physical_health)
-        errors.management_physical_health = 'Management in Physical Health is required.';
+      const errors = {
+        assessment_physical_health: physicalHealthData.assessment_physical_health ? '' : 'Assessment in Physical Health is required.',
+        management_physical_health: physicalHealthData.management_physical_health ? '' : 'Management in Physical Health is required.',
+      };
       setPhysicalErrors(errors);
-      if (Object.keys(errors).length > 0) return;
+      if (errors.assessment_physical_health || errors.management_physical_health) return;
     }
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
@@ -232,15 +229,19 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
             data={MNSData}
             setMNSData={setMNSData}
             selfHarmData={selfHarmData}
-            setSelfHarmData={setSelfHarmData}/>
+            setSelfHarmData={setSelfHarmData} />
         )}
         {currentStep === 2 && (
-          <ManMNSAssess data={manMNSData} setmanMNSData={setmanMNSData} facilities={facilities} />
+          <ManMNSAssess
+            data={manMNSData}
+            setmanMNSData={setmanMNSData}
+            facilities={Array.isArray(facilities) ? facilities : [facilities]}
+          />
         )}
         {currentStep === 3 && (
           <DiagMeds
             employees={employees}
-            consultation={consultation}
+            consultation={consultation ?? {} as Consultations}
             patient={patient}
             selectedDiagnosis={selectedDiagnosis}
             setSelectedDiagnosis={setSelectedDiagnosis}

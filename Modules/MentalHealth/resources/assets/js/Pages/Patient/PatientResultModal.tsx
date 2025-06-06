@@ -1,22 +1,13 @@
 import { Button } from '@/components/ui/button';
+import { MasterPatient } from '@/types';
 import { Dialog } from '@headlessui/react';
 import { Stethoscope, X } from 'lucide-react';
 import * as React from 'react';
 
-interface Patient {
-    id: number;
-    master_patient_perm_id: string;
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    sex_code: string;
-    pat_birthDate: string;
-}
-
 interface Props {
     open: boolean;
     onClose: () => void;
-    patients: Patient[];
+    patients: MasterPatient[];
     onRegisterNewPatient: () => void;
 }
 

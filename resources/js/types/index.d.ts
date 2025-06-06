@@ -6,7 +6,7 @@ export interface Auth {
     user: User;
 }
 
-export type PageProps<T = {}> = InertiaPageProps<T> & SharedData;
+export type PageProps<T = object> = InertiaPageProps<T> & SharedData;
 
 export interface BreadcrumbItem {
     title: string;
@@ -62,18 +62,67 @@ export interface Permission {
 export interface MasterPatient {
     id: number;
     master_patient_perm_id: string;
+    pat_temp_id: string;
     fhudcode: string;
     facility_name: string;
     facility_location: string;
     provider_name: string;
+    intake_date: string;
     prefix_code: string;
-    pat_fname: string;
-    pat_mname: string;
     pat_lname: string;
+    pat_mname: string;
+    pat_fname: string;
     sex_code: 'M' | 'F';
+    suffix_code: string;
+    civil_stat_code: string;
     pat_birthDate: string;
-    pat_mobile: string;
+    educattainment: string;
+    occupation_code: string;
+    bloodtype_code: string;
+    regcode: string;
+    provcode: string;
+    citycode: string;
+    bgycode: string;
+    zipcode: string;
+    country_code: string;
     patient_address: string;
+    pat_birthplace: string;
+    religion_code: string;
+    nationality: string;
+    pat_mobile: string;
+    pat_landline: string;
+    mot_fname: string;
+    mot_mname: string;
+    mot_lname: string;
+    mot_birthdate: string;
+    fat_fname: string;
+    fat_mname: string;
+    fat_lname: string;
+    fat_birthdate: string;
+    date_entered: string;
+    time_entered: string;
+    ts_created_at: string;
+    date_updated: string;
+    time_updated: string;
+    ts_updated_at: string;
+    registered_at: string;
+    mot_address: string;
+    mot_contact: string;
+    mot_deceased_status: string;
+    fat_address: string;
+    fat_contact: string;
+    fat_deceased_status: string;
+    phic_member: string;
+    pat_philhealth: string;
+    type_of_membership: string;
+    philhealth_status_code: string;
+    pDependentType_code: string;
+    pMemberLname: string;
+    pMemberFname: string;
+    pMemberMname: string;
+    pMemberSuffix: string;
+    pMemberBdate: string;
+    pMemberSex: string;
 }
 
 export interface FHUD {
@@ -92,10 +141,11 @@ export interface FHUD {
     date_mod: string;
     accreno: string;
     facility_licno: string;
-    // …any other fields you need
 }
 
 export interface Employee {
+    position: string;
+    name: string;
     id: number;
     emp_id: string;
     emp_fname: string;
@@ -120,18 +170,254 @@ export interface Employee {
 export interface Consultations {
     id: number;
     consult_perm_id: string;
-    consult_temp_id: string;
     consult_date: string;
     consult_time: string;
     consult_type_code: string;
     to_consult_code: string;
     type_service: string;
+    chief_complaint: string;
     pat_temperature: string;
     pat_heart_rate: string;
     pat_oxygen_sat: string;
     respiratoryRate: string;
     pat_height: string;
     pat_weight: string;
+    pat_BMI: string;
+    BMI_cat_code: string;
     pat_systolic_pres: string;
     pat_diastolic_pres: string;
+    master_patient_perm_id: string;
+    consult_temp_id: string;
+    pat_age_yr: string;
+    pat_age_mo: string;
+    pat_age_dy: string;
+    patient_address_temp_id: string;
 }
+
+export interface MentalAssessmentForm {
+    id: number;
+    consultation_id: string;
+    consult_date_assess: string;
+    pat_perm_id: string;
+    pat_temp_id: string;
+    carer_name_mot: string;
+    carer_name_fat: string;
+    carer_address: string;
+    carer_mobile: string;
+    selfharm_sui: string;
+    grade_year: string;
+    school_name: string;
+    place_inci: string;
+    self_sui_remarks: string;
+    self_sui_means: string;
+
+    fam_hist_mns_cond_item: string;
+    fam_hist_mns_cond_label: string;
+    gen_heal_hist_item: string;
+    gen_heal_hist_label: string;
+    mns_hist_item: string;
+    mns_hist_label: string;
+    pres_comp_item: string;
+    pres_comp_label: string;
+
+    psycho_inter: string;
+    career_fam_choice: string;
+    carer_relationship: string;
+    assessment_physical_health: string;
+    management_physical_health: string;
+    child_and_adolescent: string;
+    older_adults: string;
+    preg_or_breastf_wom: string;
+    assess_self_suic: string;
+
+    date_entered: string;
+    time_entered: string;
+    date_updated: string;
+    time_updated: string;
+    ts_created_at: string;
+    ts_updated_at: string;
+    ts_deleted_at: string;
+    registered_at: string;
+
+    treat_avail: string;
+    treat_choice: string;
+    icd_10_code: string;
+    icd_10_descrip: string;
+    diagnosis: string;
+
+    phar_date: string;
+    phar_med: string;
+    phar_intake: string;
+    phar_intakeUnit: string;
+    phar_freq: string;
+    phar_freqUnit: string;
+    phar_dur: string;
+    phar_durUnit: string;
+    phar_quantity: string;
+    phar_doc: string;
+    is_dispense: string;
+    phar_remarks: string;
+
+    ref_choice: string;
+    ref_fhud: string;
+    ref_reason: string;
+    link_status: string;
+    special_pop: string;
+    date_nxt_visit: string;
+}
+
+
+export interface MedicationRecord {
+  phar_med: string;
+  phar_date: string;
+  phar_intake: string;
+  phar_intakeUnit: string;
+  phar_dur: string;
+  phar_durUnit: string;
+  phar_freq: string;
+  phar_freqUnit: string;
+  phar_quantity: string;
+  given: string;
+  personnel: string;
+}
+
+
+export interface TreatMedicationRecord {
+  phar_med?: string;
+  phar_intake?: string;
+  phar_intakeUnit?: string;
+  phar_dur?: string;
+  phar_durUnit?: string;
+  phar_freq?: string;
+  phar_freqUnit?: string;
+  phar_date?: string;
+  appointment?: string;
+  phar_quantity?: string;
+}
+
+
+export type PharmaType = {
+    phar_id: number;
+    phar_date: string;
+    phar_med: string;
+    phar_intake: string;
+    phar_intakeUnit: string;
+    phar_freq: string;
+    phar_freqUnit: string;
+    phar_dur: string;
+    phar_durUnit: string;
+    phar_quantity: string;
+    phar_remarks?: string;
+    phar_doc: string;
+};
+
+export type Referral = {
+  id: number;
+  patient_name: string;
+  referred_to: string;
+  referral_date: string;
+  status: string;
+};
+
+
+export type ReportPatient = {
+    id: number;
+    date_entered: string;
+    pat_fname: string;
+    pat_mname: string;
+    pat_lname: string;
+    patient_address: string;
+    pat_birthDate: string;
+    sex_code: string;
+    occupation_code: string;
+    pat_mobile: string;
+    others: string;
+    suicideAssessments: MentalAssessmentForm[];
+};
+
+export type MHMasterConsultation = {
+    consult_perm_id: string;
+    consult_date: string;
+    type_service: string;
+    chief_complaint: string;
+};
+
+export type MHMasterPatient = {
+    id: number;
+    date_entered: string;
+    pat_fname: string;
+    pat_mname: string;
+    pat_lname: string;
+    patient_address: string;
+    pat_birthDate: string;
+    sex_code: string;
+    occupation_code: string;
+    pat_mobile: string;
+    others: string;
+    medications?: string;
+
+    consultation?: MHMasterConsultation[];
+    assessment?: {
+        diagnosis: string;
+        phar_med: string;
+        phar_intakeUnit: string;
+        phar_freqUnit: string;
+        phar_doc: string;
+        phar_remarks: string;
+    };
+};
+
+
+export type MHTrackConsultation = {
+    consult_perm_id: string;
+    consult_date: string;
+    phar_intakeUnit?: string;
+};
+
+export type MHTrackPatient = {
+    id: number;
+    date_entered: string;
+    pat_fname: string;
+    pat_mname: string;
+    pat_lname: string;
+    phil_health?: string;
+    phil_member?: string;
+    patient_address: string;
+    pat_birthDate: string;
+    sex_code: string;
+    pat_philhealth: string;
+    philhealth_status_code: string;
+    phar_intakeUnit: string;
+    consultation?: MHTrackConsultation[];
+};
+
+
+export type SchoolMentalAssessmentForm = {
+    diagnosis: string;
+    phar_med: string;
+    phar_intakeUnit: string;
+    phar_freqUnit: string;
+    phar_doc: string;
+    phar_remarks: string;
+    consult_date_assess: string;
+    grade_year: string;
+    school_name: string;
+    place_inci: string;
+    self_sui_means: string;
+    self_sui_remarks: string;
+};
+
+export type SchoolMasterPatient = {
+    id: number;
+    date_entered: string;
+    pat_fname: string;
+    pat_mname: string;
+    pat_lname: string;
+    patient_address: string;
+    pat_birthDate: string;
+    sex_code: string;
+    occupation_code: string;
+    pat_mobile: string;
+    others: string;
+    suicideAssessments: SchoolMentalAssessmentForm[];
+};

@@ -1,18 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { MasterPatient } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import React, { useState } from 'react';
 
 interface PatientConsentProps {
-    patient: {
-        pat_fname: string;
-        pat_lname: string;
-        sex_code: string;
-        pat_birthDate: string;
-        pat_mobile: string;
-        patient_address: string;
-    };
+    patient: MasterPatient
 }
 
 const calculateAge = (birthDate: string) => {
