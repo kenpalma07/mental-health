@@ -17,7 +17,9 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import type { BreadcrumbItem, Consultations, MasterPatient, MentalAssessmentForm, PageProps} from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient,
+MentalAssessmentForm, PageProps}
+from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -54,7 +56,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
       <br />
 
       <div className="flex flex-col lg:flex-row gap-4 ml-4">
-        {/* Patient Info Card */}
+
         <div className="max-w-md bg-white shadow-xl rounded-xl overflow-hidden w-full lg:w-1/2">
           <div className="flex items-center justify-center bg-blue-500 p-4">
             <h3 className="text-center text-xs uppercase font-semibold text-white">Patient Information</h3>
@@ -104,7 +106,6 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
           </div>
         </div>
 
-        {/* Assessments Table */}
         <div className="max-w-full bg-white shadow-xl rounded-xl overflow-hidden w-full lg:w-2/3">
           <div className="flex items-left justify-left bg-blue-500 p-4">
             <h3 className="text-left text-xs uppercase font-semibold text-white">Patient Medical Records</h3>
@@ -142,7 +143,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                 Medical Abstract
               </Link>
             </div>
-            {/* Assessment List */}
+
             <div className="mb-1 mt-4 text-sm text-gray-700">
               <span>Assessment List</span>
             </div>
@@ -186,7 +187,6 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
               <p className="text-gray-500 text-sm">No assessments found.</p>
             )}
 
-            {/* Consultation List */}
             <div className="mb-1 mt-6 text-sm text-gray-700">
               <span>Consultation List</span>
             </div>

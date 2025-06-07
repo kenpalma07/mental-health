@@ -1,8 +1,11 @@
-import { Head, router } from '@inertiajs/react';
-import { Calendar, Clipboard, Heart, Stethoscope, User } from 'lucide-react';
-import { useState } from 'react';
 import axios from 'axios';
-
+import { useState } from 'react';
+import { Head, router } from '@inertiajs/react';
+import {
+  Calendar, Clipboard, Heart, Stethoscope,
+  User, ChevronLeft, ChevronRight, Send, RefreshCcw
+}
+  from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import AssessPhyHealth from '../components/AssessPhyHealth';
@@ -12,7 +15,11 @@ import ManMNSAssess from '../components/ManMNSAssess';
 import SchedNxtVisit from '../components/SchedNxtVisit';
 import Stepper from '../components/Stepper';
 import PatientInfoHead from '../Forms/PatientInfoHead';
-import type { BreadcrumbItem, PageProps, MasterPatient, Consultations, Employee, FHUD } from '@/types';
+import type {
+  BreadcrumbItem, PageProps, MasterPatient,
+  Consultations, Employee, FHUD
+}
+  from '@/types';
 
 interface Props extends PageProps {
   patient: MasterPatient;
@@ -80,11 +87,14 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
   const nextStep = () => {
     if (currentStep === 0) {
       const errors = {
-        assessment_physical_health: physicalHealthData.assessment_physical_health ? '' : 'Assessment in Physical Health is required.',
-        management_physical_health: physicalHealthData.management_physical_health ? '' : 'Management in Physical Health is required.',
+        assessment_physical_health: physicalHealthData.assessment_physical_health ? ''
+          : 'Assessment in Physical Health is required.',
+        management_physical_health: physicalHealthData.management_physical_health ? ''
+          : 'Management in Physical Health is required.',
       };
       setPhysicalErrors(errors);
-      if (errors.assessment_physical_health || errors.management_physical_health) return;
+      if (errors.assessment_physical_health ||
+        errors.management_physical_health) return;
     }
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
@@ -108,8 +118,14 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
     setFrequencyUnit('day');
     setDuration('');
     setDurationUnit('day');
-    setPhysicalHealthData({ assessment_physical_health: '', management_physical_health: '' });
-    setPhysicalErrors({ assessment_physical_health: '', management_physical_health: '' });
+    setPhysicalHealthData({
+      assessment_physical_health: '',
+      management_physical_health: ''
+    });
+    setPhysicalErrors({
+      assessment_physical_health: '',
+      management_physical_health: ''
+    });
     setMNSData({});
     setmanMNSData({});
     setSelectedIcdCodeDescrip('');
@@ -129,7 +145,12 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
   };
 
   const isFormIncomplete = () => {
-    return !selectedDiagnosis || !selectedIcdCode || !selectedMedicine || !intake || !frequency || !duration;
+    return !selectedDiagnosis ||
+      !selectedIcdCode ||
+      !selectedMedicine ||
+      !intake ||
+      !frequency ||
+      !duration;
   };
 
   const handleSubmit = () => {
@@ -194,26 +215,37 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
       <PatientInfoHead patient={patient} consultation={consultation} />
 
       <div className="p-4">
+
         <div className="mb-4 flex items-center gap-2">
           <User className="text-gray-600" />
           <h4 className="text-md font-bold text-gray-600">Assessment Tool</h4>
         </div>
 
         <div className="mb-8 flex items-center justify-between">
+
           <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
           <div className="ml-8 flex gap-2">
+
             <Button variant="outline" onClick={prevStep} disabled={currentStep === 0}>
+              <ChevronLeft className="mr-1 h-4 w-4" />
               Previous
             </Button>
+
             <Button variant="outline" onClick={nextStep} disabled={currentStep === steps.length - 1}>
               Next
+              <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
+
             <Button variant="default" onClick={handleSubmit} disabled={isFormIncomplete()}>
+              <Send className="mr-1 h-4 w-4" />
               Submit
             </Button>
+
             <Button variant="destructive" onClick={resetForm}>
+              <RefreshCcw className="mr-1 h-4 w-4" />
               Reset
             </Button>
+            
           </div>
         </div>
 
@@ -223,21 +255,28 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
             setData={setPhysicalHealthData}
             errors={physicalErrors}
           />
+
         )}
+
         {currentStep === 1 && (
           <ConMNSAssess
             data={MNSData}
             setMNSData={setMNSData}
             selfHarmData={selfHarmData}
-            setSelfHarmData={setSelfHarmData} />
+            setSelfHarmData={setSelfHarmData}
+            />
+
         )}
+
         {currentStep === 2 && (
           <ManMNSAssess
             data={manMNSData}
             setmanMNSData={setmanMNSData}
             facilities={Array.isArray(facilities) ? facilities : [facilities]}
           />
+
         )}
+
         {currentStep === 3 && (
           <DiagMeds
             employees={employees}
@@ -275,9 +314,12 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
             setRemarks={setSelectedRemarks}
           />
         )}
+
         {currentStep === 4 && (
-          <SchedNxtVisit dateNxtVisit={dateNxtVisit} setDateNxtVisit={setDateNxtVisit} />
+          <SchedNxtVisit dateNxtVisit={dateNxtVisit}
+          setDateNxtVisit={setDateNxtVisit} />
         )}
+
       </div>
     </AppLayout>
   );

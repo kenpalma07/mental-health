@@ -8,7 +8,6 @@ import AppLogos from '@/components/app-logo-itr';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-
         title: 'Patient Enrollment Form',
         href: '#',
     },
@@ -59,19 +58,17 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                 <div className="p-6 bg-white shadow rounded-md text-sm">
 
                     <div className="flex items-center justify-center gap-4 w-full">
-                        {/* Left Logo */}
+
                         <div className="flex-shrink-0">
                             <AppLogoDOH />
                         </div>
 
-                        {/* Center Text */}
                         <div className="text-center">
                             <span className="text-sm font-normal block">Republic of the Philippines</span>
                             <span className="text-base font-bold block">Department of Health</span>
                             <span className="font-bold text-lg block uppercase">Center for Health Development - Caraga</span>
                         </div>
 
-                        {/* Right Logo */}
                         <div className="flex-shrink-0">
                             <AppLogoBP />
                         </div>

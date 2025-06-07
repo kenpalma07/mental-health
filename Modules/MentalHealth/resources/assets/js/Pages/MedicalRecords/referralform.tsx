@@ -1,7 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import React from 'react';
-import type { BreadcrumbItem, MasterPatient, MedicationRecord, MentalAssessmentForm } from '@/types';
+import type { BreadcrumbItem, MasterPatient, MedicationRecord,
+MentalAssessmentForm }
+from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 
@@ -23,16 +25,10 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
   patient,
   assessments,
 }) => {
-
-
-  // Helper to format patient full name
   const fullName = [patient.pat_fname, patient.pat_mname, patient.pat_lname].filter(Boolean).join(' ');
-
-  // Helper to format address
   const fullAddress = [patient.patient_address, patient.bgycode, patient.citycode, patient.provcode]
     .filter(Boolean)
     .join(', ');
-
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -43,19 +39,17 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
           <div className="w-full h-full  text-black text-sm print:border-none p-4">
 
             <div className="flex items-center justify-center gap-4 w-full">
-              {/* Left Logo */}
+
               <div className="flex-shrink-0">
                 <AppLogoDOH />
               </div>
 
-              {/* Center Text */}
               <div className="text-center">
                 <span className="text-sm font-normal block">Republic of the Philippines</span>
                 <span className="text-base font-bold block">Department of Health</span>
                 <span className="font-bold text-lg block uppercase">Center for Health Development - Caraga</span>
               </div>
 
-              {/* Right Logo */}
               <div className="flex-shrink-0">
                 <AppLogoBP />
               </div>
@@ -171,7 +165,7 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                     <td colSpan={2} className="border p-2">Documents accompanying referral:</td>
                     <td colSpan={4} className="border p-2"></td>
                   </tr>
-                  <tr className="h-16"> {/* Optional: keep height if you want space */}
+                  <tr className="h-16">
                     <td colSpan={2} className="border p-2 align-top">Print name, sign and date:</td>
                     <td colSpan={2} className="border p-2 align-top">Name:</td>
                     <td className="border p-2 align-top">Signature:</td>
@@ -181,7 +175,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
               </table>
 
               {/* BACK REFERRAL */}
-
               <table className="w-full border-collapse">
                 <tr className="bg-black text-white">
                   <th colSpan={6} className="border border-gray-700 p-1 text-left font-bold">
@@ -192,7 +185,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                   </th>
                 </tr>
                 <tbody>
-                  {/* 1st row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Back-referral from facility<br>
                     </br>
@@ -205,7 +197,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 2nd row */}
                   <tr>
                     <td className="p-2 border border-black  w-1/3" rowSpan={2}>Reply from<br />
                       <small className="italic">(person completing form)</small>
@@ -229,7 +220,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 3rd row */}
                   <tr>
                     <td className="p-2 border border-black  w-1/3" colSpan={2}>To initiating facility:<br>
                     </br>
@@ -239,7 +229,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 4th row */}
                   <tr>
                     <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Service user name:
                     </td>
@@ -247,7 +236,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 5th row */}
                   <tr>
                     <td className="p-2 border border-black " colSpan={2}>Identity number:</td>
                     <td colSpan={2} className="p-2 border border-black">
@@ -263,7 +251,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                       </label>
                     </td>
                   </tr>
-                  {/* 6th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Address:
                     </td>
@@ -271,7 +258,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 7th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>This person was seen by:<br>
                     </br>
@@ -284,7 +270,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 8th row */}
                   <tr>
                     <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Mental and physical health history<br>
                     </br>
@@ -294,7 +279,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 9th row */}
                   <tr>
                     <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Assessment findings
                     </td>
@@ -302,7 +286,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 10th row */}
                   <tr>
                     <td className="p-2 border border-black  w-1/3" colSpan={2}>Diagnosis
                     </td>
@@ -310,7 +293,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 11th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Treatment plan and follow-up:
                     </td>
@@ -318,7 +300,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 12th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Medication prescribed:
                     </td>
@@ -326,7 +307,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 13th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Psychological intervention recommended:
                     </td>
@@ -334,7 +314,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 14th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Please continue with:<br />
                       <small className="italic">(medications, prescriptions, psychological care, follow-up)</small>
@@ -343,7 +322,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 15th row */}
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Refer back to:
                     </td>
@@ -354,7 +332,6 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
                     </td>
                   </tr>
-                  {/* 16th row */}
                   <tr>
                     <td className="p-2 border border-black" colSpan={2}>Print name, sign and date:</td>
                     <td colSpan={2} className="p-2 border border-black w-1/3">Name:

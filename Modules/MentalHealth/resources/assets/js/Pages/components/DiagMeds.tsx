@@ -112,7 +112,6 @@ const DiagMeds = ({
         { id: 'N', name: 'No' },
     ];
 
-    // Function to convert any unit to hours
     const convertToHours = (value: number, unit: string) => {
         switch (unit) {
             case 'hour':

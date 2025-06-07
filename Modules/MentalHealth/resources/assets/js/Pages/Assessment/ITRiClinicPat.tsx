@@ -1,13 +1,14 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps, MasterPatient, Consultations, MentalAssessmentForm} from '@/types';
+import type { BreadcrumbItem, PageProps,
+MasterPatient, Consultations,
+MentalAssessmentForm}
+from '@/types';
 import { Head } from '@inertiajs/react';
 import ShowAssessmentForm from './ShowAssessmentForms';
 import TreatmentPlan from './TreatmentPlan';
 import AppLogos from '@/components/app-logo-itr';
 import { Button } from '@/components/ui/button';
 import { PrinterCheckIcon } from 'lucide-react';
-
-
 
 interface Props extends PageProps {
     patient: MasterPatient;
@@ -33,8 +34,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
             const normalizedSelected =
                 selectedList?.split(',').map(item => item.trim().toLowerCase().replace(/[\s-]/g, '')) || [];
             const normalizedLabel = label.toLowerCase().replace(/[\s-]/g, '');
-    
-            // Special logic for "Visited"
+
             const isVisited = normalizedLabel === 'visited' &&
                 (normalizedSelected.includes('followupvisit') ||
                     normalizedSelected.includes('newadmission') ||

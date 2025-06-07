@@ -1,7 +1,9 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, MasterPatient, PharmaType } from '@/types';
+import type { BreadcrumbItem, MasterPatient,
+PharmaType }
+from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 
 interface RxPrintProps {
@@ -10,7 +12,6 @@ interface RxPrintProps {
     meds: PharmaType[];
 }
 
-// Helper to remove .00 but keep decimals like .10
 function formatValue(val: string | number) {
     const num = typeof val === 'number' ? val : parseFloat(val);
     if (Number.isNaN(num)) return val;
@@ -56,7 +57,6 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                 <div className="w-[210mm] mx-auto bg-white shadow-lg rounded-2xl overflow-hidden p-8 print:scale-100 print:shadow-none print:rounded-none print:p-0 print:m-0">
                     <div className="w-full h-full text-black text-sm print:border-none p-4">
 
-                        {/* Header */}
                         <div className="flex justify-between items-start mb-4">
                             <div className="text-6xl font-bold leading-none">℞</div>
                             <div className="text-center w-full -ml-16">
@@ -70,12 +70,13 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                                     {patient.facility_location || 'Facility Location'}
                                 </h2>
                             </div>
+
                             <div className="flex-shrink-0">
                                 <AppLogoDOH />
                             </div>
+
                         </div>
 
-                        {/* Patient Info */}
                         <div className="grid grid-cols-2 text-sm gap-y-2 mb-4">
                             <div>
                                 <span className="font-semibold text-xs">Patient:</span>
@@ -104,7 +105,6 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                             </div>
                         </div>
 
-                        {/* Prescription Table */}
                         <table className="w-full border border-black text-sm text-center mb-6">
                             <thead className="bg-gray-100">
                                 <tr>
@@ -128,7 +128,6 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                             </tbody>
                         </table>
 
-                        {/* Footer */}
                         <div className="text-right text-sm mt-12 leading-tight">
                             <p>
                                 <span className="font-semibold text text-xs">Prescribed By:</span>{' '}

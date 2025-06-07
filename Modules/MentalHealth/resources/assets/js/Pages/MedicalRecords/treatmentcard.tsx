@@ -1,7 +1,9 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, Consultations, MasterPatient, MentalAssessmentForm, PageProps, TreatMedicationRecord } from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient,
+MentalAssessmentForm, PageProps, TreatMedicationRecord }
+from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import { Textarea } from '@/components/ui/textarea';

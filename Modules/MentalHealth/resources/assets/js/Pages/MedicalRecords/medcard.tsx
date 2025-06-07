@@ -1,6 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, MasterPatient,
+MedicationRecord, MentalAssessmentForm }
+from '@/types';
 import React from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
@@ -12,45 +14,10 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Medication Card', href: '/medcard' },
 ];
 
-interface Patient {
-  id: number;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  pat_birthDate: string;
-  patient_address: string;
-  bgycode?: string;
-  citycode?: string;
-  provcode?: string;
-  pat_mobile?: string;
-  provider_name?: string;
-}
-
-interface Assessment {
-  consultation_id: string;
-  icd_10_code: string;
-  icd_10_descrip: string;
-  diagnosis: string;
-  phar_doc?: string;
-}
-
-interface MedicationRecord {
-  phar_med: string;
-  phar_date: string;
-  phar_intake: string;
-  phar_intakeUnit: string;
-  phar_dur: string;
-  phar_durUnit: string;
-  phar_freq: string;
-  phar_freqUnit: string;
-  phar_quantity: string;
-  given: string;
-  personnel: string;
-}
 
 interface MedicationCardProps {
-  patient: Patient;
-  assessments: Assessment[];
+  patient: MasterPatient;
+  assessments: MentalAssessmentForm[];
   medicationRecords?: MedicationRecord[];
 }
 
@@ -60,12 +27,10 @@ const medcardindex: React.FC<MedicationCardProps> = ({
   medicationRecords = [],
 }) => {
   const phar_doc = assessments[0]?.phar_doc || '';
-
-  // Helper to format patient full name
-  const fullName = [patient.pat_fname, patient.pat_mname, patient.pat_lname].filter(Boolean).join(' ');
-
-  // Helper to format address
-  const fullAddress = [patient.patient_address, patient.bgycode, patient.citycode, patient.provcode]
+  const fullName = [patient.pat_fname, patient.pat_mname, patient.pat_lname]
+  .filter(Boolean).join(' ');
+  const fullAddress = [patient.patient_address, patient.bgycode,
+  patient.citycode, patient.provcode]
     .filter(Boolean)
     .join(', ');
 
@@ -75,17 +40,16 @@ const medcardindex: React.FC<MedicationCardProps> = ({
     return Number.isInteger(num) ? num.toString() : num.toFixed(2).replace(/\.00$/, '');
   };
 
-
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Medication Card" />
       <div className="p-4 space-y-4">
         <div className="p-4">
-          {/* Info Card */}
+
           <div className="bg-white shadow-lg rounded-2xl overflow-hidden">
             <div className="border border-gray-300 ring-1 ring-gray-200 p-4 shadow-md rounded-2xl bg-white flex flex-col space-y-4">
               <div className="flex flex-row space-x-4">
-                {/* Allergy Alert */}
+
                 <div className="w-1/3 p-4 border border-gray-200 rounded-xl shadow-sm bg-gray-50">
                   <h2 className="font-bold mb-2 text-gray-800">Allergy Alert</h2>
                   <Textarea
@@ -95,7 +59,6 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                   />
                 </div>
 
-                {/* Patient Info */}
                 <div className="w-1/3 p-4 border border-white rounded-xl shadow-sm bg-gray-50">
                   <h2 className="font-bold mb-2 text-gray-800">Patient Info</h2>
 
@@ -125,7 +88,6 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                   </div>
                 </div>
 
-                {/* Logos and Header */}
                 <div className="w-1/3 p-4 border border-gray-200 rounded-xl shadow-sm bg-gray-50 text-center">
                   <div className="flex items-center justify-between mb-2">
                     <AppLogoDOH/>
@@ -142,7 +104,6 @@ const medcardindex: React.FC<MedicationCardProps> = ({
             </div>
           </div>
 
-          {/* Medication Table Card */}
           <div className="mt-6 bg-white shadow-lg rounded-2xl overflow-hidden">
             <div className="border border-gray-300 ring-1 ring-gray-200 p-4 shadow-md rounded-2xl bg-white">
               <h2 className="text-center font-bold text-gray-800 mb-4 text-lg">MEDICATION</h2>
