@@ -854,7 +854,7 @@ export default function AddPatient() {
                                     </Label>
                                     <Input
                                         id="patient_address"
-                                        className="text-dark-500"
+                                        className="text-dark-500 text-xs"
                                         value={data.patient_address}
                                         onChange={(e) => setData('patient_address', e.target.value)}
                                         placeholder="House # / Lot # / Street Name / Building / Purok # / Village Name"

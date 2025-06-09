@@ -1,11 +1,15 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import React from 'react';
-import type { BreadcrumbItem, MasterPatient, MedicationRecord,
-MentalAssessmentForm }
-from '@/types';
+import type {
+  BreadcrumbItem, MasterPatient, MedicationRecord,
+  MentalAssessmentForm,
+  ReferralData
+} from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
+import { Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -13,7 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/referralform',
   },
 ];
-
 
 interface ReferralFormProps {
   patient: MasterPatient;
@@ -30,11 +33,60 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
     .filter(Boolean)
     .join(', ');
 
+  const handleSendReferral = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const data: ReferralData = {
+      consultation_id: assessments[0]?.consultation_id,
+      date_ref: assessments[0]?.consult_date_assess,
+      pat_temp_id: patient.master_patient_perm_id,
+      hpersonnel: assessments[0]?.phar_doc,
+      hposition: 'Doctor',
+      facility_name: patient.provider_name,
+      facility_address: patient.facility_location,
+      htel_arrangement: 'Y',
+      facility_telephone: '',
+      referral_facility_name: assessments[0]?.ref_fhud,
+      referral_facility_address: '',
+      pat_fullname: fullName,
+      identity_number: assessments[0]?.consultation_id,
+      pat_age: '',
+      pat_sex: patient.sex_code,
+      pat_fullAdd: fullAddress,
+      assess_phy_heal: assessments[0]?.assessment_physical_health || '',
+      manage_phy_heal: assessments[0]?.management_physical_health || '',
+      assessment_findings: assessments.map(a => a.diagnosis).join(', '),
+      any_treatment_prov: assessments.length > 0
+        ? `${assessments[0].phar_med}, ${parseFloat(assessments[0].phar_intake).toString()} ${assessments[0].phar_intakeUnit}, ${parseFloat(assessments[0].phar_dur).toString()} ${assessments[0].phar_durUnit}, ${parseFloat(assessments[0].phar_freq).toString()} ${assessments[0].phar_freqUnit}, Total: ${parseFloat(assessments[0].phar_quantity).toString()}`
+        : '',
+      reason_referral: assessments[0]?.ref_reason,
+      doc_accomp_referral: '',
+      status_code: '0',
+    };
+    router.post('/sendReferral/send', data, {
+      onSuccess: () => {
+        alert('Referral Successfully Sent to the Facility!');
+      },
+      onError: (errors) => {
+        console.error(errors);
+        alert('Error sending Referral');
+      },
+    });
+  };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Referral Form" />
       <div className="p-4 space-y-4">
-
+        <div className="flex justify-end mt-4">
+          <Button
+            type="button"
+            onClick={handleSendReferral}
+            className="inline-flex items-center rounded-md border border-black bg-black px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-none"
+          >
+            <Send className="mr-2 h-4 w-4 text-white" />
+            Send Referral
+          </Button>
+        </div>
         <div className="w-[210mm] min-h-[297mm] p-8 mx-auto bg-white shadow-lg rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl print:scale-100 print:shadow-none print:rounded-none print:p-0 print:m-0">
           <div className="w-full h-full  text-black text-sm print:border-none p-4">
 
@@ -55,8 +107,7 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
               </div>
             </div>
 
-            <form
-              className="p-4 max-w-5xl mx-auto text-sm print:text-xs">
+            <form className="p-4 max-w-5xl mx-auto text-sm print:text-xs">
               <h2 className="font-bold text-xl mb-4 text-center uppercase">Referral Form</h2>
               <table className="w-full table-fixed border border-collapse border-black mb-8">
                 <thead>
@@ -176,26 +227,23 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
               {/* BACK REFERRAL */}
               <table className="w-full border-collapse">
-                <tr className="bg-black text-white">
-                  <th colSpan={6} className="border border-gray-700 p-1 text-left font-bold">
-                    <div className="flex justify-between items-center">
-                      <span>Back Referral from facility</span>
-                      <span className="text-xs font-medium">Original / Copy</span>
-                    </div>
-                  </th>
-                </tr>
+                <thead>
+                  <tr className="bg-black text-white">
+                    <th colSpan={6} className="border border-gray-700 p-1 text-left font-bold">
+                      <div className="flex justify-between items-center">
+                        <span>Back Referral from facility</span>
+                        <span className="text-xs font-medium">Original / Copy</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Back-referral from facility<br>
-                    </br>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Back-referral from facility<br />
                       <small className="italic">(name)</small>
                     </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>
-
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Tel No.:
-
-                    </td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={2}></td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Tel No.:</td>
                   </tr>
                   <tr>
                     <td className="p-2 border border-black  w-1/3" rowSpan={2}>Reply from<br />
@@ -203,46 +251,33 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                     </td>
                     <td className="p-2 border border-black" colSpan={4}>
                       <label className="block ">Name:</label>
-
                     </td>
                     <td className="p-2 border border-black" colSpan={2}>
                       <label className="block ">Date</label>
-
                     </td>
                   </tr>
                   <tr>
                     <td className="p-2 border border-black" colSpan={3}>
                       <label className="block ">Position</label>
-
                     </td>
                     <td className="p-2 border border-black" colSpan={2}>
                       <label className="block ">Specialty</label>
-
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>To initiating facility:<br>
-                    </br>
+                    <td className="p-2 border border-black  w-1/3" colSpan={2}>To initiating facility:<br />
                       <small className="italic">(name and address)</small>
                     </td>
-                    <td colSpan={4} className="p-2 border border-black">
-
-                    </td>
+                    <td colSpan={4} className="p-2 border border-black"></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Service user name:
-                    </td>
-                    <td colSpan={4} className="p-2 border border-black">
-
-                    </td>
+                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Service user name:</td>
+                    <td colSpan={4} className="p-2 border border-black"></td>
                   </tr>
                   <tr>
                     <td className="p-2 border border-black " colSpan={2}>Identity number:</td>
-                    <td colSpan={2} className="p-2 border border-black">
-
-                    </td>
+                    <td colSpan={2} className="p-2 border border-black"></td>
                     <td className="p-2 border border-black" colSpan={2}>Age:
-
                       <label className="mr-2">
                         <input type="radio" name="backsex" value="M" className="mr-1" />{' '}M
                       </label>
@@ -252,109 +287,75 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Address:
-                    </td>
-                    <td colSpan={4} className="p-2 border border-black">
-
-                    </td>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Address:</td>
+                    <td colSpan={4} className="p-2 border border-black"></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>This person was seen by:<br>
-                    </br>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>This person was seen by:<br />
                       <small className="italic">(name and position)</small>
                     </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={3}>
-
-                    </td>
-                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:
-
-                    </td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={3}></td>
+                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Mental and physical health history<br>
-                    </br>
+                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Mental and physical health history<br />
                       <small className="italic">(include substance use, medical history, family history)</small>
                     </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Assessment findings
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Assessment findings</td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Diagnosis
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Diagnosis</td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Treatment plan and follow-up:
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Treatment plan and follow-up:</td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Medication prescribed:
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Medication prescribed:</td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Psychological intervention recommended:
-                    </td>
-                    <td className="p-2 border border-black w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Psychological intervention recommended:</td>
+                    <td className="p-2 border border-black w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
                     <td className="p-2 border border-black w-1/3" colSpan={2}>Please continue with:<br />
                       <small className="italic">(medications, prescriptions, psychological care, follow-up)</small>
                     </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}>
-
-                    </td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Refer back to:
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={3}>
-
-                    </td>
-                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:
-
-                    </td>
+                    <td className="p-2 border border-black w-1/3" colSpan={2}>Refer back to:</td>
+                    <td className="p-2 border border-black  w-1/3" colSpan={3}></td>
+                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</td>
                   </tr>
                   <tr>
                     <td className="p-2 border border-black" colSpan={2}>Print name, sign and date:</td>
-                    <td colSpan={2} className="p-2 border border-black w-1/3">Name:
-
-                    </td>
-                    <td className="p-2 border border-black " colSpan={1}>Signature:
-
-                    </td>
-                    <td className="p-2 border border-black " colSpan={1}>Date:
-
-                    </td>
+                    <td colSpan={2} className="p-2 border border-black w-1/3">Name:</td>
+                    <td className="p-2 border border-black " colSpan={1}>Signature:</td>
+                    <td className="p-2 border border-black " colSpan={1}>Date:</td>
                   </tr>
-
                 </tbody>
               </table>
-              <div className="mt-4 text-right">
-
-              </div>
+              <div className="mt-4 text-right"></div>
             </form>
-
           </div>
         </div>
-
+        <div className="flex justify-end mt-4">
+          <button
+            type="button"
+            onClick={handleSendReferral}
+            className="inline-flex items-center rounded-md border border-black bg-black px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-none"
+          >
+            <Send className="mr-2 h-4 w-4 text-white" />
+            Send Referral
+          </button>
+        </div>
       </div>
     </AppLayout>
   );

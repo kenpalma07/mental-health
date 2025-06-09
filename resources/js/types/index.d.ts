@@ -421,3 +421,40 @@ export type SchoolMasterPatient = {
     others: string;
     suicideAssessments: SchoolMentalAssessmentForm[];
 };
+
+export interface ReferralData {
+    [key: string]: string | undefined;
+    consultation_id?: string;
+    date_ref: date;
+    pat_temp_id: string;
+    hpersonnel?: string;
+    hposition: string;
+    facility_name: string;
+    facility_address: string;
+    htel_arrangement: string;
+    facility_telephone?: string;
+    referral_facility_name?: string;
+    referral_facility_address: string;
+    pat_fullname: string;
+    identity_number?: string;
+    pat_age: string;
+    pat_sex: string;
+    pat_fullAdd: string;
+    assess_phy_heal: string;
+    manage_phy_heal: string;
+    assessment_findings: string;
+    any_treatment_prov?: string;
+    reason_referral?: string;
+    doc_accomp_referral: string;
+    status_code: string;
+  }
+
+  export interface OutGoReferral {
+  id: number;
+  consultation_id: string;
+  pat_fullname: string;
+  facility_name: string;
+  referral_facility_name: string;
+  date_ref: string;
+  status_code?: number;
+}
