@@ -10,6 +10,7 @@ class ReferralForm extends Model
 
     protected $fillable = [
         'consultation_id',
+        'track_num',
         'date_ref',
         'pat_temp_id',
         'hpersonnel',

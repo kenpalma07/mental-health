@@ -66,9 +66,8 @@ Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
 Route::get('/RxPrint/{id}', [PharmaController::class, 'RxPrint']);
 
 //referral
-Route::get('/incReferral', [ReferralController::class, 'index'])->name('incReferral.index');
 Route::post('/sendReferral/send', [ReferralController::class, 'store'])->name('sendReferral');
-Route::get('/outReferral', [ReferralController::class, 'outref'])->name('outReferral.outref');
+Route::get('/Referral', [ReferralController::class, 'index'])->name('Referral.index');
 
 
 

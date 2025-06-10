@@ -6,18 +6,14 @@ use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\ReferralForm;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ReferralController extends Controller
 {
     public function index()
     {
-        return inertia::render('MentalHealth::Referral/index');
-    }
-
-    public function outref()
-    {
         $referrals = ReferralForm::orderByDesc('ts_created_at')->get();
-        return inertia('MentalHealth::Referral/outRef', [
+        return inertia('MentalHealth::Referral/index', [
             'referrals' => $referrals,
         ]);
     }
@@ -49,7 +45,7 @@ class ReferralController extends Controller
             'doc_accomp_referral' => 'nullable|string|max:200',
             'status_code' => 'nullable|string|max:1',
         ]);
-
+        $validated['track_num'] = 'REF-' . date('YmdHis') . '-' . strtoupper(Str::random(6));
         $referral = ReferralForm::create($validated);
 
         return redirect()->back()->with('success', 'Referral sent successfully!');

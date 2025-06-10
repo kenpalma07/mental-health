@@ -451,10 +451,12 @@ export interface ReferralData {
 
   export interface OutGoReferral {
   id: number;
+  track_num: string;
   consultation_id: string;
   pat_fullname: string;
   facility_name: string;
   referral_facility_name: string;
   date_ref: string;
   status_code?: number;
+  ref_reason: string;
 }
