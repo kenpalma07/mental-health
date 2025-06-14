@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Consultations } from '@/types';
+import type { BreadcrumbItem, Consultations, MasterPatient } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import * as React from 'react';
 
@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { BookCheckIcon, BookOpenText, Edit, Eye, NotebookPen, Send, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 import EditConsultation from '../Consultation/EditConsultation';
+import ViewConsultation from '../Consultation/ViewConsultation';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
@@ -20,29 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const ConsultationIndex: React.FC = () => {
     const { props } = usePage<{
-        patient: {
-            id: number;
-            consult_perm_id: string;
-            pat_birthDate: string;
-            master_patient_perm_id: string;
-            pat_fname: string;
-            pat_mname: string;
-            pat_lname: string;
-            sex_code: string;
-            civil_stat_code: string;
-            patient_address: string;
-            provcode: string;
-            citycode: string;
-            bgycode: string;
-            fat_address: string;
-            mot_fname: string;
-            mot_mname: string;
-            mot_lname: string;
-            fat_fname: string;
-            fat_mname: string;
-            fat_lname: string;
-            ts_created_at: string;
-        };
+        patient: MasterPatient;
         consultations: Consultation[];
     }>();
     const patient = props.patient;
@@ -91,6 +70,8 @@ const ConsultationIndex: React.FC = () => {
 
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedConsultation, setSelectedConsultation] = React.useState<Consultations | null>(null);
+    const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
+    const [viewConsultation, setViewConsultation] = React.useState<Consultations | null>(null);
 
     const handleEdit = (editconsultation: Consultations) => {
         setSelectedConsultation(editconsultation);
@@ -436,17 +417,32 @@ const ConsultationIndex: React.FC = () => {
                                                 <td className="px-4 py-2">{SERVICE_TYPE_LABELS[item.type_service]}</td>
                                                 <td className="px-4 py-2 text-center">
                                                     <div className="inline-flex items-center justify-center gap-2">
-                                                        <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
-                                                            <Eye size={16} />
-                                                        </Button>
+                                                        <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            setViewConsultation({
+                                                                ...item,
+                                                                pat_temperature: String(item.pat_temperature ?? ''),
+                                                                pat_heart_rate: String(item.pat_heart_rate ?? ''),
+                                                                pat_oxygen_sat: String(item.pat_oxygen_sat ?? ''),
+                                                                respiratoryRate: String(item.respiratoryRate ?? ''),
+                                                                pat_height: String(item.pat_height ?? ''),
+                                                                pat_weight: String(item.pat_weight ?? ''),
+                                                                pat_systolic_pres: String(item.pat_systolic_pres ?? ''),
+                                                                pat_diastolic_pres: String(item.pat_diastolic_pres ?? ''),
+                                                            } as unknown as Consultations);
+                                                            setIsViewModalOpen(true);
+                                                        }}
+                                                        className="text-blue-600 hover:bg-blue-500"
+                                                    >
+                                                        <Eye size={16} />
+                                                    </Button>
+                                                        
                                                         <Button
                                                             variant="outline"
                                                             onClick={() => {
                                                                 setSelectedConsultation({
                                                                     ...item,
-                                                                    id: (item as any).id ?? '',
-                                                                    consult_perm_id: (item as any).consult_perm_id ?? '',
-                                                                    consult_temp_id: (item as any).consult_temp_id ?? '',
                                                                     pat_temperature: String(item.pat_temperature ?? ''),
                                                                     pat_heart_rate: String(item.pat_heart_rate ?? ''),
                                                                     pat_oxygen_sat: String(item.pat_oxygen_sat ?? ''),
@@ -455,7 +451,7 @@ const ConsultationIndex: React.FC = () => {
                                                                     pat_weight: String(item.pat_weight ?? ''),
                                                                     pat_systolic_pres: String(item.pat_systolic_pres ?? ''),
                                                                     pat_diastolic_pres: String(item.pat_diastolic_pres ?? ''),
-                                                                });
+                                                                } as unknown as Consultations);
                                                                 setIsEditModalOpen(true);
                                                             }}
                                                             className="text-green-600 hover:bg-green-500"
@@ -497,6 +493,17 @@ const ConsultationIndex: React.FC = () => {
                     )}
                 </div>
             </div>
+            {/* ...existing modals... */}
+            {viewConsultation && (
+                <ViewConsultation
+                    isOpen={isViewModalOpen}
+                    onClose={() => {
+                        setIsViewModalOpen(false);
+                        setViewConsultation(null);
+                    }}
+                    consultation={viewConsultation}
+                />
+            )}
             {selectedConsultation && (
                 <EditConsultation
                     isOpen={isEditModalOpen}

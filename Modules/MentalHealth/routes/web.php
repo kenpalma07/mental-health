@@ -27,7 +27,7 @@ Route::get('/patients/{id}/patenroll', [PatientController::class, 'patenroll'])-
 // Patient Consultation
 Route::get('/consultations/{id}', [ConsultationController::class, 'index'])->name('consultations.index');
 Route::post('/consultations/store', [ConsultationController::class, 'store'])->name('consultations.store');
-Route::get('/consultations/{id}/edit-consultation', [ConsultationController::class, 'edit'])->name('consultation.edit');
+// Route::get('/consultations/{id}/edit-consultation', [ConsultationController::class, 'edit'])->name('consultation.edit');
 Route::put('/consultations/{id}', [ConsultationController::class, 'update'])->name('consultations.update');
 
 // Patient Consent
@@ -58,7 +58,8 @@ Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
 Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->name('assessment.show');
-
+Route::get('/assessments/{id}/edit', [AssessmentController::class, 'edit'])->name('assessments.edit');
+Route::put('/assessments/{id}', [AssessmentController::class, 'update'])->name('assessments.update'); // <-- And this for saving edits
 
 //pharma
 Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');

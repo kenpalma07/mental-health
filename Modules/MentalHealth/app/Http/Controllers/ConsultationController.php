@@ -82,11 +82,23 @@ class ConsultationController extends Controller
             'consult_type_code' => 'required|string',
             'to_consult_code' => 'required|string',
             'type_service' => 'required|string',
+            'pat_temperature' => 'nullable|numeric',
+            'pat_heart_rate' => 'nullable|integer',
+            'pat_oxygen_sat' => 'nullable|integer',
+            'respiratoryRate' => 'nullable|integer',
+            'pat_systolic_pres' => 'nullable|integer',
+            'pat_diastolic_pres' => 'nullable|integer',
+            'pat_height' => 'nullable|numeric',
+            'pat_weight' => 'nullable|numeric',
+            'pat_BMI' => 'required|string',
+            'BMI_cat_code' => 'required|string',
+            'chief_complaint' => 'required|string',
         ]);
 
         $consultation = Consultation::findOrFail($id);
         $consultation->update($validated);
 
-        return redirect()->route('consultations.index', ['id' => $id])->with('success', 'Employee updated successfully!');
+        return redirect()->route('consultations.index', ['id' => $consultation->consult_temp_id])
+            ->with('success', 'Consultation updated successfully!');
     }
 }

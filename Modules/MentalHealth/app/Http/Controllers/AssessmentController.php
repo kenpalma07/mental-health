@@ -62,8 +62,6 @@ class AssessmentController extends Controller
         ]);
     }
 
-
-
     public function show($id)
     {
         $patient = MasterPatient::find($id);
@@ -245,7 +243,39 @@ class AssessmentController extends Controller
         return response()->json([
             'success' => true,
             'redirect_url' => route('patitrforms.index', $request->pat_temp_id) . '?consult_date_assess=' . $request->consult_date_assess,
-        ]);   
+        ]);
+    }
 
+    public function edit($id)
+    {
+        $assessment = MentalAssessmentForm::findOrFail($id);
+        $patient = MasterPatient::find($assessment->pat_perm_id);
+
+        $assessment->mns_data = $assessment->mns_data ? json_decode($assessment->mns_data, true) : [];
+
+        return Inertia::render('MentalHealth::Assessment/EditAssessmentForms', [
+            'assessment' => $assessment,
+            'patient' => $patient,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $assessment = MentalAssessmentForm::findOrFail($id);
+
+        $validated = $request->validate([
+            'assessment_physical_health' => 'nullable|string|max:250',
+            'management_physical_health' => 'nullable|string|max:250',
+            // ... other fields ...
+        ]);
+
+        $assessment->update($validated);
+
+        // Return JSON for AJAX requests
+        return response()->json([
+            'success' => true,
+            'message' => 'Assessment updated successfully.',
+            'redirect_url' => route('assessment.show', $assessment->pat_perm_id),
+        ]);
     }
 }
