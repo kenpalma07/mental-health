@@ -2,7 +2,14 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, PageProps, MentalAssessmentForm } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
-
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -39,18 +46,18 @@ const OtherIndex: React.FC = () => {
                                 X
                             </button>
                         </div>
-                        <table className="min-w-full table-auto border border-gray-300 text-sm">
-                            <thead>
-                                <tr className="bg-black text-sm text-white">
-                                    <th className="border px-4 py-2">Date</th>
-                                    <th className="border px-4 py-2">Referral Choice</th>
-                                    <th className="border px-4 py-2">Referred FHUD</th>
-                                    <th className="border px-4 py-2">Referral Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-black text-white text-sm">
+                                    <TableHead className="border px-4 py-2 text-white">Date</TableHead>
+                                    <TableHead className="border px-4 py-2 text-white">Referral Choice</TableHead>
+                                    <TableHead className="border px-4 py-2 text-white">Referred FHUD</TableHead>
+                                    <TableHead className="border px-4 py-2 text-white">Referral Remarks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {assessments.map((item: MentalAssessmentForm) => (
-                                    <tr
+                                    <TableRow
                                         key={item.id}
                                         className="cursor-pointer text-xs hover:bg-gray-100"
                                         onClick={(): void => {
@@ -59,14 +66,16 @@ const OtherIndex: React.FC = () => {
                                             window.location.href = '/patients';
                                         }}
                                     >
-                                        <td className="text-black-600 border px-4 py-2">{item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_choice}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_fhud}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_reason}</td>
-                                    </tr>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_choice}</TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_fhud}</TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_reason}</TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 </div>
             )}

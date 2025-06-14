@@ -1,10 +1,16 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, MasterPatient,
-PharmaType }
-from '@/types';
+import type { BreadcrumbItem, MasterPatient, PharmaType } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 interface RxPrintProps {
     patient: MasterPatient
@@ -74,7 +80,6 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                             <div className="flex-shrink-0">
                                 <AppLogoDOH />
                             </div>
-
                         </div>
 
                         <div className="grid grid-cols-2 text-sm gap-y-2 mb-4">
@@ -105,28 +110,28 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
                             </div>
                         </div>
 
-                        <table className="w-full border border-black text-sm text-center mb-6">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="border border-black px-2 py-1 text">Medicine</th>
-                                    <th className="border border-black px-2 py-1">Quantity</th>
-                                    <th className="border border-black px-2 py-1">Duration</th>
-                                    <th className="border border-black px-2 py-1">Dose Regimen (Intake|Frequency)</th>
-                                    <th className="border border-black px-2 py-1">Medication/Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table className="w-full border border-black text-sm text-center mb-6">
+                            <TableHeader>
+                                <TableRow className="bg-black">
+                                    <TableHead className="border border-black text-white px-2 py-1">Medicine</TableHead>
+                                    <TableHead className="border border-black text-white px-2 py-1">Quantity</TableHead>
+                                    <TableHead className="border border-black text-white px-2 py-1">Duration</TableHead>
+                                    <TableHead className="border border-black text-white px-2 py-1">Dose Regimen (Intake|Frequency)</TableHead>
+                                    <TableHead className="border border-black text-white px-2 py-1">Medication/Remarks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {meds.map((med, idx) => (
-                                    <tr key={idx}>
-                                        <td className="border border-black px-2 py-1 font-semibold text-xs">{med.phar_med}</td>
-                                        <td className="border border-black px-2 py-1 text-xs">{formatValue(med.phar_quantity)}</td>
-                                        <td className="border border-black px-2 py-1 text-xs">{`${formatValue(med.phar_dur)} ${med.phar_durUnit}`}</td>
-                                        <td className="border border-black px-2 py-1 text-xs">{`${formatValue(med.phar_intake)} ${med.phar_intakeUnit} in every ${formatValue(med.phar_freq)} ${med.phar_freqUnit}`}</td>
-                                        <td className="border border-black px-2 py-1 text-xs">{med.phar_remarks || ''}</td>
-                                    </tr>
+                                    <TableRow key={idx}>
+                                        <TableCell className="border border-black px-2 py-1 font-semibold text-xs">{med.phar_med}</TableCell>
+                                        <TableCell className="border border-black px-2 py-1 text-xs">{formatValue(med.phar_quantity)}</TableCell>
+                                        <TableCell className="border border-black px-2 py-1 text-xs">{`${formatValue(med.phar_dur)} ${med.phar_durUnit}`}</TableCell>
+                                        <TableCell className="border border-black px-2 py-1 text-xs">{`${formatValue(med.phar_intake)} ${med.phar_intakeUnit} in every ${formatValue(med.phar_freq)} ${med.phar_freqUnit}`}</TableCell>
+                                        <TableCell className="border border-black px-2 py-1 text-xs">{med.phar_remarks || ''}</TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
 
                         <div className="text-right text-sm mt-12 leading-tight">
                             <p>

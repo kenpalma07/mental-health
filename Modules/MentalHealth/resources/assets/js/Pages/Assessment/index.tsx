@@ -316,8 +316,13 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
         )}
 
         {currentStep === 4 && (
-          <SchedNxtVisit dateNxtVisit={dateNxtVisit}
-          setDateNxtVisit={setDateNxtVisit} />
+          <SchedNxtVisit
+            patientId={patient.id}
+            consultDate={consultation?.consult_date ?? ''}
+            previousVisits={[]} 
+            dateNxtVisit={dateNxtVisit}
+            setDateNxtVisit={setDateNxtVisit}
+          />
         )}
 
       </div>

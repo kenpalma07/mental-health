@@ -3,20 +3,32 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CalendarDays } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
+import { MentalAssessmentForm } from '@/types';
 
 type SchedNxtVisitProps = {
     dateNxtVisit: string;
     setDateNxtVisit: (value: string) => void;
     errors?: Record<string, string>;
+    patientId: number;
+    consultDate: string;
+    previousVisits: MentalAssessmentForm[];
 };
 
-export default function SchedNxtVisit({ dateNxtVisit, setDateNxtVisit, errors }: SchedNxtVisitProps) {
-    const visits = [
-        { id: 1, date: '2025-04-20', reason: '1st Visit Depression' },
-        { id: 2, date: '2025-03-18', reason: 'Follow-up Depression Visit' },
-        { id: 3, date: '2025-02-15', reason: 'Other Diagnosis' },
-    ];
-
+export default function SchedNxtVisit({
+    dateNxtVisit,
+    setDateNxtVisit,
+    errors,
+    consultDate,
+    previousVisits,
+}: SchedNxtVisitProps) {
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
     useEffect(() => {
@@ -25,6 +37,19 @@ export default function SchedNxtVisit({ dateNxtVisit, setDateNxtVisit, errors }:
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    // Filter and sort previous visits (exclude current consult_date)
+    const visits = previousVisits
+        .filter(
+            (item) =>
+                item.consult_date_assess &&
+                item.consult_date_assess < consultDate
+        )
+        .sort(
+            (a, b) =>
+                new Date(b.consult_date_assess).getTime() -
+                new Date(a.consult_date_assess).getTime()
+        );
 
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
     const currentYear = new Date().getFullYear();
@@ -43,22 +68,30 @@ export default function SchedNxtVisit({ dateNxtVisit, setDateNxtVisit, errors }:
                             <span>Previous Visits</span>
                         </div>
                         <div className="overflow-x-auto">
-                            <table className="min-w-full table-auto">
-                                <thead>
-                                    <tr className="border-b">
-                                        <th className="px-4 py-2 text-left text-sm font-semibold">Date</th>
-                                        <th className="px-4 py-2 text-left text-sm font-semibold">Reason</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {visits.map((visit) => (
-                                        <tr key={visit.id} className="border-b">
-                                            <td className="px-4 py-2 text-sm">{visit.date}</td>
-                                            <td className="px-4 py-2 text-sm">{visit.reason}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            <Table className="min-w-full table-auto">
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="px-4 py-2 text-left text-sm font-semibold">Date</TableHead>
+                                        <TableHead className="px-4 py-2 text-left text-sm font-semibold">Reason</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {visits.length === 0 ? (
+                                        <TableRow>
+                                            <TableCell colSpan={2} className="px-4 py-2 text-center text-sm">
+                                                No previous visits found.
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        visits.map((visit) => (
+                                            <TableRow key={visit.id} className="border-b">
+                                                <TableCell className="px-4 py-2 text-sm">{visit.consult_date_assess}</TableCell>
+                                                <TableCell className="px-4 py-2 text-sm">{visit.pres_comp_item || visit.pres_comp_label || 'N/A'}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    )}
+                                </TableBody>
+                            </Table>
                         </div>
                     </CardContent>
                 </Card>
@@ -84,7 +117,9 @@ export default function SchedNxtVisit({ dateNxtVisit, setDateNxtVisit, errors }:
                                     onChange={(e) => setDateNxtVisit(e.target.value)}
                                     className="mt-1"
                                 />
-                                {errors?.date_nxt_visit && <p className="mt-1 text-sm text-red-500">{errors.date_nxt_visit}</p>}
+                                {errors?.date_nxt_visit && (
+                                    <p className="mt-1 text-sm text-red-500">{errors.date_nxt_visit}</p>
+                                )}
                             </div>
                         </form>
                     </CardContent>

@@ -1,14 +1,26 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps,
-MasterPatient, Consultations,
-MentalAssessmentForm}
-from '@/types';
+import type {
+    BreadcrumbItem,
+    PageProps,
+    MasterPatient,
+    Consultations,
+    MentalAssessmentForm,
+} from '@/types';
 import { Head } from '@inertiajs/react';
 import ShowAssessmentForm from './ShowAssessmentForms';
 import TreatmentPlan from './TreatmentPlan';
 import AppLogos from '@/components/app-logo-itr';
 import { Button } from '@/components/ui/button';
 import { PrinterCheckIcon } from 'lucide-react';
+// Import your Table components (e.g., from shadcn/ui or your own)
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 interface Props extends PageProps {
     patient: MasterPatient;
@@ -31,26 +43,25 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
     ];
 
     const renderCheckbox = (label: string, selectedList: string | undefined) => {
-            const normalizedSelected =
-                selectedList?.split(',').map(item => item.trim().toLowerCase().replace(/[\s-]/g, '')) || [];
-            const normalizedLabel = label.toLowerCase().replace(/[\s-]/g, '');
+        const normalizedSelected =
+            selectedList?.split(',').map(item => item.trim().toLowerCase().replace(/[\s-]/g, '')) || [];
+        const normalizedLabel = label.toLowerCase().replace(/[\s-]/g, '');
 
-            const isVisited = normalizedLabel === 'visited' &&
-                (normalizedSelected.includes('followupvisit') ||
-                    normalizedSelected.includes('newadmission') ||
-                    normalizedSelected.includes('newconsultation'));
-    
-            const isChecked = normalizedSelected.includes(normalizedLabel) || isVisited;
-    
-            return (
-                <label key={label} className="flex items-center gap-1">
-                    <input type="checkbox" checked={isChecked} readOnly />
-                    <span className="font-bold">{label}</span>
-                </label>
-            );
-        };
+        const isVisited =
+            normalizedLabel === 'visited' &&
+            (normalizedSelected.includes('followupvisit') ||
+                normalizedSelected.includes('newadmission') ||
+                normalizedSelected.includes('newconsultation'));
 
+        const isChecked = normalizedSelected.includes(normalizedLabel) || isVisited;
 
+        return (
+            <label key={label} className="flex items-center gap-1">
+                <input type="checkbox" checked={isChecked} readOnly />
+                <span className="font-bold">{label}</span>
+            </label>
+        );
+    };
 
     function calculateAge(birthDateString: string) {
         if (!birthDateString) return '-';
@@ -71,22 +82,21 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
         <AppLayout breadcrumbs={breadcrumbs}>
             <style>
                 {`
-                @media print {
-                  body * {
-                    visibility: hidden;
-                  }
-                  .printable-area, .printable-area * {
-                    visibility: visible;
-                  }
-                  .printable-area {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                  }
-                    
-                }
-              `}
+          @media print {
+            body * {
+              visibility: hidden;
+            }
+            .printable-area, .printable-area * {
+              visibility: visible;
+            }
+            .printable-area {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+            }
+          }
+        `}
             </style>
             <Head title="ITR & Assessment Forms" />
             <div className="p-6 bg-white shadow rounded text-xs space-y-4">
@@ -98,10 +108,11 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                 </div>
                 <div className="printable-area">
                     <div className="p-6 bg-white shadow rounded-md text-sm">
-                        <table className="table-auto w-full border border-black text-left">
-                            <thead>
-                                <tr>
-                                    <th className="border border-black p-1">
+                        {/* Header Table */}
+                        <Table className="table-auto w-full border border-black text-left">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="border border-black p-1">
                                         <div className="flex items-center space-x-2">
                                             <AppLogos />
                                             <div>
@@ -110,168 +121,156 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                                 <span className="text-xs font-normal block">Kagawaran ng Kalusugan</span>
                                             </div>
                                         </div>
-                                    </th>
-
-
-                                    <th className="border border-black p-1 text-xs font-normal align-top">Family Serial Number</th>
-                                    <th className="border border-black p-1 text-xs font-normal align-top">Facility Code</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="p-1 text-center font-bold text-2xl" colSpan={8}>
+                                    </TableHead>
+                                    <TableHead className="border border-black p-1 text-xs font-normal align-top">Family Serial Number</TableHead>
+                                    <TableHead className="border border-black p-1 text-xs font-normal align-top">Facility Code</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell colSpan={8} className="p-1 text-center font-bold text-2xl">
                                         INDIVIDUAL TREATMENT RECORD
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
 
                         {/* I. PATIENT INFORMATION */}
-                        <table className="table-auto w-full border border-black text-left">
-                            <thead>
-                                <tr>
-                                    <th colSpan={6} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                        <Table className="table-auto w-full border border-black text-left">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead colSpan={6} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         I. Patient Information (Impormasyon ng Pasyente)
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="border border-black p-1">Last Name</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{patient.pat_lname}</td>
-                                    <td className="border border-black p-1">First Name</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{patient.pat_fname}</td>
-                                    <td className="border border-black p-1">Middle Name</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{patient.pat_mname}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black p-1">Suffix</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{patient.suffix_code || 'N/A'}</td>
-                                    <td className="border border-black p-1">Age</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{calculateAge(patient.pat_birthDate)}</td>
-                                    <td className="border border-black p-1">Residential Address</td>
-                                    <td className="border border-black p-1 font-bold uppercase">
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Last Name</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{patient.pat_lname}</TableCell>
+                                    <TableCell className="border border-black p-1">First Name</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{patient.pat_fname}</TableCell>
+                                    <TableCell className="border border-black p-1">Middle Name</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{patient.pat_mname}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Suffix</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{patient.suffix_code || 'N/A'}</TableCell>
+                                    <TableCell className="border border-black p-1">Age</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{calculateAge(patient.pat_birthDate)}</TableCell>
+                                    <TableCell className="border border-black p-1">Residential Address</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">
                                         {patient.patient_address}, {patient.bgycode}, {patient.citycode}, {patient.provcode}, {patient.zipcode}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
 
                         {/* II. CHU / RHU PERSONNEL ONLY */}
-                        <table className="table-auto w-full border border-black text-left">
-                            <thead>
-                                <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                        <Table className="table-auto w-full border border-black text-left">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         II. For CHU / RHU Personnel Only (para sa kinatawan ng CHU / RHU lamang)
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td className="border border-black p-1">Mode of Transaction</td>
-                                    <td className="border border-black p-1" colSpan={2}>
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Mode of Transaction</TableCell>
+                                    <TableCell className="border border-black p-1" colSpan={2}>
                                         <div className="flex gap-3 flex-wrap">
                                             {renderCheckbox('Walk-in', consultation?.consult_type_code)}
                                             {renderCheckbox('Visited', consultation?.consult_type_code)}
                                             {renderCheckbox('Referral', consultation?.consult_type_code)}
                                         </div>
-                                    </td>
-
+                                    </TableCell>
                                     {consultation?.consult_type_code === 'referral' ? (
                                         <>
-                                            <td className="border border-black p-1">Referred From</td>
-                                            <td className="border border-black p-1 font-bold uppercase">{patient?.provider_name || ''}</td>
-                                            <td className="border border-black p-1">Referred To</td>
-                                            <td className="border border-black p-1 font-bold uppercase" colSpan={2}>
+                                            <TableCell className="border border-black p-1">Referred From</TableCell>
+                                            <TableCell className="border border-black p-1 font-bold uppercase">{patient?.provider_name || ''}</TableCell>
+                                            <TableCell className="border border-black p-1">Referred To</TableCell>
+                                            <TableCell className="border border-black p-1 font-bold uppercase" colSpan={2}>
                                                 {latestAssessment?.ref_fhud || ''}
-                                            </td>
+                                            </TableCell>
                                         </>
                                     ) : (
-                                        <>
-                                            {/* If you want to leave empty cells to keep table layout consistent, add empty cells here */}
-                                            <td className="border border-black p-1" colSpan={5}></td>
-                                        </>
+                                        <TableCell className="border border-black p-1" colSpan={5}></TableCell>
                                     )}
-                                </tr>
-
-                                <tr>
-                                    <td className="border border-black p-1">Date of Consultation</td>
-                                    <td className="border border-black p-1 font-bold uppercase" colSpan={2}>{consultation?.consult_date || ''}</td>
-                                    <td className="border border-black p-1">Consultation Time</td>
-                                    <td className="border border-black p-1 font-bold uppercase">
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Date of Consultation</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase" colSpan={2}>{consultation?.consult_date || ''}</TableCell>
+                                    <TableCell className="border border-black p-1">Consultation Time</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">
                                         {consultation?.consult_time
-                                            ? new Date(`1970-01-01T${consultation.consult_time}`)
-                                                .toLocaleTimeString('en-PH', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    hour12: true,
-                                                    timeZone: 'Asia/Manila',
-                                                })
+                                            ? new Date(`1970-01-01T${consultation.consult_time}`).toLocaleTimeString('en-PH', {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: true,
+                                                timeZone: 'Asia/Manila',
+                                            })
                                             : ''}
-                                    </td>
-
-
-                                    <td className="border border-black p-1">Reason(s) for Referral</td>
-                                    <td className="border border-black p-1 font-bold uppercase" colSpan={2}>
+                                    </TableCell>
+                                    <TableCell className="border border-black p-1">Reason(s) for Referral</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase" colSpan={2}>
                                         {latestAssessment?.ref_reason || ''}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black p-1">Blood Pressure</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{consultation?.pat_systolic_pres || ''}/{consultation?.pat_diastolic_pres || ''}</td>
-                                    <td className="border border-black p-1">Temperature</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{consultation?.pat_temperature || ''}</td>
-                                    <td className="border border-black p-1">Height (cm)</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{consultation?.pat_height || ''}</td>
-                                    <td className="border border-black p-1">Weight (kg)</td>
-                                    <td className="border border-black p-1 font-bold uppercase">{consultation?.pat_weight || ''}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black p-1">Name of Attending Provider</td>
-                                    <td className="border border-black p-1 font-bold uppercase" colSpan={4}>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Blood Pressure</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{consultation?.pat_systolic_pres || ''}/{consultation?.pat_diastolic_pres || ''}</TableCell>
+                                    <TableCell className="border border-black p-1">Temperature</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{consultation?.pat_temperature || ''}</TableCell>
+                                    <TableCell className="border border-black p-1">Height (cm)</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{consultation?.pat_height || ''}</TableCell>
+                                    <TableCell className="border border-black p-1">Weight (kg)</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">{consultation?.pat_weight || ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">Name of Attending Provider</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase" colSpan={4}>
                                         {patient?.provider_name || ''}
-                                    </td>
-                                    <td className="border border-black p-1">Referred By</td>
-                                    <td className="border border-black p-1 font-bold uppercase" colSpan={3}>
+                                    </TableCell>
+                                    <TableCell className="border border-black p-1">Referred By</TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase" colSpan={3}>
                                         {latestAssessment?.phar_doc}
-                                    </td>
-                                </tr>
-                            </tbody>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
 
-                        </table>
-
-                        <table className="table-auto w-full border border-black text-left">
-                            <thead>
-                                <tr>
-                                    <th className="border border-black p-1 w-2/3">Nature of Visit</th>
-                                    <th className="border border-black p-1">Chief Complaint</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="border border-black p-1">
+                        {/* Nature of Visit and Chief Complaint */}
+                        <Table className="table-auto w-full border border-black text-left">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="border border-black p-1 w-2/3">Nature of Visit</TableHead>
+                                    <TableHead className="border border-black p-1">Chief Complaint</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1">
                                         <div className="flex gap-3 flex-wrap">
                                             {renderCheckbox('New Consultation', consultation?.consult_type_code)}
                                             {renderCheckbox('New Admission', consultation?.consult_type_code)}
                                             {renderCheckbox('Follow-up Visit', consultation?.consult_type_code)}
                                             {renderCheckbox('Referral', consultation?.consult_type_code)}
                                         </div>
-                                    </td>
-                                    <td className="border border-black p-1 font-bold uppercase">
+                                    </TableCell>
+                                    <TableCell className="border border-black p-1 font-bold uppercase">
                                         {consultation?.chief_complaint || ''}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase"> III. Type of Consultation/Purpose of Visit</th>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black p-1" colSpan={4}>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                        III. Type of Consultation/Purpose of Visit
+                                    </TableHead>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black p-1" colSpan={4}>
                                         <div className="grid grid-cols-4 gap-1">
                                             {[
-
                                                 'General', 'Prenatal', 'Dental Care', 'Child Care', 'Child Nutrition', 'Mental Health',
                                                 'Injury', 'Adult Immunization', 'Family Planning', 'Postpartum',
                                                 'Tuberculosis', 'Child Immunization', 'Sick Children', 'Fire Cracker Injury',
@@ -291,14 +290,15 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                                 </label>
                                             ))}
                                         </div>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <th colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">IV. Diagnosis</th>
-                                </tr>
-                                <tr>
-                                    <td className="align-top h-[90px] align-top">
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead colSpan={8} className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                        IV. Diagnosis
+                                    </TableHead>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="align-top h-[90px] align-top">
                                         <div className="flex gap-4 flex-wrap">
                                             <div className="font-bold uppercase">{latestAssessment?.diagnosis || ''}</div>
                                             <div>
@@ -308,18 +308,18 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                                 Description: <span className="font-bold uppercase text-xs">{latestAssessment?.icd_10_descrip || ''}</span>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         V. Medication/Treatment:
-                                    </th>
-                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                    </TableHead>
+                                    <TableHead className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         Name of Health Care Provider:
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black text-xs h-[80px] align-top uppercase">
+                                    </TableHead>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black text-xs h-[80px] align-top uppercase">
                                         {latestAssessment?.phar_med?.toUpperCase() || ''},{" "}
                                         {latestAssessment?.phar_intake ? parseFloat(latestAssessment.phar_intake).toString() : ''}{" "}
                                         {latestAssessment?.phar_intakeUnit?.toUpperCase() || ''} IN EVERY{" "}
@@ -328,40 +328,30 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                         {latestAssessment?.phar_dur ? parseFloat(latestAssessment.phar_dur).toString() : ''}{" "}
                                         {latestAssessment?.phar_durUnit?.toUpperCase() || ''}
                                         {latestAssessment?.phar_quantity ? `, (${parseFloat(latestAssessment.phar_quantity).toString()})-Total` : ''}
-                                    </td>
-
-                                    <td className="border border-black text-xs h-[80px] align-top uppercase">
+                                    </TableCell>
+                                    <TableCell className="border border-black text-xs h-[80px] align-top uppercase">
                                         {patient?.provider_name || ''}<br />
                                         {latestAssessment?.phar_doc || ''}
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         VI. Laboratory Findings/Impression:
-                                    </th>
-                                    <th className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
+                                    </TableHead>
+                                    <TableHead className="border border-black p-1 bg-black text-white text-xs font-semibold uppercase">
                                         Performed Laboratory Test:
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td className="border border-black text-xs h-[80px] align-top">
-
-                                    </td>
-                                    <td className="border border-black text-xs h-[80px] align-top">
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                                    </TableHead>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="border border-black text-xs h-[80px] align-top"></TableCell>
+                                    <TableCell className="border border-black text-xs h-[80px] align-top"></TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </div>
-                    <br></br>
-
+                    <br />
                     <ShowAssessmentForm assessments={assessments} patient={patient} />
-                    <br></br>
+                    <br />
                     <TreatmentPlan assessments={assessments} patient={patient} />
                 </div>
             </div>

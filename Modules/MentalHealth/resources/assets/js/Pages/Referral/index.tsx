@@ -20,8 +20,8 @@ const columns = {
     'Date Referred',
     'Patient Name',
     'Destination',
-    'Type',
-    'Reason',
+    'Facility From',
+    'Action',
   ],
   outgoing: [
     'Reference no',
@@ -138,13 +138,13 @@ const ReferralPage: React.FC<OutRefProps> = ({ referrals }) => {
             </div>
             {(activeTab === 'incoming' || activeTab === 'outgoing') && (
               <div className="flex items-center gap-4">
-                <button className="flex items-center gap-1 text-black-600 hover:text-green-700 font-semibold">
+                <button className="flex items-center gap-1 text-green-600 hover:text-green-700 font-semibold">
                   <PlusCircle className="w-5 h-5" /> Add
                 </button>
-                <button className="flex items-center gap-1 text-black-600 hover:text-green-700 font-semibold">
+                <button className="flex items-center gap-1 text-green-600 hover:text-green-700 font-semibold">
                   <RotateCcw className="w-5 h-5" /> Reload
                 </button>
-                <button className="flex items-center gap-1 text-black-600 hover:text-green-700 font-semibold">
+                <button className="flex items-center gap-1 text-green-600 hover:text-green-700 font-semibold">
                   <QrCode className="w-5 h-5" /> Scan/Verify
                 </button>
               </div>
@@ -174,8 +174,8 @@ const ReferralPage: React.FC<OutRefProps> = ({ referrals }) => {
           {/* Table */}
           <div className="border rounded bg-white overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead>
-                <tr className="bg-gray-100">
+              <thead className="border-b bg-black text-xs text-white">
+                <tr>
                   {columns[activeTab].map((col) => (
                     <th key={col} className="border px-2 py-1 font-semibold text-left">
                       {col} <span className="text-gray-400 cursor-pointer">↕</span>
