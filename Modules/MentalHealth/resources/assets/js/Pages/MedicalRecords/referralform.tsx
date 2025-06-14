@@ -10,6 +10,14 @@ import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -109,52 +117,52 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
 
             <form className="p-4 max-w-5xl mx-auto text-sm print:text-xs">
               <h2 className="font-bold text-xl mb-4 text-center uppercase">Referral Form</h2>
-              <table className="w-full table-fixed border border-collapse border-black mb-8">
-                <thead>
-                  <tr className="bg-black text-white">
-                    <th colSpan={6} className="border border-black p-1 text-left font-bold">
+              <Table className="w-full table-fixed border border-collapse border-black mb-8">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead colSpan={6} className=" bg-black text-white border border-black p-1 text-left font-bold">
                       <div className="flex justify-between items-center">
                         <span>Name of facility</span>
                         <span className="text-xs font-medium">Original / Copy</span>
                       </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className='text-sm'>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Referred by:</td>
-                    <td colSpan={2} className="border p-2">Name: <div className='text-xs font-bold'>{assessments.length > 0 ? assessments[0].phar_doc : 'N/A'}</div></td>
-                    <td colSpan={2} className="border p-2">Position: <div className='text-xs font-bold'>Doctor</div></td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Initiating facility (name and address):</td>
-                    <td colSpan={2} className="border p-2 text-xs font-bold">{patient.provider_name}</td>
-                    <td colSpan={2} className="border p-2">Date of referral: <div className='text-xs font-bold'>{assessments.length > 0 ? assessments[0].consult_date_assess : 'N/A'}</div></td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Telephone arrangements made:</td>
-                    <td colSpan={2} className="border p-2">
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className='text-sm'>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Referred by:</TableCell>
+                    <TableCell colSpan={2} className="border p-2">Name: <div className='text-xs font-bold'>{assessments.length > 0 ? assessments[0].phar_doc : 'N/A'}</div></TableCell>
+                    <TableCell colSpan={2} className="border p-2">Position: <div className='text-xs font-bold'>Doctor</div></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Initiating facility <br /> <span className="text-xs italic">(name and address):</span></TableCell>
+                    <TableCell colSpan={2} className="border p-2 text-xs font-bold">{patient.provider_name}</TableCell>
+                    <TableCell colSpan={2} className="border p-2">Date of referral: <div className='text-xs font-bold'>{assessments.length > 0 ? assessments[0].consult_date_assess : 'N/A'}</div></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Telephone arrangements made:</TableCell>
+                    <TableCell colSpan={2} className="border p-2">
                       <label className="mr-4">
                         <input type="checkbox" className="mr-1" /> Yes
                       </label>
                       <label>
                         <input type="checkbox" className="mr-1" /> No
                       </label>
-                    </td>
-                    <td colSpan={2} className="border p-2">Facility Tel No.:</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2 align-top">Referred to facility (name and address):</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold">{assessments.length > 0 ? assessments[0].ref_fhud : 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Service user name:</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold">{fullName}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Identity number:</td>
-                    <td colSpan={2} className="border p-2 text-xs font-bold">{assessments.length > 0 ? assessments[0].consultation_id : 'N/A'}</td>
-                    <td colSpan={2} className="border p-2">
+                    </TableCell>
+                    <TableCell colSpan={2} className="border p-2">Facility Tel No.:</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2 align-top">Referred to facility <br /> <span className="text-xs italic">(name and address):</span></TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold">{assessments.length > 0 ? assessments[0].ref_fhud : 'N/A'}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Service user name:</TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold">{fullName}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Identity number:</TableCell>
+                    <TableCell colSpan={2} className="border p-2 text-xs font-bold">{assessments.length > 0 ? assessments[0].consultation_id : 'N/A'}</TableCell>
+                    <TableCell colSpan={2} className="border p-2">
                       Sex:
                       <label className="ml-2">
                         <input
@@ -174,27 +182,27 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                         />{' '}
                         Female
                       </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Address:</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold">{fullAddress}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Mental and physical health history:</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold">
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Address:</TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold">{fullAddress}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Mental and physical health history:</TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold">
                       {assessments.length > 0 ? assessments[0].assessment_physical_health : 'N/A'}
                       <br />
                       {assessments.length > 0 ? assessments[0].management_physical_health : 'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Assessment findings:</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold">{assessments.map((a, i) => <div key={i}>{a.diagnosis}</div>)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Any treatment provided:</td>
-                    <td colSpan={4} className="border p-2">
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Assessment findings:</TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold">{assessments.map((a, i) => <div key={i}>{a.diagnosis}</div>)}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Any treatment provided:</TableCell>
+                    <TableCell colSpan={4} className="border p-2">
                       {assessments.length > 0 ? (
                         <>
                           {assessments[0].phar_med},{" "}
@@ -206,142 +214,142 @@ const ReferralFormIndex: React.FC<ReferralFormProps> = ({
                       ) : (
                         'N/A'
                       )}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Reason for referral:</td>
-                    <td colSpan={4} className="border p-2 text-xs font-bold"> {assessments.length > 0 ? assessments[0].ref_reason : 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2} className="border p-2">Documents accompanying referral:</td>
-                    <td colSpan={4} className="border p-2"></td>
-                  </tr>
-                  <tr className="h-16">
-                    <td colSpan={2} className="border p-2 align-top">Print name, sign and date:</td>
-                    <td colSpan={2} className="border p-2 align-top">Name:</td>
-                    <td className="border p-2 align-top">Signature:</td>
-                    <td className="border p-2 align-top">Date:</td>
-                  </tr>
-                </tbody>
-              </table>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Reason for referral:</TableCell>
+                    <TableCell colSpan={4} className="border p-2 text-xs font-bold"> {assessments.length > 0 ? assessments[0].ref_reason : 'N/A'}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} className="border p-2">Documents accompanying referral:</TableCell>
+                    <TableCell colSpan={4} className="border p-2"></TableCell>
+                  </TableRow>
+                  <TableRow className="h-16">
+                    <TableCell colSpan={2} className="border p-2 align-top">Print name, sign and date:</TableCell>
+                    <TableCell colSpan={2} className="border p-2 align-top">Name:</TableCell>
+                    <TableCell className="border p-2 align-top">Signature:</TableCell>
+                    <TableCell className="border p-2 align-top">Date:</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
               {/* BACK REFERRAL */}
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-black text-white">
-                    <th colSpan={6} className="border border-gray-700 p-1 text-left font-bold">
+              <Table className="w-full border-collapse">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead colSpan={6} className="bg-black text-white border border-gray-700 p-1 text-left font-bold">
                       <div className="flex justify-between items-center">
                         <span>Back Referral from facility</span>
                         <span className="text-xs font-medium">Original / Copy</span>
                       </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Back-referral from facility<br />
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Back-referral from facility<br />
                       <small className="italic">(name)</small>
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}></td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Tel No.:</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black  w-1/3" rowSpan={2}>Reply from<br />
+                    </TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={2}></TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={2}>Tel No.:</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black  w-1/3" rowSpan={2}>Reply from<br />
                       <small className="italic">(person completing form)</small>
-                    </td>
-                    <td className="p-2 border border-black" colSpan={4}>
+                    </TableCell>
+                    <TableCell className="p-2 border border-black" colSpan={4}>
                       <label className="block ">Name:</label>
-                    </td>
-                    <td className="p-2 border border-black" colSpan={2}>
+                    </TableCell>
+                    <TableCell className="p-2 border border-black" colSpan={2}>
                       <label className="block ">Date</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black" colSpan={3}>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black" colSpan={3}>
                       <label className="block ">Position</label>
-                    </td>
-                    <td className="p-2 border border-black" colSpan={2}>
+                    </TableCell>
+                    <TableCell className="p-2 border border-black" colSpan={2}>
                       <label className="block ">Specialty</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>To initiating facility:<br />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={2}>To initiating facility:<br />
                       <small className="italic">(name and address)</small>
-                    </td>
-                    <td colSpan={4} className="p-2 border border-black"></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Service user name:</td>
-                    <td colSpan={4} className="p-2 border border-black"></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black " colSpan={2}>Identity number:</td>
-                    <td colSpan={2} className="p-2 border border-black"></td>
-                    <td className="p-2 border border-black" colSpan={2}>Age:
+                    </TableCell>
+                    <TableCell colSpan={4} className="p-2 border border-black"></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black font-bold w-1/3" colSpan={2}>Service user name:</TableCell>
+                    <TableCell colSpan={4} className="p-2 border border-black"></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black " colSpan={2}>Identity number:</TableCell>
+                    <TableCell colSpan={2} className="p-2 border border-black"></TableCell>
+                    <TableCell className="p-2 border border-black" colSpan={2}>Age:
                       <label className="mr-2">
                         <input type="radio" name="backsex" value="M" className="mr-1" />{' '}M
                       </label>
                       <label>
                         <input type="radio" name="backsex" value="F" className="mr-1" />{' '} F
                       </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Address:</td>
-                    <td colSpan={4} className="p-2 border border-black"></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>This person was seen by:<br />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Address:</TableCell>
+                    <TableCell colSpan={4} className="p-2 border border-black"></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>This person was seen by:<br />
                       <small className="italic">(name and position)</small>
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={3}></td>
-                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Mental and physical health history<br />
+                    </TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={3}></TableCell>
+                    <TableCell className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black font-bold w-1/3" colSpan={2}>Mental and physical health history<br />
                       <small className="italic">(include substance use, medical history, family history)</small>
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black font-bold w-1/3" colSpan={2}>Assessment findings</td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black  w-1/3" colSpan={2}>Diagnosis</td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Treatment plan and follow-up:</td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Medication prescribed:</td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Psychological intervention recommended:</td>
-                    <td className="p-2 border border-black w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Please continue with:<br />
+                    </TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black font-bold w-1/3" colSpan={2}>Assessment findings</TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={2}>Diagnosis</TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Treatment plan and follow-up:</TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Medication prescribed:</TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Psychological intervention recommended:</TableCell>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Please continue with:<br />
                       <small className="italic">(medications, prescriptions, psychological care, follow-up)</small>
-                    </td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={4}></td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black w-1/3" colSpan={2}>Refer back to:</td>
-                    <td className="p-2 border border-black  w-1/3" colSpan={3}></td>
-                    <td className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-black" colSpan={2}>Print name, sign and date:</td>
-                    <td colSpan={2} className="p-2 border border-black w-1/3">Name:</td>
-                    <td className="p-2 border border-black " colSpan={1}>Signature:</td>
-                    <td className="p-2 border border-black " colSpan={1}>Date:</td>
-                  </tr>
-                </tbody>
-              </table>
+                    </TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={4}></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black w-1/3" colSpan={2}>Refer back to:</TableCell>
+                    <TableCell className="p-2 border border-black  w-1/3" colSpan={3}></TableCell>
+                    <TableCell className="p-2 border border-black italic w-1/8" colSpan={1}>on date:</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="p-2 border border-black" colSpan={2}>Print name, sign and date:</TableCell>
+                    <TableCell colSpan={2} className="p-2 border border-black w-1/3">Name:</TableCell>
+                    <TableCell className="p-2 border border-black " colSpan={1}>Signature:</TableCell>
+                    <TableCell className="p-2 border border-black " colSpan={1}>Date:</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
               <div className="mt-4 text-right"></div>
             </form>
           </div>

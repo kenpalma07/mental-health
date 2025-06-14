@@ -1,19 +1,25 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, MasterPatient,
-MedicationRecord, MentalAssessmentForm }
-from '@/types';
+import type { BreadcrumbItem, MasterPatient, MedicationRecord, MentalAssessmentForm } from '@/types';
 import React from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
+import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Forms', href: '#' },
   { title: 'Medical Records', href: '/medrecords' },
   { title: 'Medication Card', href: '/medcard' },
 ];
-
 
 interface MedicationCardProps {
   patient: MasterPatient;
@@ -28,9 +34,8 @@ const medcardindex: React.FC<MedicationCardProps> = ({
 }) => {
   const phar_doc = assessments[0]?.phar_doc || '';
   const fullName = [patient.pat_fname, patient.pat_mname, patient.pat_lname]
-  .filter(Boolean).join(' ');
-  const fullAddress = [patient.patient_address, patient.bgycode,
-  patient.citycode, patient.provcode]
+    .filter(Boolean).join(' ');
+  const fullAddress = [patient.patient_address, patient.bgycode, patient.citycode, patient.provcode]
     .filter(Boolean)
     .join(', ');
 
@@ -63,40 +68,40 @@ const medcardindex: React.FC<MedicationCardProps> = ({
                   <h2 className="font-bold mb-2 text-gray-800">Patient Info</h2>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-white-700">Name</label>
+                    <Label className="block text-sm font-semibold text-white-700">Name</Label>
                     <p className="w-full border-b border-black px-1 py-0.5 text-sm">{fullName}</p>
                   </div>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Address</label>
+                    <Label className="block text-sm font-semibold text-gray-700">Address</Label>
                     <p className="w-full border-b border-black px-1 py-0.5 text-sm">{fullAddress}</p>
                   </div>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Phone</label>
+                    <Label className="block text-sm font-semibold text-gray-700">Phone</Label>
                     <p className="w-full border-b border-black px-1 py-0.5 text-sm">{patient.pat_mobile ?? ''}</p>
                   </div>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Birthdate</label>
+                    <Label className="block text-sm font-semibold text-gray-700">Birthdate</Label>
                     <p className="w-full border-b border-black px-1 py-0.5 text-sm">{patient.pat_birthDate ?? ''}</p>
                   </div>
 
                   <div className="mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Doctor</label>
+                    <Label className="block text-sm font-semibold text-gray-700">Doctor</Label>
                     <p className="w-full border-b border-black px-1 py-0.5 text-sm">{phar_doc}</p>
                   </div>
                 </div>
 
                 <div className="w-1/3 p-4 border border-gray-200 rounded-xl shadow-sm bg-gray-50 text-center">
                   <div className="flex items-center justify-between mb-2">
-                    <AppLogoDOH/>
-                    <AppLogoBP/>
+                    <AppLogoDOH />
+                    <AppLogoBP />
                   </div>
                   <h6 className="text-lg font-bold text-gray-900">MEDICATION CARD</h6>
                   <p className="mt-2 text-sm text-gray-700">{patient.provider_name}</p>
                   <div className="mt-4 border-t border-gray-300 w-full pt-2 text-sm text-gray-700">
-                    {phar_doc}<br></br>
+                    {phar_doc}<br />
                     Authorized Signature
                   </div>
                 </div>
@@ -108,40 +113,41 @@ const medcardindex: React.FC<MedicationCardProps> = ({
             <div className="border border-gray-300 ring-1 ring-gray-200 p-4 shadow-md rounded-2xl bg-white">
               <h2 className="text-center font-bold text-gray-800 mb-4 text-lg">MEDICATION</h2>
               <div className="overflow-x-auto">
-                <table className="table-auto w-full border-collapse text-sm">
-                  <thead>
-                    <tr className="bg-black text-white">
-                      {["Name of Drug", "Date", "Dose/Strength", "Given/ Total Quantity", "Signature"].map((label, idx) => (
-                        <th key={idx} className="border border-gray-300 px-2 py-1 font-semibold">{label}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className=" bg-black text-whiteborder border-gray-300 px-2 py-1 font-semibold">Name of Drug</TableHead>
+                      <TableHead className="bg-black text-white border border-gray-300 px-2 py-1 font-semibold">Date</TableHead>
+                      <TableHead className="bg-black text-white border border-gray-300 px-2 py-1 font-semibold">Dose/Strength</TableHead>
+                      <TableHead className="bg-black text-white border border-gray-300 px-2 py-1 font-semibold">Given/ Total Quantity</TableHead>
+                      <TableHead className="bg-black text-white border border-gray-300 px-2 py-1 font-semibold">Signature</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {medicationRecords.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="border border-gray-300 p-2 text-center text-gray-500">
+                      <TableRow>
+                        <TableCell colSpan={5} className="border border-gray-300 p-2 text-center text-gray-500">
                           No medication records available.
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ) : (
                       medicationRecords.map((med, index) => (
-                        <tr key={index} className="even:bg-gray-50">
-                          <td className="border border-gray-300 p-1">{med.phar_med}</td>
-                          <td className="border border-gray-300 p-1">{med.phar_date}</td>
-                          <td className="border border-gray-300 p-1">
+                        <TableRow key={index} className="even:bg-gray-50">
+                          <TableCell className="border border-gray-300 p-1">{med.phar_med}</TableCell>
+                          <TableCell className="border border-gray-300 p-1">{med.phar_date}</TableCell>
+                          <TableCell className="border border-gray-300 p-1">
                             {`${formatNum(med.phar_intake)} ${med.phar_intakeUnit} in every ${formatNum(med.phar_freq)} ${med.phar_freqUnit} for ${formatNum(med.phar_dur)} ${med.phar_durUnit}`}
-                          </td>
-                          <td className="border border-gray-300 p-1">{formatNum(med.phar_quantity)}</td>
-                          <td className="border border-gray-300 p-1">{phar_doc}</td>
-                        </tr>
+                          </TableCell>
+                          <TableCell className="border border-gray-300 p-1">{formatNum(med.phar_quantity)}</TableCell>
+                          <TableCell className="border border-gray-300 p-1">{phar_doc}</TableCell>
+                        </TableRow>
                       ))
                     )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           </div>
-          
 
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import React, { useEffect } from 'react';
 
 interface Props {
@@ -34,9 +35,9 @@ const AssessPhyHealth: React.FC<Props> = ({ data, setData, errors = {} }) => {
             <div className="bg-gray-48 p-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="flex flex-col">
-                        <label htmlFor="assessment_physical_health" className="mb-1 text-sm font-medium text-gray-600">
+                        <Label htmlFor="assessment_physical_health" className="mb-1 text-sm font-medium text-gray-600">
                             Assessment of Physical Health
-                        </label>
+                        </Label>
                         <Textarea
                             id="assessment_physical_health"
                             value={data.assessment_physical_health}
@@ -51,9 +52,9 @@ const AssessPhyHealth: React.FC<Props> = ({ data, setData, errors = {} }) => {
                     </div>
 
                     <div className="flex flex-col">
-                        <label htmlFor="management_physical_health" className="mb-1 text-sm font-medium text-gray-600">
+                        <Label htmlFor="management_physical_health" className="mb-1 text-sm font-medium text-gray-600">
                             Management of Physical Health
-                        </label>
+                        </Label>
                         <Textarea
                             id="management_physical_health"
                             value={data.management_physical_health}

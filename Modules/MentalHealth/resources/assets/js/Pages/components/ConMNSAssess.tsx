@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-
 import React, { useEffect } from 'react';
 import categoriesData from '../json/categories.json';
 import {

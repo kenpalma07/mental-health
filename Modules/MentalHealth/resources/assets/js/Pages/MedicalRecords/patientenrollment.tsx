@@ -5,6 +5,14 @@ import type { BreadcrumbItem, MasterPatient } from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import AppLogos from '@/components/app-logo-itr';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -74,10 +82,10 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                         </div>
                     </div>
 
-                    <table className="table-auto w-full border border-black text-left">
-                        <tbody>
-                            <tr>
-                                <th className="border border-black p-1">
+                    <Table className="table-auto w-full border border-black text-left">
+                        <TableBody>
+                            <TableRow>
+                                <TableHead className="border border-black p-1">
                                     <div className="flex items-center space-x-6">
                                         <AppLogos />
                                         <div>
@@ -86,83 +94,82 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                             <span className="text-xs font-normal block">Kagawaran ng Kalusugan</span>
                                         </div>
                                     </div>
-                                </th>
-
-
-                                <th className="border border-black p-1 text-xs font-normal align-top">Family Serial Number</th>
-                                <th className="border border-black p-1 text-xs font-normal align-top">Facility Code</th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td className="p-1 text-center font-bold text-xl" colSpan={6}>
+                                </TableHead>
+                                <TableHead className="border border-black p-1 text-xs font-normal align-top">Family Serial Number
+                                </TableHead>
+                                <TableHead className="border border-black p-1 text-xs font-normal align-top">Facility Code
+                                </TableHead>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="p-1 text-center font-bold text-xl" colSpan={6}>
                                     PATIENT ENROLLMENT RECORD
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
 
-                        </tbody>
-                    </table>
+                        </TableBody>
+                    </Table>
                     {/* I. PATIENT INFORMATION */}
-                    <table className="table-auto w-full border border-black text-left">
-                        <thead>
-                            <tr className="bg-black text-white">
-                                <th colSpan={6} className="p-2 font-semibold text-xs">
+                    <Table className="table-auto w-full border border-black text-left">
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead colSpan={6} className="bg-black text-white p-2 font-semibold text-xs">
                                     I. Patient Information <span className='text-italic'><small className='italic'>(Impormasyon ng Pasyente)</small></span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Last Name <br></br><small className='italic'>(Apelyedo)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_lname}</td>
-                                <td className="border border-black p-1 text-xs">Suffix <br></br><small className='italic'>(e.g,Jr.,Sr.,II,III)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.suffix_code}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">First Name <br></br><small className='italic'>(Pangalan)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_fname}</td>
-                                <td colSpan={3} className="border border-black p-1 text-xs "><small className='italic'>Please write Maiden Name (for married women)
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Last Name <br></br><small className='italic'>(Apelyedo)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_lname}</TableCell>
+                                <TableCell className="border border-black p-1 text-xs">Suffix <br></br><small className='italic'>(e.g,Jr.,Sr.,II,III)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.suffix_code}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">First Name <br></br><small className='italic'>(Pangalan)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_fname}</TableCell>
+                                <TableCell colSpan={3} className="border border-black p-1 text-xs "><small className='italic'>Please write Maiden Name (for married women)
                                     Pangalan sa pagkadalaga (para sa mga babaeng may asawa)</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Middle Name <br></br><small className='italic'>(Gitnang)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_mname}</td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">Data from Maiden Name</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Sex <br></br><small className='italic'>(Kasarian)</small></td>
-                                <td className="border border-black p-1" colSpan={2}>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Middle Name <br></br><small className='italic'>(Gitnang)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_mname}</TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">Data from Maiden Name</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Sex <br></br><small className='italic'>(Kasarian)</small></TableCell>
+                                <TableCell className="border border-black p-1" colSpan={2}>
                                     <div className="flex gap-3 flex-wrap text-xs">
                                         {renderCheckbox('Female', patient.sex_code === 'F' ? 'Female' : '')}
                                         {renderCheckbox('Male', patient.sex_code === 'M' ? 'Male' : '')}
                                     </div>
-                                </td>
+                                </TableCell>
 
-                                <td className="border border-black p-1 text-xs">Mother`s Full Name <br></br><small className='italic'>(Kumpletong Pangalan ng Ina)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_fname} {patient.mot_mname} {patient.mot_lname}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">BirthDate <br></br><small className='italic'>(Petsa ng Kapanganakan/Edad)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{age}</td>
-                                <td rowSpan={3} className="border border-black p-1 text-xs">Residential Address <br></br><small className='italic'>(Tirahan o Lokasyon)</small></td>
-                                <td rowSpan={3} className="border border-black p-1 font-bold uppercase text-xs">{patient.patient_address}
+                                <TableCell className="border border-black p-1 text-xs">Mother`s Full Name <br></br><small className='italic'>(Kumpletong Pangalan ng Ina)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_fname} {patient.mot_mname} {patient.mot_lname}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">BirthDate <br></br><small className='italic'>(Petsa ng Kapanganakan/Edad)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{age}</TableCell>
+                                <TableCell rowSpan={3} className="border border-black p-1 text-xs">Residential Address <br></br><small className='italic'>(Tirahan o Lokasyon)</small></TableCell>
+                                <TableCell rowSpan={3} className="border border-black p-1 font-bold uppercase text-xs">{patient.patient_address}
                                     {patient.bgycode} {patient.citycode} {patient.provcode} {patient.regcode}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Birth Place <br></br> <small className='italic'>(Lugar ng Kapanganakan)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_birthplace}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Blood Type <br></br> <small className='italic'>(Uri ng Dugo)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs">{patient.bloodtype_code}</td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={3} className="border border-black p-1 text-xs">
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Birth Place <br></br> <small className='italic'>(Lugar ng Kapanganakan)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_birthplace}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Blood Type <br></br> <small className='italic'>(Uri ng Dugo)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs">{patient.bloodtype_code}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell rowSpan={3} className="border border-black p-1 text-xs">
                                     Civil Status <br />
                                     <small className="italic">(Katayuang Sibil)</small>
-                                </td>
-                                <td className="border border-black p-1" rowSpan={3} colSpan={2}>
+                                </TableCell>
+                                <TableCell className="border border-black p-1" rowSpan={3} colSpan={2}>
                                     <div className="text-xs">
                                         <div className="flex gap-3 flex-wrap mb-1">
                                             {renderCheckbox('Single', patient.civil_stat_code === 'sin' ? 'Single' : '')}
@@ -175,41 +182,41 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                             {renderCheckbox('Co-Habitation', patient.civil_stat_code === 'coh' ? 'Co-Habitation' : '')}
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
 
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Contact Number <br></br> <small className='italic'>(Numero)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_mobile}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">DSWD NHTS?</td>
-                                <td className="border border-black p-1">
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Contact Number <br></br> <small className='italic'>(Numero)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_mobile}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">DSWD NHTS?</TableCell>
+                                <TableCell className="border border-black p-1">
                                     <div className="flex gap-3 flex-wrap text-xs">
                                         {renderCheckbox('Yes', 'Yes')}
                                         {renderCheckbox('No', 'sNo')}
                                     </div>
-                                </td>
-                            </tr>
-                            <tr className="bg-black text-white">
-                                <th colSpan={6} className="p-2 font-semibold text-xs">
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <th colSpan={6} className="bg-black text-white p-2 font-semibold text-xs">
                                     II. Spouse Information <small className='italic'>(Impormasyon ng Asawa if Applicable)</small>
                                 </th>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Spouse`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan ng Asawa)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></td>
-                                <td className="border border-black p-1 text-xs">Facility Household Number <br></br> <small className='italic'>(Numero ng Sambahayan ng Pasilidad)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></td>
-                            </tr>
-                            <tr className="bg-black text-white">
-                                <th colSpan={6} className="p-2 font-semibold text-xs">
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Spouse`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan ng Asawa)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></TableCell>
+                                <TableCell className="border border-black p-1 text-xs">Facility Household Number <br></br> <small className='italic'>(Numero ng Sambahayan ng Pasilidad)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <th colSpan={6} className=" bg-black text-white p-2 font-semibold text-xs">
                                     III. Other Patient Information <small className='italic'>(Ibang Impormasyon)</small>
                                 </th>
-                            </tr>
-                            <tr>
-                                <td rowSpan={4} className="border border-black p-1 text-xs">Educational Attainment <br></br> <small className='italic'>(Pagkamit ng Edukasyon)</small></td>
-                                <td className="border border-black p-1" rowSpan={4} colSpan={2}>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell rowSpan={4} className="border border-black p-1 text-xs">Educational Attainment <br></br> <small className='italic'>(Pagkamit ng Edukasyon)</small></TableCell>
+                                <TableCell className="border border-black p-1" rowSpan={4} colSpan={2}>
                                     <div className="text-xs">
                                         <div className="flex gap-3 flex-wrap mb-1">
                                             {renderCheckbox('No Formal Education', 'sSingle')}
@@ -222,41 +229,41 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                             {renderCheckbox('Post Graduate', 'sCo-Habitation')}
                                         </div>
                                     </div>
-                                </td>
+                                </TableCell>
 
-                                <td className="border border-black p-1 text-xs">4Ps Member?</td>
-                                <td className="border border-black p-1">
+                                <TableCell className="border border-black p-1 text-xs">4Ps Member?</TableCell>
+                                <TableCell className="border border-black p-1">
                                     <div className="flex gap-3 flex-wrap text-xs">
                                         {renderCheckbox('Yes', patient.type_of_membership === 'INP' ? 'Yes' : '')}
                                         {renderCheckbox('No', patient.type_of_membership === '' ? 'No' : '')}
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Household No.: <br></br> <small className='italic'>(Numero ng Pasilidad)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs"></td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Philhealth Member.: <br></br> <small className='italic'>(Miyembro ba ng Philhealth)</small></td>
-                                <td className="border border-black p-1">
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Household No.: <br></br> <small className='italic'>(Numero ng Pasilidad)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs"></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Philhealth Member.: <br></br> <small className='italic'>(Miyembro ba ng Philhealth)</small></TableCell>
+                                <TableCell className="border border-black p-1">
                                     <div className="flex gap-3 flex-wrap text-xs">
                                         {renderCheckbox('Yes', patient.phic_member === 'Y' ? 'Yes' : '')}
                                         {renderCheckbox('No', patient.phic_member === 'N' ? 'No' : '')}
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Status Type <br></br> <small className='italic'>(Uri ng Pagkabilang)</small></td>
-                                <td className="border border-black p-1">
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Status Type <br></br> <small className='italic'>(Uri ng Pagkabilang)</small></TableCell>
+                                <TableCell className="border border-black p-1">
                                     <div className="flex gap-3 flex-wrap text-xs">
                                         {renderCheckbox('Member', patient.philhealth_status_code === 'M' ? 'Member' : '')}
                                         {renderCheckbox('Dependent', patient.philhealth_status_code === 'D' ? 'Dependent' : '')}
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={5} className="border border-black p-1 text-xs">Employment Status <br></br> <small className='italic'>(Katayuan ng Trabaho)</small></td>
-                                <td className="border border-black p-1" rowSpan={5} colSpan={2}>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell rowSpan={5} className="border border-black p-1 text-xs">Employment Status <br></br> <small className='italic'>(Katayuan ng TableRowabaho)</small></TableCell>
+                                <TableCell className="border border-black p-1" rowSpan={5} colSpan={2}>
                                     <div className="text-xs">
                                         <div className="flex gap-3 flex-wrap mb-1">
                                             {renderCheckbox('Student', patient.occupation_code === 'Student' ? 'Student' : '')}
@@ -268,50 +275,50 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                             {renderCheckbox('Retired', patient.occupation_code === 'Retired' ? 'Retired' : '')}
                                         </div>
                                     </div>
-                                </td>
+                                </TableCell>
 
-                                <td className="border border-black p-1 text-xs">Philhealth No.: <br></br> <small className='italic'>(Numero ng Pagkabilang)</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_philhealth}</td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={4} className="border border-black p-1 text-xs">If Member, <br></br> <small className='italic'>please indicate category</small></td>
-                                <td className="border border-black p-1 font-bold uppercase text-xs"><span>FE-Private:</span></td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 font-bold uppercase text-xs"><span>FE-Government:</span></td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1  uppercase text-xs"><span>IE:</span> <span className='font-bold text-xs'>{[patient.type_of_membership === 'INP' ? 'INDIGENT' : '']}</span></td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 font-bold uppercase text-xs"><span>Others:</span></td>
-                            </tr>
-                            <tr className="bg-black text-white">
-                                <th colSpan={6} className="p-2 font-semibold text-xs">
+                                <TableCell className="border border-black p-1 text-xs">Philhealth No.: <br></br> <small className='italic'>(Numero ng Pagkabilang)</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs">{patient.pat_philhealth}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell rowSpan={4} className="border border-black p-1 text-xs">If Member, <br></br> <small className='italic'>please indicate category</small></TableCell>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs"><span>FE-Private:</span></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs"><span>FE-Government:</span></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1  uppercase text-xs"><span>IE:</span> <span className='font-bold text-xs'>{[patient.type_of_membership === 'INP' ? 'INDIGENT' : '']}</span></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 font-bold uppercase text-xs"><span>Others:</span></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <th colSpan={6} className="bg-black text-white p-2 font-semibold text-xs">
                                     IV. FAMILY MEMBER <small className='italic'>(Impormasyon ng Pamilya)</small>
                                 </th>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Father`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan Ng Ama)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_fname} {patient.fat_mname} {patient.fat_lname}</td>
-                                <td className="border border-black p-1 text-xs">Mother`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan Ng Ina)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_fname} {patient.mot_mname} {patient.mot_lname}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Contact No.:<br></br> <small className='italic'>(Numero Ng Ama)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_contact}</td>
-                                <td className="border border-black p-1 text-xs">Contact No.:<br></br> <small className='italic'>(Numero Ng Ina)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_contact}</td>
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Adress: <br></br><small className='italic'>(Lokasyon Ng Ama)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_address}</td>
-                                <td className="border border-black p-1 text-xs">Address: <br></br><small className='italic'>(Lokasyon Ng Ina)</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_address}</td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={2} className="border border-black p-1 text-xs">Relationship to the Patient <br></br> <small className='italic'>(Kaugnayan sa Pasiyente)</small></td>
-                                <td className="border border-black p-1" rowSpan={2} colSpan={2}>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Father`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan Ng Ama)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_fname} {patient.fat_mname} {patient.fat_lname}</TableCell>
+                                <TableCell className="border border-black p-1 text-xs">Mother`s Full Name <br></br> <small className='italic'>(Kumpletong Pangalan Ng Ina)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_fname} {patient.mot_mname} {patient.mot_lname}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Contact No.:<br></br> <small className='italic'>(Numero Ng Ama)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_contact}</TableCell>
+                                <TableCell className="border border-black p-1 text-xs">Contact No.:<br></br> <small className='italic'>(Numero Ng Ina)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_contact}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Adress: <br></br><small className='italic'>(Lokasyon Ng Ama)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.fat_address}</TableCell>
+                                <TableCell className="border border-black p-1 text-xs">Address: <br></br><small className='italic'>(Lokasyon Ng Ina)</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs">{patient.mot_address}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell rowSpan={2} className="border border-black p-1 text-xs">Relationship to the Patient <br></br> <small className='italic'>(Kaugnayan sa Pasiyente)</small></TableCell>
+                                <TableCell className="border border-black p-1" rowSpan={2} colSpan={2}>
                                     <div className="text-xs">
                                         <div className="flex gap-3 flex-wrap mb-1">
                                             {renderCheckbox('Father', '')}
@@ -325,20 +332,20 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                             {renderCheckbox('Guardian', '')}
                                         </div>
                                     </div>
-                                </td>
+                                </TableCell>
 
-                            </tr>
-                            <tr>
-                                <td className="border border-black p-1 text-xs">Primary Care Benefit <br></br> <small className='italic'>(PCB Member)?:</small></td>
-                                <td colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></td>
-                            </tr>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="border border-black p-1 text-xs">Primary Care Benefit <br></br> <small className='italic'>(PCB Member)?:</small></TableCell>
+                                <TableCell colSpan={2} className="border border-black p-1 font-bold uppercase text-xs"></TableCell>
+                            </TableRow>
 
-                            <tr className="bg-black text-white">
-                                <th colSpan={6} className="p-2 font-semibold text-xs">
+                            <TableRow>
+                                <th colSpan={6} className="bg-black text-white p-2 font-semibold text-xs">
                                     V. PATIENT CONSENT <small className='italic'>(Pahintulot ng Pasyente)</small>
                                 </th>
-                            </tr>
-                            <tr>
+                            </TableRow>
+                            <TableRow>
                                 {/* English Consent */}
                                 <td colSpan={3} className="border border-black p-1 text-xs align-top">
                                     <span className="block font-semibold">IN ENGLISH:</span>
@@ -387,7 +394,7 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                         Dagdag pa rito, pinahihintulutan ko ang CHO/RHU na i-encode ang impormasyon tungkol sa aking sarili at ang
                                         mga nakalap na datos kaugnay ng mga sintomas ng sakit at konsultasyon para sa nasabing sistema ng impormasyon.
                                     </p>
-                                    
+
                                     <p className="block text-center mt-2">
                                         Nais kong maipabatid sa akin ang mga resulta ng medikal na pagsusuri na may kinalaman sa akin o sa aking mga
                                         direktang anak. Maaari ko ring bawiin ang aking pahintulot sa CHO/RHU anumang oras, nang hindi kinakailangang
@@ -403,14 +410,14 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                            </TableRow>
 
-                            <tr>
+                            <TableRow>
                                 <td colSpan={6} className="border border-black p-1 text-xs text-right italic">iClinicSys Information System/Form 1</td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
         </AppLayout>

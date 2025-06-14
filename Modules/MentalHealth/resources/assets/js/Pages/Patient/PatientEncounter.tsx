@@ -3,7 +3,14 @@ import { MasterPatient } from '@/types';
 import { Dialog } from '@headlessui/react';
 import { BookCopyIcon, X } from 'lucide-react';
 import * as React from 'react';
-
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 interface Props {
     open: boolean;
@@ -43,28 +50,28 @@ const PatientEncounter: React.FC<Props> = ({ open, onClose, patients, onRegister
 
                 {patients.length > 0 ? (
                     <div className="max-h-64 overflow-x-auto overflow-y-auto">
-                        <table className="min-w-full border border-gray-200 bg-white text-left text-sm">
-                            <thead className="sticky top-0 bg-gray-100">
-                                <tr>
-                                    <th className="border-b px-4 py-2">Patient ID</th>
-                                    <th className="border-b px-4 py-2">Name</th>
-                                    <th className="border-b px-4 py-2">Birthdate</th>
-                                    <th className="border-b px-4 py-2">Sex</th>
-                                    <th className="border-b px-4 py-2 text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table className="min-w-full border border-gray-200 bg-white text-left text-sm">
+                            <TableHeader className="sticky top-0">
+                                <TableRow>
+                                    <TableHead className="bg-black text-white border-b px-4 py-2">Patient ID</TableHead>
+                                    <TableHead className="bg-black text-white border-b px-4 py-2">Name</TableHead>
+                                    <TableHead className="bg-black text-white border-b px-4 py-2">Birthdate</TableHead>
+                                    <TableHead className="bg-black text-white border-b px-4 py-2">Sex</TableHead>
+                                    <TableHead className="bg-black text-white border-b px-4 py-2 text-right">Action</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {patients.map((patient) => (
-                                    <tr key={patient.id} className="border-b text-sm hover:bg-gray-50">
-                                        <td className="px-4 py-2 text-sm">{patient.master_patient_perm_id}</td>
-                                        <td className="px-4 py-2 text-sm">
+                                    <TableRow key={patient.id} className="border-b text-sm hover:bg-gray-50">
+                                        <TableCell className="px-4 py-2 text-sm">{patient.master_patient_perm_id}</TableCell>
+                                        <TableCell className="px-4 py-2 text-sm">
                                             {patient.pat_lname}, {patient.pat_fname} {patient.pat_mname}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">{patient.pat_birthDate ? formatDate(patient.pat_birthDate) : ''}</td>
-                                        <td className="px-4 py-2 text-sm">
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2 text-sm">{patient.pat_birthDate ? formatDate(patient.pat_birthDate) : ''}</TableCell>
+                                        <TableCell className="px-4 py-2 text-sm">
                                             {patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'Other'}
-                                        </td>
-                                        <td className="px-4 py-2 text-right">
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2 text-right">
                                             <Button
                                                 variant="outline"
                                                 onClick={() => handleConsultation(patient.id)}
@@ -73,11 +80,11 @@ const PatientEncounter: React.FC<Props> = ({ open, onClose, patients, onRegister
                                                 <BookCopyIcon className="h-2 w-2" />
                                                 -Medical Records
                                             </Button>
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 ) : (
                     <div>

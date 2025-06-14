@@ -136,6 +136,7 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
         return !selectedDiagnosis || !selectedIcdCode || !selectedMedicine || !intake || !frequency || !duration;
     };
 
+<<<<<<< HEAD
     const handleSubmit = () => {
         if (isFormIncomplete()) return;
 
@@ -190,6 +191,17 @@ export default function AssessmentIndex({ patient, consultation, facilities, emp
                 console.error(error);
             });
     };
+=======
+        {currentStep === 4 && (
+          <SchedNxtVisit
+            patientId={patient.id}
+            consultDate={consultation?.consult_date ?? ''}
+            previousVisits={[]} 
+            dateNxtVisit={dateNxtVisit}
+            setDateNxtVisit={setDateNxtVisit}
+          />
+        )}
+>>>>>>> ec09a1db86b1f6ffa34418eb2f91d37abacc827f
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

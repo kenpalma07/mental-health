@@ -106,7 +106,11 @@ const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, ed
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit(form);
+<<<<<<< HEAD
         setShowSuccess(true);
+=======
+        router.post
+>>>>>>> ec09a1db86b1f6ffa34418eb2f91d37abacc827f
     };
 
     if (!isOpen) return null;

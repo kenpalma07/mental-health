@@ -264,6 +264,8 @@ export interface MentalAssessmentForm {
     link_status: string;
     special_pop: string;
     date_nxt_visit: string;
+    crisis_plan: string;
+    other: string;
 }
 
 
