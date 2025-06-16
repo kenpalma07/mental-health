@@ -40,7 +40,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     type="date"
                                     value={consultation.consult_date || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs font-bold"
                                 />
                             </div>
                             {/* Time of Consultation */}
@@ -53,7 +53,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     type="time"
                                     value={consultation.consult_time || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs font-bold"
                                 />
                             </div>
                             {/* Consultation Type */}
@@ -69,7 +69,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                         consultation.consult_type_code === 'walkin' ? 'Walk-in':
                                         consultation.consult_type_code === 'referral' ? 'Referral' : consultation.consult_type_code || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs  font-bold"
                                 />
                             </div>
                             {/* Consultation Case */}
@@ -81,7 +81,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="to_consult_code"
                                     value={consultation.to_consult_code || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs font-bold"
                                 />
                             </div>
                         </div>
@@ -96,7 +96,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="type_service"
                                     value={consultation.type_service || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-40 border border-white bg-white/50 text-xs font-bold"
                                 />
                             </div>
                         </div>
@@ -115,7 +115,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_temperature"
                                     value={consultation.pat_temperature || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs  font-bold"
                                 />
                             </div>
                             {/* Heart Rate (bpm) */}
@@ -127,7 +127,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_heart_rate"
                                     value={consultation.pat_heart_rate || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                 />
                             </div>
                             {/* O₂ Saturation (%) */}
@@ -139,7 +139,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_oxygen_sat"
                                     value={consultation.pat_oxygen_sat || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="O₂ Saturation (%)"
                                 />
                             </div>
@@ -152,7 +152,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="respiratoryRate"
                                     value={consultation.respiratoryRate || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="Respiratory Rate (rpm)"
                                 />
                             </div>
@@ -165,7 +165,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_systolic_pres"
                                     value={consultation.pat_systolic_pres || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="Systolic (e.g. 110)"
                                 />
                             </div>
@@ -178,7 +178,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_diastolic_pres"
                                     value={consultation.pat_diastolic_pres || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="Diastolic (e.g. 80)"
                                 />
                             </div>
@@ -198,7 +198,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_height"
                                     value={consultation.pat_height || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="Height (cm)"
                                 />
                             </div>
@@ -211,7 +211,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_weight"
                                     value={consultation.pat_weight || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="Weight (kg)"
                                 />
                             </div>
@@ -224,14 +224,14 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="pat_BMI"
                                     value={consultation.pat_BMI || ''}
                                     readOnly
-                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs"
+                                    className="text-dark-500 ml-2 w-28 rounded-md border border-white bg-white/50 text-xs font-bold"
                                     placeholder="BMI"
                                 />
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <label className="w-56"></label>
-                            <div className="text-xs text-gray-600 italic">{consultation.BMI_cat_code}</div>
+                            <div className="text-xs text-red-600 italic">{consultation.BMI_cat_code}</div>
                         </div>
                         <br />
                         <hr />
@@ -244,7 +244,7 @@ const ViewConsultation: React.FC<ViewConsultationProps> = ({ isOpen, onClose, co
                                     id="chief_complaint"
                                     value={consultation.chief_complaint || ''}
                                     readOnly
-                                    className="w-full rounded-md border-gray-300 bg-gray-100 text-xs shadow-sm"
+                                    className="w-full rounded-md border-gray-300 bg-gray-100 text-xs shadow-sm font-bold"
                                     placeholder="Enter Chief Complaint"
                                 />
                             </div>

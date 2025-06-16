@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Consultations, MasterPatient } from '@/types';
+import type { BreadcrumbItem, Consultations, IndexConsultation, MasterPatient } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import * as React from 'react';
 
@@ -22,32 +22,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const ConsultationIndex: React.FC = () => {
     const { props } = usePage<{
         patient: MasterPatient;
-        consultations: Consultation[];
+        consultations: IndexConsultation[];
     }>();
     const patient = props.patient;
     const [showForm, setShowForm] = React.useState(false);
-    type Consultation = {
-        consult_date: string;
-        consult_time: string;
-        consult_perm_id: string;
-        consult_type_code: string;
-        type_service: string;
-        to_consult_code: string;
-        chief_complaint: string;
-        pat_temperature: number;
-        pat_heart_rate: number;
-        pat_oxygen_sat: number;
-        respiratoryRate: number;
-        pat_height: number;
-        pat_weight: number;
-        pat_BMI: string;
-        BMI_cat_code: string;
-        pat_systolic_pres: number;
-        pat_diastolic_pres: number;
-        hasAssessment?: boolean;
-    };
+    
 
-    const [consultations, setConsultations] = React.useState<Consultation[]>(props.consultations || []);
+    const [consultations, setConsultations] = React.useState<IndexConsultation[]>(props.consultations || []);
     const [formData, setFormData] = React.useState({
         consult_date: '',
         consult_time: '',
@@ -73,10 +54,6 @@ const ConsultationIndex: React.FC = () => {
     const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
     const [viewConsultation, setViewConsultation] = React.useState<Consultations | null>(null);
 
-    const handleEdit = (editconsultation: Consultations) => {
-        setSelectedConsultation(editconsultation);
-        setIsEditModalOpen(true);
-    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -143,16 +120,16 @@ const ConsultationIndex: React.FC = () => {
             to_consult_code: formData.to_consult_code,
             type_service: formData.type_service,
             chief_complaint: formData.chief_complaint,
-            pat_temperature: parseFloat(formData.pat_temperature), // Ensure it's a number
-            pat_heart_rate: parseInt(formData.pat_heart_rate), // Ensure it's a number
-            pat_oxygen_sat: parseInt(formData.pat_oxygen_sat), // Ensure it's a number
-            respiratoryRate: parseInt(formData.respiratoryRate), // Ensure it's a number
-            pat_height: parseFloat(formData.pat_height), // Ensure it's a number
-            pat_weight: parseFloat(formData.pat_weight), // Ensure it's a number
+            pat_temperature: parseFloat(formData.pat_temperature), 
+            pat_heart_rate: parseInt(formData.pat_heart_rate), 
+            pat_oxygen_sat: parseInt(formData.pat_oxygen_sat), 
+            respiratoryRate: parseInt(formData.respiratoryRate), 
+            pat_height: parseFloat(formData.pat_height), 
+            pat_weight: parseFloat(formData.pat_weight),
             pat_BMI: formData.pat_BMI,
             BMI_cat_code: formData.BMI_cat_code,
-            pat_systolic_pres: parseInt(formData.pat_systolic_pres), // Ensure it's a number
-            pat_diastolic_pres: parseInt(formData.pat_diastolic_pres), // Ensure it's a number
+            pat_systolic_pres: parseInt(formData.pat_systolic_pres),
+            pat_diastolic_pres: parseInt(formData.pat_diastolic_pres), 
             master_patient_perm_id: patient.master_patient_perm_id,
             consult_temp_id: String(patient.id),
             pat_age_yr: years,
@@ -163,7 +140,7 @@ const ConsultationIndex: React.FC = () => {
 
         router.post('/consultations/store', newConsultation, {
             onSuccess: () => {
-                setConsultations((prev) => [...prev, newConsultation as Consultation]);
+                setConsultations((prev) => [...prev, newConsultation as IndexConsultation]);
                 setFormData({
                     consult_date: '',
                     consult_time: '',

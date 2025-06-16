@@ -268,35 +268,32 @@ export interface MentalAssessmentForm {
     other: string;
 }
 
-
 export interface MedicationRecord {
-  phar_med: string;
-  phar_date: string;
-  phar_intake: string;
-  phar_intakeUnit: string;
-  phar_dur: string;
-  phar_durUnit: string;
-  phar_freq: string;
-  phar_freqUnit: string;
-  phar_quantity: string;
-  given: string;
-  personnel: string;
+    phar_med: string;
+    phar_date: string;
+    phar_intake: string;
+    phar_intakeUnit: string;
+    phar_dur: string;
+    phar_durUnit: string;
+    phar_freq: string;
+    phar_freqUnit: string;
+    phar_quantity: string;
+    given: string;
+    personnel: string;
 }
-
 
 export interface TreatMedicationRecord {
-  phar_med?: string;
-  phar_intake?: string;
-  phar_intakeUnit?: string;
-  phar_dur?: string;
-  phar_durUnit?: string;
-  phar_freq?: string;
-  phar_freqUnit?: string;
-  phar_date?: string;
-  appointment?: string;
-  phar_quantity?: string;
+    phar_med?: string;
+    phar_intake?: string;
+    phar_intakeUnit?: string;
+    phar_dur?: string;
+    phar_durUnit?: string;
+    phar_freq?: string;
+    phar_freqUnit?: string;
+    phar_date?: string;
+    appointment?: string;
+    phar_quantity?: string;
 }
-
 
 export type PharmaType = {
     phar_id: number;
@@ -314,13 +311,12 @@ export type PharmaType = {
 };
 
 export type Referral = {
-  id: number;
-  patient_name: string;
-  referred_to: string;
-  referral_date: string;
-  status: string;
+    id: number;
+    patient_name: string;
+    referred_to: string;
+    referral_date: string;
+    status: string;
 };
-
 
 export type ReportPatient = {
     id: number;
@@ -369,7 +365,6 @@ export type MHMasterPatient = {
     };
 };
 
-
 export type MHTrackConsultation = {
     consult_perm_id: string;
     consult_date: string;
@@ -392,7 +387,6 @@ export type MHTrackPatient = {
     phar_intakeUnit: string;
     consultation?: MHTrackConsultation[];
 };
-
 
 export type SchoolMentalAssessmentForm = {
     diagnosis: string;
@@ -449,16 +443,37 @@ export interface ReferralData {
     reason_referral?: string;
     doc_accomp_referral: string;
     status_code: string;
-  }
-
-  export interface OutGoReferral {
-  id: number;
-  track_num: string;
-  consultation_id: string;
-  pat_fullname: string;
-  facility_name: string;
-  referral_facility_name: string;
-  date_ref: string;
-  status_code?: number;
-  ref_reason: string;
 }
+
+export interface OutGoReferral {
+    id: number;
+    track_num: string;
+    consultation_id: string;
+    pat_fullname: string;
+    facility_name: string;
+    referral_facility_name: string;
+    date_ref: string;
+    status_code?: number;
+    ref_reason: string;
+}
+
+export type IndexConsultation = {
+    consult_date: string;
+    consult_time: string;
+    consult_perm_id: string;
+    consult_type_code: string;
+    type_service: string;
+    to_consult_code: string;
+    chief_complaint: string;
+    pat_temperature: number;
+    pat_heart_rate: number;
+    pat_oxygen_sat: number;
+    respiratoryRate: number;
+    pat_height: number;
+    pat_weight: number;
+    pat_BMI: string;
+    BMI_cat_code: string;
+    pat_systolic_pres: number;
+    pat_diastolic_pres: number;
+    hasAssessment?: boolean;
+};

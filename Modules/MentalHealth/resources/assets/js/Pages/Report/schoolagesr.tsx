@@ -161,19 +161,19 @@ const SchoolAgeSRIndex: React.FC = () => {
                         <Table className="min-w-full text-left text-sm text-gray-700">
                             <TableHeader>
                                 <TableRow className="text-center">
-                                    <TableHead className="border-b bg-black text-xs text-white text-center rounded-tl-lg border p-2 text-xs">Date of Occurrence</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Patient Code Name</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Age</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Sex</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Address</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Contact No. of Guardian</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Grade/Year</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">School</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Place of Incidence</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Means of Suicide</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Existing Mental Health Issue? (Yes/No)</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center border p-2 text-xs">Validated by (Name & Position)</TableHead>
-                                    <TableHead className="border-b bg-black text-xs text-white text-center rounded-tr-lg border p-2 text-xs">Remarks</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center rounded-tl-lg border p-2 text-xs">Date of Occurrence</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Patient Code Name</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Age</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Sex</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Address</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Contact No. of Guardian</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Grade/Year</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">School</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Place of Incidence</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Means of Suicide</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Existing Mental Health Issue? (Yes/No)</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Validated by (Name & Position)</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center rounded-tr-lg border p-2 text-xs">Remarks</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
