@@ -13,16 +13,19 @@ import {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Others',
-        href: '/others',
+        title: 'Referral List Encounter',
+        href: '#',
     },
 ];
 
-const OtherIndex: React.FC = () => {
+const EncounterIndex: React.FC = () => {
     const { assessments } = usePage<PageProps<{ assessments: MentalAssessmentForm[] }>>().props;
     const [showModal, setShowModal] = React.useState(true);
 
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => {
+        setShowModal(false);
+        window.location.href = '/patients';
+    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -31,6 +34,17 @@ const OtherIndex: React.FC = () => {
         const yyyy = date.getFullYear();
         return `${mm}/${dd}/${yyyy}`;
     };
+
+    const filteredAssessments = React.useMemo(
+        () =>
+            assessments.filter(
+                (item: { ref_choice: string; ref_fhud: string; ref_reason: string; }) =>
+                    (item.ref_choice && item.ref_choice.trim() !== '') ||
+                    (item.ref_fhud && item.ref_fhud.trim() !== '') ||
+                    (item.ref_reason && item.ref_reason.trim() !== '')
+            ),
+        [assessments]
+    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -48,15 +62,15 @@ const OtherIndex: React.FC = () => {
                         </div>
                         <Table>
                             <TableHeader>
-                                <TableRow className="bg-black text-white text-sm">
-                                    <TableHead className="border px-4 py-2 text-white">Date</TableHead>
-                                    <TableHead className="border px-4 py-2 text-white">Referral Choice</TableHead>
-                                    <TableHead className="border px-4 py-2 text-white">Referred FHUD</TableHead>
-                                    <TableHead className="border px-4 py-2 text-white">Referral Remarks</TableHead>
+                                <TableRow >
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Date</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Choice</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referred FHUD</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Remarks</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {assessments.map((item: MentalAssessmentForm) => (
+                                {filteredAssessments.map((item: MentalAssessmentForm) => (
                                     <TableRow
                                         key={item.id}
                                         className="cursor-pointer text-xs hover:bg-gray-100"
@@ -69,9 +83,15 @@ const OtherIndex: React.FC = () => {
                                         <TableCell className="text-black-600 border px-4 py-2">
                                             {item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}
                                         </TableCell>
-                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_choice}</TableCell>
-                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_fhud}</TableCell>
-                                        <TableCell className="text-black-600 border px-4 py-2">{item.ref_reason}</TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_choice && item.ref_choice.trim() !== '' ? item.ref_choice : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_fhud && item.ref_fhud.trim() !== '' ? item.ref_fhud : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_reason && item.ref_reason.trim() !== '' ? item.ref_reason : ''}
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -83,4 +103,4 @@ const OtherIndex: React.FC = () => {
     );
 };
 
-export default OtherIndex;
+export default EncounterIndex;

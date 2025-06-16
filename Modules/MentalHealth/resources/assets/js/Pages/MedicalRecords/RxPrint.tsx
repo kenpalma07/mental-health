@@ -112,12 +112,12 @@ const RxPrint: React.FC<RxPrintProps> = ({ patient, date, meds }) => {
 
                         <Table className="w-full border border-black text-sm text-center mb-6">
                             <TableHeader>
-                                <TableRow className="bg-black">
-                                    <TableHead className="border border-black text-white px-2 py-1">Medicine</TableHead>
-                                    <TableHead className="border border-black text-white px-2 py-1">Quantity</TableHead>
-                                    <TableHead className="border border-black text-white px-2 py-1">Duration</TableHead>
-                                    <TableHead className="border border-black text-white px-2 py-1">Dose Regimen (Intake|Frequency)</TableHead>
-                                    <TableHead className="border border-black text-white px-2 py-1">Medication/Remarks</TableHead>
+                                <TableRow>
+                                    <TableHead className="border bg-black text-white px-2 py-1">Medicine</TableHead>
+                                    <TableHead className="border bg-black text-white px-2 py-1">Quantity</TableHead>
+                                    <TableHead className="border bg-black text-white px-2 py-1">Duration</TableHead>
+                                    <TableHead className="border bg-black text-white px-2 py-1">Dose Regimen (Intake|Frequency)</TableHead>
+                                    <TableHead className="border bg-black text-white px-2 py-1">Medication/Remarks</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

@@ -18,7 +18,7 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
   const medicines = [
     {
       start_date: '2025-01-01',
-      medicine: 'Amoxicillin',
+      medicine: 'Ongoing Development',
       dosage: '500mg',
       instructions: 'Take one capsule every 8 hours',
       quantity: 21,
@@ -26,7 +26,7 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
     },
     {
       start_date: '2025-01-05',
-      medicine: 'Ibuprofen',
+      medicine: 'Ongoing Development',
       dosage: '200mg',
       instructions: 'Take as needed for pain',
       quantity: 10,

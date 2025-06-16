@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, FHUD } from '@/types';
 import { Select } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Pencil, UserPlus } from 'lucide-react';
@@ -33,16 +33,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Add Patients', href: '/patients/create' },
 ];
 
-interface Facility {
-    fhudcode: string;
-    facility_name: string;
-    facility_address: string;
-    provider_name: string;
-}
-
 interface PageProps {
     nextId: string;
-    facilities: Facility[];
+    facilities: FHUD[];
     [key: string]: unknown;
 }
 

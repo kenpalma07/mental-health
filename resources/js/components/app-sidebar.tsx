@@ -61,7 +61,7 @@ const mainNavItems: NavItem[] = [
         icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Patient Schedule List', href: '/#' },
+            { title: 'Patient Schedule List', href: '/patSched' },
         ],
     },
 

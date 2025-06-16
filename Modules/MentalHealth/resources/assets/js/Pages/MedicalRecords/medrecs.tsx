@@ -201,13 +201,13 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
               <div className="overflow-x-auto rounded-lg shadow">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-green-100 text-xs uppercase text-gray-700">
-                      <TableHead className="px-2 py-2 text-left">Tracking #</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Date</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Treatment Avail</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Treatment Choice</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Diagnosis</TableHead>
-                      <TableHead className="px-2 py-2 text-center">Actions</TableHead>
+                    <TableRow className="uppercase text-gray-700">
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Tracking #</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Date</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Treatment Avail</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Treatment Choice</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Diagnosis</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-center">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -280,12 +280,12 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
               <div className="overflow-x-auto rounded-lg shadow">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-green-100 text-xs uppercase text-gray-700">
-                      <TableHead className="px-2 py-2 text-left">Health #</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Consult Date</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Consultation Type</TableHead>
-                      <TableHead className="px-2 py-2 text-left">Service Type</TableHead>
-                      <TableHead className="px-2 py-2 text-center">Actions</TableHead>
+                    <TableRow className="uppercase text-gray-700">
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Health #</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Consult Date</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Consultation Type</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Service Type</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-center">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

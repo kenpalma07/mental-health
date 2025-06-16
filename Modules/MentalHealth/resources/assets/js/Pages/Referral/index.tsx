@@ -17,7 +17,7 @@ interface OutRefProps {
 const columns = {
   incoming: [
     'Reference no',
-    'Date Referred',
+    'Date',
     'Patient Name',
     'Destination',
     'Facility From',
@@ -25,7 +25,7 @@ const columns = {
   ],
   outgoing: [
     'Reference no',
-    'Date Referred',
+    'Date',
     'Patient Name',
     'Destination',
     'Facility From',
@@ -33,7 +33,7 @@ const columns = {
   ],
   received: [
     'Reference no',
-    'Date Received',
+    'Date',
     'Patient Name',
     'Source',
     'Type',
@@ -177,7 +177,7 @@ const ReferralPage: React.FC<OutRefProps> = ({ referrals }) => {
               <thead className="border-b bg-black text-xs text-white">
                 <tr>
                   {columns[activeTab].map((col) => (
-                    <th key={col} className="border px-2 py-1 font-semibold text-left">
+                    <th key={col} className="border px-1 py-1 text-xs font-semibold text-left">
                       {col} <span className="text-gray-400 cursor-pointer">↕</span>
                     </th>
                   ))}

@@ -347,5 +347,10 @@ class PatientController extends Controller
             'patient' => $patient,
         ]);
     }
+
+        public function viewPatSched()
+    {
+        return Inertia::render('MentalHealth::SchedPat/index');
+    }
     
 }
