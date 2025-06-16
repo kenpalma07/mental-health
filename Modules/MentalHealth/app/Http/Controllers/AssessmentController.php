@@ -285,6 +285,10 @@ class AssessmentController extends Controller
         $assessment = MentalAssessmentForm::findOrFail($id);
         $patient = MasterPatient::find($assessment->pat_perm_id);
 
+        $consultation = \Modules\MentalHealth\Models\Consultation::where('consult_perm_id', $assessment->consultation_id ?? $assessment->consult_perm_id ?? null)
+            ->orderByDesc('date_entered')
+            ->first();
+
         // Load your categories.json config
         $categoriesJson = file_get_contents(base_path('Modules/MentalHealth/resources/assets/js/Pages/json/categories.json'));
         $categoriesData = json_decode($categoriesJson, true);
@@ -340,6 +344,20 @@ class AssessmentController extends Controller
                 ];
             });
 
+        // Fetch previous visits for this patient, excluding the current assessment
+        $previousVisits = \Modules\MentalHealth\Models\MentalAssessmentForm::where('pat_perm_id', $assessment->pat_perm_id)
+            ->where('id', '!=', $assessment->id)
+            ->orderByDesc('consult_date_assess')
+            ->get()
+            ->map(function ($visit) {
+                return [
+                    'id' => $visit->id,
+                    'consult_date_assess' => $visit->consult_date_assess,
+                    'pres_comp_item' => $visit->pres_comp_item,
+                    'pres_comp_label' => $visit->pres_comp_label,
+                ];
+            });
+
         // Pass $mnsData to your React page as 'assessment.mns_data'
         return Inertia::render('MentalHealth::Assessment/EditAssessmentForms', [
             'assessment' => [
@@ -380,10 +398,15 @@ class AssessmentController extends Controller
                 'phar_doc' => $assessment->phar_doc,
                 'is_dispense' => $assessment->is_dispense,
                 'phar_remarks' => $assessment->phar_remarks,
+
+                'date_nxt_visit' => $assessment->date_nxt_visit,
+                'previous_visits' => $previousVisits,
             ],
             'patient' => $patient,
             'facilities' => $facilities,
             'employees' => $employees,
+            'consultation' => $consultation,
+
             // ...other props...
         ]);
     }

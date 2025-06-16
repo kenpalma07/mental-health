@@ -4,12 +4,13 @@ import type { BreadcrumbItem, PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 import { Calendar, ChevronLeft, ChevronRight, Clipboard, Heart, RefreshCcw, Send, Stethoscope, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ManMNSAssess from '../components/ManMNSAssess';
 import PatientInfoHead from '../Forms/PatientInfoHead';
 import AssessPhyHealth from './components/AssessPhyHealth';
 import ConMNSAssess from './components/ConMNSAssess';
 import DiagMeds from './components/DiagMeds';
+import SchedNxtVisit from './components/SchedNxtVisit';
 import Stepper from './components/Stepper';
 
 interface Props extends PageProps {
@@ -41,6 +42,14 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         { title: 'Edit Assessment Forms', href: '#' },
     ];
 
+    useEffect(() => {
+        console.log('Initial physicalHealthData:', physicalHealthData);
+        console.log('Initial selfHarmData:', selfHarmData);
+        console.log('Initial mnsData:', mnsData);
+        console.log('Initial manMNSData:', manMNSData);
+        console.log('Initial medData:', medData);
+    }, []);
+
     const [currentStep, setCurrentStep] = useState(0);
 
     const [physicalHealthData, setPhysicalHealthData] = useState({
@@ -62,6 +71,7 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         self_sui_means: assessment.self_sui_means || '',
         self_sui_remarks: assessment.self_sui_remarks || '',
     });
+    const [dateNxtVisit, setDateNxtVisit] = useState(assessment.date_nxt_visit || '');
 
     // --- NEW: Med Data State ---
     const [medData, setMedData] = useState({
@@ -81,6 +91,10 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         dispense: assessment.is_dispense,
         remarks: assessment.phar_remarks,
     });
+
+    // --- Add these for SchedNxtVisit step ---
+    const errors = {}; // Replace with actual error state if needed
+    const previousVisits = assessment.previous_visits || []; // Replace with actual data if available
 
     const steps = [
         { label: 'Physical Health', icon: User },
@@ -146,6 +160,7 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
             dispense: '',
             remarks: '',
         });
+        setDateNxtVisit('');
     };
 
     // --- CLEAN HANDLE SUBMIT ---
@@ -173,6 +188,7 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
             is_dispense: medData.dispense,
             phar_remarks: medData.remarks,
             id: assessment.id,
+            date_nxt_visit: dateNxtVisit,
         };
 
         try {
@@ -252,8 +268,19 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
                         patient={patient}
                         isEdit={true}
                         initialData={medData}
-                        onSaved={setMedData} // always sync data
-                        onStepDone={() => setCurrentStep(currentStep + 1)} // only advance step on save
+                        onSaved={setMedData}
+                        onStepDone={() => setCurrentStep(currentStep + 1)}
+                    />
+                )}
+
+                {currentStep === 4 && (
+                    <SchedNxtVisit
+                        dateNxtVisit={dateNxtVisit}
+                        setDateNxtVisit={setDateNxtVisit}
+                        errors={errors}
+                        patientId={patient.id}
+                        consultDate={consultation?.consult_date ?? ''}
+                        previousVisits={previousVisits}
                     />
                 )}
             </div>

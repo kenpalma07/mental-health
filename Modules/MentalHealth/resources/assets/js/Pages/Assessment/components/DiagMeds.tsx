@@ -20,26 +20,43 @@ type DiagMedsProps = {
     isEdit?: boolean;
     initialData?: any;
     onSaved?: (updatedMedData: any) => void;
-    onStepDone?: () => void; // <-- add this
+    onStepDone?: () => void;
 };
 
-const DiagMeds: React.FC<DiagMedsProps> = ({ employees = [], consultation, patient, isEdit = false, initialData = {}, onSaved, onStepDone }) => {
+const DiagMeds: React.FC<DiagMedsProps> = ({
+    employees = [],
+    consultation,
+    patient,
+    isEdit = false,
+    initialData = {},
+    onSaved,
+    onStepDone,
+}) => {
     // State hooks, prefilled if editing
     const [selectedDiagnosis, setSelectedDiagnosis] = useState(initialData.diagnosis || '');
     const [selectedIcdCode, setSelectedIcdCode] = useState(initialData.icdCode || '');
     const [selectedIcdCodeDescrip, setSelectedIcdCodeDescrip] = useState(initialData.icdCodeDescrip || '');
-    const [selectedMedicine, setSelectedMedicine] = useState(initialData.medicine || '');
-    const [intake, setIntake] = useState(initialData.intake || '');
-    const [intakeUnit, setIntakeUnit] = useState(initialData.intakeUnit || '');
-    const [frequency, setFrequency] = useState(initialData.frequency || '');
-    const [frequencyUnit, setFrequencyUnit] = useState(initialData.frequencyUnit || '');
-    const [duration, setDuration] = useState(initialData.duration || '');
-    const [durationUnit, setDurationUnit] = useState(initialData.durationUnit || '');
-    const [pharDate, setPharDate] = useState(initialData.pharDate || '');
-    const [quantity, setQuantity] = useState(initialData.quantity || 0);
-    const [doctor, setDoctor] = useState(initialData.doctor || '');
-    const [dispense, setDispense] = useState(initialData.dispense || '');
-    const [remarks, setRemarks] = useState(initialData.remarks || '');
+
+    useEffect(() => {
+        console.log('Fetched consultation:', consultation);
+        console.log('Fetched patient:', patient);
+        console.log('Fetched employees:', employees);
+        console.log('Fetched initialData:', initialData);
+    }, []);
+
+    // Medicine fields always blank (not from initialData)
+    const [selectedMedicine, setSelectedMedicine] = useState('');
+    const [intake, setIntake] = useState('');
+    const [intakeUnit, setIntakeUnit] = useState('');
+    const [frequency, setFrequency] = useState('');
+    const [frequencyUnit, setFrequencyUnit] = useState('');
+    const [duration, setDuration] = useState('');
+    const [durationUnit, setDurationUnit] = useState('');
+    const [pharDate, setPharDate] = useState('');
+    const [quantity, setQuantity] = useState(0);
+    const [doctor, setDoctor] = useState('');
+    const [dispense, setDispense] = useState('');
+    const [remarks, setRemarks] = useState('');
 
     const diagnoses = [
         { label: 'Depression', icdKey: 'depression' },
@@ -188,29 +205,27 @@ const DiagMeds: React.FC<DiagMedsProps> = ({ employees = [], consultation, patie
             registered_at: pharDate,
         };
 
-        if (isEdit && initialData.id) {
-            router.post(`/pharma/update/${initialData.id}`, payload, {
-                onSuccess: () => {
-                    alert('Medicine Successfully Updated!');
-                    if (onStepDone) onStepDone(); // <-- advance step here
-                },
-                onError: (errors) => {
-                    console.error(errors);
-                    alert('Error updating medicine');
-                },
-            });
-        } else {
-            router.post('/pharma/store', payload, {
-                onSuccess: () => {
-                    alert('Medicine Successfully Saved!');
-                    if (onStepDone) onStepDone(); // <-- advance step here
-                },
-                onError: (errors) => {
-                    console.error(errors);
-                    alert('Error saving medicine');
-                },
-            });
-        }
+        router.post('/pharma/store', payload, {
+            onSuccess: () => {
+                alert('Medicine Successfully Saved!');
+                setSelectedMedicine('');
+                setIntake('');
+                setIntakeUnit('');
+                setFrequency('');
+                setFrequencyUnit('');
+                setDuration('');
+                setDurationUnit('');
+                setPharDate('');
+                setQuantity(0);
+                setDoctor('');
+                setDispense('');
+                setRemarks('');
+            },
+            onError: (errors) => {
+                console.error(errors);
+                alert('Error saving medicine');
+            },
+        });
     };
 
     return (
@@ -459,7 +474,7 @@ const DiagMeds: React.FC<DiagMedsProps> = ({ employees = [], consultation, patie
 
                 <Button onClick={handleSaveMedicine}>
                     <Send size={16} className="mr-2" />
-                    {isEdit ? 'Update Meds' : 'Save Meds'}
+                    Save Meds
                 </Button>
             </div>
 
