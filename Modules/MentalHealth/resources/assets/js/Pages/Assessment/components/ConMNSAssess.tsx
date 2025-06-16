@@ -44,6 +44,7 @@ interface Props {
     >;
 }
 
+
 const ConMNSAssess: React.FC<Props> = ({ data, setMNSData, setMNSDataFormatted, selfHarmData, setSelfHarmData }) => {
     const [openModal, setOpenModal] = React.useState(false);
 
@@ -51,10 +52,6 @@ const ConMNSAssess: React.FC<Props> = ({ data, setMNSData, setMNSDataFormatted, 
         console.log('Loaded MNS Data:', data);
         console.log('Loaded Self Harm Data:', selfHarmData);
     }, [data, selfHarmData]);
-
-    useEffect(() => {
-        console.log('Loaded MNS Data:', data);
-    }, [data]);
 
     useEffect(() => {
         if (setMNSDataFormatted) {
@@ -121,41 +118,6 @@ const ConMNSAssess: React.FC<Props> = ({ data, setMNSData, setMNSDataFormatted, 
 
     return (
         <div className="mt-2 w-full overflow-hidden rounded-lg border">
-            <div className="flex w-full items-center bg-blue-500 px-4 py-3">
-                <h6 className="w-full text-lg font-semibold text-white">
-                    II. Conduct an MNS Assessment
-                    <span className="text-sm italic"> (refer to mhGAP-IG version 2.0 p.9)</span>
-                </h6>
-            </div>
-            <div className="mt-4 rounded bg-white p-4 shadow">
-                <h5 className="mb-2 font-semibold text-blue-700">Selected Assessment Items:</h5>
-                {categoriesData.map(({ title, key, columnPrefix }) => (
-                    <div key={key} className="mb-2">
-                        <div className="font-semibold">{title}</div>
-                        {data[key] && data[key].length > 0 ? (
-                            <ul className="list-disc pl-5">
-                                {data[key].map((group, idx) => {
-                                    // Get the label and item array for this group
-                                    const label = group[`${columnPrefix}_label`] as string;
-                                    const items = group[`${columnPrefix}_item`] as string[];
-                                    return (
-                                        <li key={idx}>
-                                            <span className="font-medium">{label}:</span>{' '}
-                                            {Array.isArray(items) && items.length > 0 ? (
-                                                items.join(', ')
-                                            ) : (
-                                                <span className="text-gray-400 italic">None selected</span>
-                                            )}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        ) : (
-                            <div className="pl-5 text-gray-400 italic">No items selected.</div>
-                        )}
-                    </div>
-                ))}
-            </div>
             <div className="bg-gray-48 space-y-6 p-4">
                 <Label htmlFor="assessment" className="mb-1 text-sm font-medium text-gray-600">
                     Conduct MNS Assessment
@@ -296,7 +258,6 @@ const ConMNSAssess: React.FC<Props> = ({ data, setMNSData, setMNSDataFormatted, 
 
                                                                             <Button
                                                                                 onClick={() => {
-                                                                                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                                                                                     document.activeElement instanceof HTMLElement &&
                                                                                         document.activeElement.blur();
                                                                                     setOpenModal(false);
