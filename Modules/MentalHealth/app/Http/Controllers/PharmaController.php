@@ -65,4 +65,30 @@ class PharmaController extends Controller
             'meds' => $meds,
         ]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'patient_assess_phar_id' => 'required|string',
+            'phar_date' => 'required|date',
+            'pat_perm_id' => 'required|string',
+            'phar_med' => 'required|string',
+            'phar_intake' => 'nullable|numeric',
+            'phar_intakeUnit' => 'nullable|string',
+            'phar_freq' => 'nullable|numeric',
+            'phar_freqUnit' => 'nullable|string',
+            'phar_dur' => 'nullable|numeric',
+            'phar_durUnit' => 'nullable|string',
+            'phar_quantity' => 'nullable|numeric',
+            'phar_doc' => 'required|string',
+            'phar_remarks' => 'nullable|string',
+            'registered_at' => 'nullable|date',
+        ]);
+
+        $pharma = Pharma::findOrFail($id);
+
+        $pharma->update($validated);
+
+        return back()->with('success', 'Medicine Successfully Updated!');
+    }
 }
