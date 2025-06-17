@@ -66,15 +66,8 @@ Route::put('/assessments/{id}', [AssessmentController::class, 'update'])->name('
 Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');
 Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
 Route::get('/RxPrint/{id}', [PharmaController::class, 'RxPrint']);
+Route::put('/pharma/{id}', [PharmaController::class, 'update'])->name('pharma.update');
 
 //referral
 Route::post('/sendReferral/send', [ReferralController::class, 'store'])->name('sendReferral');
 Route::get('/Referral', [ReferralController::class, 'index'])->name('Referral.index');
-
-
-
-
-
-
-
-

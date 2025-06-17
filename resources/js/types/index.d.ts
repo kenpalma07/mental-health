@@ -112,6 +112,19 @@ export interface MasterPatient {
     fat_address: string;
     fat_contact: string;
     fat_deceased_status: string;
+
+    // Carer related fields
+    carer_fname: string;
+    carer_mname: string;
+    carer_lname: string;
+    carer_address: string;
+    carer_contact: string;
+    carer_relationship: string;
+    carer_suffix: string;
+    carer_birthdate: string;
+    carer_sex: 'M' | 'F';
+
+    // PhilHealth related fields
     phic_member: string;
     pat_philhealth: string;
     type_of_membership: string;
@@ -296,6 +309,7 @@ export interface TreatMedicationRecord {
 }
 
 export type PharmaType = {
+    id: number;
     phar_id: number;
     phar_date: string;
     phar_med: string;

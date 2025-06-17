@@ -69,6 +69,17 @@ class MasterPatient extends Model
         'fat_contact',
         'fat_deceased_status',
 
+        // Guardian/Carer Information
+        'carer_fname', //Carer's First Name
+        'carer_mname', //Carer's Middle Name
+        'carer_lname', //Carer's Last Name
+        'carer_suffix', //Carer's Suffix
+        'carer_sex', //Carer's Sex
+        'carer_address', //Carer's Address
+        'carer_relationship', //Carer's Relationship to Patient
+        'carer_contact', //Carer's Contact Number
+        'carer_birthdate', //Carer's Birth Date
+
         // PhilHealth
         'phic_member', //PhilHealth Member - Yes or No
         'pat_philhealth', //PhilHealth Number

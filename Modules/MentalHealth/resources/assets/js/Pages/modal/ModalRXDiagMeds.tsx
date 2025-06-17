@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PharmaType } from '@/types';
+import axios from 'axios';
 import { Pencil, Printer, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -15,7 +16,7 @@ interface ModalRXDiagMedsProps {
 const formatNumber = (value: string | number) => {
     const num = parseFloat(value as string);
     if (isNaN(num)) return '';
-    return num % 1 === 0 ? num.toString() : num.toFixed(2).replace(/\.00$/, '');
+    return num.toString();
 };
 
 const formatDate = (dateString: string) => {
@@ -49,6 +50,7 @@ const ModalRXDiagMedsEdit: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patien
     const pageSize = 5;
 
     const [editQuantity, setEditQuantity] = useState<number>(0);
+    const [localMeds, setLocalMeds] = useState<PharmaType[]>(meds);
 
     React.useEffect(() => {
         const intakeNum = parseFloat(editFields.phar_intake as string);
@@ -73,7 +75,7 @@ const ModalRXDiagMedsEdit: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patien
     // Filter and sort by latest date
     const filteredMeds = React.useMemo(
         () =>
-            meds
+            localMeds
                 .slice()
                 .sort((a, b) => new Date(b.phar_date).getTime() - new Date(a.phar_date).getTime())
                 .filter(
@@ -81,7 +83,7 @@ const ModalRXDiagMedsEdit: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patien
                         (med.phar_date ? formatDate(med.phar_date).includes(search) : false) ||
                         (med.phar_med && med.phar_med.toLowerCase().includes(search.toLowerCase())),
                 ),
-        [meds, search],
+        [localMeds, search],
     );
     const totalPages = Math.ceil(filteredMeds.length / pageSize);
     const paginatedMeds = React.useMemo(() => filteredMeds.slice((page - 1) * pageSize, page * pageSize), [filteredMeds, page, pageSize]);
@@ -101,10 +103,33 @@ const ModalRXDiagMedsEdit: React.FC<ModalRXDiagMedsProps> = ({ meds = [], patien
         setEditFields((prev) => ({ ...prev, [field]: value }));
     };
 
+    // Fetch updated medicines
+    const fetchMeds = async () => {
+        try {
+            const response = await axios.get(`/pharma/rxView/${patientId}`);
+            if (response.data && response.data.meds) {
+                setLocalMeds(response.data.meds);
+            }
+        } catch (error) {
+            alert('Failed to fetch updated medicines.');
+        }
+    };
+
     // Handle save/update
-    const handleSave = () => {
-        if (editMed && onUpdate) {
-            onUpdate({ ...editMed, ...editFields });
+    const handleSave = async () => {
+        if (editMed && editMed.id) {
+            try {
+                console.log('Sending to backend:', editFields);
+                await axios.put(`/pharma/${editMed.id}`, editFields);
+                alert('Medicine updated successfully!');
+                await fetchMeds();
+                if (onUpdate) onUpdate({ ...editMed, ...editFields });
+            } catch (error: any) {
+                alert('Failed to update medicine.');
+                if (error.response) {
+                    console.error(error.response.data);
+                }
+            }
         }
         setEditMed(null);
         setEditFields({});

@@ -118,6 +118,18 @@ class PatientController extends Controller
             'fat_deceased_status' => 'nullable|string|max:1',
             'registered_at' => 'nullable|date',
 
+            // Carer Information
+            'carer_fname' => 'required|string|max:255',
+            'carer_mname' => 'nullable|string|max:255',
+            'carer_lname' => 'required|string|max:255',
+            'carer_suffix' => 'required|string|max:10',
+            'carer_birthdate' => 'required|date',
+            'carer_sex' => 'required|string|max:255',
+            'carer_address' => 'required|string|max:255',
+            'carer_contact' => 'required|string|max:20',
+            'carer_relationship' => 'required|string|max:50',
+
+            // PhilHealth Information
             'phic_member' => 'nullable|in:Y,N',
             'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
