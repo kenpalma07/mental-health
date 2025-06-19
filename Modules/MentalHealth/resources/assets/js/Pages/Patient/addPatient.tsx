@@ -1079,7 +1079,7 @@ export default function AddPatient() {
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="pat_landline" className="w-40 text-sm font-medium text-gray-700">
-                                                Landline <span className="font-bold text-red-600">*</span>
+                                                Landline
                                             </Label>
                                             <Input
                                                 id="pat_landline"
@@ -1091,7 +1091,6 @@ export default function AddPatient() {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_landline} className="text-[10px] text-red-600" />
                                         </div>
                                     </div>
                                 </div>

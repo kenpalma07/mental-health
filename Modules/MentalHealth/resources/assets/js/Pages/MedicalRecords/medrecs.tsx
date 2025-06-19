@@ -59,7 +59,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
   // Assessment search and pagination
   const [searchDate, setSearchDate] = useState('');
   const [page, setPage] = useState(1);
-  const pageSize = 4;
+  const pageSize = 5;
   const filteredAssessments = assessments.filter(a =>
     a.consult_date_assess?.toLowerCase().includes(searchDate.toLowerCase())
   );
@@ -69,7 +69,7 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
   // Consultation search and pagination
   const [consultSearch, setConsultSearch] = useState('');
   const [consultPage, setConsultPage] = useState(1);
-  const consultPageSize = 4;
+  const consultPageSize = 5;
   const filteredConsultations = consultation.filter(c =>
     c.consult_date?.toLowerCase().includes(consultSearch.toLowerCase())
   );

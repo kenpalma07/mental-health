@@ -20,7 +20,6 @@ const columns = {
     'Date',
     'Patient Name',
     'Destination',
-    'Facility From',
     'Action',
   ],
   outgoing: [
@@ -28,7 +27,6 @@ const columns = {
     'Date',
     'Patient Name',
     'Destination',
-    'Facility From',
     'Status',
   ],
   received: [
@@ -36,7 +34,6 @@ const columns = {
     'Date',
     'Patient Name',
     'Source',
-    'Type',
     'Status',
   ],
 };
@@ -207,7 +204,7 @@ const ReferralPage: React.FC<OutRefProps> = ({ referrals }) => {
                         <td className="border px-2 py-1">{ref.track_num}</td>
                         <td className="border px-2 py-1">{ref.date_ref}</td>
                         <td className="border px-2 py-1">{ref.pat_fullname}</td>
-                        <td className="border px-2 py-1">{ref.referral_facility_name}</td>
+                        {/* <td className="border px-2 py-1">{ref.referral_facility_name}</td> */}
                         <td className="border px-2 py-1">{ref.facility_name}</td>
                         <td className="border px-2 py-1 text-center">
                           {ref.status_code === 0 || ref.status_code === '0' ? (
@@ -239,7 +236,7 @@ const ReferralPage: React.FC<OutRefProps> = ({ referrals }) => {
                         <td className="border px-2 py-1">{ref.track_num}</td>
                         <td className="border px-2 py-1">{ref.date_ref}</td>
                         <td className="border px-2 py-1">{ref.pat_fullname}</td>
-                        <td className="border px-2 py-1">{ref.referral_facility_name}</td>
+                        {/* <td className="border px-2 py-1">{ref.referral_facility_name}</td> */}
                         <td className="border px-2 py-1">{ref.facility_name}</td>
                         <td className="border px-2 py-1 text-center">
                           <span className="flex items-center gap-1 text-green-600">
