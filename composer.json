@@ -22,7 +22,11 @@
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-ciphersweet": "^1.7",
         "spatie/laravel-csp": "^3.13",
+<<<<<<< HEAD
         "spatie/laravel-permission": "^6.18",
+=======
+        "spatie/laravel-permission": "^6.20",
+>>>>>>> f5b1ed05c4518e6cdc478311d6b0dc9ce0d467cc
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {

@@ -1,7 +1,15 @@
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Consultations } from '@/types';
+import type { BreadcrumbItem, Consultations, IndexConsultation, MasterPatient } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import * as React from 'react';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { BookCheckIcon, BookOpenText, Edit, Eye, NotebookPen, Send, Stethoscope } from 'lucide-react';
 import ConsultPathead from '../components/ConsultPathead';
 import EditConsultation from '../Consultation/EditConsultation';
+import ViewConsultation from '../Consultation/ViewConsultation';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
@@ -20,55 +29,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const ConsultationIndex: React.FC = () => {
     const { props } = usePage<{
-        patient: {
-            id: number;
-            consult_perm_id: string;
-            pat_birthDate: string;
-            master_patient_perm_id: string;
-            pat_fname: string;
-            pat_mname: string;
-            pat_lname: string;
-            sex_code: string;
-            civil_stat_code: string;
-            patient_address: string;
-            provcode: string;
-            citycode: string;
-            bgycode: string;
-            fat_address: string;
-            mot_fname: string;
-            mot_mname: string;
-            mot_lname: string;
-            fat_fname: string;
-            fat_mname: string;
-            fat_lname: string;
-            ts_created_at: string;
-        };
-        consultations: Consultation[];
+        patient: MasterPatient;
+        consultations: IndexConsultation[];
     }>();
     const patient = props.patient;
     const [showForm, setShowForm] = React.useState(false);
-    type Consultation = {
-        consult_date: string;
-        consult_time: string;
-        consult_perm_id: string;
-        consult_type_code: string;
-        type_service: string;
-        to_consult_code: string;
-        chief_complaint: string;
-        pat_temperature: number;
-        pat_heart_rate: number;
-        pat_oxygen_sat: number;
-        respiratoryRate: number;
-        pat_height: number;
-        pat_weight: number;
-        pat_BMI: string;
-        BMI_cat_code: string;
-        pat_systolic_pres: number;
-        pat_diastolic_pres: number;
-        hasAssessment?: boolean;
-    };
 
-    const [consultations, setConsultations] = React.useState<Consultation[]>(props.consultations || []);
+
+    const [consultations, setConsultations] = React.useState<IndexConsultation[]>(props.consultations || []);
     const [formData, setFormData] = React.useState({
         consult_date: '',
         consult_time: '',
@@ -91,11 +59,46 @@ const ConsultationIndex: React.FC = () => {
 
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [selectedConsultation, setSelectedConsultation] = React.useState<Consultations | null>(null);
+    const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
+    const [viewConsultation, setViewConsultation] = React.useState<Consultations | null>(null);
 
-    const handleEdit = (editconsultation: Consultations) => {
-        setSelectedConsultation(editconsultation);
-        setIsEditModalOpen(true);
+    const [consultSearch, setConsultSearch] = React.useState('');
+    const [consultPage, setConsultPage] = React.useState(1);
+    const consultPageSize = 5;
+
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
     };
+
+    const filteredConsultations = React.useMemo(
+        () =>
+            consultations
+                .slice()
+                .sort((a, b) => new Date(b.consult_date).getTime() - new Date(a.consult_date).getTime())
+                .filter((c) => {
+                    const formatted = c.consult_date ? formatDate(c.consult_date) : '';
+                    return formatted.includes(consultSearch);
+                }),
+        [consultations, consultSearch]
+    );
+
+    const consultTotalPages = Math.ceil(filteredConsultations.length / consultPageSize);
+    const paginatedConsultations = React.useMemo(
+        () =>
+            filteredConsultations.slice(
+                (consultPage - 1) * consultPageSize,
+                consultPage * consultPageSize
+            ),
+        [filteredConsultations, consultPage, consultPageSize]
+    );
+    React.useEffect(() => {
+        setConsultPage(1);
+    }, [consultSearch]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -162,16 +165,16 @@ const ConsultationIndex: React.FC = () => {
             to_consult_code: formData.to_consult_code,
             type_service: formData.type_service,
             chief_complaint: formData.chief_complaint,
-            pat_temperature: parseFloat(formData.pat_temperature), // Ensure it's a number
-            pat_heart_rate: parseInt(formData.pat_heart_rate), // Ensure it's a number
-            pat_oxygen_sat: parseInt(formData.pat_oxygen_sat), // Ensure it's a number
-            respiratoryRate: parseInt(formData.respiratoryRate), // Ensure it's a number
-            pat_height: parseFloat(formData.pat_height), // Ensure it's a number
-            pat_weight: parseFloat(formData.pat_weight), // Ensure it's a number
+            pat_temperature: parseFloat(formData.pat_temperature),
+            pat_heart_rate: parseInt(formData.pat_heart_rate),
+            pat_oxygen_sat: parseInt(formData.pat_oxygen_sat),
+            respiratoryRate: parseInt(formData.respiratoryRate),
+            pat_height: parseFloat(formData.pat_height),
+            pat_weight: parseFloat(formData.pat_weight),
             pat_BMI: formData.pat_BMI,
             BMI_cat_code: formData.BMI_cat_code,
-            pat_systolic_pres: parseInt(formData.pat_systolic_pres), // Ensure it's a number
-            pat_diastolic_pres: parseInt(formData.pat_diastolic_pres), // Ensure it's a number
+            pat_systolic_pres: parseInt(formData.pat_systolic_pres),
+            pat_diastolic_pres: parseInt(formData.pat_diastolic_pres),
             master_patient_perm_id: patient.master_patient_perm_id,
             consult_temp_id: String(patient.id),
             pat_age_yr: years,
@@ -182,7 +185,7 @@ const ConsultationIndex: React.FC = () => {
 
         router.post('/consultations/store', newConsultation, {
             onSuccess: () => {
-                setConsultations((prev) => [...prev, newConsultation as Consultation]);
+                setConsultations((prev) => [...prev, newConsultation as IndexConsultation]);
                 setFormData({
                     consult_date: '',
                     consult_time: '',
@@ -228,14 +231,6 @@ const ConsultationIndex: React.FC = () => {
         referral: 'Referral',
     };
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const dd = String(date.getDate()).padStart(2, '0');
-        const yyyy = date.getFullYear();
-        return `${mm}/${dd}/${yyyy}`;
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Consultations" />
@@ -253,13 +248,32 @@ const ConsultationIndex: React.FC = () => {
 
                         <Link
                             href={`/assessment/${patient.id}/history`}
-                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${
-                                consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
-                            }`}
+                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
+                                }`}
                         >
                             <BookCheckIcon className="mr-2 h-4 w-4" />
                             Assessment List
                         </Link>
+                    </div>
+
+                    {/* Consultation List Search and Table */}
+                    <div className="mb-2 flex items-center justify-between">
+                        <span className="mb-1 mt-4 text-xs text-gray-700 font-bold">
+                            Consultation List
+                            <span className="ml-2 text-green-700 font-normal">
+                                (Total: {filteredConsultations.length})
+                            </span>
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500 italic">Search by consultation date</span>
+                            <input
+                                type="text"
+                                placeholder="Search here..."
+                                value={consultSearch}
+                                onChange={e => setConsultSearch(e.target.value)}
+                                className="border border-gray-300 rounded px-2 py-1 text-sm"
+                            />
+                        </div>
                     </div>
 
                     {showForm && (
@@ -410,43 +424,37 @@ const ConsultationIndex: React.FC = () => {
                         </div>
                     )}
 
-                    {consultations.length > 0 ? (
-                        <div className="mt-4 overflow-x-auto">
-                            <table className="min-w-full border text-left text-sm text-gray-700">
-                                <thead className="text-white-500 bg-green-100 text-xs uppercase">
-                                    <tr>
-                                        <th className="px-4 py-2">Health Number</th>
-                                        <th className="px-4 py-2">Date</th>
-                                        <th className="px-4 py-2">Notes</th>
-                                        <th className="px-4 py-2">Consultation Type</th>
-                                        <th className="px-4 py-2">Service Type</th>
-                                        <th className="px-4 py-2 text-center">Actions</th>
-                                        <th className="px-4 py-2">Assessment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[...consultations]
+                    {filteredConsultations.length > 0 ? (
+                        <div className="overflow-x-auto rounded-lg shadow">
+                            <Table className="min-w-full border text-sm text-gray-700">
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Health Number</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Date</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Notes</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Consultation Type</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Service Type</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2 text-center">Actions</TableHead>
+                                        <TableHead className="text-xs uppercase bg-green-100 text-white-500 px-4 py-2">Assessment</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {paginatedConsultations
                                         .sort((a, b) => new Date(b.consult_date).getTime() - new Date(a.consult_date).getTime())
                                         .map((item, index) => (
-                                            <tr key={index} className="border-t bg-white text-sm hover:bg-gray-50">
-                                                <td className="px-4 py-2 font-semibold">{item.consult_perm_id}</td>
-                                                <td className="px-4 py-2">{item.consult_date ? formatDate(item.consult_date) : ''}</td>
-                                                <td className="px-4 py-2">{item.chief_complaint}</td>
-                                                <td className="px-4 py-2">{CONSULT_TYPE_LABELS[item.consult_type_code] || item.consult_type_code}</td>
-                                                <td className="px-4 py-2">{SERVICE_TYPE_LABELS[item.type_service]}</td>
-                                                <td className="px-4 py-2 text-center">
+                                            <TableRow key={index} className="border-t bg-white text-sm hover:bg-gray-50">
+                                                <TableCell className="px-4 py-2 font-semibold">{item.consult_perm_id}</TableCell>
+                                                <TableCell className="px-4 py-2">{item.consult_date ? formatDate(item.consult_date) : ''}</TableCell>
+                                                <TableCell className="px-4 py-2">{item.chief_complaint}</TableCell>
+                                                <TableCell className="px-4 py-2">{CONSULT_TYPE_LABELS[item.consult_type_code] || item.consult_type_code}</TableCell>
+                                                <TableCell className="px-4 py-2">{SERVICE_TYPE_LABELS[item.type_service]}</TableCell>
+                                                <TableCell className="px-4 py-2 text-center">
                                                     <div className="inline-flex items-center justify-center gap-2">
-                                                        <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
-                                                            <Eye size={16} />
-                                                        </Button>
                                                         <Button
                                                             variant="outline"
                                                             onClick={() => {
-                                                                setSelectedConsultation({
+                                                                setViewConsultation({
                                                                     ...item,
-                                                                    id: (item as any).id ?? '',
-                                                                    consult_perm_id: (item as any).consult_perm_id ?? '',
-                                                                    consult_temp_id: (item as any).consult_temp_id ?? '',
                                                                     pat_temperature: String(item.pat_temperature ?? ''),
                                                                     pat_heart_rate: String(item.pat_heart_rate ?? ''),
                                                                     pat_oxygen_sat: String(item.pat_oxygen_sat ?? ''),
@@ -455,21 +463,55 @@ const ConsultationIndex: React.FC = () => {
                                                                     pat_weight: String(item.pat_weight ?? ''),
                                                                     pat_systolic_pres: String(item.pat_systolic_pres ?? ''),
                                                                     pat_diastolic_pres: String(item.pat_diastolic_pres ?? ''),
-                                                                });
+                                                                } as unknown as Consultations);
+                                                                setIsViewModalOpen(true);
+                                                            }}
+                                                            className="text-blue-600 hover:bg-blue-500"
+                                                        >
+                                                            <Eye size={16} />
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            onClick={() => {
+                                                                setSelectedConsultation({
+                                                                    ...item,
+                                                                    pat_temperature: String(item.pat_temperature ?? ''),
+                                                                    pat_heart_rate: String(item.pat_heart_rate ?? ''),
+                                                                    pat_oxygen_sat: String(item.pat_oxygen_sat ?? ''),
+                                                                    respiratoryRate: String(item.respiratoryRate ?? ''),
+                                                                    pat_height: String(item.pat_height ?? ''),
+                                                                    pat_weight: String(item.pat_weight ?? ''),
+                                                                    pat_systolic_pres: String(item.pat_systolic_pres ?? ''),
+                                                                    pat_diastolic_pres: String(item.pat_diastolic_pres ?? ''),
+                                                                } as unknown as Consultations);
                                                                 setIsEditModalOpen(true);
                                                             }}
                                                             className="text-green-600 hover:bg-green-500"
                                                         >
                                                             <Edit size={16} />
                                                         </Button>
-                                                        {/* <Button variant="outline" onClick={() => index} className="text-red-600 hover:bg-red-500">
-                                                            <Trash size={16} />
-                                                        </Button> */}
                                                     </div>
-                                                </td>
-                                                <td className="px-4 py-2">
-                                                    {/* Conditionally render button based on hasAssessment flag */}
-                                                    {item.hasAssessment ? (
+                                                </TableCell>
+                                                <TableCell className="px-4 py-2">
+                                                    {item.consult_type_code === 'followupvisit' ? (
+                                                        item.hasDispense ? (
+                                                            <Link
+                                                                href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
+                                                                className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                            >
+                                                                <BookOpenText className="h-4 w-4" />
+                                                                Done | View Form
+                                                            </Link>
+                                                        ) : (
+                                                            <Link
+                                                                href={`/assessment/${patient.id}/followupAssessment?consult_date=${item.consult_date}`}
+                                                                className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                            >
+                                                                <NotebookPen className="h-4 w-4" />
+                                                                Dispense Medicine
+                                                            </Link>
+                                                        )
+                                                    ) : item.hasAssessment ? (
                                                         <Link
                                                             href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
@@ -486,17 +528,50 @@ const ConsultationIndex: React.FC = () => {
                                                             Fill Assessment Tool
                                                         </Link>
                                                     )}
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         ))}
-                                </tbody>
-                            </table>
+                                </TableBody>
+                            </Table>
+                            {/* Pagination */}
+                            <div className="flex justify-end items-center gap-2 mt-2">
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setConsultPage((p) => Math.max(p - 1, 1))}
+                                        disabled={consultPage === 1}
+                                        className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                                    >
+                                        Previous
+                                    </button>
+                                    <span className="text-xs text-gray-600">
+                                        Page {consultPage} of {consultTotalPages}
+                                    </span>
+                                    <button
+                                        onClick={() => setConsultPage((p) => Math.min(p + 1, consultTotalPages))}
+                                        disabled={consultPage === consultTotalPages}
+                                        className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     ) : (
                         <div className="mt-4 text-center text-gray-500">No consultations found for this patient.</div>
                     )}
                 </div>
             </div>
+            {/* ...existing modals... */}
+            {viewConsultation && (
+                <ViewConsultation
+                    isOpen={isViewModalOpen}
+                    onClose={() => {
+                        setIsViewModalOpen(false);
+                        setViewConsultation(null);
+                    }}
+                    consultation={viewConsultation}
+                />
+            )}
             {selectedConsultation && (
                 <EditConsultation
                     isOpen={isEditModalOpen}

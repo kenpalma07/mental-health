@@ -4,7 +4,23 @@ import AppLayout from '@/layouts/app-layout';
 import { SchoolMasterPatient, SchoolMentalAssessmentForm } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
-
+import { FileSpreadsheet } from 'lucide-react';
+import * as XLSX from 'xlsx';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 const calculateAge = (birthDate: string): number => {
     const birth = new Date(birthDate);
@@ -34,7 +50,6 @@ const SchoolAgeSRIndex: React.FC = () => {
     const [selectedQuarter, setSelectedQuarter] = React.useState<string>('');
     const itemsPerPage = 10;
 
-
     const allRows = React.useMemo(() => {
         const rows: { patient: SchoolMasterPatient; assessment: SchoolMentalAssessmentForm }[] = [];
         patients.forEach((patient) => {
@@ -61,7 +76,6 @@ const SchoolAgeSRIndex: React.FC = () => {
         return filteredRows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     }, [filteredRows, currentPage]);
 
-
     React.useEffect(() => {
         setCurrentPage(1);
     }, [selectedQuarter]);
@@ -74,6 +88,29 @@ const SchoolAgeSRIndex: React.FC = () => {
         return `${mm}/${dd}/${yyyy}`;
     };
 
+    const handleExportExcel = () => {
+        const data = filteredRows.map(({ patient, assessment }) => ({
+            'Date of Occurrence': assessment.consult_date_assess ? formatDate(assessment.consult_date_assess) : 'N/A',
+            'Patient Code Name': `${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`,
+            'Age': calculateAge(patient.pat_birthDate),
+            'Sex': patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'N/A',
+            'Address': patient.patient_address,
+            'Contact No. of Guardian': patient.pat_mobile,
+            'Grade/Year': assessment.grade_year ?? '',
+            'School': assessment.school_name ?? '',
+            'Place of Incidence': assessment.place_inci ?? '',
+            'Means of Suicide': assessment.self_sui_means ?? '',
+            'Existing Mental Health Issue? (Yes/No)': assessment.diagnosis ? `Yes - ${assessment.diagnosis}` : 'No',
+            'Validated by (Name & Position)': assessment.phar_doc ?? '',
+            'Remarks': assessment.self_sui_remarks ?? '',
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'SchoolAgeSR');
+        XLSX.writeFile(wb, 'Suicide_Report_School_Age.xlsx');
+    };
+
     return (
         <AppLayout breadcrumbs={[{ title: 'Suicide Report (School Age)', href: '/reportschoolagesr' }]}>
             <Head title="Suicide Report (School Age)" />
@@ -82,81 +119,93 @@ const SchoolAgeSRIndex: React.FC = () => {
                 <div className="rounded-2xl bg-white p-4 shadow-lg">
                     <div className="mb-4 flex flex-col items-center">
                         <div className="mb-4 flex w-full items-center justify-center gap-x-4">
-                            <AppLogoDOH/>
+                            <AppLogoDOH />
 
                             <div className="text-center">
                                 <h1 className="block text-xl font-semibold text-gray-800 uppercase">Suicide Incidence Report</h1>
                                 <span className="block text-sm text-gray-600">(School Age)</span>
                             </div>
 
-                            <AppLogoBP/>
+                            <AppLogoBP />
                         </div>
 
                         <div className="mt-2 flex items-center gap-2">
                             <p className="text-sm text-gray-600">Quarter:</p>
-                            <select
+                            <Select
                                 value={selectedQuarter}
-                                onChange={(e) => setSelectedQuarter(e.target.value)}
-                                className="rounded-lg border border-gray-300 px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                onValueChange={setSelectedQuarter}
                             >
-                                <option value="">Select</option>
-                                <option value="Q1">1st Quarter</option>
-                                <option value="Q2">2nd Quarter</option>
-                                <option value="Q3">3rd Quarter</option>
-                                <option value="Q4">4th Quarter</option>
-                            </select>
+                                <SelectTrigger className="rounded-lg border border-gray-300 px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-40">
+                                    <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Q1">1st Quarter</SelectItem>
+                                    <SelectItem value="Q2">2nd Quarter</SelectItem>
+                                    <SelectItem value="Q3">3rd Quarter</SelectItem>
+                                    <SelectItem value="Q4">4th Quarter</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            {/* Export Excel Button */}
+                            <button
+                                onClick={handleExportExcel}
+                                className="ml-4 flex items-center gap-2 rounded bg-green-600 px-4 py-1 text-sm font-medium text-white hover:bg-green-700"
+                                type="button"
+                            >
+                                <FileSpreadsheet className="h-4 w-4" />
+                                Export to Excel
+                            </button>
                         </div>
                     </div>
 
                     <div className="overflow-x-auto rounded-lg border bg-white shadow">
-                        <table className="min-w-full text-left text-sm text-gray-700">
-                            <thead className="border-b bg-black text-xs text-white">
-                                <tr className="text-center">
-                                    <th className="rounded-tl-lg border p-2 text-xs">Date of Occurrence</th>
-                                    <th className="border p-2 text-xs">Patient Code Name</th>
-                                    <th className="border p-2 text-xs">Age</th>
-                                    <th className="border p-2 text-xs">Sex</th>
-                                    <th className="border p-2 text-xs">Address</th>
-                                    <th className="border p-2 text-xs">Contact No. of Guardian</th>
-                                    <th className="border p-2 text-xs">Grade/Year</th>
-                                    <th className="border p-2 text-xs">School</th>
-                                    <th className="border p-2 text-xs">Place of Incidence</th>
-                                    <th className="border p-2 text-xs">Means of Suicide</th>
-                                    <th className="border p-2 text-xs">Existing Mental Health Issue? (Yes/No)</th>
-                                    <th className="border p-2 text-xs">Validated by (Name & Position)</th>
-                                    <th className="rounded-tr-lg border p-2 text-xs">Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table className="min-w-full text-left text-sm text-gray-700">
+                            <TableHeader>
+                                <TableRow className="text-center">
+                                    <TableHead className="border-b bg-black text-white text-center rounded-tl-lg border p-2 text-xs">Date of Occurrence</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Patient Code Name</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Age</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Sex</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Address</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Contact No. of Guardian</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Grade/Year</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">School</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Place of Incidence</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Means of Suicide</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Existing Mental Health Issue? (Yes/No)</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center border p-2 text-xs">Validated by (Name & Position)</TableHead>
+                                    <TableHead className="border-b bg-black text-white text-center rounded-tr-lg border p-2 text-xs">Remarks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {paginatedRows.length > 0 ? (
                                     paginatedRows.map(({ patient, assessment }, idx) => (
-                                        <tr key={`${patient.id}-${idx}`} className="text-center hover:bg-gray-50">
-                                            <td className="border p-2 text-xs">{assessment.consult_date_assess ? formatDate(assessment.consult_date_assess) : 'N/A'}</td>
-                                            <td className="border p-2 text-xs">{`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`}</td>
-                                            <td className="border p-2 text-xs">{calculateAge(patient.pat_birthDate)}</td>
-                                            <td className="border p-2 text-xs">
+                                        <TableRow key={`${patient.id}-${idx}`} className="text-center hover:bg-gray-50">
+                                            <TableCell className="border p-2 text-xs">{assessment.consult_date_assess ? formatDate(assessment.consult_date_assess) : 'N/A'}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{`${patient.pat_fname} ${patient.pat_mname} ${patient.pat_lname}`}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{calculateAge(patient.pat_birthDate)}</TableCell>
+                                            <TableCell className="border p-2 text-xs">
                                                 {patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'N/A'}
-                                            </td>
-                                            <td className="border p-2 text-xs">{patient.patient_address}</td>
-                                            <td className="border p-2 text-xs">{patient.pat_mobile}</td>
-                                            <td className="border p-2 text-xs">{assessment.grade_year ?? ''}</td>
-                                            <td className="border p-2 text-xs">{assessment.school_name ?? ''}</td>
-                                            <td className="border p-2 text-xs">{assessment.place_inci ?? ''}</td>
-                                            <td className="border p-2 text-xs">{assessment.self_sui_means ?? ''}</td>
-                                            <td className="border p-2 text-xs">{assessment.diagnosis ? `Yes - ${assessment.diagnosis}` : 'No'}</td>
-                                            <td className="border p-2 text-xs">{assessment.phar_doc ?? ''}</td>
-                                            <td className="border p-2 text-xs">{assessment.self_sui_remarks ?? ''}</td>
-                                        </tr>
+                                            </TableCell>
+                                            <TableCell className="border p-2 text-xs">{patient.patient_address}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{patient.pat_mobile}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.grade_year ?? ''}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.school_name ?? ''}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.place_inci ?? ''}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.self_sui_means ?? ''}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.diagnosis ? `Yes - ${assessment.diagnosis}` : 'No'}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.phar_doc ?? ''}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{assessment.self_sui_remarks ?? ''}</TableCell>
+                                        </TableRow>
                                     ))
                                 ) : (
-                                    <tr>
-                                        <td colSpan={13} className="p-4 text-center">
+                                    <TableRow>
+                                        <TableCell colSpan={13} className="p-4 text-center">
                                             No suicide assessments found.
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
 
                     <div className="mt-4 flex items-center justify-between">

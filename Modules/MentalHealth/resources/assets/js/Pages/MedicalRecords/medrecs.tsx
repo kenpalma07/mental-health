@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Cake,
   CalendarDays,
@@ -17,9 +17,18 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import type { BreadcrumbItem, Consultations, MasterPatient,
-MentalAssessmentForm, PageProps}
-from '@/types';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
+import type {
+  BreadcrumbItem, Consultations, MasterPatient,
+  MentalAssessmentForm, PageProps
+} from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Mental Health', href: '/patients' },
@@ -27,13 +36,11 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Medical Records', href: '/medrecords' },
 ];
 
-
 interface PatMedicalRecordsProps extends PageProps {
   patient: MasterPatient;
   consultation: Consultations[];
   assessments: MentalAssessmentForm[];
 }
-
 
 const calculateAge = (birthDate: string) => {
   const birth = new Date(birthDate);
@@ -49,6 +56,33 @@ const calculateAge = (birthDate: string) => {
 const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessments, consultation }) => {
   const age = calculateAge(patient.pat_birthDate);
 
+  // Assessment search and pagination
+  const [searchDate, setSearchDate] = useState('');
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
+  const filteredAssessments = assessments.filter(a =>
+    a.consult_date_assess?.toLowerCase().includes(searchDate.toLowerCase())
+  );
+  const totalPages = Math.ceil(filteredAssessments.length / pageSize);
+  const paginatedAssessments = filteredAssessments.slice((page - 1) * pageSize, page * pageSize);
+
+  // Consultation search and pagination
+  const [consultSearch, setConsultSearch] = useState('');
+  const [consultPage, setConsultPage] = useState(1);
+  const consultPageSize = 5;
+  const filteredConsultations = consultation.filter(c =>
+    c.consult_date?.toLowerCase().includes(consultSearch.toLowerCase())
+  );
+  const consultTotalPages = Math.ceil(filteredConsultations.length / consultPageSize);
+  const paginatedConsultations = filteredConsultations.slice((consultPage - 1) * consultPageSize, consultPage * consultPageSize);
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    setPage(1);
+  }, [searchDate]);
+  useEffect(() => {
+    setConsultPage(1);
+  }, [consultSearch]);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -144,31 +178,47 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
               </Link>
             </div>
 
-            <div className="mb-1 mt-4 text-sm text-gray-700">
-              <span>Assessment List</span>
+            {/* Assessment List Search and Table */}
+            <div className="mb-2 flex items-center justify-between">
+              <span className="mb-1 mt-4 text-xs text-gray-700 font-bold">
+                Assessment List
+                <span className="ml-2 text-green-700 font-normal">
+                  (Total Assessments: {filteredAssessments.length})
+                </span>
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 italic">Search by assessment date</span>
+                <input
+                  type="text"
+                  placeholder="Search here..."
+                  value={searchDate}
+                  onChange={e => setSearchDate(e.target.value)}
+                  className="border border-gray-300 rounded px-2 py-1 text-sm"
+                />
+              </div>
             </div>
-            {assessments.length > 0 ? (
+            {filteredAssessments.length > 0 ? (
               <div className="overflow-x-auto rounded-lg shadow">
-                <table className="min-w-full border text-sm text-gray-700">
-                  <thead className="bg-green-100 text-xs uppercase text-gray-700">
-                    <tr>
-                      <th className="px-2 py-2 text-left">Tracking #</th>
-                      <th className="px-2 py-2 text-left">Date</th>
-                      <th className="px-2 py-2 text-left">Treatment Avail</th>
-                      <th className="px-2 py-2 text-left">Treatment Choice</th>
-                      <th className="px-2 py-2 text-left">Diagnosis</th>
-                      <th className="px-2 py-2 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white text-sm">
-                    {assessments.map((a, index) => (
-                      <tr key={index} className="border-t bg-white hover:bg-gray-50">
-                        <td className="px-2 py-2 font-semibold">{a.consultation_id}</td>
-                        <td className="px-2 py-2">{a.consult_date_assess}</td>
-                        <td className="px-2 py-2 text-center">{a.treat_avail}</td>
-                        <td className="px-2 py-2">{a.treat_choice}</td>
-                        <td className="px-2 py-2">{a.diagnosis}</td>
-                        <td className="px-2 py-2">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="uppercase text-gray-700">
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Tracking #</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Date</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Treatment Avail</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Treatment Choice</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Diagnosis</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-center">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedAssessments.map((a, index) => (
+                      <TableRow key={index} className="border-t bg-white hover:bg-gray-50">
+                        <TableCell className="px-2 py-2 font-semibold">{a.consultation_id}</TableCell>
+                        <TableCell className="px-2 py-2">{a.consult_date_assess}</TableCell>
+                        <TableCell className="px-2 py-2 text-center">{a.treat_avail}</TableCell>
+                        <TableCell className="px-2 py-2">{a.treat_choice}</TableCell>
+                        <TableCell className="px-2 py-2">{a.diagnosis}</TableCell>
+                        <TableCell className="px-2 py-2">
                           <div className="inline-flex items-center justify-center gap-2">
                             <Link
                               href={`/patitrforms/${patient.id}?consult_date=${a.consult_date_assess}`}
@@ -177,39 +227,75 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                               <BookOpenText className="h-4 w-4" />
                             </Link>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             ) : (
               <p className="text-gray-500 text-sm">No assessments found.</p>
             )}
-
-            <div className="mb-1 mt-6 text-sm text-gray-700">
-              <span>Consultation List</span>
+            {/* Assessment Pagination Controls */}
+            <div className="flex justify-end items-center gap-2 mt-2">
+              <button
+                className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+              <span className="text-xs">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
             </div>
-            {consultation.length > 0 ? (
+
+            {/* Consultation List Search and Table */}
+            <div className="mb-2 flex items-center justify-between mt-6">
+              <span className="text-xs text-gray-700">
+                Consultation List
+                <span className="ml-2 text-green-700 font-normal">
+                  (Total Consultations: {filteredConsultations.length})
+                </span>
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 italic">Search by consult date</span>
+                <input
+                  type="text"
+                  placeholder="Search here..."
+                  value={consultSearch}
+                  onChange={e => setConsultSearch(e.target.value)}
+                  className="border border-gray-300 rounded px-2 py-1 text-sm"
+                />
+              </div>
+            </div>
+            {filteredConsultations.length > 0 ? (
               <div className="overflow-x-auto rounded-lg shadow">
-                <table className="min-w-full border text-sm text-gray-700">
-                  <thead className="bg-green-100 text-xs uppercase text-gray-700">
-                    <tr>
-                      <th className="px-2 py-2 text-left">Health #</th>
-                      <th className="px-2 py-2 text-left">Consult Date</th>
-                      <th className="px-2 py-2 text-left">Consultation Type</th>
-                      <th className="px-2 py-2 text-left">Service Type</th>
-                      <th className="px-2 py-2 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white text-sm">
-                    {consultation.map((c, index) => (
-                      <tr key={index} className="border-t bg-white hover:bg-gray-50">
-                        <td className="px-2 py-2 font-semibold">{c.consult_perm_id}</td>
-                        <td className="px-2 py-2">{c.consult_date}</td>
-                        <td className="px-2 py-2">{c.consult_type_code}</td>
-                        <td className="px-2 py-2">{c.type_service}</td>
-                        <td className="px-2 py-2">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="uppercase text-gray-700">
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Health #</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Consult Date</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Consultation Type</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-left">Service Type</TableHead>
+                      <TableHead className="bg-green-100 text-xs  px-2 py-2 text-center">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedConsultations.map((c, index) => (
+                      <TableRow key={index} className="border-t bg-white hover:bg-gray-50">
+                        <TableCell className="px-2 py-2 font-semibold">{c.consult_perm_id}</TableCell>
+                        <TableCell className="px-2 py-2">{c.consult_date}</TableCell>
+                        <TableCell className="px-2 py-2">{c.consult_type_code}</TableCell>
+                        <TableCell className="px-2 py-2">{c.type_service}</TableCell>
+                        <TableCell className="px-2 py-2">
                           <div className="inline-flex items-center justify-center gap-2">
                             <Button variant="outline" onClick={() => index} className="text-blue-600 hover:bg-blue-500">
                               <Eye size={16} />
@@ -218,15 +304,35 @@ const PatMedicalRecords: React.FC<PatMedicalRecordsProps> = ({ patient, assessme
                               <Edit size={16} />
                             </Button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             ) : (
               <p className="text-gray-500 text-sm">No consultations found.</p>
             )}
+            {/* Consultation Pagination Controls */}
+            <div className="flex justify-end items-center gap-2 mt-2">
+              <button
+                className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                onClick={() => setConsultPage(consultPage - 1)}
+                disabled={consultPage === 1}
+              >
+                Prev
+              </button>
+              <span className="text-xs">
+                Page {consultPage} of {consultTotalPages}
+              </span>
+              <button
+                className="px-2 py-1 rounded border text-xs disabled:opacity-50"
+                onClick={() => setConsultPage(consultPage + 1)}
+                disabled={consultPage === consultTotalPages}
+              >
+                Next
+              </button>
+            </div>
 
           </div>
         </div>

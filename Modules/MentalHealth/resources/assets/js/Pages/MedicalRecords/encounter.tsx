@@ -2,20 +2,30 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, PageProps, MentalAssessmentForm } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import * as React from 'react';
-
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Others',
-        href: '/others',
+        title: 'Referral List Encounter',
+        href: '#',
     },
 ];
 
-const OtherIndex: React.FC = () => {
+const EncounterIndex: React.FC = () => {
     const { assessments } = usePage<PageProps<{ assessments: MentalAssessmentForm[] }>>().props;
     const [showModal, setShowModal] = React.useState(true);
 
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => {
+        setShowModal(false);
+        window.location.href = '/patients';
+    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -24,6 +34,17 @@ const OtherIndex: React.FC = () => {
         const yyyy = date.getFullYear();
         return `${mm}/${dd}/${yyyy}`;
     };
+
+    const filteredAssessments = React.useMemo(
+        () =>
+            assessments.filter(
+                (item: { ref_choice: string; ref_fhud: string; ref_reason: string; }) =>
+                    (item.ref_choice && item.ref_choice.trim() !== '') ||
+                    (item.ref_fhud && item.ref_fhud.trim() !== '') ||
+                    (item.ref_reason && item.ref_reason.trim() !== '')
+            ),
+        [assessments]
+    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -39,18 +60,18 @@ const OtherIndex: React.FC = () => {
                                 X
                             </button>
                         </div>
-                        <table className="min-w-full table-auto border border-gray-300 text-sm">
-                            <thead>
-                                <tr className="bg-black text-sm text-white">
-                                    <th className="border px-4 py-2">Date</th>
-                                    <th className="border px-4 py-2">Referral Choice</th>
-                                    <th className="border px-4 py-2">Referred FHUD</th>
-                                    <th className="border px-4 py-2">Referral Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assessments.map((item: MentalAssessmentForm) => (
-                                    <tr
+                        <Table>
+                            <TableHeader>
+                                <TableRow >
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Date</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Choice</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referred FHUD</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Remarks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {filteredAssessments.map((item: MentalAssessmentForm) => (
+                                    <TableRow
                                         key={item.id}
                                         className="cursor-pointer text-xs hover:bg-gray-100"
                                         onClick={(): void => {
@@ -59,14 +80,22 @@ const OtherIndex: React.FC = () => {
                                             window.location.href = '/patients';
                                         }}
                                     >
-                                        <td className="text-black-600 border px-4 py-2">{item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_choice}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_fhud}</td>
-                                        <td className="text-black-600 border px-4 py-2">{item.ref_reason}</td>
-                                    </tr>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_choice && item.ref_choice.trim() !== '' ? item.ref_choice : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_fhud && item.ref_fhud.trim() !== '' ? item.ref_fhud : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_reason && item.ref_reason.trim() !== '' ? item.ref_reason : ''}
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 </div>
             )}
@@ -74,4 +103,4 @@ const OtherIndex: React.FC = () => {
     );
 };
 
-export default OtherIndex;
+export default EncounterIndex;

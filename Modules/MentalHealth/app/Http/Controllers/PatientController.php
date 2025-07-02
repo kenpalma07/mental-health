@@ -97,27 +97,39 @@ class PatientController extends Controller
             'bgycode' => 'required|string|max:100',
             'zipcode' => 'required|string|max:11',
             'country_code' => 'required|string|max:5',
-            'patient_address' => 'nullable|string|max:255',
-            'pat_mobile' => 'nullable|string|max:20',
+            'patient_address' => 'required|string|max:255',
+            'pat_mobile' => 'required|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
 
             //Parents Information
-            'mot_fname' => 'nullable|string|max:255',
-            'mot_mname' => 'nullable|string|max:255',
-            'mot_lname' => 'nullable|string|max:255',
+            'mot_fname' => 'required|string|max:255',
+            'mot_mname' => 'required|string|max:255',
+            'mot_lname' => 'required|string|max:255',
             'mot_birthdate' => 'nullable|date',
-            'mot_address' => 'nullable|string|max:255',
-            'mot_contact' => 'nullable|string|max:20',
-            'mot_deceased_status' => 'nullable|string|max:1',
-            'fat_fname' => 'nullable|string|max:255', 
-            'fat_mname' => 'nullable|string|max:255',
-            'fat_lname' => 'nullable|string|max:255',
+            'mot_address' => 'required|string|max:255',
+            'mot_contact' => 'required|string|max:20',
+            'mot_deceased_status' => 'required|string|max:1',
+            'fat_fname' => 'required|string|max:255', 
+            'fat_mname' => 'required|string|max:255',
+            'fat_lname' => 'required|string|max:255',
             'fat_birthdate' => 'nullable|date',
-            'fat_address' => 'nullable|string|max:255',
-            'fat_contact' => 'nullable|string|max:20',
-            'fat_deceased_status' => 'nullable|string|max:1',
+            'fat_address' => 'required|string|max:255',
+            'fat_contact' => 'required|string|max:20',
+            'fat_deceased_status' => 'required|string|max:1',
             'registered_at' => 'nullable|date',
 
+            // Carer Information
+            'carer_fname' => 'required|string|max:255',
+            'carer_mname' => 'nullable|string|max:255',
+            'carer_lname' => 'required|string|max:255',
+            'carer_suffix' => 'required|string|max:10',
+            'carer_birthdate' => 'required|date',
+            'carer_sex' => 'required|string|max:255',
+            'carer_address' => 'required|string|max:255',
+            'carer_contact' => 'required|string|max:20',
+            'carer_relationship' => 'required|string|max:50',
+
+            // PhilHealth Information
             'phic_member' => 'nullable|in:Y,N',
             'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
@@ -346,6 +358,11 @@ class PatientController extends Controller
         return Inertia::render('MentalHealth::MedicalRecords/patientenrollment', [
             'patient' => $patient,
         ]);
+    }
+
+        public function viewPatSched()
+    {
+        return Inertia::render('MentalHealth::SchedPat/index');
     }
     
 }

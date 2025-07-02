@@ -16,16 +16,23 @@ class ConsultationController extends Controller
     {
         $patient = MasterPatient::findOrFail($id);
         $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
+        $consultations = $consultations->map(function ($consultation) use ($patient) {
+            $matchingAssessment = MentalAssessmentForm::where('pat_perm_id', $patient->id)
+                ->whereDate('consult_date_assess', $consultation->consult_date)
+                ->first();
+            $consultation->hasAssessment = $matchingAssessment !== null;
+
+            $consultation->hasDispense = $matchingAssessment && (
+                !empty($matchingAssessment->phar_med) || !empty($matchingAssessment->is_dispense)
+            );
+
+            return $consultation;
+        });
 
         $assessmentDates = MentalAssessmentForm::where('pat_perm_id', $patient->id)
             ->pluck('consult_date_assess')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'))
             ->toArray();
-
-        $consultations = $consultations->map(function ($consultation) use ($assessmentDates) {
-            $consultation->hasAssessment = in_array($consultation->consult_date, $assessmentDates);
-            return $consultation;
-        });
 
         return Inertia::render('MentalHealth::Consultation/index', [
             'patient' => $patient,
@@ -82,11 +89,37 @@ class ConsultationController extends Controller
             'consult_type_code' => 'required|string',
             'to_consult_code' => 'required|string',
             'type_service' => 'required|string',
+            'pat_temperature' => 'nullable|numeric',
+            'pat_heart_rate' => 'nullable|integer',
+            'pat_oxygen_sat' => 'nullable|integer',
+            'respiratoryRate' => 'nullable|integer',
+            'pat_systolic_pres' => 'nullable|integer',
+            'pat_diastolic_pres' => 'nullable|integer',
+            'pat_height' => 'nullable|numeric',
+            'pat_weight' => 'nullable|numeric',
+            'pat_BMI' => 'required|string',
+            'BMI_cat_code' => 'required|string',
+            'chief_complaint' => 'required|string',
         ]);
 
         $consultation = Consultation::findOrFail($id);
+
+        // Store the old consult_date before updating
+        $oldConsultDate = $consultation->consult_date;
+
         $consultation->update($validated);
 
-        return redirect()->route('consultations.index', ['id' => $id])->with('success', 'Employee updated successfully!');
+        // Update only the assessment(s) that match patient and old consult_date
+        $assessments = MentalAssessmentForm::where('pat_temp_id', $consultation->consult_temp_id)
+            ->where('consult_date_assess', $oldConsultDate)
+            ->get();
+
+        foreach ($assessments as $assessment) {
+            $assessment->consult_date_assess = $validated['consult_date'];
+            $assessment->save();
+        }
+
+        return redirect()->route('consultations.index', ['id' => $consultation->consult_temp_id])
+            ->with('success', 'Consultation updated successfully!');
     }
 }

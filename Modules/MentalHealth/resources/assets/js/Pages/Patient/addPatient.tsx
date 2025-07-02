@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, FHUD } from '@/types';
 import { Select } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Pencil, UserPlus } from 'lucide-react';
@@ -33,16 +33,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Add Patients', href: '/patients/create' },
 ];
 
-interface Facility {
-    fhudcode: string;
-    facility_name: string;
-    facility_address: string;
-    provider_name: string;
-}
-
 interface PageProps {
     nextId: string;
-    facilities: Facility[];
+    facilities: FHUD[];
     [key: string]: unknown;
 }
 
@@ -96,6 +89,16 @@ export default function AddPatient() {
         fat_contact: '',
         fat_deceased_status: '',
         trackno: '',
+
+        carer_fname: '',
+        carer_mname: '',
+        carer_lname: '',
+        carer_birthdate: '',
+        carer_address: '',
+        carer_contact: '',
+        carer_relationship: '',
+        carer_sex: '',
+        carer_suffix: '',
 
         phic_member: 'N',
         pat_philhealth: '',
@@ -852,12 +855,13 @@ export default function AddPatient() {
                                         House # / Lot # / Street Name / Building / Purok # / Village Name
                                         <span className="font-bold text-red-600">*</span>
                                     </Label>
-                                    <Input
+                                    <textarea
                                         id="patient_address"
-                                        className="text-dark-500"
+                                        className="text-dark-500 text-sm w-full rounded-md border p-2"
                                         value={data.patient_address}
                                         onChange={(e) => setData('patient_address', e.target.value)}
                                         placeholder="House # / Lot # / Street Name / Building / Purok # / Village Name"
+                                        rows={2}
                                     />
                                     <InputError message={errors.patient_address} className="text-[10px] text-red-600" />
                                 </div>
@@ -1075,7 +1079,7 @@ export default function AddPatient() {
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="pat_landline" className="w-40 text-sm font-medium text-gray-700">
-                                                Landline <span className="font-bold text-red-600">*</span>
+                                                Landline
                                             </Label>
                                             <Input
                                                 id="pat_landline"
@@ -1087,7 +1091,6 @@ export default function AddPatient() {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_landline} className="text-[10px] text-red-600" />
                                         </div>
                                     </div>
                                 </div>
@@ -1434,133 +1437,184 @@ export default function AddPatient() {
                     </div>
                 </div>
 
-                {/* Guardian's Information */}
+                {/* Carer's Information */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
                     <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
                         <div className="space-y-3">
                             <div className="flex items-center gap-1">
                                 <UserPlus className="h-4 w-4 text-gray-600" />
-                                <h2 className="text-md w-50 font-semibold">Guardian's Information</h2>
-                                <small className="text-red-600 italic">Note: Guardian must be alive</small>
+                                <h2 className="text-md w-50 font-semibold">Carer's Information</h2>
+                                <small className="text-red-600 italic">Note: Carer must be alive</small>
                             </div>
                             <hr />
 
-                            {/* Guardian's First Name */}
-                            <div>
-                                <div className="flex items-center gap-1">
-                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
-                                        First Name <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Input
-                                        // id="mot_fname"
-                                        className="text-dark-500"
-                                        // value={data.mot_fname}
-                                        // onChange={(e) => setData('mot_fname', e.target.value)}
-                                        placeholder="Guardian's First Name"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
-                                </div>
-                            </div>
-
-                            {/* Guardian's Middle Name */}
-                            <div>
-                                <div className="flex items-center gap-1">
-                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
-                                        Middle Name <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Input
-                                        // id="mot_fname"
-                                        className="text-dark-500"
-                                        // value={data.mot_fname}
-                                        // onChange={(e) => setData('mot_fname', e.target.value)}
-                                        placeholder="Guardian's Middle Name"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
-                                </div>
-                            </div>
-
-                            {/* Guardian's Last Name */}
-                            <div>
-                                <div className="flex items-center gap-1">
-                                    <Label htmlFor="mot_fname" className="w-40 text-sm font-medium text-gray-700">
-                                        Last Name <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Input
-                                        // id="mot_fname"
-                                        className="text-dark-500"
-                                        // value={data.mot_fname}
-                                        // onChange={(e) => setData('mot_fname', e.target.value)}
-                                        placeholder="Guardian's Last Name"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-33 text-sm font-medium text-gray-700" />
-                                    {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
-                                <div className="col-span-1">
-                                    {/* Guardian's Birthdate */}
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
+                                <div className="col-span-1 space-y-3">
+                                    {/* Carer's First Name */}
                                     <div>
                                         <div className="flex items-center gap-1">
-                                            <Label htmlFor="fat_birthdate" className="w-62 text-sm font-medium text-gray-700">
+                                            <Label htmlFor="carer_fname" className="w-40 text-sm font-medium text-gray-700">
+                                                First Name <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Input
+                                                id="carer_fname"
+                                                className="text-dark-500"
+                                                value={data.carer_fname}
+                                                onChange={(e) => setData('carer_fname', e.target.value)}
+                                                placeholder="Carer's First Name"
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            <InputError message={errors.carer_fname} className="text-[10px] text-red-600" />
+                                        </div>
+                                    </div>
+
+                                    {/* Carer's Middle Name */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="carer_mname" className="w-40 text-sm font-medium text-gray-700">
+                                                Middle Name <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Input
+                                                id="carer_mname"
+                                                className="text-dark-500"
+                                                value={data.carer_mname}
+                                                onChange={(e) => setData('carer_mname', e.target.value)}
+                                                placeholder="Carer's Middle Name"
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            <InputError message={errors.carer_mname} className="text-[10px] text-red-600" />
+                                        </div>
+                                    </div>
+
+                                    {/* Carer's Last Name */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="carer_lname" className="w-40 text-sm font-medium text-gray-700">
+                                                Last Name <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Input
+                                                id="carer_lname"
+                                                className="text-dark-500"
+                                                value={data.carer_lname}
+                                                onChange={(e) => setData('carer_lname', e.target.value)}
+                                                placeholder="Carer's Last Name"
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            <InputError message={errors.carer_lname} className="text-[10px] text-red-600" />
+                                        </div>
+                                    </div>
+
+                                    {/* Carer's Suffix */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="carer_suffix" className="w-40 text-sm font-medium text-gray-700">
+                                                Suffix <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Select
+                                                id="carer_suffix"
+                                                value={data.carer_suffix}
+                                                onChange={(e) => setData('carer_suffix', e.target.value)}
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
+                                            >
+                                                <option value="">-- Select Suffix --</option>
+                                                <option value="NA">Not Applicable</option>
+                                                <option value="JR">Jr</option>
+                                                <option value="SR">Sr</option>
+                                                <option value="I">I</option>
+                                                <option value="II">II</option>
+                                                <option value="III">III</option>
+                                                <option value="IV">IV</option>
+                                                <option value="V">V</option>
+                                            </Select>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            <InputError message={errors.carer_lname} className="text-[10px] text-red-600" />
+                                        </div>
+                                    </div>
+
+                                    {/* Carer's Birthdate */}
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Label htmlFor="carer_birthdate" className="w-40 text-sm font-medium text-gray-700">
                                                 Birth Date: <span className="font-bold text-red-600">*</span>
                                             </Label>
                                             <Input
-                                                // id="fat_birthdate"
+                                                id="carer_birthdate"
                                                 className="text-dark-500"
                                                 type="date"
-                                                // value={data.fat_birthdate}
-                                                // onChange={(e) => setData('fat_birthdate', e.target.value)}
+                                                value={data.carer_birthdate}
+                                                onChange={(e) => setData('carer_birthdate', e.target.value)}
                                             />
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="w-33 text-sm font-medium text-gray-700" />
-                                            {/* <InputError message={errors.fat_birthdate} className="text-[10px] text-red-600" /> */}
+                                            <InputError message={errors.carer_birthdate} className="text-[10px] text-red-600" />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2">
-                                    {/* Guardians's Address */}
+
+                                <div className="col-span-1 space-y-3">
+                                    {/* Carer's Sex */}
                                     <div>
                                         <div className="flex items-center gap-1">
-                                            <Label htmlFor="fat_address" className="w-30 text-sm font-medium text-gray-700">
+                                            <Label htmlFor="carer_sex" className="w-40 text-sm font-medium text-gray-700">
+                                                Gender <span className="font-bold text-red-600">*</span>
+                                            </Label>
+                                            <Select
+                                                id="carer_sex"
+                                                value={data.carer_sex}
+                                                onChange={(e) => setData('carer_sex', e.target.value)}
+                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
+                                            >
+                                                <option value="">-- Select Sex --</option>
+                                                <option value="M">MALE</option>
+                                                <option value="F">FEMALE</option>
+                                            </Select>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-33 text-sm font-medium text-gray-700" />
+                                            <InputError message={errors.carer_lname} className="text-[10px] text-red-600" />
+                                        </div>
+                                    </div>
+
+                                    {/* Carer's Address */}
+                                    <div>
+                                        <div className="">
+                                            <Label htmlFor="carer_address" className="w-40 text-sm font-medium text-gray-700">
                                                 Address: <span className="font-bold text-red-600">*</span>
                                             </Label>
-                                            <Input
-                                                // id="fat_address"
-                                                className="text-dark-500"
-                                                // value={data.fat_address}
-                                                // onChange={(e) => setData('fat_address', e.target.value)}
-                                                placeholder="Guardian's Address"
+                                            <textarea
+                                                id="carer_address"
+                                                value={data.carer_address}
+                                                onChange={(e) => setData('carer_address', e.target.value)}
+                                                className="text-dark-500 w-full rounded-md border p-2"
+                                                placeholder="Carer's Address"
+                                                rows={2}
                                             />
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="w-33 text-sm font-medium text-gray-700" />
-                                            {/* <InputError message={errors.fat_address} className="text-[10px] text-red-600" /> */}
+                                            <InputError message={errors.carer_address} className="text-[10px] text-red-600" />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
-                                {/* Relationship to the Patient */}
+                                    {/* Relationship to the Patient */}
                                 <div>
                                     <div className="flex items-center gap-1">
-                                        <Label htmlFor="fat_address" className="w-48 text-sm font-medium text-gray-700">
-                                            Relationship to the Patient: *
+                                        <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
+                                            Relationship to the Patient:<span className="font-bold text-red-600">*</span>
                                         </Label>
                                         <Select
-                                            // id="fat_deceased_status"
-                                            // value={data.fat_deceased_status}
-                                            // onChange={(e) => setData('fat_deceased_status', e.target.value)}
+                                            id="carer_relationship"
+                                            value={data.carer_relationship}
+                                            onChange={(e) => setData('carer_relationship', e.target.value)}
                                             className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                                         >
                                             <option value="">-- Select Relationship to the Patient --</option>
@@ -1581,28 +1635,29 @@ export default function AddPatient() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-33 text-sm font-medium text-gray-700" />
-                                        {/* <InputError message={errors.fat_address} className="text-[10px] text-red-600" /> */}
+                                        <InputError message={errors.carer_relationship} className="text-[10px] text-red-600" />
                                     </div>
                                 </div>
 
                                 {/* Contact Number */}
                                 <div>
                                     <div className="flex items-center gap-1">
-                                        <Label htmlFor="mot_fname" className="w-35 text-sm font-medium text-gray-700">
+                                        <Label htmlFor="carer_contact" className="w-40 text-sm font-medium text-gray-700">
                                             Mobile <span className="font-bold text-red-600">*</span>
                                         </Label>
                                         <Input
-                                            // id="mot_fname"
+                                            id="carer_contact"
                                             className="text-dark-500"
-                                            // value={data.mot_fname}
-                                            // onChange={(e) => setData('mot_fname', e.target.value)}
-                                            placeholder="Guardian's Last Name"
+                                            value={data.carer_contact}
+                                            onChange={(e) => setData('carer_contact', e.target.value)}
+                                            placeholder="Carer's Contact Number"
                                         />
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-33 text-sm font-medium text-gray-700" />
-                                        {/* <InputError message={errors.mot_fname} className="text-[10px] text-red-600" /> */}
+                                        <InputError message={errors.carer_contact} className="text-[10px] text-red-600" />
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

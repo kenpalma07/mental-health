@@ -3,23 +3,27 @@ import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import type { BreadcrumbItem } from '@/types';
 
+
 const breadcrumbs: BreadcrumbItem[] = [
   {
-    title: 'Outgoing Referral',
-    href: '#',
+    title: 'Patient Schedule List',
+    href: '/patSched',
   },
 ];
 
-const OtherIndex: React.FC = () => {
+const PatSchedindex: React.FC = () => {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Others" />
+      <Head title="Patient Schedule List" />
       <div className="p-4 space-y-4">
-        <h1 className="text-2xl font-semibold">Display Outgoing Referral</h1>
+        <marquee behavior="scroll" direction="left" scrollamount="20">
+          <h1 className="text-sm font-semibold">Ongoing Development for this page</h1>
+        </marquee>
+
         {/* Add more content here later */}
       </div>
     </AppLayout>
   );
 };
 
-export default OtherIndex;
+export default PatSchedindex;

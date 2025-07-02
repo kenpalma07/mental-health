@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings } from 'lucide-react';
+import { FileBarChart2, Folder, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings, Send } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -53,16 +53,22 @@ const mainNavItems: NavItem[] = [
             { title: 'Suicide Report (Adults)', href: '/reportadultsr' },
         ],
     },
+
+
     {
         title: 'Notification',
         href: '#',
         icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Patient Schedule List', href: '/#' },
-            { title: 'Incoming Referrals', href: '/incReferral' },
-            { title: 'Outgoing Referrals', href: '/outReferral' },
+            { title: 'Patient Schedule List', href: '/patSched' },
         ],
+    },
+
+    {
+        title: 'Referrals',
+        href: '/Referral',
+        icon: Send,
     },
 
 ];
