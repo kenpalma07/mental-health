@@ -1,9 +1,11 @@
 import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, Consultations, MasterPatient,
-MentalAssessmentForm, PageProps, TreatMedicationRecord }
-from '@/types';
+import type {
+  BreadcrumbItem, Consultations, MasterPatient,
+  MentalAssessmentForm, PageProps, Pharma, TreatMedicationRecord
+}
+  from '@/types';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,7 +43,7 @@ interface TreatmentCardProps extends PageProps {
   patient: MasterPatient;
   consultation?: Consultations;
   assessments: MentalAssessmentForm[];
-  medicationRecords?: TreatMedicationRecord[];
+  medicationRecords: Pharma[];
 }
 
 const underlineInputClass =
@@ -93,6 +95,7 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
     return [intake, freq, duration, quantity].filter(Boolean).join(', ');
   }
 
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Treatment Card" />
@@ -102,13 +105,13 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
 
             {/* Header */}
             <div className="relative flex items-center justify-between mb-8 px-2">
-              <AppLogoDOH/>
+              <AppLogoDOH />
               <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
                 <h1 className="font-bold text-lg uppercase">Municipal Health Office</h1>
                 <h2 className="uppercase text-sm">{patient.provider_name}</h2>
                 <h3 className="font-semibold text-xl mt-1 uppercase">Psychiatric Treatment Card</h3>
               </div>
-              <AppLogoBP/>
+              <AppLogoBP />
             </div>
 
             {/* Personal Info */}
@@ -185,8 +188,8 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
                   <tr className="bg-black text-white">
                     <th className="w-[20%] border border-gray-300 px-2 py-1 text-xs">Medication</th>
                     <th className="w-[20%] border border-gray-300 px-2 py-1 ftext-xs">Dosage / Intake / Duration / Frequency / Quantity</th>
-                    <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Date</th>
-                    <th className="w-[15%] border border-gray-300 px-2 py-1 ftext-xs">Appointment</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Date Release</th>
+                    <th className="w-[15%] border border-gray-300 px-2 py-1 ftext-xs">Next Date Release</th>
                     <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Medication</th>
                     <th className="w-[15%] border border-gray-300 px-2 py-1 text-xs">Dosage / Intake / Duration / Frequency / Quantity</th>
                   </tr>
@@ -197,7 +200,7 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
                       <td className="border border-black px-1 py-1">{pair[0]?.phar_med || ''}</td>
                       <td className="border border-black px-1 py-1">{pair[0] ? renderDosage(pair[0]) : ''}</td>
                       <td className="border border-black px-1 py-1">{pair[0]?.phar_date || ''}</td>
-                      <td className="border border-black px-1 py-1">{pair[0]?.appointment || ''}</td>
+                      <td className="border border-black px-1 py-1">{pair[1]?.phar_date || ''}</td>
                       <td className="border border-black px-1 py-1">{pair[1]?.phar_med || ''}</td>
                       <td className="border border-black px-1 py-1">{pair[1] ? renderDosage(pair[1]) : ''}</td>
                     </tr>

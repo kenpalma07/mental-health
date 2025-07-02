@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PageProps } from '@/types';
+import type { BreadcrumbItem, MasterPatient, MentalAssessmentForm, PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 import { Calendar, ChevronLeft, ChevronRight, Clipboard, Heart, RefreshCcw, Send, Stethoscope, User } from 'lucide-react';
@@ -14,8 +14,8 @@ import SchedNxtVisit from './components/SchedNxtVisit';
 import Stepper from './components/Stepper';
 
 interface Props extends PageProps {
-    patient: any;
-    assessment: any;
+    patient: MasterPatient;
+    assessment: MentalAssessmentForm;
     consultation?: any;
     facilities?: any;
     employees?: any;
@@ -92,9 +92,9 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         remarks: assessment.phar_remarks,
     });
 
-    // --- Add these for SchedNxtVisit step ---
-    const errors = {}; // Replace with actual error state if needed
-    const previousVisits = assessment.previous_visits || []; // Replace with actual data if available
+
+    const errors = {}; 
+    const previousVisits = assessment.previous_visits || []; 
 
     const steps = [
         { label: 'Physical Health', icon: User },
@@ -163,15 +163,13 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         setDateNxtVisit('');
     };
 
-    // --- CLEAN HANDLE SUBMIT ---
     const handleSubmit = async () => {
-        // Compose all step data into one object
         const payload = {
             ...physicalHealthData,
             ...selfHarmData,
             ...flattenMNSData(mnsData),
             ...flattenManMNSData(manMNSData),
-            // --- Include medData fields ---
+
             diagnosis: medData.diagnosis,
             icd_10_code: medData.icdCode,
             icd_10_descrip: medData.icdCodeDescrip,

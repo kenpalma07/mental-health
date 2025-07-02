@@ -16,16 +16,23 @@ class ConsultationController extends Controller
     {
         $patient = MasterPatient::findOrFail($id);
         $consultations = Consultation::where('consult_temp_id', $patient->id)->get();
+        $consultations = $consultations->map(function ($consultation) use ($patient) {
+            $matchingAssessment = MentalAssessmentForm::where('pat_perm_id', $patient->id)
+                ->whereDate('consult_date_assess', $consultation->consult_date)
+                ->first();
+            $consultation->hasAssessment = $matchingAssessment !== null;
+
+            $consultation->hasDispense = $matchingAssessment && (
+                !empty($matchingAssessment->phar_med) || !empty($matchingAssessment->is_dispense)
+            );
+
+            return $consultation;
+        });
 
         $assessmentDates = MentalAssessmentForm::where('pat_perm_id', $patient->id)
             ->pluck('consult_date_assess')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'))
             ->toArray();
-
-        $consultations = $consultations->map(function ($consultation) use ($assessmentDates) {
-            $consultation->hasAssessment = in_array($consultation->consult_date, $assessmentDates);
-            return $consultation;
-        });
 
         return Inertia::render('MentalHealth::Consultation/index', [
             'patient' => $patient,

@@ -5,6 +5,7 @@ import type {
     MasterPatient,
     Consultations,
     MentalAssessmentForm,
+    Pharma,
 } from '@/types';
 import { Head } from '@inertiajs/react';
 import ShowAssessmentForm from './ShowAssessmentForms';
@@ -12,7 +13,7 @@ import TreatmentPlan from './TreatmentPlan';
 import AppLogos from '@/components/app-logo-itr';
 import { Button } from '@/components/ui/button';
 import { PrinterCheckIcon } from 'lucide-react';
-// Import your Table components (e.g., from shadcn/ui or your own)
+
 import {
     Table,
     TableHeader,
@@ -26,9 +27,10 @@ interface Props extends PageProps {
     patient: MasterPatient;
     consultation?: Consultations;
     assessments: MentalAssessmentForm[];
+    pharmaMeds: Pharma[];
 }
 
-export default function ITRiClinicPat({ patient, consultation, assessments }: Props) {
+export default function ITRiClinicPat({ patient, consultation, assessments, pharmaMeds }: Props) {
     const latestAssessment = assessments.length > 0 ? assessments[0] : null;
 
     const handlePrint = () => {
@@ -77,6 +79,14 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
 
         return age;
     }
+
+    function formatNumber(value?: string | number): string {
+        if (!value) return '';
+        const num = parseFloat(value.toString());
+        if (isNaN(num)) return value.toString();
+        return num % 1 === 0 ? parseInt(value.toString()).toString() : num.toString();
+    }
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -320,18 +330,30 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className="border border-black text-xs h-[80px] align-top uppercase">
-                                        {latestAssessment?.phar_med?.toUpperCase() || ''},{" "}
-                                        {latestAssessment?.phar_intake ? parseFloat(latestAssessment.phar_intake).toString() : ''}{" "}
-                                        {latestAssessment?.phar_intakeUnit?.toUpperCase() || ''} IN EVERY{" "}
-                                        {latestAssessment?.phar_freq ? parseFloat(latestAssessment.phar_freq).toString() : ''}{" "}
-                                        {latestAssessment?.phar_freqUnit?.toUpperCase() || ''} FOR{" "}
-                                        {latestAssessment?.phar_dur ? parseFloat(latestAssessment.phar_dur).toString() : ''}{" "}
-                                        {latestAssessment?.phar_durUnit?.toUpperCase() || ''}
-                                        {latestAssessment?.phar_quantity ? `, (${parseFloat(latestAssessment.phar_quantity).toString()})-Total` : ''}
+                                        {pharmaMeds.length > 0 ? (
+                                            <ul className="space-y-1">
+                                                {pharmaMeds.map((med, idx) => (
+                                                    <li key={idx}>
+                                                        {med.phar_med?.toUpperCase()},{" "}
+                                                        {formatNumber(med.phar_intake)} {med.phar_intakeUnit?.toUpperCase()} IN EVERY{" "}
+                                                        {formatNumber(med.phar_freq)} {med.phar_freqUnit?.toUpperCase()} FOR{" "}
+                                                        {formatNumber(med.phar_dur)} {med.phar_durUnit?.toUpperCase()}
+                                                        {med.phar_quantity && parseFloat(med.phar_quantity) !== 0 && (
+                                                            <>
+                                                                , (<span className="font-bold">{formatNumber(med.phar_quantity)}</span>)-Total
+                                                            </>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <span>No medicines recorded</span>
+                                        )}
                                     </TableCell>
                                     <TableCell className="border border-black text-xs h-[80px] align-top uppercase">
-                                        {patient?.provider_name || ''}<br />
-                                        {latestAssessment?.phar_doc || ''}
+                                        {patient?.provider_name || ''}
+                                        <br />
+                                        {pharmaMeds.length > 0 ? pharmaMeds[0].phar_doc : ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -350,9 +372,9 @@ export default function ITRiClinicPat({ patient, consultation, assessments }: Pr
                         </Table>
                     </div>
                     <br />
-                    <ShowAssessmentForm assessments={assessments} patient={patient} />
+                    <ShowAssessmentForm pharmaMeds={pharmaMeds} assessments={assessments} patient={patient} />
                     <br />
-                    <TreatmentPlan assessments={assessments} patient={patient} />
+                    <TreatmentPlan pharmaMeds={pharmaMeds} assessments={assessments} patient={patient} />
                 </div>
             </div>
         </AppLayout>

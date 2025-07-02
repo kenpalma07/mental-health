@@ -1565,7 +1565,7 @@ export default function AddPatient() {
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="carer_sex" className="w-40 text-sm font-medium text-gray-700">
-                                                Suffix <span className="font-bold text-red-600">*</span>
+                                                Gender <span className="font-bold text-red-600">*</span>
                                             </Label>
                                             <Select
                                                 id="carer_sex"
@@ -1609,7 +1609,7 @@ export default function AddPatient() {
                                 <div>
                                     <div className="flex items-center gap-1">
                                         <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
-                                            Relationship to the Patient: *
+                                            Relationship to the Patient:<span className="font-bold text-red-600">*</span>
                                         </Label>
                                         <Select
                                             id="carer_relationship"

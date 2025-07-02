@@ -63,6 +63,129 @@ class AssessmentController extends Controller
         ]);
     }
 
+
+    public function followupByPatient(Request $request, $pat_perm_id)
+    {
+        $assessment = \Modules\MentalHealth\Models\MentalAssessmentForm::where('pat_perm_id', $pat_perm_id)
+            ->orderByDesc('consult_date_assess')
+            ->first();
+
+        if (!$assessment) {
+            abort(404, 'No assessment found for this patient');
+        }
+
+        $patient = \Modules\MentalHealth\Models\MasterPatient::find($pat_perm_id);
+
+        $consultation = \Modules\MentalHealth\Models\Consultation::where('consult_temp_id', $assessment->pat_perm_id ?? $assessment->pat_temp_id ?? null)
+            ->orderByDesc('consult_date')
+            ->first();
+
+        $categoriesJson = file_get_contents(base_path('Modules/MentalHealth/resources/assets/js/Pages/json/categories.json'));
+        $categoriesData = json_decode($categoriesJson, true);
+
+        $categories = [
+            'presenting_complaint' => ['item' => 'pres_comp_item', 'label' => 'pres_comp_label'],
+            'general_health_history' => ['item' => 'gen_heal_hist_item', 'label' => 'gen_heal_hist_label'],
+            'mns_history' => ['item' => 'mns_hist_item', 'label' => 'mns_hist_label'],
+            'fam_hist_mns_conditions' => ['item' => 'fam_hist_mns_cond_item', 'label' => 'fam_hist_mns_cond_label'],
+        ];
+
+        $mnsData = [];
+        foreach ($categoriesData as $cat) {
+            $key = $cat['key'];
+            $itemCol = $categories[$key]['item'];
+            $labelCol = $categories[$key]['label'];
+
+            $savedItems = array_map('trim', explode('|', $assessment[$itemCol] ?? ''));
+            $groups = [];
+            foreach ($cat['groups'] as $group) {
+                $label = $group[$labelCol];
+                $items = $group[$itemCol];
+                $selectedItems = array_values(array_filter($items, function ($item) use ($savedItems) {
+                    return in_array($item, $savedItems);
+                }));
+                $groups[] = [
+                    $labelCol => $label,
+                    $itemCol => $selectedItems,
+                ];
+            }
+            $mnsData[$key] = $groups;
+        }
+
+        $facilities = \Modules\References\Models\FHUD::orderBy('facility_name')->get();
+        $employees = \Modules\References\Models\Employee::whereIn('emp_position', ['PHA', 'DOC'])
+            ->orderBy('emp_fname')
+            ->orderBy('emp_mname')
+            ->orderBy('emp_lname')
+            ->get()
+            ->map(function ($emp) {
+                return [
+                    'id' => $emp->id,
+                    'name' => trim($emp->emp_fname . ' ' . $emp->emp_mname . ' ' . $emp->emp_lname),
+                    'position' => $emp->emp_position,
+                ];
+            });
+
+        $previousVisits = \Modules\MentalHealth\Models\MentalAssessmentForm::where('pat_perm_id', $assessment->pat_perm_id)
+            ->where('id', '!=', $assessment->id)
+            ->orderByDesc('consult_date_assess')
+            ->get()
+            ->map(function ($visit) {
+                return [
+                    'id' => $visit->id,
+                    'consult_date_assess' => $visit->consult_date_assess,
+                    'pres_comp_item' => $visit->pres_comp_item,
+                    'pres_comp_label' => $visit->pres_comp_label,
+                ];
+            });
+
+        return \Inertia\Inertia::render('MentalHealth::Assessment/DispenseMeds', [
+            'assessment' => [
+                'id' => $assessment->id,
+                'assessment_physical_health' => $assessment->assessment_physical_health,
+                'management_physical_health' => $assessment->management_physical_health,
+                'school_name' => $assessment->school_name,
+                'grade_year' => $assessment->grade_year,
+                'place_inci' => $assessment->place_inci,
+                'self_sui_means' => $assessment->self_sui_means,
+                'self_sui_remarks' => $assessment->self_sui_remarks,
+                'mns_data' => $mnsData,
+                'man_mns_data' => [
+                    'treat_avail' => $assessment->treat_avail ? explode('|', $assessment->treat_avail) : [],
+                    'treat_choice' => $assessment->treat_choice ? explode('|', $assessment->treat_choice) : [],
+                    'psycho_inter' => $assessment->psycho_inter ? [$assessment->psycho_inter] : [],
+                    'ref_choice' => $assessment->ref_choice ? explode('|', $assessment->ref_choice) : [],
+                    'ref_fhud' => $assessment->ref_fhud ? [$assessment->ref_fhud] : [],
+                    'ref_reason' => $assessment->ref_reason ? [$assessment->ref_reason] : [],
+                    'career_fam_choice' => $assessment->career_fam_choice ? explode('|', $assessment->career_fam_choice) : [],
+                    'link_status' => $assessment->link_status ? explode('|', $assessment->link_status) : [],
+                    'special_pop' => $assessment->special_pop ? explode('|', $assessment->special_pop) : [],
+                ],
+                'diagnosis' => $assessment->diagnosis,
+                'icd_10_code' => $assessment->icd_10_code,
+                'icd_10_descrip' => $assessment->icd_10_descrip,
+                'phar_date' => $assessment->phar_date,
+                'phar_med' => $assessment->phar_med,
+                'phar_intake' => $assessment->phar_intake,
+                'phar_intakeUnit' => $assessment->phar_intakeUnit,
+                'phar_freq' => $assessment->phar_freq,
+                'phar_freqUnit' => $assessment->phar_freqUnit,
+                'phar_dur' => $assessment->phar_dur,
+                'phar_durUnit' => $assessment->phar_durUnit,
+                'phar_quantity' => $assessment->phar_quantity,
+                'phar_doc' => $assessment->phar_doc,
+                'is_dispense' => $assessment->is_dispense,
+                'phar_remarks' => $assessment->phar_remarks,
+                'date_nxt_visit' => $assessment->date_nxt_visit,
+                'previous_visits' => $previousVisits,
+            ],
+            'patient' => $patient,
+            'facilities' => $facilities,
+            'employees' => $employees,
+            'consultation' => $consultation,
+        ]);
+    }
+
     public function show($id)
     {
         $patient = MasterPatient::find($id);
@@ -280,6 +403,7 @@ class AssessmentController extends Controller
         ]);
     }
 
+
     public function edit($id)
     {
         $assessment = MentalAssessmentForm::findOrFail($id);
@@ -344,7 +468,6 @@ class AssessmentController extends Controller
                 ];
             });
 
-        // Fetch previous visits for this patient, excluding the current assessment
         $previousVisits = \Modules\MentalHealth\Models\MentalAssessmentForm::where('pat_perm_id', $assessment->pat_perm_id)
             ->where('id', '!=', $assessment->id)
             ->orderByDesc('consult_date_assess')
@@ -358,10 +481,8 @@ class AssessmentController extends Controller
                 ];
             });
 
-        // Pass $mnsData to your React page as 'assessment.mns_data'
         return Inertia::render('MentalHealth::Assessment/EditAssessmentForms', [
             'assessment' => [
-                // ...other fields...
                 'id' => $assessment->id,
                 'assessment_physical_health' => $assessment->assessment_physical_health,
                 'management_physical_health' => $assessment->management_physical_health,
@@ -406,8 +527,6 @@ class AssessmentController extends Controller
             'facilities' => $facilities,
             'employees' => $employees,
             'consultation' => $consultation,
-
-            // ...other props...
         ]);
     }
 
