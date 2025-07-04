@@ -490,4 +490,20 @@ export type IndexConsultation = {
     pat_systolic_pres: number;
     pat_diastolic_pres: number;
     hasAssessment?: boolean;
+    hasDispense?: boolean;
 };
+
+export interface Pharma {
+    id: number;
+    pat_perm_id: string;
+    phar_med: string;
+    phar_intake: string;
+    phar_intakeUnit: string;
+    phar_freq: string;
+    phar_freqUnit: string;
+    phar_dur: string;
+    phar_durUnit: string;
+    phar_quantity: string;
+    phar_doc: string;
+    phar_date: string;
+}

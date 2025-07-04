@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
-import type { BreadcrumbItem, MasterPatient, MedicationRecord, MentalAssessmentForm } from '@/types';
+import type { BreadcrumbItem, MasterPatient, MentalAssessmentForm, Pharma } from '@/types';
 import React from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
@@ -24,7 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface MedicationCardProps {
   patient: MasterPatient;
   assessments: MentalAssessmentForm[];
-  medicationRecords?: MedicationRecord[];
+  medicationRecords: Pharma[];
 }
 
 const medcardindex: React.FC<MedicationCardProps> = ({

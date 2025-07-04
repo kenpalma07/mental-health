@@ -78,7 +78,7 @@ const ConsultationIndex: React.FC = () => {
     const filteredConsultations = React.useMemo(
         () =>
             consultations
-                .slice() 
+                .slice()
                 .sort((a, b) => new Date(b.consult_date).getTime() - new Date(a.consult_date).getTime())
                 .filter((c) => {
                     const formatted = c.consult_date ? formatDate(c.consult_date) : '';
@@ -493,7 +493,25 @@ const ConsultationIndex: React.FC = () => {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="px-4 py-2">
-                                                    {item.hasAssessment ? (
+                                                    {item.consult_type_code === 'followupvisit' ? (
+                                                        item.hasDispense ? (
+                                                            <Link
+                                                                href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
+                                                                className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                            >
+                                                                <BookOpenText className="h-4 w-4" />
+                                                                Done | View Form
+                                                            </Link>
+                                                        ) : (
+                                                            <Link
+                                                                href={`/assessment/${patient.id}/followupAssessment?consult_date=${item.consult_date}`}
+                                                                className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"
+                                                            >
+                                                                <NotebookPen className="h-4 w-4" />
+                                                                Dispense Medicine
+                                                            </Link>
+                                                        )
+                                                    ) : item.hasAssessment ? (
                                                         <Link
                                                             href={`/patitrforms/${patient.id}?consult_date=${item.consult_date}`}
                                                             className="inline-flex items-center gap-2 rounded border border-green-600 px-3 py-1 text-green-600 transition hover:bg-green-600 hover:text-white"

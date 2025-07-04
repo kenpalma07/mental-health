@@ -1151,7 +1151,7 @@ export default function AddPatient() {
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="pat_landline" className="w-40 text-sm font-medium text-gray-700">
-                                                Landline <span className="font-bold text-red-600">*</span>
+                                                Landline
                                             </Label>
                                             <Input
                                                 id="pat_landline"
@@ -1163,7 +1163,6 @@ export default function AddPatient() {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_landline} className="text-[10px] text-red-600" />
                                         </div>
                                     </div>
                                 </div>
@@ -1638,7 +1637,7 @@ export default function AddPatient() {
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="carer_sex" className="w-40 text-sm font-medium text-gray-700">
-                                                Suffix <span className="font-bold text-red-600">*</span>
+                                                Gender <span className="font-bold text-red-600">*</span>
                                             </Label>
                                             <Select
                                                 id="carer_sex"
@@ -1679,6 +1678,7 @@ export default function AddPatient() {
                                     </div>
 
                                     {/* Relationship to the Patient */}
+<<<<<<< HEAD
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
@@ -1710,6 +1710,38 @@ export default function AddPatient() {
                                             <div className="w-33 text-sm font-medium text-gray-700" />
                                             <InputError message={errors.carer_relationship} className="text-[10px] text-red-600" />
                                         </div>
+=======
+                                <div>
+                                    <div className="flex items-center gap-1">
+                                        <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
+                                            Relationship to the Patient:<span className="font-bold text-red-600">*</span>
+                                        </Label>
+                                        <Select
+                                            id="carer_relationship"
+                                            value={data.carer_relationship}
+                                            onChange={(e) => setData('carer_relationship', e.target.value)}
+                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
+                                        >
+                                            <option value="">-- Select Relationship to the Patient --</option>
+                                            <option value="FAT">Father</option>
+                                            <option value="MOT">Mother</option>
+                                            <option value="BRO">Brother</option>
+                                            <option value="SIS">Sister</option>
+                                            <option value="GRD">Grandparent</option>
+                                            <option value="COU">Cousin</option>
+                                            <option value="FRA">Friend</option>
+                                            <option value="SPO">Spouse</option>
+                                            <option value="CHI">Child</option>
+                                            <option value="AUN">Aunt</option>
+                                            <option value="UNC">Uncle</option>
+                                            <option value="GUA">Guardian</option>
+                                            <option value="OTH">Other</option>
+                                        </Select>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-33 text-sm font-medium text-gray-700" />
+                                        <InputError message={errors.carer_relationship} className="text-[10px] text-red-600" />
+>>>>>>> ffc5deae2e72665d8599bf344d2599d5b9081887
                                     </div>
 
                                     {/* Contact Number */}

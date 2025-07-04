@@ -8,16 +8,25 @@ import {
     TableHead,
     TableCell,
 } from '@/components/ui/table';
-import { Consultations, MasterPatient, MentalAssessmentForm, PageProps } from '@/types';
+import { Consultations, MasterPatient, MentalAssessmentForm, PageProps, Pharma } from '@/types';
 
 interface Props extends PageProps {
     patient: MasterPatient;
     consultation?: Consultations;
     assessments: MentalAssessmentForm[];
+    pharmaMeds: Pharma[];
 }
 
-export default function TreatmentPlan({ patient, assessments }: Props) {
+export default function TreatmentPlan({ patient, assessments, pharmaMeds }: Props) {
     const latestAssessment = assessments.length > 0 ? assessments[0] : null;
+
+
+    function formatNumber(value?: string | number): string {
+        if (!value) return '';
+        const num = parseFloat(value.toString());
+        if (isNaN(num)) return value.toString();
+        return num % 1 === 0 ? parseInt(value.toString()).toString() : num.toString();
+    }
 
     return (
         <div className="p-6 bg-white shadow rounded-md text-sm">
@@ -86,15 +95,27 @@ export default function TreatmentPlan({ patient, assessments }: Props) {
                         <TableCell className="border border-black h-[100px] p-2 align-top" colSpan={4}>
                             <div className="italic text-gray-700 font-bold">Pharmacological Interventions (if any)</div>
                             <div>
-                                {latestAssessment?.phar_med?.toUpperCase() || ''},{" "}
-                                {latestAssessment?.phar_intake ? parseFloat(latestAssessment.phar_intake).toString() : ''}{" "}
-                                {latestAssessment?.phar_intakeUnit?.toUpperCase() || ''} in every{" "}
-                                {latestAssessment?.phar_freq ? parseFloat(latestAssessment.phar_freq).toString() : ''}{" "}
-                                {latestAssessment?.phar_freqUnit?.toUpperCase() || ''} for{" "}
-                                {latestAssessment?.phar_dur ? parseFloat(latestAssessment.phar_dur).toString() : ''}{" "}
-                                {latestAssessment?.phar_durUnit?.toUpperCase() || ''}
-                                {latestAssessment?.phar_quantity ? `, (${parseFloat(latestAssessment.phar_quantity).toString()})-Total` : ''}
+                                {pharmaMeds.length > 0 ? (
+                                    <ul className="list-disc list-inside mt-1 space-y-1 text-xs">
+                                        {pharmaMeds.map((med, idx) => (
+                                            <li key={idx}>
+                                                {med.phar_med?.toUpperCase()},{" "}
+                                                {formatNumber(med.phar_intake)} {med.phar_intakeUnit?.toUpperCase()} in every{" "}
+                                                {formatNumber(med.phar_freq)} {med.phar_freqUnit?.toUpperCase()} for{" "}
+                                                {formatNumber(med.phar_dur)} {med.phar_durUnit?.toUpperCase()}
+                                                {med.phar_quantity && parseFloat(med.phar_quantity) !== 0 && (
+                                                    <>
+                                                        , (<span className="font-bold">{formatNumber(med.phar_quantity)}</span>)-Total
+                                                    </>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <span className="ml-2">No medicines recorded</span>
+                                )}
                             </div>
+
                         </TableCell>
                     </TableRow>
                     <TableRow>

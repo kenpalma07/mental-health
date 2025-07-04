@@ -75,7 +75,7 @@ const PatientEncounter: React.FC<Props> = ({ open, onClose, patients, onRegister
                                             <Button
                                                 variant="outline"
                                                 onClick={() => handleConsultation(patient.id)}
-                                                className="flex items-center gap-1 rounded px-3 py-1 text-xs text-black hover:bg-green-400"
+                                                className="flex items-center gap-1 rounded px-3 py-1 text-xs text-black hover:bg-green-400 hover:text-white"
                                             >
                                                 <BookCopyIcon className="h-2 w-2" />
                                                 -Medical Records

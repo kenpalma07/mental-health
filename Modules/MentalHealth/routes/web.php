@@ -57,6 +57,7 @@ Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 
 // Patient Assessment
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
+Route::get('/assessment/{pat_perm_id}/followupAssessment', [AssessmentController::class, 'followupByPatient']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
 Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->name('assessment.show');
 Route::get('/assessments/{id}/edit', [AssessmentController::class, 'edit'])->name('assessments.edit');
