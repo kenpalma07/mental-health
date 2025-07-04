@@ -47,7 +47,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
         {/* Combined Card */}
-        <div className="flex flex-col lg:flex-row bg-white/90 backdrop-blur-md rounded-xl shadow-lg w-full max-w-4xl overflow-hidden">
+        <div className="flex flex-col lg:flex-row bg-white rounded-xl shadow-lg w-full max-w-4xl overflow-hidden">
+
           {/* Logo Side */}
           <div className="w-full lg:w-1/2 p-6 flex flex-col items-center justify-between text-center">
             {/* Logos Row */}
@@ -101,6 +102,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
                     placeholder="email@example.com"
+                    className="bg-white text-black placeholder-gray-400"
                   />
                   <InputError message={errors.email} />
                 </div>
@@ -109,9 +111,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     {canResetPassword && (
-                      <TextLink href="/forgot-password" className="ml-auto text-sm" tabIndex={5}>
+                      <TextLink href="/forgot-password" className="ml-auto text-xs text-black" tabIndex={5}>
                         Forgot password?
                       </TextLink>
+
                     )}
                   </div>
                   <Input
@@ -123,6 +126,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
                     placeholder="Password"
+                    className="bg-white text-black placeholder-gray-400"
                   />
                   <InputError message={errors.password} />
                 </div>
