@@ -42,13 +42,13 @@ export default function AssessmentIndex({ patient, consultation, assessment, fac
         { title: 'Edit Assessment Forms', href: '#' },
     ];
 
-    useEffect(() => {
-        console.log('Initial physicalHealthData:', physicalHealthData);
-        console.log('Initial selfHarmData:', selfHarmData);
-        console.log('Initial mnsData:', mnsData);
-        console.log('Initial manMNSData:', manMNSData);
-        console.log('Initial medData:', medData);
-    }, []);
+    // useEffect(() => {
+    //     console.log('Initial physicalHealthData:', physicalHealthData);
+    //     console.log('Initial selfHarmData:', se lfHarmData);
+    //     console.log('Initial mnsData:', mnsData);
+    //     console.log('Initial manMNSData:', manMNSData);
+    //     console.log('Initial medData:', medData);
+    // }, []);
 
     const [currentStep, setCurrentStep] = useState(0);
 
