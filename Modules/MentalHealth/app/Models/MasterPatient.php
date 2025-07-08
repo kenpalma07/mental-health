@@ -38,6 +38,7 @@ class MasterPatient extends Model
         'occupation_code',
         'occupation_sp',
         'monthly_income',
+        'ethnic_code',
         'tax_id_num',
         'bloodtype_code',
         'regcode',

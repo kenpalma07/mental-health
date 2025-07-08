@@ -63,11 +63,7 @@
         "lucide-react": "^0.475.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
-<<<<<<< HEAD
-        "react-hook-form": "^7.56.4",
-=======
         "react-hook-form": "^7.58.1",
->>>>>>> f5b1ed05c4518e6cdc478311d6b0dc9ce0d467cc
         "react-select": "^5.10.1",
         "react-to-print": "^3.1.0",
         "react-toastify": "^11.0.5",
@@ -80,11 +76,7 @@
         "vite": "^6.0",
         "xlsx": "^0.18.5",
         "ziggy-js": "^2.5.2",
-<<<<<<< HEAD
-        "zod": "^3.25.30"
-=======
         "zod": "^3.25.67"
->>>>>>> f5b1ed05c4518e6cdc478311d6b0dc9ce0d467cc
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "4.9.5",

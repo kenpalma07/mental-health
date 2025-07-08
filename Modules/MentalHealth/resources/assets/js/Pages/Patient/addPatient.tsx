@@ -8,27 +8,9 @@ import { Select } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Pencil, UserPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
 import SearchPatientModal from './SearchPatientModal';
-
-// Update Email Function
-
-type LocationData = {
-    [regionCode: string]: {
-        region_name: string;
-        province_list: {
-            [provinceName: string]: {
-                municipality_list: Array<{
-                    [municipalityName: string]: {
-                        barangay_list: string[];
-                    };
-                }>;
-            };
-        };
-    };
-};
-
-const locationData = rawLocationData as unknown as LocationData;
+import { EthnicGroupCombobox } from '../components/EthnicGroupCombobox';
+import { AddressSelector } from '../components/AddressSelector';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Mental Health', href: '/patients' },
@@ -70,6 +52,8 @@ export default function AddPatient() {
         occupation_sp: '',
         monthly_income: '',
         tax_id_num: '',
+        IndigenousGroup: 'N',
+        ethnic_code: '',
         bloodtype_code: '',
 
         patient_address: '',
@@ -130,10 +114,6 @@ export default function AddPatient() {
             setData('provider_name', facilities[0].provider_name);
         }
     }, [facilities, setData]);
-
-    const [selectedRegion, setSelectedRegion] = useState('');
-    const [selectedProvince, setSelectedProvince] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
     const [age, setAge] = useState({ years: '', months: '', days: '' });
     const isEnabled = data.philhealth_status_code === 'D' && data.phic_member === 'Y';
 
@@ -233,6 +213,7 @@ export default function AddPatient() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('Submitting data:', data);
         post('/patients');
     };
 
@@ -861,23 +842,7 @@ export default function AddPatient() {
                             </div>
 
                             {/* Ethnic Group */}
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <Label htmlFor="ethnic" className="w-40 text-sm font-medium text-gray-700">
-                                        Ethnic Group: <span className="text-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        // id="nationality"
-                                        // value={data.nationality}
-                                        // onChange={(e) => setData('nationality', e.target.value)}
-                                        disabled={true} // or based on some state, e.g. disabled={isReadOnly}
-                                        className="block w-full rounded-md border px-3 py-2 text-sm text-gray-500 shadow-sm disabled:bg-gray-100"
-                                    >
-                                        <option value="">-- Select Ethnic Group --</option>
-                                        <option value="">No Data</option>
-                                    </Select>
-                                </div>
-                            </div>
+                            <EthnicGroupCombobox value={data.ethnic_code} IndigenousGroup={data.IndigenousGroup} onChange={setData} />
 
                             {/* Blood Type */}
                             <div>
@@ -910,6 +875,16 @@ export default function AddPatient() {
                     </div>
                 </div>
 
+                {/* Region */}
+                <AddressSelector
+                    region={data.regcode}
+                    province={data.provcode}
+                    city={data.citycode}
+                    barangay={data.bgycode}
+                    patientAddress={data.patient_address}
+                    onChange={(field, value) => setData(field, value)}
+                />
+
                 {/* Address and Contact Info */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
                     <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
@@ -936,125 +911,6 @@ export default function AddPatient() {
                                         rows={2}
                                     />
                                     <InputError message={errors.patient_address} className="text-[10px] text-red-600" />
-                                </div>
-
-                                {/* Region */}
-                                <div>
-                                    <Label htmlFor="regcode">
-                                        Region <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="regcode"
-                                        value={selectedRegion}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedRegion(val);
-                                            setSelectedProvince('');
-                                            setSelectedCity('');
-                                            setData('regcode', val);
-                                            setData('provcode', '');
-                                            setData('citycode', '');
-                                            setData('bgycode', '');
-                                        }}
-                                        className="text-dark-500 w-full rounded border p-2 text-sm"
-                                    >
-                                        <option value="">Select Region</option>
-                                        {Object.entries(locationData).map(([code, info]) => {
-                                            const regionName = regionLookup[code] || info.region_name;
-                                            return (
-                                                <option key={code} value={code}>
-                                                    Region {code} - {regionName}
-                                                </option>
-                                            );
-                                        })}
-                                    </Select>
-                                    <InputError message={errors.regcode} className="text-[10px] text-red-600" />
-                                </div>
-
-                                {/* Province */}
-                                <div>
-                                    <Label htmlFor="provcode">
-                                        Province <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="provcode"
-                                        value={selectedProvince}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedProvince(val);
-                                            setSelectedCity('');
-                                            setData('provcode', val);
-                                            setData('citycode', '');
-                                            setData('bgycode', '');
-                                        }}
-                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedRegion ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    >
-                                        <option value="">-- Select Province --</option>
-                                        {selectedRegion &&
-                                            Object.keys(locationData[selectedRegion].province_list).map((prov) => (
-                                                <option key={prov} value={prov}>
-                                                    {prov}
-                                                </option>
-                                            ))}
-                                    </Select>
-                                    <InputError message={errors.provcode} className="text-[10px] text-red-600" />
-                                </div>
-
-                                {/* City/Municipality */}
-                                <div>
-                                    <Label htmlFor="citycode">
-                                        City / Municipality <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="citycode"
-                                        value={selectedCity}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedCity(val);
-                                            setData('citycode', val);
-                                            setData('bgycode', '');
-                                        }}
-                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedProvince ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    >
-                                        <option value="">Select City/Municipality</option>
-                                        {selectedRegion &&
-                                            selectedProvince &&
-                                            locationData[selectedRegion].province_list[selectedProvince].municipality_list.map((muni, i) => {
-                                                const city = Object.keys(muni)[0];
-                                                return (
-                                                    <option key={i} value={city}>
-                                                        {city}
-                                                    </option>
-                                                );
-                                            })}
-                                    </Select>
-                                    <InputError message={errors.citycode} className="text-[10px] text-red-600" />
-                                </div>
-
-                                {/* Barangay */}
-                                <div>
-                                    <Label htmlFor="bgycode">
-                                        Barangay <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="bgycode"
-                                        value={data.bgycode}
-                                        onChange={(e) => setData('bgycode', e.target.value)}
-                                        className={`text-dark-500 w-full rounded border p-2 text-sm ${!selectedCity ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    >
-                                        <option value="">Select Barangay</option>
-                                        {selectedRegion &&
-                                            selectedProvince &&
-                                            selectedCity &&
-                                            locationData[selectedRegion].province_list[selectedProvince].municipality_list
-                                                .find((m) => Object.keys(m)[0] === selectedCity)
-                                                ?.[selectedCity].barangay_list.map((brgy, i) => (
-                                                    <option key={i} value={brgy}>
-                                                        {brgy}
-                                                    </option>
-                                                ))}
-                                    </Select>
-                                    <InputError message={errors.bgycode} className="text-[10px] text-red-600" />
                                 </div>
                             </div>
 
@@ -1175,13 +1031,15 @@ export default function AddPatient() {
                                     <Input
                                         id="fulladdress"
                                         type="text"
-                                        className="text-dark-500 w-full rounded border bg-gray-100 p-2"
+                                        className="text-dark-500 w-full rounded border bg-gray-100 p-2 uppercase"
                                         value={[
                                             data.patient_address,
                                             data.bgycode,
-                                            selectedCity,
-                                            selectedProvince,
-                                            selectedRegion,
+                                            data.citycode,
+                                            data.provcode,
+                                            // selectedCity,
+                                            // selectedProvince,
+                                            // selectedRegion,
                                             regionLookup[data.regcode] || '',
                                             data.zipcode,
                                             data.country_code === 'PH' ? 'Philippines' : '', // Country
@@ -1678,11 +1536,10 @@ export default function AddPatient() {
                                     </div>
 
                                     {/* Relationship to the Patient */}
-<<<<<<< HEAD
                                     <div>
                                         <div className="flex items-center gap-1">
                                             <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
-                                                Relationship to the Patient: *
+                                                Relationship to the Patient:<span className="font-bold text-red-600">*</span>
                                             </Label>
                                             <Select
                                                 id="carer_relationship"
@@ -1710,39 +1567,9 @@ export default function AddPatient() {
                                             <div className="w-33 text-sm font-medium text-gray-700" />
                                             <InputError message={errors.carer_relationship} className="text-[10px] text-red-600" />
                                         </div>
-=======
-                                <div>
-                                    <div className="flex items-center gap-1">
-                                        <Label htmlFor="carer_relationship" className="w-40 text-sm font-medium text-gray-700">
-                                            Relationship to the Patient:<span className="font-bold text-red-600">*</span>
-                                        </Label>
-                                        <Select
-                                            id="carer_relationship"
-                                            value={data.carer_relationship}
-                                            onChange={(e) => setData('carer_relationship', e.target.value)}
-                                            className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
-                                        >
-                                            <option value="">-- Select Relationship to the Patient --</option>
-                                            <option value="FAT">Father</option>
-                                            <option value="MOT">Mother</option>
-                                            <option value="BRO">Brother</option>
-                                            <option value="SIS">Sister</option>
-                                            <option value="GRD">Grandparent</option>
-                                            <option value="COU">Cousin</option>
-                                            <option value="FRA">Friend</option>
-                                            <option value="SPO">Spouse</option>
-                                            <option value="CHI">Child</option>
-                                            <option value="AUN">Aunt</option>
-                                            <option value="UNC">Uncle</option>
-                                            <option value="GUA">Guardian</option>
-                                            <option value="OTH">Other</option>
-                                        </Select>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-33 text-sm font-medium text-gray-700" />
-                                        <InputError message={errors.carer_relationship} className="text-[10px] text-red-600" />
->>>>>>> ffc5deae2e72665d8599bf344d2599d5b9081887
-                                    </div>
+
+                                    {/* Carer's Email */}
 
                                     {/* Contact Number */}
                                     <div>

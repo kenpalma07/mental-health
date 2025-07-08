@@ -93,9 +93,11 @@ class PatientController extends Controller
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
             'occupation_sp' => $request->occupation_code === '01' ? 'required|string' : 'nullable|string',
-            'monthly_income' => 'nullable|numeric|max:999999.99', // Added by Ken
-            'tax_id_num' => 'nullable|string|max:20', // Added by Ken
+            'monthly_income' => 'nullable|numeric|max:999999.99',
+            'tax_id_num' => 'nullable|string|max:20',
+            'ethnic_code' => 'nullable|string|max:5',
             'bloodtype_code' => 'nullable|string|max:11',
+
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -294,8 +296,9 @@ class PatientController extends Controller
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
             'occupation_sp' => 'nullable|string|max:255',
-            'monthly_income' => 'nullable|numeric|max:999999.99', // Added by Ken
-            'tax_id_num' => 'nullable|string|max:20', // Added by Ken
+            'monthly_income' => 'nullable|numeric|max:999999.99',
+            'ethnic_code' => 'nullable|string|max:5',
+            'tax_id_num' => 'nullable|string|max:20', 
             'bloodtype_code' => 'nullable|string|max:11',
 
             'regcode' => 'required|string|max:100',
