@@ -12,6 +12,8 @@ use Modules\MentalHealth\Http\Controllers\MedicalRecordsController;
 use Modules\MentalHealth\Http\Controllers\PharmaController;
 use Modules\MentalHealth\Http\Controllers\ReferralController;
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
@@ -72,3 +74,5 @@ Route::put('/pharma/{id}', [PharmaController::class, 'update'])->name('pharma.up
 //referral
 Route::post('/sendReferral/send', [ReferralController::class, 'store'])->name('sendReferral');
 Route::get('/Referral', [ReferralController::class, 'index'])->name('Referral.index');
+
+});
