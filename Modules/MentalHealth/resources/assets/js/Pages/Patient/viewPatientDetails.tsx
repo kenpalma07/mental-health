@@ -11,8 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Patient Details', href: '#' },
 ];
 
-
-
 const ViewPatientDetails = ({ patient }: { patient: MasterPatient }) => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

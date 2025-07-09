@@ -40,6 +40,7 @@ class MasterPatient extends Model
         'monthly_income',
         'ethnic_code',
         'tax_id_num',
+
         'bloodtype_code',
         'regcode',
         'provcode',
