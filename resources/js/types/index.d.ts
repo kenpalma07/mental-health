@@ -78,6 +78,7 @@ export interface MasterPatient {
     pat_birthDate: string;
     educattainment: string;
     occupation_code: string;
+    occupation_sp: string;
     bloodtype_code: string;
     regcode: string;
     provcode: string;
@@ -506,4 +507,38 @@ export interface Pharma {
     phar_quantity: string;
     phar_doc: string;
     phar_date: string;
+}
+
+export interface AssessmentData {
+  assessment_physical_health: string;
+  management_physical_health: string;
+
+  mns_data?: Record<string, any>;
+  man_mns_data?: Record<string, any>;
+
+  school_name?: string;
+  grade_year?: string;
+  place_inci?: string;
+  self_sui_means?: string;
+  self_sui_remarks?: string;
+
+  diagnosis?: string;
+  icd_10_code?: string;
+  icd_10_descrip?: string;
+
+  phar_med?: string;
+  phar_intake?: string;
+  phar_intakeUnit?: string;
+  phar_freq?: string;
+  phar_freqUnit?: string;
+  phar_dur?: string;
+  phar_durUnit?: string;
+  phar_date?: string;
+  phar_quantity?: number;
+  phar_doc?: string;
+  is_dispense?: string;
+  phar_remarks?: string;
+
+  date_nxt_visit?: string;
+  previous_visits?: any[]; 
 }

@@ -94,7 +94,7 @@ export default function ShowAssessmentForm({ patient, assessments, pharmaMeds }:
                         <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Age:</TableHead>
                         <TableCell className="p-2 border border-black">{calculateAge(patient.pat_birthDate)}</TableCell>
                         <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Occupation:</TableHead>
-                        <TableCell className="p-2 border border-black">{patient.occupation_code || 'N/A'}</TableCell>
+                        <TableCell className="p-2 border border-black">{patient.occupation_sp || 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Gender:</TableHead>
@@ -289,7 +289,7 @@ export default function ShowAssessmentForm({ patient, assessments, pharmaMeds }:
                                 <div className="space-y-1">
                                     <div><span className="font-semibold">Grade/Year:</span> {latestAssessment.grade_year || ''}</div>
                                     <div><span className="font-semibold">School:</span> {latestAssessment.school_name || ''}</div>
-                                    <div><span className="font-semibold">Occupation:</span> {patient.occupation_code || ''}</div>
+                                    <div><span className="font-semibold">Occupation:</span> {patient.occupation_sp || ''}</div>
                                     <div><span className="font-semibold">Place of Incidence:</span> {latestAssessment.place_inci || ''}</div>
                                     <div><span className="font-semibold">Means of Suicide:</span> {latestAssessment.self_sui_means || ''}</div>
                                     <div><span className="font-semibold">Remarks:</span> {latestAssessment.self_sui_remarks || ''}</div>

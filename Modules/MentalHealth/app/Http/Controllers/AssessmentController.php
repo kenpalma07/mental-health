@@ -371,12 +371,14 @@ class AssessmentController extends Controller
 
             if (is_array($section)) {
                 foreach ($section as $group) {
-                    if (isset($group[$fields['item']])) {
-                        $allItems = array_merge($allItems, (array) $group[$fields['item']]);
-                    }
+                    $groupItems = isset($group[$fields['item']]) ? (array) $group[$fields['item']] : [];
 
-                    if (!empty($group[$fields['label']])) {
-                        $allLabels[] = $group[$fields['label']];
+                    if (!empty($groupItems)) {
+                        $allItems = array_merge($allItems, $groupItems);
+
+                        if (!empty($group[$fields['label']])) {
+                            $allLabels[] = $group[$fields['label']];
+                        }
                     }
                 }
             }
@@ -388,7 +390,6 @@ class AssessmentController extends Controller
                 $assessData['selfharm_sui'] = in_array('Act of self-harm', $allItems) ? 'Y' : 'N';
             }
         }
-
         $specialPop = $request->input('special_pop', []);
 
         $assessData['child_and_adolescent'] = in_array('Children and Adolescents', $specialPop) ? 'Y' : 'N';
