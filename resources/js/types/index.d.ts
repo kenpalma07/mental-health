@@ -509,6 +509,7 @@ export interface Pharma {
     phar_date: string;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 export interface AssessmentData {
   assessment_physical_health: string;
@@ -543,5 +544,7 @@ export interface AssessmentData {
   date_nxt_visit?: string;
   previous_visits?: any[]; 
 }
+=======
+>>>>>>> 2fffda0e93774096aec5db1554a5b4181faf753d
 =======
 >>>>>>> 2fffda0e93774096aec5db1554a5b4181faf753d
