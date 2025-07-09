@@ -121,5 +121,10 @@ class ConsultationController extends Controller
 
         return redirect()->route('consultations.index', ['id' => $consultation->consult_temp_id])
             ->with('success', 'Consultation updated successfully!');
+
+        ]);
+
+
+
     }
 }

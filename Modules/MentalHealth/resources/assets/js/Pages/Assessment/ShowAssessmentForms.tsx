@@ -78,7 +78,6 @@ export default function ShowAssessmentForm({ patient, assessments, pharmaMeds }:
                         <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Date intake:</TableHead>
                         <TableCell className="p-2 border border-black">{latestAssessment?.consult_date_assess || 'N/A'}</TableCell>
                     </TableRow>
-
                     <TableRow>
                         <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
                             Personal details

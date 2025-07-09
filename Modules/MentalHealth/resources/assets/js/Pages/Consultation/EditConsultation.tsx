@@ -16,7 +16,6 @@ interface EditConsultationProps {
 
 const EditConsultation: React.FC<EditConsultationProps> = ({ isOpen, onClose, editconsultation, onSubmit }) => {
     const [showSuccess, setShowSuccess] = useState(false);
-
     const {
         data: form,
         setData: setForm,

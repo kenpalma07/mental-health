@@ -66,22 +66,18 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                 <div className="p-6 bg-white shadow rounded-md text-sm">
 
                     <div className="flex items-center justify-center gap-4 w-full">
-
                         <div className="flex-shrink-0">
                             <AppLogoDOH />
                         </div>
-
                         <div className="text-center">
                             <span className="text-sm font-normal block">Republic of the Philippines</span>
                             <span className="text-base font-bold block">Department of Health</span>
                             <span className="font-bold text-lg block uppercase">Center for Health Development - Caraga</span>
                         </div>
-
                         <div className="flex-shrink-0">
                             <AppLogoBP />
                         </div>
                     </div>
-
                     <Table className="table-auto w-full border border-black text-left">
                         <TableBody>
                             <TableRow>
@@ -394,7 +390,6 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
                                         Dagdag pa rito, pinahihintulutan ko ang CHO/RHU na i-encode ang impormasyon tungkol sa aking sarili at ang
                                         mga nakalap na datos kaugnay ng mga sintomas ng sakit at konsultasyon para sa nasabing sistema ng impormasyon.
                                     </p>
-
                                     <p className="block text-center mt-2">
                                         Nais kong maipabatid sa akin ang mga resulta ng medikal na pagsusuri na may kinalaman sa akin o sa aking mga
                                         direktang anak. Maaari ko ring bawiin ang aking pahintulot sa CHO/RHU anumang oras, nang hindi kinakailangang
@@ -414,7 +409,6 @@ const medabstractindex: React.FC<PatEnrollmentProps> = ({ patient }: { patient: 
 
                             <TableRow>
                                 <td colSpan={6} className="border border-black p-1 text-xs text-right italic">iClinicSys Information System/Form 1</td>
-
                             </TableRow>
                         </TableBody>
                     </Table>
