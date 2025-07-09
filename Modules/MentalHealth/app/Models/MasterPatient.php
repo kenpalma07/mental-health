@@ -51,6 +51,7 @@ class MasterPatient extends Model
         'pat_birthplace',
         'religion_code',
         'nationality',
+        'pat_email',
         'pat_mobile',
         'pat_landline',
         'mot_fname',

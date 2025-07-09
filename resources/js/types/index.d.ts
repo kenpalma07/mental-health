@@ -89,6 +89,7 @@ export interface MasterPatient {
     pat_birthplace: string;
     religion_code: string;
     nationality: string;
+    pat_email: string;
     pat_mobile: string;
     pat_landline: string;
     mot_fname: string;

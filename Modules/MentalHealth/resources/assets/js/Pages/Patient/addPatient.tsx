@@ -823,24 +823,6 @@ export default function AddPatient() {
                                 </div>
                             </div>
 
-                            {/* Indigenous */}
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <Label htmlFor="indigenous" className="w-33 text-sm font-medium text-gray-700">
-                                        Indigenous:
-                                    </Label>
-
-                                    <label className="flex items-center gap-1 text-sm text-gray-700">
-                                        <input type="radio" name="indigenous" value="No" className="accent-blue-600" disabled />
-                                        No
-                                    </label>
-                                    <label className="flex items-center gap-1 text-sm text-gray-700">
-                                        <input type="radio" name="indigenous" value="Yes" className="accent-blue-600" disabled />
-                                        Yes
-                                    </label>
-                                </div>
-                            </div>
-
                             {/* Ethnic Group */}
                             <EthnicGroupCombobox value={data.ethnic_code} IndigenousGroup={data.IndigenousGroup} onChange={setData} />
 
@@ -882,177 +864,14 @@ export default function AddPatient() {
                     city={data.citycode}
                     barangay={data.bgycode}
                     patientAddress={data.patient_address}
+                    zipCode={data.zipcode}
+                    country={data.country_code}
+                    email={data.pat_email}
+                    mobile={data.pat_mobile}
+                    landline={data.pat_landline}
                     onChange={(field, value) => setData(field, value)}
+                    errors={errors}
                 />
-
-                {/* Address and Contact Info */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-                    <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-1">
-                                <Pencil className="h-4 w-4 text-gray-600" />
-                                <h2 className="text-md font-semibold">Address and Contact Info</h2>
-                            </div>
-                            <hr />
-
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
-                                {/* House # / Lot # / Street Name / Building / Purok # / Village Name */}
-                                <div className="col-span-4">
-                                    <Label htmlFor="patient_address">
-                                        House # / Lot # / Street Name / Building / Purok # / Village Name
-                                        <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <textarea
-                                        id="patient_address"
-                                        className="text-dark-500 w-full rounded-md border p-2 text-sm"
-                                        value={data.patient_address}
-                                        onChange={(e) => setData('patient_address', e.target.value)}
-                                        placeholder="House # / Lot # / Street Name / Building / Purok # / Village Name"
-                                        rows={2}
-                                    />
-                                    <InputError message={errors.patient_address} className="text-[10px] text-red-600" />
-                                </div>
-                            </div>
-
-                            {/* Next Row */}
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
-                                <div className="space-y-3">
-                                    {/* Zip Code */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="zipcode" className="w-40 text-sm font-medium text-gray-700">
-                                                Zip Code: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                id="zipcode"
-                                                className="text-dark-500"
-                                                value={data.zipcode}
-                                                onChange={(e) => {
-                                                    const value = e.target.value.replace(/\D/g, '');
-                                                    if (value.length <= 4) {
-                                                        setData('zipcode', value);
-                                                    }
-                                                }}
-                                                placeholder="Zip Code"
-                                                maxLength={4}
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.zipcode} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-
-                                    {/* Country */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="country_code" className="w-40 text-sm font-medium text-gray-700">
-                                                Country: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Select
-                                                id="country_code"
-                                                value={data.country_code}
-                                                onChange={(e) => setData('country_code', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 text-sm shadow-sm"
-                                            >
-                                                <option value="">-- Select Country --</option>
-                                                <option value="PH">Philippines</option>
-                                            </Select>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.country_code} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                    {/* Email */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="zipcode" className="w-40 text-sm font-medium text-gray-700">
-                                                Email: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                // id="zipcode"
-                                                className="text-dark-500"
-                                                // value={data.zipcode}
-                                                // onChange={(e) => setData('zipcode', e.target.value)}
-                                                placeholder="Email"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Contact Number or Mobile */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="pat_mobile" className="w-40 text-sm font-medium text-gray-700">
-                                                Mobile <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                id="pat_mobile"
-                                                className="text-dark-500"
-                                                value={data.pat_mobile}
-                                                onChange={(e) => setData('pat_mobile', e.target.value)}
-                                                placeholder="Mobile"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_mobile} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-
-                                    {/* Landline */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="pat_landline" className="w-40 text-sm font-medium text-gray-700">
-                                                Landline
-                                            </Label>
-                                            <Input
-                                                id="pat_landline"
-                                                className="text-dark-500"
-                                                value={data.pat_landline}
-                                                onChange={(e) => setData('pat_landline', e.target.value)}
-                                                placeholder="Landline"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Patient's Full Address */}
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                                <div className="col-span-4">
-                                    <Label htmlFor="fulladdress">Full Address</Label>
-                                    <Input
-                                        id="fulladdress"
-                                        type="text"
-                                        className="text-dark-500 w-full rounded border bg-gray-100 p-2 uppercase"
-                                        value={[
-                                            data.patient_address,
-                                            data.bgycode,
-                                            data.citycode,
-                                            data.provcode,
-                                            // selectedCity,
-                                            // selectedProvince,
-                                            // selectedRegion,
-                                            regionLookup[data.regcode] || '',
-                                            data.zipcode,
-                                            data.country_code === 'PH' ? 'Philippines' : '', // Country
-                                        ]
-                                            .filter(Boolean)
-                                            .join(', ')}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 {/* Parent's Information */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">

@@ -1,6 +1,6 @@
 {
     "13": {
-        "region_name": "REGION XIII",
+        "region_name": "REGION XIII - CARAGA",
         "province_list": {
             "DINAGAT ISLANDS": {
                 "municipality_list": [
@@ -1734,7 +1734,7 @@
         }
     },
     "ARMM": {
-        "region_name": "ARMM",
+        "region_name": "ARMM - AUTONOMOUS REGION IN MUSLIM MINDANAO",
         "province_list": {
             "TAWI-TAWI": {
                 "municipality_list": [
@@ -4980,7 +4980,7 @@
         }
     },
     "10": {
-        "region_name": "REGION X",
+        "region_name": "REGION X - NORTHERN MINDANAO",
         "province_list": {
             "MISAMIS OCCIDENTAL": {
                 "municipality_list": [
@@ -7541,7 +7541,7 @@
         }
     },
     "11": {
-        "region_name": "REGION XI",
+        "region_name": "REGION XI - DAVAO REGION",
         "province_list": {
             "DAVAO ORIENTAL": {
                 "municipality_list": [
@@ -9003,7 +9003,7 @@
         }
     },
     "4A": {
-        "region_name": "REGION IV-A",
+        "region_name": "REGION IV-A - CALABARZON",
         "province_list": {
             "CAVITE": {
                 "municipality_list": [
@@ -13867,7 +13867,7 @@
         }
     },
     "08": {
-        "region_name": "REGION VIII",
+        "region_name": "REGION VIII - EASTERN VISAYAS",
         "province_list": {
             "BILIRAN": {
                 "municipality_list": [
@@ -19137,7 +19137,7 @@
         }
     },
     "NCR": {
-        "region_name": "NCR",
+        "region_name": "NCR - NATIONAL CAPITAL REGION",
         "province_list": {
             "TAGUIG - PATEROS": {
                 "municipality_list": [
@@ -21035,7 +21035,7 @@
         }
     },
     "09": {
-        "region_name": "REGION IX",
+        "region_name": "REGION IX - ZAMBOANGA PENINSULA",
         "province_list": {
             "ZAMBOANGA DEL SUR": {
                 "municipality_list": [
@@ -23337,7 +23337,7 @@
         }
     },
     "NIR": {
-        "region_name": "NIR",
+        "region_name": "NIR - NEGROS ISLAND REGION",
         "province_list": {
             "NEGROS OCCIDENTAL": {
                 "municipality_list": [
@@ -24902,7 +24902,7 @@
         }
     },
     "07": {
-        "region_name": "REGION VII",
+        "region_name": "REGION VII - CENTRAL VISAYAS",
         "province_list": {
             "BOHOL": {
                 "municipality_list": [
@@ -27978,7 +27978,7 @@
         }
     },
     "05": {
-        "region_name": "REGION V",
+        "region_name": "REGION V - BICOL REGION",
         "province_list": {
             "CAMARINES SUR": {
                 "municipality_list": [
@@ -32162,7 +32162,7 @@
         }
     },
     "02": {
-        "region_name": "REGION II",
+        "region_name": "REGION II - CAGAYAN VALLEY",
         "province_list": {
             "ISABELA": {
                 "municipality_list": [
@@ -35011,7 +35011,7 @@
         }
     },
     "4B": {
-        "region_name": "REGION IV-B",
+        "region_name": "REGION IV-B - MIMAROPA REGION",
         "province_list": {
             "OCCIDENTAL MINDORO": {
                 "municipality_list": [
@@ -36876,7 +36876,7 @@
         }
     },
     "01": {
-        "region_name": "REGION I",
+        "region_name": "REGION I - ILOCOS REGION",
         "province_list": {
             "LA UNION": {
                 "municipality_list": [
@@ -40861,7 +40861,7 @@
         }
     },
     "12": {
-        "region_name": "REGION XII",
+        "region_name": "REGION XII - SOCCSKSARGEN",
         "province_list": {
             "SOUTH COTABATO": {
                 "municipality_list": [
@@ -42334,7 +42334,7 @@
         }
     },
     "03": {
-        "region_name": "REGION III",
+        "region_name": "REGION III - CENTRAL LUZON",
         "province_list": {
             "ZAMBALES": {
                 "municipality_list": [
@@ -46233,7 +46233,7 @@
         }
     },
     "CAR": {
-        "region_name": "CAR",
+        "region_name": "CAR - CORDILLERA ADMINISTRATIVE REGION",
         "province_list": {
             "KALINGA": {
                 "municipality_list": [
@@ -47743,7 +47743,7 @@
         }
     },
     "06": {
-        "region_name": "REGION VI",
+        "region_name": "REGION VI - WESTERN VISAYAS",
         "province_list": {
             "ANTIQUE": {
                 "municipality_list": [

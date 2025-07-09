@@ -105,6 +105,7 @@ class PatientController extends Controller
             'zipcode' => 'required|string|max:11',
             'country_code' => 'required|string|max:5',
             'patient_address' => 'required|string|max:255',
+            'pat_email' => 'nullable|email|max:255',
             'pat_mobile' => 'required|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
 
@@ -308,6 +309,7 @@ class PatientController extends Controller
             'zipcode' => 'required|string|max:11',
             'country_code' => 'required|string|max:5',
             'patient_address' => 'nullable|string|max:255',
+            'pat_email' => 'nullable|email|max:255',
             'pat_mobile' => 'nullable|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
 

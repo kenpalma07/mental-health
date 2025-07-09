@@ -8,6 +8,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Pencil, UserPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import rawLocationData from '../json/philippine_reg_prov_cit_brgy.json';
+import { AddressSelector } from '../components/AddressSelector';
 
 // 🛠️ DEFINE the type first
 type LocationData = {
@@ -65,6 +66,7 @@ interface PatientProps {
         occupation_sp?: string; // Specify Occupation
         bloodtype_code?: string;
 
+        pat_email?: string;
         pat_mobile?: string;
         pat_landline?: string;
         is_deceased?: boolean;
@@ -147,6 +149,7 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
         occupation_code: patient.occupation_code || '',
         occupation_sp: patient.occupation_sp || '', // Specify Occupation
         bloodtype_code: patient.bloodtype_code || '',
+        pat_email: patient.pat_email || '',
         pat_mobile: patient.pat_mobile || '',
         pat_landline: patient.pat_landline || '',
         is_deceased: patient.is_deceased || false,
@@ -984,283 +987,20 @@ const EditPatient: React.FC<PatientProps> = ({ patient }) => {
                     </div>
                 </div>
 
-                {/* Address and Contact Info */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-                    <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-1">
-                                <Pencil className="h-4 w-4 text-gray-600" />
-                                <h2 className="text-md font-semibold">Address and Contact Info</h2>
-                            </div>
-                            <hr />
-
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
-                                {/* House # / Lot # / Street Name / Building / Purok # / Village Name */}
-                                <div className="col-span-4">
-                                    <Label htmlFor="patient_address">
-                                        House # / Lot # / Street Name / Building / Purok # / Village Name
-                                        <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Input
-                                        id="patient_address"
-                                        className="text-dark-500"
-                                        value={data.patient_address}
-                                        onChange={(e) => setData('patient_address', e.target.value)}
-                                        placeholder="House # / Lot # / Street Name / Building / Purok # / Village Name"
-                                    />
-                                    <InputError message={errors.patient_address} />
-                                </div>
-
-                                {/* Region */}
-                                <div>
-                                    <Label htmlFor="regcode">
-                                        Region <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="regcode"
-                                        value={selectedRegion}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedRegion(val);
-                                            setSelectedProvince('');
-                                            setSelectedCity('');
-                                            setData('regcode', val);
-                                            setData('provcode', '');
-                                            setData('citycode', '');
-                                            setData('bgycode', '');
-                                        }}
-                                        className="text-dark-500 w-full rounded border p-2"
-                                    >
-                                        <option value="">Select Region</option>
-                                        {Object.entries(locationData).map(([code, info]) => (
-                                            <option key={code} value={code}>
-                                                {info.region_name}
-                                            </option>
-                                        ))}
-                                    </Select>
-                                </div>
-
-                                {/* Province */}
-                                <div>
-                                    <Label htmlFor="provcode">
-                                        Province <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="provcode"
-                                        value={selectedProvince}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedProvince(val);
-                                            setSelectedCity('');
-                                            setData('provcode', val);
-                                            setData('citycode', '');
-                                            setData('bgycode', '');
-                                        }}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedRegion ? 'cursor-not-allowed opacity-50' : ''}`}
-                                        // Just apply a "disabled" class when `selectedRegion` is falsy
-                                    >
-                                        <option value="">Select Province</option>
-                                        {selectedRegion &&
-                                            Object.keys(locationData[selectedRegion].province_list).map((prov) => (
-                                                <option key={prov} value={prov}>
-                                                    {prov}
-                                                </option>
-                                            ))}
-                                    </Select>
-                                </div>
-
-                                {/* City/Municipality */}
-                                <div>
-                                    <Label htmlFor="citycode">
-                                        City <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="citycode"
-                                        value={selectedCity}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setSelectedCity(val);
-                                            setData('citycode', val);
-                                            setData('bgycode', '');
-                                        }}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedProvince ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    >
-                                        <option value="">Select City/Municipality</option>
-                                        {selectedRegion &&
-                                            selectedProvince &&
-                                            locationData[selectedRegion].province_list[selectedProvince].municipality_list.map((muni, i) => {
-                                                const city = Object.keys(muni)[0];
-                                                return (
-                                                    <option key={i} value={city}>
-                                                        {city}
-                                                    </option>
-                                                );
-                                            })}
-                                    </Select>
-                                </div>
-
-                                {/* Barangay */}
-                                <div>
-                                    <Label htmlFor="bgycode">
-                                        Barangay <span className="font-bold text-red-600">*</span>
-                                    </Label>
-                                    <Select
-                                        id="bgycode"
-                                        value={data.bgycode}
-                                        onChange={(e) => {
-                                            const val = e.target.value;
-                                            setData('bgycode', val);
-                                            setData('bgycode', val);
-                                        }}
-                                        className={`text-dark-500 w-full rounded border p-2 ${!selectedCity ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    >
-                                        <option value="">Select Barangay</option>
-                                        {selectedRegion &&
-                                            selectedProvince &&
-                                            selectedCity &&
-                                            locationData[selectedRegion].province_list[selectedProvince].municipality_list
-                                                .find((m) => Object.keys(m)[0] === selectedCity)
-                                                ?.[selectedCity].barangay_list.map((brgy, i) => (
-                                                    <option key={i} value={brgy}>
-                                                        {brgy}
-                                                    </option>
-                                                ))}
-                                    </Select>
-                                </div>
-                            </div>
-
-                            {/* Next Row */}
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
-                                <div className="space-y-3">
-                                    {/* Zip Code */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="zipcode" className="w-40 text-sm font-medium text-gray-700">
-                                                Zip Code: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                id="zipcode"
-                                                className="text-dark-500"
-                                                value={data.zipcode}
-                                                onChange={(e) => setData('zipcode', e.target.value)}
-                                                placeholder="Zip Code"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.zipcode} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-
-                                    {/* Country */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="country_code" className="w-40 text-sm font-medium text-gray-700">
-                                                Country: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Select
-                                                id="country_code"
-                                                value={data.country_code}
-                                                onChange={(e) => setData('country_code', e.target.value)}
-                                                className="text-dark-500 block w-full rounded-md border px-3 py-2 shadow-sm"
-                                            >
-                                                <option value="">-- Select Country --</option>
-                                                <option value="PH">Philippines</option>
-                                            </Select>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.country_code} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                    {/* Email */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="zipcode" className="w-40 text-sm font-medium text-gray-700">
-                                                Email: <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                // id="zipcode"
-                                                className="text-dark-500"
-                                                // value={data.zipcode}
-                                                // onChange={(e) => setData('zipcode', e.target.value)}
-                                                placeholder="Email"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Contact Number or Mobile */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="pat_mobile" className="w-40 text-sm font-medium text-gray-700">
-                                                Mobile <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                id="pat_mobile"
-                                                className="text-dark-500"
-                                                value={data.pat_mobile}
-                                                onChange={(e) => setData('pat_mobile', e.target.value)}
-                                                placeholder="Mobile"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_mobile} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-
-                                    {/* Landline */}
-                                    <div>
-                                        <div className="flex items-center gap-1">
-                                            <Label htmlFor="pat_landline" className="w-40 text-sm font-medium text-gray-700">
-                                                Landline <span className="font-bold text-red-600">*</span>
-                                            </Label>
-                                            <Input
-                                                id="pat_landline"
-                                                className="text-dark-500"
-                                                value={data.pat_landline}
-                                                onChange={(e) => setData('pat_landline', e.target.value)}
-                                                placeholder="Landline"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-33 text-sm font-medium text-gray-700" />
-                                            <InputError message={errors.pat_landline} className="text-[10px] text-red-600" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Patient's Full Address */}
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                                <div className="col-span-4">
-                                    <Label htmlFor="fulladdress">Full Address</Label>
-                                    <Input
-                                        id="fulladdress"
-                                        type="text"
-                                        className="text-dark-500 w-full rounded border bg-gray-100 p-2"
-                                        value={[
-                                            data.patient_address,
-                                            data.bgycode,
-                                            selectedCity,
-                                            selectedProvince,
-                                            selectedRegion,
-                                            regionLookup[data.regcode] || '',
-                                            data.zipcode,
-                                            data.country_code === 'PH' ? 'Philippines' : '', // Country
-                                        ]
-                                            .filter(Boolean)
-                                            .join(', ')}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <AddressSelector
+                    region={data.regcode}
+                    province={data.provcode}
+                    city={data.citycode}
+                    barangay={data.bgycode}
+                    patientAddress={data.patient_address}
+                    zipCode={data.zipcode}
+                    country={data.country_code}
+                    email={data.pat_email}
+                    mobile={data.pat_mobile}
+                    landline={data.pat_landline}
+                    onChange={(field, value) => setData(field, value)}
+                    errors={errors}
+                />
 
                 {/* Parent's Information */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
