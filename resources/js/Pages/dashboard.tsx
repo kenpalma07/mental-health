@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { DashboardProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { UsersIcon, Stethoscope, NotebookPen, HeartCrack } from 'lucide-react';
 import { JSX } from 'react';
@@ -17,18 +17,7 @@ import {
   Legend,
 } from 'recharts';
 
-type DashboardProps = {
-  patientCount: number;
-  consultationCount: number;
-  assessmentCount: number;
-  adultSelfHarmCount: number;
-  adultNoSelfHarmCount: number;
-  adolescentSelfHarmCount: number;
-  adolescentNoSelfHarmCount: number;
-  adultSelfHarmPatients: number;
-  adolescentSelfHarmPatients: number;
-  selfHarmTrends: { date: string; adult: number; adolescent: number }[];
-};
+
 
 const breadcrumbs: BreadcrumbItem[] = [
   {

@@ -508,8 +508,6 @@ export interface Pharma {
     phar_doc: string;
     phar_date: string;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 export interface AssessmentData {
   assessment_physical_health: string;
@@ -544,7 +542,17 @@ export interface AssessmentData {
   date_nxt_visit?: string;
   previous_visits?: any[]; 
 }
-=======
->>>>>>> 2fffda0e93774096aec5db1554a5b4181faf753d
-=======
->>>>>>> 2fffda0e93774096aec5db1554a5b4181faf753d
+
+
+export type DashboardProps = {
+  patientCount: number;
+  consultationCount: number;
+  assessmentCount: number;
+  adultSelfHarmCount: number;
+  adultNoSelfHarmCount: number;
+  adolescentSelfHarmCount: number;
+  adolescentNoSelfHarmCount: number;
+  adultSelfHarmPatients: number;
+  adolescentSelfHarmPatients: number;
+  selfHarmTrends: { date: string; adult: number; adolescent: number }[];
+};
