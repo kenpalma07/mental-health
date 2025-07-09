@@ -17,8 +17,6 @@ import {
   Legend,
 } from 'recharts';
 
-
-
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Dashboard',
@@ -76,7 +74,7 @@ export default function Dashboard({
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Legend />
               <Line type="monotone" dataKey="adult" name="Adult" stroke="#e11d48" strokeWidth={3} />
               <Line type="monotone" dataKey="adolescent" name="Adolescent" stroke="#2563eb" strokeWidth={3} />
@@ -117,4 +115,32 @@ function SelfHarmCard({ title, count, patients }: { title: string; count: number
       <p className="text-xs text-muted-foreground">Assessments | Patients: {patients}</p>
     </div>
   );
+}
+
+function CustomTooltip({ active, payload, label }: any) {
+  if (active && payload?.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-white p-2 border rounded shadow text-xs">
+        <p className="font-semibold">{label}</p>
+        <p className="text-red-500">Adult: {data.adult}</p>
+        {data.adultNames?.length > 0 && (
+          <ul className="ml-2 list-disc">
+            {data.adultNames.map((name: string, index: number) => (
+              <li key={index}>{name}</li>
+            ))}
+          </ul>
+        )}
+        <p className="text-blue-500 mt-2">Adolescent: {data.adolescent}</p>
+        {data.adolescentNames?.length > 0 && (
+          <ul className="ml-2 list-disc">
+            {data.adolescentNames.map((name: string, index: number) => (
+              <li key={index}>{name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+  return null;
 }

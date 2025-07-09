@@ -104,12 +104,10 @@ class ConsultationController extends Controller
 
         $consultation = Consultation::findOrFail($id);
 
-        // Store the old consult_date before updating
         $oldConsultDate = $consultation->consult_date;
 
         $consultation->update($validated);
 
-        // Update only the assessment(s) that match patient and old consult_date
         $assessments = MentalAssessmentForm::where('pat_temp_id', $consultation->consult_temp_id)
             ->where('consult_date_assess', $oldConsultDate)
             ->get();
@@ -122,9 +120,7 @@ class ConsultationController extends Controller
         return redirect()->route('consultations.index', ['id' => $consultation->consult_temp_id])
             ->with('success', 'Consultation updated successfully!');
 
-        ]);
-
-
+        // ]);
 
     }
 }
