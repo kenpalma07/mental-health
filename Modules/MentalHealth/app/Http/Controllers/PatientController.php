@@ -97,7 +97,6 @@ class PatientController extends Controller
             'tax_id_num' => 'nullable|string|max:20',
             'ethnic_code' => 'nullable|string|max:5',
             'bloodtype_code' => 'nullable|string|max:11',
-
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -301,7 +300,7 @@ class PatientController extends Controller
             'ethnic_code' => 'nullable|string|max:5',
             'tax_id_num' => 'nullable|string|max:20', 
             'bloodtype_code' => 'nullable|string|max:11',
-
+          
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -372,7 +371,6 @@ class PatientController extends Controller
             'bgycode' => 'Barangay',
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
-
             'occupation_sp' => 'Specify Occupation',
 
             // Carer Information

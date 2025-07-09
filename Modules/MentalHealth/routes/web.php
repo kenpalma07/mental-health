@@ -74,5 +74,4 @@ Route::put('/pharma/{id}', [PharmaController::class, 'update'])->name('pharma.up
 //referral
 Route::post('/sendReferral/send', [ReferralController::class, 'store'])->name('sendReferral');
 Route::get('/Referral', [ReferralController::class, 'index'])->name('Referral.index');
-
 });

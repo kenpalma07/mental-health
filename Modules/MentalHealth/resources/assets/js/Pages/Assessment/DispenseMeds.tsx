@@ -1,16 +1,16 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Consultations, Employee, FHUD, MasterPatient, PageProps } from '@/types';
+import type { AssessmentData, BreadcrumbItem, Consultations, Employee, FHUD, MasterPatient, PageProps } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
 import { Calendar, ChevronLeft, ChevronRight, Clipboard, Heart, RefreshCcw, Send, Stethoscope, User } from 'lucide-react';
 import { useState } from 'react';
-import AssessPhyHealth from '../DisMedsComponents/AssessPhyHealth';
-import ConMNSAssess from '../DisMedsComponents/ConMNSAssess';
-import DiagMeds from '../DisMedsComponents/DiagMeds';
-import ManMNSAssess from '../DisMedsComponents/ManMNSAssess';
-import SchedNxtVisit from '../DisMedsComponents/SchedNxtVisit';
-import Stepper from '../DisMedsComponents/Stepper';
+import AssessPhyHealth from '../components/AssessPhyHealth';
+import ConMNSAssess from '../components/ConMNSAssess';
+import DiagMeds from '../components/DiagMeds';
+import ManMNSAssess from '../components/ManMNSAssess';
+import SchedNxtVisit from '../components/SchedNxtVisit';
+import Stepper from '../components/Stepper';
 import PatientInfoHead from '../Forms/PatientInfoHead';
 
 interface Props extends PageProps {
@@ -18,7 +18,7 @@ interface Props extends PageProps {
     consultation?: Consultations;
     facilities: FHUD;
     employees: Employee[];
-    assessment?: any;
+    assessment?: AssessmentData;
 }
 
 export default function AssessmentDisMedsIndex({ patient, consultation, facilities, employees, assessment }: Props) {

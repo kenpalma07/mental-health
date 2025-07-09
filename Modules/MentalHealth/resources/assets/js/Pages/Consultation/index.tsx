@@ -34,8 +34,6 @@ const ConsultationIndex: React.FC = () => {
     }>();
     const patient = props.patient;
     const [showForm, setShowForm] = React.useState(false);
-
-
     const [consultations, setConsultations] = React.useState<IndexConsultation[]>(props.consultations || []);
     const [formData, setFormData] = React.useState({
         consult_date: '',
@@ -248,8 +246,9 @@ const ConsultationIndex: React.FC = () => {
 
                         <Link
                             href={`/assessment/${patient.id}/history`}
-                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
-                                }`}
+                            className={`inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition ${
+                                consultations.length ? 'bg-green-300 text-green-700 hover:bg-green-400' : 'bg-gray-200 text-gray-400'
+                            }`}
                         >
                             <BookCheckIcon className="mr-2 h-4 w-4" />
                             Assessment List

@@ -13,6 +13,16 @@ import ModalRXDiagMeds from '../modal/ModalRXDiagMeds';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
 
+interface Consultation {
+    consult_perm_id: string;
+    consult_temp_id: string;
+}
+
+interface Patient {
+    id: number;
+}
+
+
 const DiagMeds = ({
     employees,
     consultation,
@@ -107,6 +117,7 @@ const DiagMeds = ({
         setSelectedIcdCodeDescrip(description);
     }, [selectedDiagnosis, selectedIcdCode, setSelectedIcdCodeDescrip]);
 
+
     const dispenses = [
         { id: 'Y', name: 'Yes' },
         { id: 'N', name: 'No' },
@@ -151,7 +162,6 @@ const DiagMeds = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isrxModalOpen, setRxIsModalOpen] = useState(false);
     const [rxList, setRxList] = useState();
-
     const fetchRxList = async () => {
         try {
             const response = await axios.get(`/pharma/rxView/${patient.id}`);
@@ -442,6 +452,7 @@ const DiagMeds = ({
                     <Send size={16} className="mr-2" />
                     Save Meds
                 </Button>
+
             </div>
 
             {isrxModalOpen && (
