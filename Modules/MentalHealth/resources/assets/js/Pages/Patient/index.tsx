@@ -15,10 +15,18 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { Edit2, Eye, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus, File } from 'lucide-react';
+import { Edit2, Eye, File, MailPlus, MoreHorizontal, Printer, Stethoscope, UserPlus } from 'lucide-react';
 import * as React from 'react';
 import PatientConsent from '../Forms/PatientConsent';
 import PatientConsentModal from '../Forms/PatientConsentModal';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Patients', href: '/patients' }];
 
@@ -32,24 +40,12 @@ const PatientIndex: React.FC = () => {
     const { patients = [] }: { patients?: MasterPatient[] } = usePage<PageProps<{ patients: MasterPatient[] }>>().props;
 
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [sexFilter, setSexFilter] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
-    const [isConsentModalOpen, setIsConsentModalOpen] = React.useState(false);
-    const [selectedPatient, setSelectedPatient] = React.useState<MasterPatient | null>(null);
+    const [isConsentModalOpen] = React.useState(false);
+    const [selectedPatient] = React.useState<MasterPatient | null>(null);
     const [showModal, setShowModal] = React.useState(false);
     const [selectedId, setSelectedId] = React.useState<number | null>(null);
-    const [isPatientConsentModalOpen, setIsPatientConsentModalOpen] = React.useState(false);
-
-    const openConsentModal = (patient: MasterPatient) => {
-        setSelectedPatient(patient);
-        setIsConsentModalOpen(true);
-    };
-
-    const closeConsentModal = () => {
-        setIsConsentModalOpen(false);
-        setSelectedPatient(null);
-    };
 
     const filteredPatients = React.useMemo(() => {
         return patients.filter((patient: MasterPatient) => {
@@ -58,11 +54,10 @@ const PatientIndex: React.FC = () => {
             const search = searchTerm.toLowerCase();
 
             const matchesSearch = fullName.includes(search) || facility.includes(search);
-            const matchesSex = sexFilter ? patient.sex_code === sexFilter : true;
 
-            return matchesSearch && matchesSex;
+            return matchesSearch;
         });
-    }, [patients, searchTerm, sexFilter]);
+    }, [patients, searchTerm]);
 
     const columns = React.useMemo<ColumnDef<MasterPatient>[]>(
         () => [
@@ -89,7 +84,17 @@ const PatientIndex: React.FC = () => {
             {
                 accessorKey: 'pat_birthDate',
                 header: 'Birthdate',
+                cell: ({ row }) => {
+                    const date = row.original.pat_birthDate;
+                    if (!date) return '';
+                    const d = new Date(date);
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const yyyy = d.getFullYear();
+                    return `${mm}/${dd}/${yyyy}`;
+                },
             },
+
             {
                 accessorKey: 'facility_name',
                 header: 'Facility',
@@ -97,7 +102,7 @@ const PatientIndex: React.FC = () => {
             {
                 id: 'actions',
                 enableHiding: false,
-                header: () => <span className="sr-only">Actions</span>,
+                header: () => <span className="bg-blachsr-only ">Actions</span>,
                 cell: ({ row }) => {
                     const patient = row.original;
                     return (
@@ -133,23 +138,10 @@ const PatientIndex: React.FC = () => {
                                         Enrollment Form
                                     </Link>
                                 </DropdownMenuItem>
-                                {/* <DropdownMenuItem asChild>
-                                    <Button
-                                        onClick={() => openConsentModal(patient)}
-                                        className="flex items-center gap-2 bg-transparent text-black hover:bg-gray-100"
-                                    >
-                                        <Printer className="h-4 w-4" />
-                                        Patient Consent
-                                    </Button>
-                                </DropdownMenuItem> */}
                                 <DropdownMenuItem onClick={() => handleViewConsent(patient.id)}>
                                     <Printer className="h-4 w-4" />
                                     Patient Consent
                                 </DropdownMenuItem>
-                                {/* <DropdownMenuItem onClick={() => handleExportPDF(row.original)}>
-                                    <Printer className="h-4 w-4" />
-                                    Sample Consent
-                                </DropdownMenuItem> */}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     );
@@ -190,11 +182,6 @@ const PatientIndex: React.FC = () => {
         setShowModal(true);
     };
 
-    const handleExportPDF = (patient: MasterPatient) => {
-        const url = `/patients/${patient.id}/consent-pdf`;
-        window.open(url, '_blank'); // opens in new tab or starts download
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Patients" />
@@ -227,12 +214,12 @@ const PatientIndex: React.FC = () => {
                 </div>
 
                 <div className="overflow-x-auto rounded-lg border bg-white shadow">
-                    <table className="min-w-full text-left text-sm text-gray-700">
-                        <thead className="border-b bg-black text-xs text-white">
+                    <Table className="min-w-full text-left text-sm text-gray-700">
+                        <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
+                                <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => (
-                                        <th key={header.id} className="px-6 py-2">
+                                        <TableHead key={header.id} className="border-b bg-black text-xs text-white px-6 py-2">
                                             {header.isPlaceholder ? null : (
                                                 <div className="cursor-pointer select-none" onClick={header.column.getToggleSortingHandler()}>
                                                     {flexRender(header.column.columnDef.header, header.getContext())}
@@ -240,31 +227,31 @@ const PatientIndex: React.FC = () => {
                                                     {header.column.getIsSorted() === 'desc' && ' 🔽'}
                                                 </div>
                                             )}
-                                        </th>
+                                        </TableHead>
                                     ))}
-                                </tr>
+                                </TableRow>
                             ))}
-                        </thead>
-                        <tbody>
+                        </TableHeader>
+                        <TableBody>
                             {table.getRowModel().rows.length === 0 ? (
-                                <tr>
-                                    <td colSpan={columns.length} className="py-6 text-center text-gray-500">
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="py-6 text-center text-gray-500">
                                         No patients found.
-                                    </td>
-                                </tr>
+                                    </TableCell>
+                                </TableRow>
                             ) : (
                                 table.getRowModel().rows.map((row) => (
-                                    <tr key={row.id} className="border-t transition hover:bg-gray-50">
+                                    <TableRow key={row.id} className="border-t transition hover:bg-gray-50">
                                         {row.getVisibleCells().map((cell) => (
-                                            <td key={cell.id} className="px-6 py-2 text-xs">
+                                            <TableCell key={cell.id} className="px-6 py-2 text-xs">
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </td>
+                                            </TableCell>
                                         ))}
-                                    </tr>
+                                    </TableRow>
                                 ))
                             )}
-                        </tbody>
-                    </table>
+                        </TableBody>
+                    </Table>
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
@@ -322,14 +309,7 @@ const PatientIndex: React.FC = () => {
                 {/* PatientConsent modal */}
                 {isConsentModalOpen && selectedPatient && (
                     <PatientConsent
-                        patient={{
-                            pat_fname: selectedPatient.pat_fname,
-                            pat_lname: selectedPatient.pat_lname,
-                            sex_code: selectedPatient.sex_code,
-                            pat_birthDate: selectedPatient.pat_birthDate,
-                            pat_mobile: selectedPatient.pat_mobile,
-                            patient_address: selectedPatient.patient_address,
-                        }}
+                        patient={selectedPatient}
                     />
                 )}
 

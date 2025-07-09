@@ -31,16 +31,20 @@ const ItrIndex: React.FC = () => {
   }, [isModalOpen]);
 
   React.useEffect(() => {
-    openModal(); // Open modal on mount
+    openModal();
   }, []);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Medical Records" />
-      <div className="p-4 space-y-4">
-        <SearchPatientModalMedRecs open={isModalOpen} onClose={closeModal} />
-        {/* Add more content here later */}
-      </div>
+
+        <div className="p-4 space-y-4">
+            <SearchPatientModalMedRecs 
+            open={isModalOpen} 
+            onClose={closeModal}
+            />
+        </div>
+        
     </AppLayout>
   );
 };

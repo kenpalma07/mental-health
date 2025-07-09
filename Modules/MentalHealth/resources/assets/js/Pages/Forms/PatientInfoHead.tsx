@@ -1,39 +1,14 @@
-// Removed unused import of PageProps
+import { Consultations, MasterPatient } from '@/types';
 import { ArrowRight, Cake, CalendarDays, Home, Hospital, User, Venus } from 'lucide-react';
 import React from 'react';
 
-interface Patient {
-    fat_address: string;
-    master_patient_perm_id: string;
-    pat_fname: string;
-    pat_mname: string;
-    pat_lname: string;
-    sex_code: string;
-    civil_status: string;
-    pat_birthDate: string;
-    patient_address: string;
-    mot_fname: string;
-    mot_mname: string;
-    mot_lname: string;
-    fat_fname: string;
-    fat_mname: string;
-    fat_lname: string;
-    ts_created_at: string;
+interface Props {
+    patient: MasterPatient;
 }
 
 interface Props {
-    patient: Patient;
-}
-
-interface Consultation {
-    consult_perm_id: string;
-    consult_date: string;
-    consult_temp_id: string;
-}
-
-interface Props {
-    patient: Patient;
-    consultation?: Consultation | null;
+    patient: MasterPatient;
+    consultation?: Consultations | null;
 }
 
 function InfoRow({

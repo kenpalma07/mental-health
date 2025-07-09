@@ -1,16 +1,23 @@
-
-import { Textarea } from '@/components/ui/textarea';
 import AppLogoDOH from '@/components/app-logo-assess_doh';
 import AppLogoBP from '@/components/app-logo-assess_bp';
-
+import type { PageProps, MasterPatient, Consultations, MentalAssessmentForm, Pharma } from '@/types';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 interface Props extends PageProps {
-    patient: any;
-    consultation?: any;
-    assessments: any[];
+    patient: MasterPatient;
+    consultation?: Consultations;
+    assessments: MentalAssessmentForm[];
+    pharmaMeds: Pharma[];
 }
 
-export default function ShowAssessmentForm({ patient, assessments }: Props) {
+export default function ShowAssessmentForm({ patient, assessments, pharmaMeds }: Props) {
     const latestAssessment = assessments.length > 0 ? assessments[0] : null;
     function calculateAge(birthDateString: string) {
         if (!birthDateString) return '-';
@@ -27,190 +34,164 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
         return age;
     }
 
+    function formatNumber(value?: string | number): string {
+        if (!value) return '';
+        const num = parseFloat(value.toString());
+        if (isNaN(num)) return value.toString();
+        return num % 1 === 0 ? parseInt(value.toString()).toString() : num.toString();
+    }
+
     return (
-
         <div className="p-6 bg-white shadow rounded-md text-sm">
-
             <div className="flex items-center justify-center gap-4 w-full">
-                {/* Left Logo */}
                 <div className="flex-shrink-0">
                     <AppLogoDOH />
                 </div>
-
-                {/* Center Text */}
                 <div className="text-center">
                     <span className="text-sm font-normal block">Republic of the Philippines</span>
                     <span className="text-base font-bold block">Department of Health</span>
                     <span className="font-bold text-lg block uppercase">Center for Health Development - Caraga</span>
                 </div>
-
-                {/* Right Logo */}
                 <div className="flex-shrink-0">
                     <AppLogoBP />
                 </div>
             </div>
 
-            <table className="table-auto w-full border border-black text-left">
-                <tbody>
-                    {/* Facility and Provider Info */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">Facility Details</td>
-                    </tr>
-                    <tr>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Facility Name:</td>
-                            <div>{patient.facility_name || 'N/A'}</div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Facility location:</td>
-                            <div> {patient.facility_location || 'N/A'}</div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Name of provider:</td>
-                            <div> {patient.provider_name || 'N/A'}</div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Date intake:</td>
-                            <div>{latestAssessment?.consult_date_assess || 'N/A'}</div>
-                        </td>
-                    </tr>
+            <Table className="table-auto w-full border border-black text-left mt-4">
+                <TableHeader>
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
+                            Facility Details
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Facility Name:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.facility_name || 'N/A'}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Facility location:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.facility_location || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Name of provider:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.provider_name || 'N/A'}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Date intake:</TableHead>
+                        <TableCell className="p-2 border border-black">{latestAssessment?.consult_date_assess || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
+                            Personal details
+                        </TableHead>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Patient Fullname:</TableHead>
+                        <TableCell className="p-2 border border-black">{`${patient.pat_fname || ''} ${patient.pat_mname || ''} ${patient.pat_lname || ''}`.trim()}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Date of birth:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.pat_birthDate}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Age:</TableHead>
+                        <TableCell className="p-2 border border-black">{calculateAge(patient.pat_birthDate)}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Occupation:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.occupation_code || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Gender:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'N/A'}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Address:</TableHead>
+                        <TableCell className="p-2 border border-black">
+                            {patient.patient_address || ''}, {patient.bgycode}, {patient.citycode}, {patient.provcode}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Mobile:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.pat_mobile || 'N/A'}</TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Telephone:</TableHead>
+                        <TableCell className="p-2 border border-black">{patient.pat_landline || 'N/A'}</TableCell>
+                    </TableRow>
 
-                    {/* Personal Details */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">Personal details</td>
-                    </tr>
-                    <tr>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Patient Fullname:</td>
-                            <div>{`${patient.pat_fname || ''} ${patient.pat_mname || ''} ${patient.pat_lname || ''}`.trim()}</div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <div className="space-y-2">
-                                <div className="flex">
-                                    <div className="w-40 font-semibold">Date of birth:</div>
-                                    <div>{patient.pat_birthDate}</div>
-                                </div>
-                                <div className="flex">
-                                    <div className="w-40 font-semibold">Age:</div>
-                                    <div>{calculateAge(patient.pat_birthDate)}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Occupation:</td>
-                            <div>{patient.occupation_code || 'N/A'}</div>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <td className="font-semibold">Gender:</td>
-                            <div>{patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'N/A'}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={2} className="p-2 border border-black align-top">
-                            <div className="font-semibold">Address:</div>
-                            <div>
-                                {patient.patient_address || ''}, {patient.bgycode}, {patient.citycode}, {patient.provcode}
-                            </div>
-                        </td>
-
-                        <td className="p-2 border border-black align-top">
-                            <div className="font-semibold">Mobile:</div>
-                            <div>{patient.pat_mobile || 'N/A'}</div>
-                        </td>
-
-                        <td className="p-2 border border-black align-top">
-                            <div className="font-semibold">Telephone:</div>
-                            <div>{patient.pat_landline || 'N/A'}</div>
-                        </td>
-                    </tr>
-
-                    {/* Carer's Details */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">Carer’s details</td>
-                    </tr>
-                    <tr>
-                        <td className="p-2 border border-black">
-                            <div className="font-semibold">Carer’s Name:</div>
-                            <td>
-                                <div className="block">{`${patient.fat_fname || ''} ${patient.fat_mname || ''} ${patient.fat_lname || ''}`.trim()}</div>
-                                <div className="block">{`${patient.mot_fname || ''} ${patient.mot_mname || ''} ${patient.mot_lname || ''}`.trim()}</div>
-                            </td>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <div className="font-semibold">Address:</div>
-                            <td>
-                                <div className="block">{patient.fat_address || 'N/A'}</div>
-                                <div className="block">{patient.mot_address || 'N/A'}</div>
-                            </td>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <div className="font-semibold">Contact Number:</div>
-                            <td>
-                                <div className="block">{patient.fat_contact || 'N/A'}</div>
-                                <div className="block">{patient.mot_contact || 'N/A'}</div>
-                            </td>
-                        </td>
-                        <td className="p-2 border border-black">
-                            <div className="font-semibold">Relationship to patient:</div>
-                            <td>
-                                <div className="block">{'Father'}</div>
-                                <div className="block">{'Mother'}</div>
-                            </td>
-                        </td>
-                    </tr>
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
+                            Carer’s details
+                        </TableHead>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Carer’s Name:</TableHead>
+                        <TableCell className="p-2 border border-black">
+                            <div className="block">{`${patient.fat_fname || ''} ${patient.fat_mname || ''} ${patient.fat_lname || ''}`.trim()}</div>
+                            <div className="block">{`${patient.mot_fname || ''} ${patient.mot_mname || ''} ${patient.mot_lname || ''}`.trim()}</div>
+                        </TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Address:</TableHead>
+                        <TableCell className="p-2 border border-black">
+                            <div className="block">{patient.fat_address || 'N/A'}</div>
+                            <div className="block">{patient.mot_address || 'N/A'}</div>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Contact Number:</TableHead>
+                        <TableCell className="p-2 border border-black">
+                            <div className="block">{patient.fat_contact || 'N/A'}</div>
+                            <div className="block">{patient.mot_contact || 'N/A'}</div>
+                        </TableCell>
+                        <TableHead className="p-2 border border-black font-semibold hover:bg-gray-200 transition-colors">Relationship to patient:</TableHead>
+                        <TableCell className="p-2 border border-black">
+                            <div className="block">Father</div>
+                            <div className="block">Mother</div>
+                        </TableCell>
+                    </TableRow>
 
                     {/* Section I */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
                             I. Assess physical health (refer to mhGAP-IG 2.0 p.8)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableHead>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>1. Assessment of Physical Health:</span> {latestAssessment?.assessment_physical_health || 'N/A'}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>2. Management of Physical Health:</span> {latestAssessment?.management_physical_health || 'N/A'}</div>
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
 
                     {/* Section II */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
                             II. Conduct MNS assessment (refer to mhGAP-IG 2.0 p.9)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableHead>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>1. Presenting Complaint:</span> {latestAssessment?.pres_comp_label || 'N/A'}: {latestAssessment?.pres_comp_item}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>2. General Health History:</span> {latestAssessment?.gen_heal_hist_item}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>3. MNS History:</span> {latestAssessment?.mns_hist_item || 'N/A'}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>4. Family History to MNS Condition:</span> {latestAssessment?.fam_hist_mns_cond_item || 'N/A'}</div>
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
 
                     {/* Section III */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
                             III. Manage MNS Assessment (refer to mhGAP-IG 2.0 p.11)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableHead>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <span className="font-bold">1. Treatment Plan:</span>
                             <div className="inline-flex items-center space-x-4 ml-4">
                                 <label className="flex items-center space-x-1">
@@ -222,52 +203,64 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
                                     <span>No</span>
                                 </label>
                             </div>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>2. Psychosocial Intervention:</span> {latestAssessment?.psycho_inter}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
-                            <div><span className='font-bold'>3. Pharmalogical Intervention:</span>
-                                {latestAssessment?.phar_med?.toUpperCase() || ''},{" "}
-                                {latestAssessment?.phar_intake ? parseFloat(latestAssessment.phar_intake).toString() : ''}{" "}
-                                {latestAssessment?.phar_intakeUnit?.toUpperCase() || ''} in every{" "}
-                                {latestAssessment?.phar_freq ? parseFloat(latestAssessment.phar_freq).toString() : ''}{" "}
-                                {latestAssessment?.phar_freqUnit?.toUpperCase() || ''} for{" "}
-                                {latestAssessment?.phar_dur ? parseFloat(latestAssessment.phar_dur).toString() : ''}{" "}
-                                {latestAssessment?.phar_durUnit?.toUpperCase() || ''}
-                                {latestAssessment?.phar_quantity ? `, (${parseFloat(latestAssessment.phar_quantity).toString()})-Total` : ''}
-                                </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
+                            <div>
+                                <span className="font-bold">3. Pharmalogical Intervention:</span>
+                                {pharmaMeds.length > 0 ? (
+                                    <ul className="list-disc list-inside mt-1 space-y-1 text-xs">
+                                        {pharmaMeds.map((med, idx) => (
+                                            <li key={idx}>
+                                                {med.phar_med?.toUpperCase()},{" "}
+                                                {formatNumber(med.phar_intake)} {med.phar_intakeUnit?.toUpperCase()} in every{" "}
+                                                {formatNumber(med.phar_freq)} {med.phar_freqUnit?.toUpperCase()} for{" "}
+                                                {formatNumber(med.phar_dur)} {med.phar_durUnit?.toUpperCase()}
+                                                {med.phar_quantity && parseFloat(med.phar_quantity) !== 0 && (
+                                                    <>
+                                                        , (<span className="font-bold">{formatNumber(med.phar_quantity)}</span>)-Total
+                                                    </>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <span className="ml-2">No medicines recorded</span>
+                                )}
+                            </div>
+
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>4. Referrals:</span> {latestAssessment?.ref_choice} {latestAssessment?.ref_fhud} {latestAssessment?.ref_reason}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>5. Follow-up Plan (*Follow-up after):</span> {latestAssessment?.date_nxt_visit}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>6. Carer and Family:</span> {latestAssessment?.carer_name_mot || 'N/A'} , {latestAssessment?.carer_name_mot}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div><span className='font-bold'>7. Link:</span> {latestAssessment?.link_status || 'N/A'}</div>
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
 
                     {/* Special Populations */}
-                    <tr>
-                        <td colSpan={4} className="p-2 border border-black">
+                    <TableRow>
+                        <TableCell colSpan={4} className="p-2 border border-black">
                             <div className="font-semibold mb-2">8. Special populations</div>
                             <div className="flex flex-col space-y-1 ml-4">
                                 <label>
@@ -280,18 +273,17 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
                                     <input type="checkbox" checked={latestAssessment?.preg_or_breastf_wom === "Y"} readOnly /> Pregnant or breastfeeding women
                                 </label>
                             </div>
-
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
 
                     {/* Section IV */}
-                    <tr className="bg-black text-white">
-                        <td colSpan={4} className="p-2 font-semibold">
+                    <TableRow>
+                        <TableHead colSpan={4} className="p-2 font-semibold bg-black text-white">
                             IV. Assess for self-harm or suicide and substance use disorders
-                        </td>
-                    </tr>
-                    <tr className="h-[100px]">
-                        <td colSpan={4} className="p-2 border border-black align-top">
+                        </TableHead>
+                    </TableRow>
+                    <TableRow className="h-[100px]">
+                        <TableCell colSpan={4} className="p-2 border border-black align-top">
                             {latestAssessment?.selfharm_sui === "Y" ? (
                                 <div className="space-y-1">
                                     <div><span className="font-semibold">Grade/Year:</span> {latestAssessment.grade_year || ''}</div>
@@ -305,13 +297,10 @@ export default function ShowAssessmentForm({ patient, assessments }: Props) {
                                 <div>{' '}</div>
                             )}
                             <div className="text-center italic">Refer to the next form for Treatment Plan</div>
-                        </td>
-                    </tr>
-
-
-                </tbody>
-            </table>
-
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
             <p className="mt-4 italic text-xs">Adapted from the mhGAP-IG version 2.0</p>
         </div>
     );

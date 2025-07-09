@@ -1,0 +1,716 @@
+{
+    "Ethnic Group": [
+        {
+            "code": 1,
+            "name": "ABELLING / ABELLEN / ABERLING"
+        },
+        {
+            "code": 2,
+            "name": "ADASEN"
+        },
+        {
+            "code": 3,
+            "name": "AETA"
+        },
+        {
+            "code": 4,
+            "name": "AGTA"
+        },
+        {
+            "code": 5,
+            "name": "AGTA-AGAY"
+        },
+        {
+            "code": 6,
+            "name": "AGTA-DUMAGAT"
+        },
+        {
+            "code": 7,
+            "name": "AGTA-TABANGON"
+        },
+        {
+            "code": 8,
+            "name": "AGTA-TABOY"
+        },
+        {
+            "code": 9,
+            "name": "AGTA/CIMARON"
+        },
+        {
+            "code": 10,
+            "name": "AGUTAYNEN"
+        },
+        {
+            "code": 11,
+            "name": "AKEANON"
+        },
+        {
+            "code": 12,
+            "name": "ALANGAN (MANGYAN)"
+        },
+        {
+            "code": 13,
+            "name": "AMBALA"
+        },
+        {
+            "code": 14,
+            "name": "APPLAI"
+        },
+        {
+            "code": 15,
+            "name": "AROMANEN-MANOBO"
+        },
+        {
+            "code": 16,
+            "name": "ATA"
+        },
+        {
+            "code": 17,
+            "name": "ATA-MANOBO"
+        },
+        {
+            "code": 18,
+            "name": "ATA/NEGRITO"
+        },
+        {
+            "code": 19,
+            "name": "ATI"
+        },
+        {
+            "code": 20,
+            "name": "AYANGAN"
+        },
+        {
+            "code": 21,
+            "name": "BADJAO"
+        },
+        {
+            "code": 22,
+            "name": "BAGO"
+        },
+        {
+            "code": 23,
+            "name": "BAGOBO"
+        },
+        {
+            "code": 24,
+            "name": "BAGOBO-TAGABAWA"
+        },
+        {
+            "code": 25,
+            "name": "BAJAO/BAJAU"
+        },
+        {
+            "code": 26,
+            "name": "BALANGAO"
+        },
+        {
+            "code": 27,
+            "name": "BALATOK"
+        },
+        {
+            "code": 28,
+            "name": "BALIWON/GADDANG"
+        },
+        {
+            "code": 29,
+            "name": "BANAO"
+        },
+        {
+            "code": 30,
+            "name": "BANGON"
+        },
+        {
+            "code": 31,
+            "name": "BANTAONON"
+        },
+        {
+            "code": 32,
+            "name": "BANWAON"
+        },
+        {
+            "code": 33,
+            "name": "BATAK"
+        },
+        {
+            "code": 34,
+            "name": "BATANGAN"
+        },
+        {
+            "code": 35,
+            "name": "BELWANG"
+        },
+        {
+            "code": 36,
+            "name": "BICOLANO"
+        },
+        {
+            "code": 37,
+            "name": "BINONGAN"
+        },
+        {
+            "code": 38,
+            "name": "BOLAAN/BLAAN"
+        },
+        {
+            "code": 39,
+            "name": "BONTOK"
+        },
+        {
+            "code": 40,
+            "name": "BUGKALOT/ILONGOT"
+        },
+        {
+            "code": 41,
+            "name": "BUHID (MANGYAN)"
+        },
+        {
+            "code": 42,
+            "name": "BUKIDNON"
+        },
+        {
+            "code": 43,
+            "name": "CAGAYANEN"
+        },
+        {
+            "code": 44,
+            "name": "CALINGA"
+        },
+        {
+            "code": 45,
+            "name": "CHAVACANOS"
+        },
+        {
+            "code": 46,
+            "name": "CLATA"
+        },
+        {
+            "code": 47,
+            "name": "CUYONEN"
+        },
+        {
+            "code": 48,
+            "name": "DIANGAN"
+        },
+        {
+            "code": 49,
+            "name": "DIBABAWON"
+        },
+        {
+            "code": 50,
+            "name": "DIBABEEN MULITAAN"
+        },
+        {
+            "code": 51,
+            "name": "DIBABEN"
+        },
+        {
+            "code": 52,
+            "name": "DIRERAYAAN"
+        },
+        {
+            "code": 53,
+            "name": "DUMAGAT"
+        },
+        {
+            "code": 54,
+            "name": "DUMAGAT/ALTA"
+        },
+        {
+            "code": 55,
+            "name": "ESKAYA"
+        },
+        {
+            "code": 56,
+            "name": "GADDANG"
+        },
+        {
+            "code": 57,
+            "name": "GUBANG"
+        },
+        {
+            "code": 58,
+            "name": "GUBATNON"
+        },
+        {
+            "code": 59,
+            "name": "GUIANGAN"
+        },
+        {
+            "code": 60,
+            "name": "HALAWODNON"
+        },
+        {
+            "code": 61,
+            "name": "HANUNUO"
+        },
+        {
+            "code": 62,
+            "name": "HENANGA"
+        },
+        {
+            "code": 63,
+            "name": "HIGAONON"
+        },
+        {
+            "code": 64,
+            "name": "IBALOI"
+        },
+        {
+            "code": 65,
+            "name": "IBANAG"
+        },
+        {
+            "code": 66,
+            "name": "IBATAN"
+        },
+        {
+            "code": 67,
+            "name": "IFUGAO"
+        },
+        {
+            "code": 68,
+            "name": "IGOROT"
+        },
+        {
+            "code": 69,
+            "name": "ILIANEN"
+        },
+        {
+            "code": 70,
+            "name": "ILLAUD"
+        },
+        {
+            "code": 71,
+            "name": "ILOCANO"
+        },
+        {
+            "code": 72,
+            "name": "ILONGGO"
+        },
+        {
+            "code": 73,
+            "name": "ILONGOTS"
+        },
+        {
+            "code": 74,
+            "name": "IRANON"
+        },
+        {
+            "code": 75,
+            "name": "IRANON/IRANUN/IRAYNON"
+        },
+        {
+            "code": 76,
+            "name": "IRAYA"
+        },
+        {
+            "code": 77,
+            "name": "ISINAI"
+        },
+        {
+            "code": 78,
+            "name": "ISNEG/ISNAG/APAYAO"
+        },
+        {
+            "code": 79,
+            "name": "ISOROKEN"
+        },
+        {
+            "code": 80,
+            "name": "ITAWIS"
+        },
+        {
+            "code": 81,
+            "name": "ITNEG/TINGGUIAN"
+        },
+        {
+            "code": 82,
+            "name": "IVATAN"
+        },
+        {
+            "code": 83,
+            "name": "IWAK"
+        },
+        {
+            "code": 84,
+            "name": "JAMA MAPUN"
+        },
+        {
+            "code": 85,
+            "name": "KABAYUKAN"
+        },
+        {
+            "code": 86,
+            "name": "KABIHUG"
+        },
+        {
+            "code": 87,
+            "name": "KADAKLAN"
+        },
+        {
+            "code": 88,
+            "name": "KAGAYANEN"
+        },
+        {
+            "code": 89,
+            "name": "KAILAWAN"
+        },
+        {
+            "code": 90,
+            "name": "KALAGAN"
+        },
+        {
+            "code": 91,
+            "name": "KALANGUYA"
+        },
+        {
+            "code": 92,
+            "name": "KALANGUYA-IKALAHAN"
+        },
+        {
+            "code": 93,
+            "name": "KALIBUGAN"
+        },
+        {
+            "code": 94,
+            "name": "KALINGA"
+        },
+        {
+            "code": 95,
+            "name": "KAMIGUIN"
+        },
+        {
+            "code": 96,
+            "name": "KANKANAEY"
+        },
+        {
+            "code": 97,
+            "name": "KARAO"
+        },
+        {
+            "code": 98,
+            "name": "KARULANO"
+        },
+        {
+            "code": 99,
+            "name": "KAUNANA"
+        },
+        {
+            "code": 100,
+            "name": "KE'NEY TAU'T BATO"
+        },
+        {
+            "code": 101,
+            "name": "KIRENTEKEN"
+        },
+        {
+            "code": 102,
+            "name": "LAHITANEN"
+        },
+        {
+            "code": 103,
+            "name": "LAMBIANGAN"
+        },
+        {
+            "code": 104,
+            "name": "LANGILAN"
+        },
+        {
+            "code": 105,
+            "name": "LIVUNGANEN"
+        },
+        {
+            "code": 106,
+            "name": "LUMAD"
+        },
+        {
+            "code": 107,
+            "name": "MABAKA"
+        },
+        {
+            "code": 108,
+            "name": "MAENG"
+        },
+        {
+            "code": 109,
+            "name": "MAG-ANTI/MAG-ANTIS/MAG-ANCHI"
+        },
+        {
+            "code": 110,
+            "name": "MAG-INDI"
+        },
+        {
+            "code": 111,
+            "name": "MAG-INDI"
+        },
+        {
+            "code": 112,
+            "name": "MAGAHAT"
+        },
+        {
+            "code": 113,
+            "name": "MAGBEKIN/MAGBUKON/MAGBUKUN"
+        },
+        {
+            "code": 114,
+            "name": "MAGKUNANA"
+        },
+        {
+            "code": 115,
+            "name": "MAGUINDANAON"
+        },
+        {
+            "code": 116,
+            "name": "MAJAKAYONG"
+        },
+        {
+            "code": 117,
+            "name": "MALAUEG"
+        },
+        {
+            "code": 118,
+            "name": "MAMANWA"
+        },
+        {
+            "code": 119,
+            "name": "MANDAYA"
+        },
+        {
+            "code": 120,
+            "name": "MANGGUANGAN"
+        },
+        {
+            "code": 121,
+            "name": "MANGYAN"
+        },
+        {
+            "code": 122,
+            "name": "MANOBO"
+        },
+        {
+            "code": 123,
+            "name": "MANOBO-BLIIT"
+        },
+        {
+            "code": 124,
+            "name": "MANOBO-DULANGAN"
+        },
+        {
+            "code": 125,
+            "name": "MANOBO-UBO"
+        },
+        {
+            "code": 126,
+            "name": "MANSAKA"
+        },
+        {
+            "code": 127,
+            "name": "MARANAO"
+        },
+        {
+            "code": 128,
+            "name": "MASADIIT"
+        },
+        {
+            "code": 129,
+            "name": "MATIGSALOG"
+        },
+        {
+            "code": 130,
+            "name": "MOLBOG"
+        },
+        {
+            "code": 131,
+            "name": "MUYADAN"
+        },
+        {
+            "code": 132,
+            "name": "NEGRITO"
+        },
+        {
+            "code": 133,
+            "name": "PALA'WAN"
+        },
+        {
+            "code": 134,
+            "name": "PALAWAN"
+        },
+        {
+            "code": 135,
+            "name": "PALAWANI"
+        },
+        {
+            "code": 136,
+            "name": "PAN-AYANON"
+        },
+        {
+            "code": 137,
+            "name": "PANAY-BUKIDNON"
+        },
+        {
+            "code": 138,
+            "name": "PANGASINENSE"
+        },
+        {
+            "code": 139,
+            "name": "PARANANUM"
+        },
+        {
+            "code": 140,
+            "name": "PULANGIEN/PULANGIYEN"
+        },
+        {
+            "code": 141,
+            "name": "RATAGNON"
+        },
+        {
+            "code": 142,
+            "name": "REMONTADO"
+        },
+        {
+            "code": 143,
+            "name": "SAMA LAUT"
+        },
+        {
+            "code": 144,
+            "name": "SAMA'AH"
+        },
+        {
+            "code": 145,
+            "name": "SAMA-BADJAO"
+        },
+        {
+            "code": 146,
+            "name": "SAMA-BANGINGI (BANGING)"
+        },
+        {
+            "code": 147,
+            "name": "SAMA/SAMAL"
+        },
+        {
+            "code": 148,
+            "name": "SAMMBAL"
+        },
+        {
+            "code": 149,
+            "name": "SANGIL"
+        },
+        {
+            "code": 150,
+            "name": "SIBUYAN MANGYAN TAGABUKID"
+        },
+        {
+            "code": 151,
+            "name": "SUBANEN/SUBANON/SUBANUN"
+        },
+        {
+            "code": 152,
+            "name": "SUBANON"
+        },
+        {
+            "code": 153,
+            "name": "T'BOLI"
+        },
+        {
+            "code": 154,
+            "name": "TAAW'T BATO"
+        },
+        {
+            "code": 155,
+            "name": "TADYAWAN"
+        },
+        {
+            "code": 156,
+            "name": "TAGABAWA"
+        },
+        {
+            "code": 157,
+            "name": "TAGAKAULO"
+        },
+        {
+            "code": 158,
+            "name": "TAGALOG"
+        },
+        {
+            "code": 159,
+            "name": "TAGBANUA"
+        },
+        {
+            "code": 160,
+            "name": "TAGBANUA (KALAMIANEN)"
+        },
+        {
+            "code": 161,
+            "name": "TAGBANUA/CALAMIAN"
+        },
+        {
+            "code": 162,
+            "name": "TAGBANWA"
+        },
+        {
+            "code": 163,
+            "name": "TALAANDIG"
+        },
+        {
+            "code": 164,
+            "name": "TALAINGOD"
+        },
+        {
+            "code": 165,
+            "name": "TAU-BUID"
+        },
+        {
+            "code": 166,
+            "name": "TALAINGOD"
+        },
+        {
+            "code": 167,
+            "name": "TAU-BUID"
+        },
+        {
+            "code": 168,
+            "name": "TAUSUG"
+        },
+        {
+            "code": 169,
+            "name": "TEDURAY"
+        },
+        {
+            "code": 170,
+            "name": "TIGWAHANON"
+        },
+        {
+            "code": 171,
+            "name": "TINANANEN"
+        },
+        {
+            "code": 172,
+            "name": "TUMANDOK"
+        },
+        {
+            "code": 173,
+            "name": "TUWALI"
+        },
+        {
+            "code": 174,
+            "name": "VISAYAN"
+        },
+        {
+            "code": 175,
+            "name": "YAKAN"
+        },
+        {
+            "code": 176,
+            "name": "YAPAYAO"
+        },
+        {
+            "code": 177,
+            "name": "YOGAD"
+        },
+        {
+            "code": 178,
+            "name": "ZAMBAL"
+        }
+    ]
+}

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { FileBarChart2, Folder, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings } from 'lucide-react';
+import { FileBarChart2, Folder, LayoutGrid, MonitorDot, AlertOctagonIcon, Settings, Send } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -28,7 +28,7 @@ const mainNavItems: NavItem[] = [
         icon: MonitorDot,
         isActive: true,
         items: [
-            { title: 'Patient List', href: '/patients' },
+            { title: 'Mental Assessment', href: '/patients' },
         ],
     },
 
@@ -39,8 +39,6 @@ const mainNavItems: NavItem[] = [
         isActive: true,
         items: [
             { title: 'Patient Medical Records', href: '/medrecords' },
-            { title: 'Medical Abstract', href: '/medabstract' },
-            {title: 'Rx View', href: '/RxPrintView'},
         ],
     },
     {
@@ -55,16 +53,22 @@ const mainNavItems: NavItem[] = [
             { title: 'Suicide Report (Adults)', href: '/reportadultsr' },
         ],
     },
+
+
     {
         title: 'Notification',
         href: '#',
         icon: AlertOctagonIcon,
         isActive: true,
         items: [
-            { title: 'Patient Schedule List', href: '/mentalhealth/conLogBook' },
-            { title: 'Incoming Referrals', href: '/mentalhealth/monthReports' },
-            { title: 'Outgoing Referrals', href: '/mentalhealth/quartReports' },
+            { title: 'Patient Schedule List', href: '/patSched' },
         ],
+    },
+
+    {
+        title: 'Referrals',
+        href: '/Referral',
+        icon: Send,
     },
 
 ];
@@ -76,7 +80,7 @@ const footerNavItems: NavItem[] = [
         icon: Settings,
         isActive: true,
         items: [
-            { title: 'Migrations Version', href: '/migration/version' },
+            { title: 'Migration Version', href: '/migration/version' },
             { title: 'FHUD', href: '/references/fhud' },
             { title: 'Employees', href: '/references/employees' },
             { title: 'Setup', href: '/references/setup' },

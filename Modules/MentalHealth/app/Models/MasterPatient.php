@@ -28,12 +28,19 @@ class MasterPatient extends Model
         'pat_lname',
         'pat_mname',
         'pat_fname',
+        'maiden_middlename',
+        'maiden_lastname',
         'sex_code',
         'suffix_code',
         'civil_stat_code',
         'pat_birthDate',
         'educattainment',
         'occupation_code',
+        'occupation_sp',
+        'monthly_income',
+        'ethnic_code',
+        'tax_id_num',
+
         'bloodtype_code',
         'regcode',
         'provcode',
@@ -68,6 +75,17 @@ class MasterPatient extends Model
         'fat_address',
         'fat_contact',
         'fat_deceased_status',
+
+        // Guardian/Carer Information
+        'carer_fname', //Carer's First Name
+        'carer_mname', //Carer's Middle Name
+        'carer_lname', //Carer's Last Name
+        'carer_suffix', //Carer's Suffix
+        'carer_sex', //Carer's Sex
+        'carer_address', //Carer's Address
+        'carer_relationship', //Carer's Relationship to Patient
+        'carer_contact', //Carer's Contact Number
+        'carer_birthdate', //Carer's Birth Date
 
         // PhilHealth
         'phic_member', //PhilHealth Member - Yes or No

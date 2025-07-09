@@ -6,21 +6,13 @@ import PatientResultModal from './PatientResultModal';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select } from '@headlessui/react';
+import { MasterPatient } from '@/types';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-interface Patient {
-  id: number;
-  master_patient_perm_id: string;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  sex_code: string;
-  pat_birthDate: string;
-}
 
 const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
   const [form, setForm] = React.useState({
@@ -32,7 +24,7 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
     sex_code: '',
   });
 
-  const [patients, setPatients] = React.useState<Patient[]>([]);
+  const [patients, setPatients] = React.useState<MasterPatient[]>([]);
   const [showResultModal, setShowResultModal] = React.useState(false);
 
   const search = async () => {

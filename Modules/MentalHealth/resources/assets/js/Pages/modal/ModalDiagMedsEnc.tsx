@@ -1,6 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Printer, CheckCircle, XCircle } from 'lucide-react';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
 
 interface ModalDiagMedsEncProps {
   setIsModalOpen: (val: boolean) => void;
@@ -10,7 +18,7 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
   const medicines = [
     {
       start_date: '2025-01-01',
-      medicine: 'Amoxicillin',
+      medicine: 'Ongoing Development',
       dosage: '500mg',
       instructions: 'Take one capsule every 8 hours',
       quantity: 21,
@@ -18,7 +26,7 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
     },
     {
       start_date: '2025-01-05',
-      medicine: 'Ibuprofen',
+      medicine: 'Ongoing Development',
       dosage: '200mg',
       instructions: 'Take as needed for pain',
       quantity: 10,
@@ -36,36 +44,36 @@ const ModalDiagMedsEnc: React.FC<ModalDiagMedsEncProps> = ({ setIsModalOpen }) =
       </div>
 
       <div className="printable">
-        <table className="w-full text-sm border mb-4">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2 text-left">Start Date</th>
-              <th className="border p-2 text-left">Medicine</th>
-              <th className="border p-2 text-left">Dosage</th>
-              <th className="border p-2 text-left">Instructions</th>
-              <th className="border p-2 text-left">Quantity</th>
-              <th className="border p-2 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="w-full text-sm border mb-4">
+          <TableHeader className="bg-gray-100">
+            <TableRow>
+              <TableHead className="border p-2 text-left">Start Date</TableHead>
+              <TableHead className="border p-2 text-left">Medicine</TableHead>
+              <TableHead className="border p-2 text-left">Dosage</TableHead>
+              <TableHead className="border p-2 text-left">Instructions</TableHead>
+              <TableHead className="border p-2 text-left">Quantity</TableHead>
+              <TableHead className="border p-2 text-left">Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {medicines.map((med, idx) => (
-              <tr key={idx}>
-                <td className="border p-2">{med.start_date}</td>
-                <td className="border p-2">{med.medicine}</td>
-                <td className="border p-2">{med.dosage}</td>
-                <td className="border p-2">{med.instructions}</td>
-                <td className="border p-2">{med.quantity}</td>
-                <td className="border p-2">
+              <TableRow key={idx}>
+                <TableCell className="border p-2">{med.start_date}</TableCell>
+                <TableCell className="border p-2">{med.medicine}</TableCell>
+                <TableCell className="border p-2">{med.dosage}</TableCell>
+                <TableCell className="border p-2">{med.instructions}</TableCell>
+                <TableCell className="border p-2">{med.quantity}</TableCell>
+                <TableCell className="border p-2">
                   {med.status === 'Completed' ? (
                     <CheckCircle className="text-green-600 w-5 h-5" />
                   ) : (
                     <XCircle className="text-red-600 w-5 h-5" />
                   )}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       <Button

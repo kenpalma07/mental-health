@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import type { MasterPatient, Consultations, Employee } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -11,13 +12,6 @@ import ModalDiagMedsEnc from '../modal/ModalDiagMedsEnc';
 import ModalRXDiagMeds from '../modal/ModalRXDiagMeds';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
-
-
-interface Employee {
-    id: number;
-    name: string;
-    position: string;
-}
 
 interface Consultation {
     consult_perm_id: string;
@@ -64,8 +58,8 @@ const DiagMeds = ({
     setRemarks,
 }: {
     employees: Employee[];
-    consultation: Consultation;
-    patient: Patient;
+    consultation: Consultations;
+    patient: MasterPatient;
     selectedDiagnosis: string;
     setSelectedDiagnosis: React.Dispatch<React.SetStateAction<string>>;
     selectedIcdCode: string;
@@ -109,21 +103,19 @@ const DiagMeds = ({
         { label: 'Self-Harm/Suicide', icdKey: 'self_harm_suicide' },
     ];
 
-    const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
 
+    const employeeOptions = employees.map(emp => ({
+        ...emp,
+        name: emp.name,
+        position: emp.position,
+    }));
+
+    const medicines = selectedDiagnosis ? mentalHealthMeds[selectedDiagnosis as keyof typeof mentalHealthMeds] || [] : [];
 
     useEffect(() => {
         const description = icd10Data[selectedDiagnosis as keyof typeof icd10Data]?.find((item) => item.code === selectedIcdCode)?.description || '';
         setSelectedIcdCodeDescrip(description);
-    }, [selectedDiagnosis, selectedIcdCode]);
-
-    useEffect(() => {
-        // console.log('Diagnosis selected:', selectedDiagnosis);
-    }, [selectedDiagnosis]);
-
-    useEffect(() => {
-        // console.log('ICD Code selected:', selectedIcdCode);
-    }, [selectedIcdCode]);
+    }, [selectedDiagnosis, selectedIcdCode, setSelectedIcdCodeDescrip]);
 
 
     const dispenses = [
@@ -131,8 +123,6 @@ const DiagMeds = ({
         { id: 'N', name: 'No' },
     ];
 
-
-    // Function to convert any unit to hours
     const convertToHours = (value: number, unit: string) => {
         switch (unit) {
             case 'hour':
@@ -148,7 +138,7 @@ const DiagMeds = ({
         }
     };
 
-    const calculateTotalQuantity = () => {
+    const calculateTotalQuantity = React.useCallback(() => {
         const intakeNum = parseFloat(intake);
         const frequencyNum = parseFloat(frequency);
         const durationNum = parseFloat(duration);
@@ -162,25 +152,20 @@ const DiagMeds = ({
 
         const numDoses = Math.floor(durationInHours / frequencyInHours);
         return numDoses * intakeNum;
-    };
+    }, [intake, frequency, duration, frequencyUnit, durationUnit]);
 
     useEffect(() => {
-        const totalQuantity = calculateTotalQuantity(); // Make sure this returns a number
+        const totalQuantity = calculateTotalQuantity();
         setQuantity(totalQuantity);
-        console.log('Total Quantity:', totalQuantity);
-    }, [intake, frequency, duration, frequencyUnit, durationUnit]);
+    }, [intake, frequency, duration, frequencyUnit, durationUnit, calculateTotalQuantity, setQuantity]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isrxModalOpen, setRxIsModalOpen] = useState(false);
     const [rxList, setRxList] = useState();
-    
-
     const fetchRxList = async () => {
         try {
             const response = await axios.get(`/pharma/rxView/${patient.id}`);
             const meds = response.data.meds;
-
-            console.log("Successfully fetched RX data:", meds);
             setRxList(meds);
             setRxIsModalOpen(true);
         } catch (error) {
@@ -188,10 +173,9 @@ const DiagMeds = ({
         }
     };
 
-
     const handleSaveMedicine = () => {
         const payload = {
-            patient_assess_phar_id: consultation.consult_perm_id,
+            patient_assess_phar_id: consultation?.consult_perm_id ?? '',
             phar_date: pharDate,
             pat_perm_id: String(patient.id),
             phar_med: selectedMedicine,
@@ -210,7 +194,6 @@ const DiagMeds = ({
         router.post('/pharma/store', payload, {
             onSuccess: () => {
                 alert('Medicine Successfully Save!');
-
             },
             onError: (errors) => {
                 console.error(errors);
@@ -258,11 +241,13 @@ const DiagMeds = ({
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent className="w-[var(--radix-select-trigger-width)]">
-                                {(icd10Data[selectedDiagnosis as keyof typeof icd10Data] || []).map((item) => (
-                                    <SelectItem key={item.code} value={item.code}>
-                                        {item.code} - {item.description}
-                                    </SelectItem>
-                                ))}
+                                {(icd10Data[selectedDiagnosis as keyof typeof icd10Data] || [])
+                                    .filter(item => item.code)
+                                    .map((item) => (
+                                        <SelectItem key={item.code} value={item.code}>
+                                            {item.code} - {item.description}
+                                        </SelectItem>
+                                    ))}
                             </SelectContent>
                         </Select>
                     </div>
@@ -297,11 +282,13 @@ const DiagMeds = ({
                                 <SelectValue placeholder="-- Select Medicine --" />
                             </SelectTrigger>
                             <SelectContent>
-                                {medicines.map((med, idx) => (
-                                    <SelectItem key={idx} value={med.name}>
-                                        {med.name}
-                                    </SelectItem>
-                                ))}
+                                {medicines.map((med, idx) =>
+                                    med.name ? (
+                                        <SelectItem key={idx} value={med.name}>
+                                            {med.name}
+                                        </SelectItem>
+                                    ) : null
+                                )}
                             </SelectContent>
                         </Select>
                     </div>
@@ -418,15 +405,16 @@ const DiagMeds = ({
                                 <SelectValue placeholder="Select Employee" />
                             </SelectTrigger>
                             <SelectContent>
-                                {employees.map((emp) => (
-                                    <SelectItem key={emp.id} value={emp.name}>
-                                        {emp.name} ({emp.position})
-                                    </SelectItem>
-                                ))}
+                                {employeeOptions
+                                    .filter(emp => emp.name)
+                                    .map((emp) => (
+                                        <SelectItem key={emp.id} value={emp.name}>
+                                            {emp.name} ({emp.position})
+                                        </SelectItem>
+                                    ))}
                             </SelectContent>
                         </Select>
                     </div>
-
 
                     {/* if dispense */}
                     <div className="flex-1">
@@ -436,11 +424,13 @@ const DiagMeds = ({
                                 <SelectValue placeholder="Select Choices" />
                             </SelectTrigger>
                             <SelectContent>
-                                {dispenses.map((dis) => (
-                                    <SelectItem key={dis.id} value={dis.name}>
-                                        {dis.name}
-                                    </SelectItem>
-                                ))}
+                                {dispenses
+                                    .filter(dis => dis.name)
+                                    .map((dis) => (
+                                        <SelectItem key={dis.id} value={dis.name}>
+                                            {dis.name}
+                                        </SelectItem>
+                                    ))}
                             </SelectContent>
                         </Select>
                     </div>
@@ -474,7 +464,7 @@ const DiagMeds = ({
                                 ✕
                             </Button>
                         </div>
-                        <ModalRXDiagMeds meds={rxList} />
+                        <ModalRXDiagMeds meds={rxList} patientId={patient.id} />
                     </div>
                 </div>
             )}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\MentalHealth\Models\MasterPatient;
 use Modules\MentalHealth\Models\MentalAssessmentForm;
+use Modules\MentalHealth\Models\Pharma;
 use Inertia\Inertia;
 
 class OtherController extends Controller
@@ -34,17 +35,17 @@ class OtherController extends Controller
         return Inertia::render('MentalHealth::MedicalRecords/medabstract');
     }
 
-    
+
     public function referralform($id, Request $request)
     {
         $patient = MasterPatient::findOrFail($id);
-    
+
         $consultDate = $request->query('consult_date');
-    
+
         $assessments = MentalAssessmentForm::where('pat_temp_id', $id)
             ->whereDate('consult_date_assess', $consultDate)
             ->get();
-    
+
         $medicationRecords = MentalAssessmentForm::where('pat_temp_id', $id)
             ->whereNotNull('phar_med')
             ->where('phar_intakeUnit', 'like', '%ampule%')
@@ -62,14 +63,14 @@ class OtherController extends Controller
             ])
             ->orderBy('phar_date', 'asc')
             ->get();
-    
+
         return Inertia::render('MentalHealth::MedicalRecords/referralform', [
             'patient' => $patient,
             'assessments' => $assessments,
             'medicationRecords' => $medicationRecords,
         ]);
     }
-    
+
 
 
     public function treatmentcard($id, Request $request)
@@ -82,8 +83,7 @@ class OtherController extends Controller
             ->whereDate('consult_date_assess', $consultDate)
             ->get();
 
-        $medicationRecords = MentalAssessmentForm::where('pat_temp_id', $id)
-            ->whereNotNull('phar_med')
+        $medicationRecords = Pharma::where('pat_perm_id', $id)
             ->where('phar_intakeUnit', 'like', '%ampule%')
             ->select([
                 'phar_date',
@@ -95,7 +95,7 @@ class OtherController extends Controller
                 'phar_freq',
                 'phar_freqUnit',
                 'phar_quantity',
-                'date_nxt_visit as appointment'
+                'registered_at as appointment',
             ])
             ->orderBy('phar_date', 'asc')
             ->get();
@@ -107,7 +107,6 @@ class OtherController extends Controller
         ]);
     }
 
-
     public function medcard($id, Request $request)
     {
         $patient = MasterPatient::findOrFail($id);
@@ -118,22 +117,8 @@ class OtherController extends Controller
             ->whereDate('consult_date_assess', $consultDate)
             ->get();
 
-        $medicationRecords = MentalAssessmentForm::where('pat_temp_id', $id)
-            ->whereNotNull('phar_med')
+        $medicationRecords = Pharma::where('pat_perm_id', $id)
             ->where('phar_intakeUnit', 'like', '%tablet%')
-            ->select([
-                'phar_date',
-                'phar_med',
-                'phar_intake',
-                'phar_intakeUnit',
-                'phar_dur',
-                'phar_durUnit',
-                'phar_freq',
-                'phar_freqUnit',
-                'phar_quantity',
-                'phar_doc',
-                'date_nxt_visit as appointment'
-            ])
             ->orderBy('phar_date', 'asc')
             ->get();
 

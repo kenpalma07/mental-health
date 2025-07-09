@@ -81,6 +81,8 @@ class PatientController extends Controller
             'pat_lname' => 'required|string|max:255',
             'pat_mname' => 'nullable|string|max:255',
             'pat_fname' => 'required|string|max:255',
+            'maiden_middlename' => 'nullable|string|max:255', // Added by Ken
+            'maiden_lastname' => 'nullable|string|max:255', // Added by Ken
             'suffix_code' => 'required|string|max:5', //Added by Ken
             'sex_code' => 'required|in:M,F',
             'civil_stat_code' => 'required|string|max:5',
@@ -90,6 +92,10 @@ class PatientController extends Controller
             'pat_birthDate' => 'required|date',
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
+            'occupation_sp' => $request->occupation_code === '01' ? 'required|string' : 'nullable|string',
+            'monthly_income' => 'nullable|numeric|max:999999.99',
+            'tax_id_num' => 'nullable|string|max:20',
+            'ethnic_code' => 'nullable|string|max:5',
             'bloodtype_code' => 'nullable|string|max:11',
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
@@ -97,27 +103,39 @@ class PatientController extends Controller
             'bgycode' => 'required|string|max:100',
             'zipcode' => 'required|string|max:11',
             'country_code' => 'required|string|max:5',
-            'patient_address' => 'nullable|string|max:255',
-            'pat_mobile' => 'nullable|string|max:20',
+            'patient_address' => 'required|string|max:255',
+            'pat_mobile' => 'required|string|max:20',
             'pat_landline' => 'nullable|string|max:20',
 
             //Parents Information
-            'mot_fname' => 'nullable|string|max:255',
-            'mot_mname' => 'nullable|string|max:255',
-            'mot_lname' => 'nullable|string|max:255',
+            'mot_fname' => 'required|string|max:255',
+            'mot_mname' => 'required|string|max:255',
+            'mot_lname' => 'required|string|max:255',
             'mot_birthdate' => 'nullable|date',
-            'mot_address' => 'nullable|string|max:255',
-            'mot_contact' => 'nullable|string|max:20',
-            'mot_deceased_status' => 'nullable|string|max:1',
-            'fat_fname' => 'nullable|string|max:255', 
-            'fat_mname' => 'nullable|string|max:255',
-            'fat_lname' => 'nullable|string|max:255',
+            'mot_address' => 'required|string|max:255',
+            'mot_contact' => 'required|string|max:20',
+            'mot_deceased_status' => 'required|string|max:1',
+            'fat_fname' => 'required|string|max:255', 
+            'fat_mname' => 'required|string|max:255',
+            'fat_lname' => 'required|string|max:255',
             'fat_birthdate' => 'nullable|date',
-            'fat_address' => 'nullable|string|max:255',
-            'fat_contact' => 'nullable|string|max:20',
-            'fat_deceased_status' => 'nullable|string|max:1',
+            'fat_address' => 'required|string|max:255',
+            'fat_contact' => 'required|string|max:20',
+            'fat_deceased_status' => 'required|string|max:1',
             'registered_at' => 'nullable|date',
 
+            // Carer Information
+            'carer_fname' => 'required|string|max:255',
+            'carer_mname' => 'nullable|string|max:255',
+            'carer_lname' => 'required|string|max:255',
+            'carer_suffix' => 'required|string|max:10',
+            'carer_birthdate' => 'required|date',
+            'carer_sex' => 'required|string|max:255',
+            'carer_address' => 'required|string|max:255',
+            'carer_contact' => 'required|string|max:20',
+            'carer_relationship' => 'required|string|max:50',
+
+            // PhilHealth Information
             'phic_member' => 'nullable|in:Y,N',
             'pat_philhealth' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
             'type_of_membership' => $request->phic_member === 'Y' ? 'required|string' : 'nullable|string',
@@ -143,12 +161,26 @@ class PatientController extends Controller
             'sex_code' => 'Sex',
             'civil_stat_code' => 'Civil Status',
             'pat_birthdate' => 'Birthdate',
+
+            'occupation_sp' => 'Specify Occupation',
+
             'regcode' => 'Region',
             'provcode' => 'Province',
             'citycode' => 'City',
             'bgycode' => 'Barangay',
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
+
+            // Carer Information
+            'carer_fname' => 'Carer\'s First Name',
+            'carer_mname' => 'Carer\'s Middle Name',
+            'carer_lname' => 'Carer\'s Last Name',
+            'carer_suffix' => 'Carer\'s Suffix',
+            'carer_birthdate' => 'Carer\'s Birth Date',
+            'carer_sex' => 'Carer\'s Sex',
+            'carer_address' => 'Carer\'s Address',
+            'carer_contact' => 'Carer\'s Contact Number',
+            'carer_relationship' => 'Carer\'s Relationship to Patient',
 
             'pat_philhealth' => 'PhilHealth Number',
             'type_of_membership' => 'PhilHealth Category Type',
@@ -251,6 +283,8 @@ class PatientController extends Controller
             'pat_lname' => 'required|string|max:255',
             'pat_mname' => 'nullable|string|max:255',
             'pat_fname' => 'required|string|max:255',
+            'maiden_middlename' => 'nullable|string|max:255', // Added by Ken
+            'maiden_lastname' => 'nullable|string|max:255', // Added by Ken
             'suffix_code' => 'required|string|max:5', //Added by Ken
             'sex_code' => 'required|in:M,F',
             'civil_stat_code' => 'required|string|max:5',
@@ -260,8 +294,12 @@ class PatientController extends Controller
             'pat_birthDate' => 'required|date',
             'educattainment' => 'nullable|string|max:2',
             'occupation_code' => 'nullable|string|max:255',
+            'occupation_sp' => 'nullable|string|max:255',
+            'monthly_income' => 'nullable|numeric|max:999999.99',
+            'ethnic_code' => 'nullable|string|max:5',
+            'tax_id_num' => 'nullable|string|max:20', 
             'bloodtype_code' => 'nullable|string|max:11',
-
+          
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -287,6 +325,17 @@ class PatientController extends Controller
             'fat_address' => 'nullable|string|max:255', //Added by Ken
             'fat_contact' => 'nullable|string|max:20', //Added by Ken
             'fat_deceased_status' => 'nullable|string|max:1', //Added by Ken
+
+            // Carer Information
+            'carer_fname' => 'required|string|max:255',
+            'carer_mname' => 'nullable|string|max:255',
+            'carer_lname' => 'required|string|max:255',
+            'carer_suffix' => 'required|string|max:10',
+            'carer_birthdate' => 'required|date',
+            'carer_sex' => 'required|string|max:255',
+            'carer_address' => 'required|string|max:255',
+            'carer_contact' => 'required|string|max:20',
+            'carer_relationship' => 'required|string|max:50',
 
             'phic_member' => 'nullable|in:Y,N',
             'pat_philhealth' => 'required|string|max:255',
@@ -320,6 +369,18 @@ class PatientController extends Controller
             'bgycode' => 'Barangay',
             'zipcode' => 'Zipcode',
             'country_code' => 'Country',
+            'occupation_sp' => 'Specify Occupation',
+
+            // Carer Information
+            'carer_fname' => 'Carer\'s First Name',
+            'carer_mname' => 'Carer\'s Middle Name',
+            'carer_lname' => 'Carer\'s Last Name',
+            'carer_suffix' => 'Carer\'s Suffix',
+            'carer_birthdate' => 'Carer\'s Birth Date',
+            'carer_sex' => 'Carer\'s Sex',
+            'carer_address' => 'Carer\'s Address',
+            'carer_contact' => 'Carer\'s Contact Number',
+            'carer_relationship' => 'Carer\'s Relationship to Patient',
 
             'pat_philhealth' => 'PhilHealth Number',
             'type_of_membership' => 'PhilHealth Category Type',
@@ -346,6 +407,11 @@ class PatientController extends Controller
         return Inertia::render('MentalHealth::MedicalRecords/patientenrollment', [
             'patient' => $patient,
         ]);
+    }
+
+        public function viewPatSched()
+    {
+        return Inertia::render('MentalHealth::SchedPat/index');
     }
     
 }
