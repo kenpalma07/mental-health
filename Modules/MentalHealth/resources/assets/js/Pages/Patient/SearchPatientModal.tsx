@@ -127,9 +127,11 @@ const SearchPatientModal: React.FC<Props> = ({ open, onClose }) => {
       <PatientResultModal
         open={showResultModal}
         onClose={() => setShowResultModal(false)}
-        patients={patients} onRegisterNewPatient={function (): void {
-          throw new Error('Function not implemented.');
-        }} />
+        patients={patients}
+        onRegisterNewPatient={() => {
+          window.location.href = '/patients/create/regist';
+        }}
+      />
     </>
   );
 };

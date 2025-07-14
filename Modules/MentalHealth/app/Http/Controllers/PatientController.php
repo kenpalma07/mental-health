@@ -69,6 +69,17 @@ class PatientController extends Controller
         ]);
     }
 
+        public function createRegist()
+    {
+        $nextId = $this->generatePatientRecordNumber();
+        $facilities = FHUDFacility::all();
+
+        return Inertia::render('MentalHealth::Patient/addPatient_regist', [
+            'nextId' => $nextId,
+            'facilities' => $facilities,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
