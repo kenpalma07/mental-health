@@ -55,7 +55,7 @@ const SearchPatientModal_MedRecs: React.FC<Props> = ({ open, onClose }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-start justify-center pt-5">
+      <Dialog open={open} onClose={() => { }} className="fixed inset-0 z-50 flex items-start justify-center pt-5">
         <div className="fixed inset-0" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }} />
         <Dialog.Panel className="bg-white rounded-lg p-6 max-w-xl z-50 shadow-lg relative w-full">
           <div className="flex justify-between items-center mb-4">

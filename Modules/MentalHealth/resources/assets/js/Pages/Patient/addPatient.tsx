@@ -170,24 +170,28 @@ export default function AddPatient() {
         }
     }, [data.registered_at, setData]);
 
-    const [isModalOpen, setModalOpen] = React.useState(false);
+    // Modal state: open by default
+    const [isModalOpen, setModalOpen] = React.useState(true);
+
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
+
+    // Only close when closeModal is called (X button in modal)
     React.useEffect(() => {
         if (isModalOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
-
         return () => {
             document.body.style.overflow = '';
         };
     }, [isModalOpen]);
 
-    React.useEffect(() => {
-        openModal();
-    }, []);
+    // Remove auto-open effect, modal stays open until X is clicked
+    // React.useEffect(() => {
+    //     openModal();
+    // }, []);
 
     const regionLookup: Record<string, string> = {
         NCR: 'NATIONAL CAPITAL REGION',
@@ -1826,8 +1830,8 @@ export default function AddPatient() {
                                         // id="pat_birthDate"
                                         type="date"
                                         className="text-dark-500"
-                                        // value={data.pat_birthDate}
-                                        // onChange={(e) => setData('pat_birthDate', e.target.value)}
+                                    // value={data.pat_birthDate}
+                                    // onChange={(e) => setData('pat_birthDate', e.target.value)}
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
