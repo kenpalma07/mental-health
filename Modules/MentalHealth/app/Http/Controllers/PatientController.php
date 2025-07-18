@@ -18,7 +18,7 @@ class PatientController extends Controller
 
         $query = MasterPatient::query();
 
-        // Apply search only if there's a search term
+        // Apply search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -29,14 +29,28 @@ class PatientController extends Controller
             });
         }
 
-        // Apply sex filter if it exists
+        // Apply sex filter
         if ($request->filled('sex')) {
             $query->where('sex_code', $request->input('sex'));
         }
 
-        // Apply pagination and append the current filters to the URL
-        $patients = $query->paginate($perPage)->appends($request->only(['search', 'per_page']));
+        // Only select safe and relevant fields
+        $query->select([
+            'id',
+            'master_patient_perm_id',
+            'pat_fname',
+            'pat_mname',
+            'pat_lname',
+            'sex_code',
+            'pat_birthDate',
+            'facility_name',
+            'facility_location',
+        ]);
 
+        // Paginate with filters appended
+        $patients = $query->paginate($perPage)->appends($request->only(['search', 'sex', 'per_page']));
+
+        // Render with minimal exposure
         return Inertia::render('MentalHealth::Patient/index', [
             'patients' => $patients->items(),
             'pagination' => [
@@ -79,7 +93,7 @@ class PatientController extends Controller
             'provider_name' => 'required|string|max:255',
             'prefix_code' => 'required|string|max:5', //Added by Ken
             'pat_lname' => 'required|string|max:255',
-            'pat_mname' => 'nullable|string|max:255',
+            'pat_mname' => 'required|string|max:255',
             'pat_fname' => 'required|string|max:255',
             'maiden_middlename' => 'nullable|string|max:255', // Added by Ken
             'maiden_lastname' => 'nullable|string|max:255', // Added by Ken
@@ -96,6 +110,8 @@ class PatientController extends Controller
             'monthly_income' => 'nullable|numeric|max:999999.99',
             'tax_id_num' => 'nullable|string|max:20',
             'ethnic_code' => 'nullable|string|max:5',
+            'IndigenousGroup' => 'nullable|string|max:255',
+
             'bloodtype_code' => 'nullable|string|max:11',
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
@@ -116,7 +132,7 @@ class PatientController extends Controller
             'mot_address' => 'required|string|max:255',
             'mot_contact' => 'required|string|max:20',
             'mot_deceased_status' => 'required|string|max:1',
-            'fat_fname' => 'required|string|max:255', 
+            'fat_fname' => 'required|string|max:255',
             'fat_mname' => 'required|string|max:255',
             'fat_lname' => 'required|string|max:255',
             'fat_birthdate' => 'nullable|date',
@@ -127,7 +143,7 @@ class PatientController extends Controller
 
             // Carer Information
             'carer_fname' => 'required|string|max:255',
-            'carer_mname' => 'nullable|string|max:255',
+            'carer_mname' => 'required|string|max:255',
             'carer_lname' => 'required|string|max:255',
             'carer_suffix' => 'required|string|max:10',
             'carer_birthdate' => 'required|date',
@@ -220,7 +236,7 @@ class PatientController extends Controller
 
     private function generatePatientRecordNumber()
     {
-        $latestPatient = MasterPatient::orderBy('master_patient_perm_id', 'desc')->first();         
+        $latestPatient = MasterPatient::orderBy('master_patient_perm_id', 'desc')->first();
 
         if ($latestPatient && is_numeric($latestPatient->master_patient_perm_id)) {
             $nextNumber = (int) $latestPatient->master_patient_perm_id + 1;
@@ -298,9 +314,10 @@ class PatientController extends Controller
             'occupation_sp' => 'nullable|string|max:255',
             'monthly_income' => 'nullable|numeric|max:999999.99',
             'ethnic_code' => 'nullable|string|max:5',
-            'tax_id_num' => 'nullable|string|max:20', 
+            'IndigenousGroup' => 'nullable|string|max:255',
+            'tax_id_num' => 'nullable|string|max:20',
             'bloodtype_code' => 'nullable|string|max:11',
-          
+
             'regcode' => 'required|string|max:100',
             'provcode' => 'required|string|max:100',
             'citycode' => 'required|string|max:100',
@@ -403,7 +420,7 @@ class PatientController extends Controller
     }
 
 
-        public function patenroll($id)
+    public function patenroll($id)
     {
         $patient = MasterPatient::findOrFail($id);
         return Inertia::render('MentalHealth::MedicalRecords/patientenrollment', [
@@ -411,9 +428,8 @@ class PatientController extends Controller
         ]);
     }
 
-        public function viewPatSched()
+    public function viewPatSched()
     {
         return Inertia::render('MentalHealth::SchedPat/index');
     }
-    
 }
