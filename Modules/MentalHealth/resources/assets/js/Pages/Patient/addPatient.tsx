@@ -188,11 +188,8 @@ export default function AddPatient() {
         };
     }, [isModalOpen]);
 
-    // Remove auto-open effect, modal stays open until X is clicked
-    // React.useEffect(() => {
-    //     openModal();
-    // }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const regionLookup: Record<string, string> = {
         NCR: 'NATIONAL CAPITAL REGION',
         CAR: 'CORDILLERA ADMINISTRATIVE REGION',
@@ -221,6 +218,7 @@ export default function AddPatient() {
         post('/patients');
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const capitalizeWords = (str: string) => str.replace(/\b\w/g, (char) => char.toUpperCase());
 
     return (
