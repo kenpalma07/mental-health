@@ -343,7 +343,7 @@ export type ReportPatient = {
     patient_address: string;
     pat_birthDate: string;
     sex_code: string;
-    occupation_code: string;
+    occupation_sp: string;
     pat_mobile: string;
     others: string;
     suicideAssessments: MentalAssessmentForm[];

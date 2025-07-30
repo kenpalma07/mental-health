@@ -11,8 +11,8 @@ import { Head } from '@inertiajs/react';
 import ShowAssessmentForm from './ShowAssessmentForms';
 import TreatmentPlan from './TreatmentPlan';
 import AppLogos from '@/components/app-logo-itr';
-import { Button } from '@/components/ui/button';
-import { PrinterCheckIcon } from 'lucide-react';
+// import { Button } from '@/components/ui/button';
+// import { PrinterCheckIcon } from 'lucide-react';
 
 import {
     Table,
@@ -33,9 +33,9 @@ interface Props extends PageProps {
 export default function ITRiClinicPat({ patient, consultation, assessments, pharmaMeds }: Props) {
     const latestAssessment = assessments.length > 0 ? assessments[0] : null;
 
-    const handlePrint = () => {
-        window.print();
-    };
+    // const handlePrint = () => {
+    //     window.print();
+    // };
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Mental Health', href: '/patients' },
@@ -90,7 +90,7 @@ export default function ITRiClinicPat({ patient, consultation, assessments, phar
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <style>
+            {/* <style>
                 {`
           @media print {
             body * {
@@ -107,15 +107,15 @@ export default function ITRiClinicPat({ patient, consultation, assessments, phar
             }
           }
         `}
-            </style>
+            </style> */}
             <Head title="ITR & Assessment Forms" />
             <div className="p-6 bg-white shadow rounded text-xs space-y-4">
-                <div className="flex justify-end">
+                {/* <div className="flex justify-end">
                     <Button className="flex items-center gap-2" onClick={handlePrint}>
                         <PrinterCheckIcon />
                         Print All Forms
                     </Button>
-                </div>
+                </div> */}
                 <div className="printable-area">
                     <div className="p-6 bg-white shadow rounded-md text-sm">
                         {/* Header Table */}

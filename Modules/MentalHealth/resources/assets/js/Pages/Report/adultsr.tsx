@@ -98,7 +98,7 @@ const AdultsrIndex: React.FC = () => {
             'Sex': patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'N/A',
             'Address': patient.patient_address,
             'Contact No. of Guardian': patient.pat_mobile,
-            'Occupation': patient.occupation_code,
+            'Occupation': patient.occupation_sp,
             'Place of Incidence': assessment.place_inci ?? '',
             'Means of Suicide': assessment.self_sui_means ?? '',
             'Existing Mental Health Issue? (Yes/No)': assessment.diagnosis ? `Yes - ${assessment.diagnosis}` : 'No',
@@ -188,7 +188,7 @@ const AdultsrIndex: React.FC = () => {
                                             </TableCell>
                                             <TableCell className="border p-2 text-xs">{patient.patient_address}</TableCell>
                                             <TableCell className="border p-2 text-xs">{patient.pat_mobile}</TableCell>
-                                            <TableCell className="border p-2 text-xs">{patient.occupation_code}</TableCell>
+                                            <TableCell className="border p-2 text-xs">{patient.occupation_sp}</TableCell>
                                             <TableCell className="border p-2 text-xs">{assessment.place_inci ?? ''}</TableCell>
                                             <TableCell className="border p-2 text-xs">{assessment.self_sui_means ?? ''}</TableCell>
                                             <TableCell className="border p-2 text-xs">{assessment.diagnosis ? `Yes - ${assessment.diagnosis}` : 'No'}</TableCell>
