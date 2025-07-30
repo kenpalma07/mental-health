@@ -8,8 +8,6 @@ import { Select } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Pencil, UserPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import SearchPatientModal from './SearchPatientModal';
-import { EthnicGroupCombobox } from '../components/EthnicGroupCombobox';
 import { AddressSelector } from '../components/AddressSelector';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -823,8 +821,7 @@ export default function AddPatientRegist() {
                                 </div>
                             </div>
 
-                            {/* Ethnic Group */}
-                            <EthnicGroupCombobox value={data.ethnic_code} IndigenousGroup={data.IndigenousGroup} onChange={setData} />
+                            
 
                             {/* Blood Type */}
                             <div>

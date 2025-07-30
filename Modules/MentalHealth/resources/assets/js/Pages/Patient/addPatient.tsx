@@ -160,35 +160,9 @@ export default function AddPatient() {
         };
     }, [isModalOpen]);
 
-<<<<<<< HEAD
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const regionLookup: Record<string, string> = {
-        NCR: 'NATIONAL CAPITAL REGION',
-        CAR: 'CORDILLERA ADMINISTRATIVE REGION',
-        ARMM: 'AUTONOMOUS REGION IN MUSLIM MINDANAO',
-        BARMM: 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO',
-        NIR: 'Negros Island Region',
-        '13': 'CARAGA',
-        '12': 'SOCCSKSARGEN',
-        '11': 'DAVAO REGION',
-        '10': 'NORTHERN MINDANAO',
-        '09': 'ZAMBOANGA PENINSULA',
-        '08': 'EASTERN VISAYAS',
-        '07': 'CENTRAL VISAYAS',
-        '06': 'WESTERN VISAYAS',
-        '05': 'BICOL REGION',
-        '4B': 'MIMAROPA REGION',
-        '4A': 'CALABARZON',
-        '03': 'CENTRAL LUZON',
-        '02': 'CAGAYAN VALLEY',
-        '01': 'ILOCOS REGION',
-    };
-=======
     React.useEffect(() => {
         openModal();
     }, []);
->>>>>>> cc52a7145abcd72f5d795794d767b1cbf0ba0e87
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -196,12 +170,6 @@ export default function AddPatient() {
         post('/patients');
     };
 
-<<<<<<< HEAD
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const capitalizeWords = (str: string) => str.replace(/\b\w/g, (char) => char.toUpperCase());
-
-=======
->>>>>>> cc52a7145abcd72f5d795794d767b1cbf0ba0e87
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Add Patient" />
