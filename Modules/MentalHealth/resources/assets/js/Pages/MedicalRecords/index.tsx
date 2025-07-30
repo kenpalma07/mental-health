@@ -13,9 +13,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const ItrIndex: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setModalOpen] = React.useState(true);
 
-  // Redirect to /medrecord when modal is closed (X is clicked)
   const closeModal = () => {
     window.location.href = '/medrecords';
   };
