@@ -403,13 +403,20 @@ export default function AddPatient() {
                     errors={errors}
                 />
 
-                {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
-                    Other Information
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
+                    {/* Other Information */}
                     <OtherInfo />
 
-                    Philhealth Information
-                    <PhilHealthInfo />
-                </div> */}
+                    {/* Philhealth Information */}
+                    <PhilHealthInfo
+                        phicMember={data.phic_member}
+                        patPhilhealth={data.pat_philhealth}
+                        philhealthStatus={data.philhealth_status_code}
+                        pDependentType={data.pDependentType_code}
+                        onChange={(field, value) => setData(field, value)}
+                        errors={errors}
+                    />
+                </div>
 
                 {/* Other Information */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
