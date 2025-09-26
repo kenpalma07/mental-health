@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle, UserPlus } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -75,8 +75,9 @@ export default function Register() {
 
                         {/* Header */}
                         <div className="flex items-center justify-center gap-2 text-green-700 text-2xl font-bold mb-6">
-                            <UserPlus className="w-10 h-10" />
-                            <span>REGISTER ACCOUNT</span>
+                            <span className="text-2xl font-extrabold bg-gradient-to-r from-green-600 via-yellow-400 to-green-600 bg-clip-text text-transparent">
+                                REGISTER ACCOUNT
+                            </span>
                         </div>
 
                         <p className="text-sm text-center text-gray-600 mb-6">

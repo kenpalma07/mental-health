@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle, Lock, KeyRound } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -79,9 +79,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
             {/* Heading with icons */}
             <div className="flex items-center justify-center gap-2 text-green-700 text-2xl font-bold mb-6">
-              <Lock className="w-6 h-6" />
-              <KeyRound className="w-6 h-6 -ml-2" />
-              <span>LOGIN</span>
+              <span className="text-4xl font-extrabold bg-gradient-to-r from-green-600 via-yellow-400 to-green-600 bg-clip-text text-transparent">
+                LOGIN
+              </span>
             </div>
 
             <p className="text-sm text-center text-gray-600 mb-6">
@@ -102,7 +102,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
                     placeholder="email@example.com"
-                    className="bg-white text-black placeholder-gray-400"
+                    className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                   />
                   <InputError message={errors.email} />
                 </div>
@@ -126,7 +126,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
                     placeholder="Password"
-                    className="bg-white text-black placeholder-gray-400"
+                    className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                   />
                   <InputError message={errors.password} />
                 </div>
