@@ -146,16 +146,24 @@ const TreatmentCardPDF: React.FC<TreatmentCardPDFProps> = ({ patient, assessment
                             <Text style={[styles.tableCell, styles.tableHeaderText]}>Medication</Text>
                             <Text style={[styles.tableCell, styles.tableHeaderText]}>Dosage / Intake / Duration / Frequency / Quantity</Text>
                         </View>
-                        {chunkedMedication.map((pair, index) => (
-                            <View key={index} style={styles.tableRow}>
-                                {pair[0] && pair[0].phar_med && <Text style={styles.tableCell}>{pair[0].phar_med}</Text>}
-                                {pair[0] && renderDosage(pair[0]) && <Text style={styles.tableCell}>{renderDosage(pair[0])}</Text>}
-                                {pair[0] && pair[0].phar_date && <Text style={styles.tableCell}>{pair[0].phar_date}</Text>}
-                                {pair[1] && pair[1].phar_date && <Text style={styles.tableCell}>{pair[1].phar_date}</Text>}
-                                {pair[1] && pair[1].phar_med && <Text style={styles.tableCell}>{pair[1].phar_med}</Text>}
-                                {pair[1] && renderDosage(pair[1]) && <Text style={styles.tableCell}>{renderDosage(pair[1])}</Text>}
-                            </View>
-                        ))}
+                        {chunkedMedication.map((pair, index) => {
+                            // Only display row if at least one medication has data
+                            const hasData = (pair[0] && (pair[0].phar_med || renderDosage(pair[0]) || pair[0].phar_date)) ||
+                                            (pair[1] && (pair[1].phar_med || renderDosage(pair[1]) || pair[1].phar_date));
+                            if (!hasData) return null;
+                            return (
+                                <View key={index} style={styles.tableRow}>
+                                    {/* Medication 1 */}
+                                    {pair[0] && pair[0].phar_med ? <Text style={styles.tableCell}>{pair[0].phar_med}</Text> : <Text style={styles.tableCell}></Text>}
+                                    {pair[0] && renderDosage(pair[0]) ? <Text style={styles.tableCell}>{renderDosage(pair[0])}</Text> : <Text style={styles.tableCell}></Text>}
+                                    {pair[0] && pair[0].phar_date ? <Text style={styles.tableCell}>{pair[0].phar_date}</Text> : <Text style={styles.tableCell}></Text>}
+                                    {/* Medication 2 Next Date Release (always render cell) */}
+                                    {pair[1] && pair[1].phar_date ? <Text style={styles.tableCell}>{pair[1].phar_date}</Text> : <Text style={styles.tableCell}></Text>}
+                                    {pair[1] && pair[1].phar_med ? <Text style={styles.tableCell}>{pair[1].phar_med}</Text> : <Text style={styles.tableCell}></Text>}
+                                    {pair[1] && renderDosage(pair[1]) ? <Text style={styles.tableCell}>{renderDosage(pair[1])}</Text> : <Text style={styles.tableCell}></Text>}
+                                </View>
+                            );
+                        })}
                     </View>
                 </View>
                 {/* ICD and Diagnosis */}

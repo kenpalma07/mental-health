@@ -60,11 +60,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             {/* Text */}
             <div>
               <h3 className="text-xl font-bold text-green-700">DEPARTMENT OF HEALTH</h3>
-              <p className="text-lg text-gray-700 font-bold">eMental Health System</p>
+              <p className="text-lg text-gray-700 font-bold">
+                <em className="italic font-bold italic">e </em>Mental Health System
+              </p>
               <div className="mt-4">
                 <AppLogoMental />
               </div>
             </div>
+
 
             {/* Version */}
             <div className="text-xs text-gray-500 italic mt-4">Version 1.0</div>
@@ -142,7 +145,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                   <Label htmlFor="remember">Remember me</Label>
                 </div>
 
-                <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                <Button type="submit" className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white" tabIndex={4} disabled={processing}>
                   {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
                   Log in
                 </Button>

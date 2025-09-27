@@ -56,7 +56,9 @@ export default function Register() {
                         {/* Text */}
                         <div>
                             <h3 className="text-xl font-bold text-green-700">DEPARTMENT OF HEALTH</h3>
-                            <p className="text-lg text-gray-700 font-bold">eMental Health System</p>
+                            <p className="text-lg text-gray-700 font-bold">
+                                <em className="italic font-bold italic">e </em>Mental Health System
+                            </p>
                             <div className="mt-4">
                                 <AppLogoMental />
                             </div>
@@ -99,7 +101,7 @@ export default function Register() {
                                         onChange={(e) => setData('name', e.target.value)}
                                         disabled={processing}
                                         placeholder="Full name"
-                                        className="bg-white text-black placeholder-gray-400"
+                                        className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                                     />
                                     <InputError message={errors.name} />
                                 </div>
@@ -116,7 +118,7 @@ export default function Register() {
                                         onChange={(e) => setData('email', e.target.value)}
                                         disabled={processing}
                                         placeholder="email@example.com"
-                                        className="bg-white text-black placeholder-gray-400"
+                                        className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -133,7 +135,7 @@ export default function Register() {
                                         onChange={(e) => setData('password', e.target.value)}
                                         disabled={processing}
                                         placeholder="Password"
-                                        className="bg-white text-black placeholder-gray-400"
+                                        className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
@@ -150,12 +152,12 @@ export default function Register() {
                                         onChange={(e) => setData('password_confirmation', e.target.value)}
                                         disabled={processing}
                                         placeholder="Confirm password"
-                                        className="bg-white text-black placeholder-gray-400"
+                                        className="bg-white text-black placeholder-green-400 focus:shadow-[0_0_0_1px_rgba(34,197,94,1)]"
                                     />
                                     <InputError message={errors.password_confirmation} />
                                 </div>
 
-                                <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                                <Button type="submit" className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white" tabIndex={5} disabled={processing}>
                                     {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
                                     Create account
                                 </Button>

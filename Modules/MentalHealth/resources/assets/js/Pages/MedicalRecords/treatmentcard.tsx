@@ -71,7 +71,7 @@ const TreatmentCardIndex: React.FC<TreatmentCardProps> = ({
   assessments,
   medicationRecords = [],
 }) => {
-  const [showPDF, setShowPDF] = React.useState(true); // Auto-show modal
+  const [showPDF, setShowPDF] = React.useState(true);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
