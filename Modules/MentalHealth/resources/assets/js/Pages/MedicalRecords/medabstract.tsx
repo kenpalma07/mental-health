@@ -15,9 +15,9 @@ const medabstractindex: React.FC = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Medical Abstract" />
       <div className="p-4 space-y-4">
-        <marquee behavior="scroll" direction="left" scrollamount="20">
+        <Marquee behavior="scroll" direction="left" scrollamount="20">
           <h1 className="text-sm font-semibold">Ongoing Development for this page</h1>
-        </marquee>
+        </Marquee>
 
         {/* Add more content here later */}
       </div>

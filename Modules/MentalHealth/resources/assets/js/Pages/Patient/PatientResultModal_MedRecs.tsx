@@ -2,21 +2,20 @@ import * as React from 'react';
 import { Dialog } from '@headlessui/react';
 import { X, EyeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-interface Patient {
-  id: number;
-  master_patient_perm_id: string;
-  pat_fname: string;
-  pat_mname: string;
-  pat_lname: string;
-  sex_code: string;
-  pat_birthDate: string;
-}
+import { MasterPatient } from '@/types';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  patients: Patient[];
+  patients: MasterPatient[];
   onRegisterNewPatient: () => void;
 }
 
@@ -28,6 +27,14 @@ const PatientResultModal_MedRecs: React.FC<Props> = ({ open, onClose, patients, 
   const handleRegister = () => {
     onClose();
     onRegisterNewPatient();
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
   };
 
   return (
@@ -42,24 +49,37 @@ const PatientResultModal_MedRecs: React.FC<Props> = ({ open, onClose, patients, 
         </div>
 
         {patients.length > 0 ? (
-          <div className="space-y-4 max-h-64 overflow-y-auto">
-            {patients.map(patient => (
-              <div key={patient.id} className="border p-3 rounded shadow-sm bg-gray-50">
-                <p><strong>Patient ID:</strong> {patient.master_patient_perm_id}</p>
-                <p><strong>Name:</strong> {patient.pat_lname}, {patient.pat_fname} {patient.pat_mname}</p>
-                <p><strong>Birthdate:</strong> {patient.pat_birthDate}</p>
-                <p><strong>Sex:</strong> {patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'Other'}</p>
-                <div className="flex justify-end mt-2">
-                  <Button
-                    onClick={() => handleConsultation(patient.id)}
-                    className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transform hover:scale-108 transition-all duration-200"
-                  >
-                    <EyeIcon className="w-4 h-4" />
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            ))}
+          <div className="max-h-64 overflow-y-auto">
+            <Table className="w-full text-sm border">
+              <TableHeader className="sticky top-0 z-10">
+                <TableRow>
+                  <TableHead className="bg-black text-white p-2 text-left">Patient ID</TableHead>
+                  <TableHead className="bg-black text-white p-2 text-left">Name</TableHead>
+                  <TableHead className="bg-black text-white p-2 text-left">Birthdate</TableHead>
+                  <TableHead className="bg-black text-white p-2 text-left">Sex</TableHead>
+                  <TableHead className="bg-black text-white p-2 text-right">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {patients.map(patient => (
+                  <TableRow key={patient.id} className="hover:bg-gray-50">
+                    <TableCell className="p-2">{patient.master_patient_perm_id}</TableCell>
+                    <TableCell className="p-2">{patient.pat_lname}, {patient.pat_fname} {patient.pat_mname}</TableCell>
+                    <TableCell className="p-2">{patient.pat_birthDate ? formatDate(patient.pat_birthDate) : ''}</TableCell>
+                    <TableCell className="p-2">{patient.sex_code === 'M' ? 'Male' : patient.sex_code === 'F' ? 'Female' : 'Other'}</TableCell>
+                    <TableCell className="p-2 text-right">
+                      <Button
+                        onClick={() => handleConsultation(patient.id)}
+                        className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transform hover:scale-108 transition-all duration-200"
+                      >
+                        <EyeIcon className="w-4 h-4" />
+                        View Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         ) : (
           <div>

@@ -1,84 +1,77 @@
 [
     {
-      "title": "1. Presenting complaint",
-      "key": "presenting_complaint",
-      "columnPrefix": "pres_comp",
-      "groups": [
-        {
-          "pres_comp_label": "Depression",
-          "pres_comp_item": [
-            "Low energy, fatigue, sleep problems",
-            "Anxiety",
-            "Persistent sadness",
-            "Loss of interest",
-            "Act of self-harm"
-          ]
-        },
-        {
-          "pres_comp_label": "Psychosis",
-          "pres_comp_item": [
-            "Mark behavioral changes",
-            "Agitated, aggressive behavior",
-            "Hearing voices or seeing things",
-            "Lack of realization"
-          ]
-        },
-        {
-          "pres_comp_label": "Dementia",
-          "pres_comp_item": ["Severe forgetfulness", "Loss of emotional control", "Apathy"]
-        },
-        {
-          "pres_comp_label": "Substance Abuse",
-          "pres_comp_item": [
-            "Smell of alcohol, sedated, slurred speech",
-            "Deterioration of social function",
-            "Signs of chronic liver disease",
-            "Problems with balance, working, coordinated movements"
-          ]
-        }
-      ]
+        "title": "1. Presenting complaint",
+        "key": "presenting_complaint",
+        "columnPrefix": "pres_comp",
+        "groups": [
+            {
+                "pres_comp_label": "Depression",
+                "pres_comp_item": ["Low energy, fatigue, sleep problems", "Anxiety", "Persistent sadness", "Loss of interest", "Act of self-harm"]
+            },
+            {
+                "pres_comp_label": "Psychosis",
+                "pres_comp_item": [
+                    "Mark behavioral changes",
+                    "Agitated, aggressive behavior",
+                    "Hearing voices or seeing things",
+                    "Lack of realization"
+                ]
+            },
+            {
+                "pres_comp_label": "Dementia",
+                "pres_comp_item": ["Severe forgetfulness", "Loss of emotional control", "Apathy"]
+            },
+            {
+                "pres_comp_label": "Substance Abuse",
+                "pres_comp_item": [
+                    "Smell of alcohol, sedated, slurred speech",
+                    "Deterioration of social function",
+                    "Signs of chronic liver disease",
+                    "Problems with balance, working, coordinated movements"
+                ]
+            }
+        ]
     },
     {
-      "title": "2. General Health History",
-      "key": "general_health_history",
-      "columnPrefix": "gen_heal_hist",
-      "groups": [
-        {
-          "gen_heal_hist_label": "General Health History",
-          "gen_heal_hist_item": [
-            "Diabetes Mellitus",
-            "Hypertension",
-            "Asthma",
-            "Heart Disease",
-            "Thyroid problem",
-            "Arthritis",
-            "Cancer",
-            "Others"
-          ]
-        }
-      ]
+        "title": "2. General Health History",
+        "key": "general_health_history",
+        "columnPrefix": "gen_heal_hist",
+        "groups": [
+            {
+                "gen_heal_hist_label": "General Health History",
+                "gen_heal_hist_item": [
+                    "Diabetes Mellitus",
+                    "Hypertension",
+                    "Asthma",
+                    "Heart Disease",
+                    "Thyroid problem",
+                    "Arthritis",
+                    "Cancer",
+                    "Others"
+                ]
+            }
+        ]
     },
     {
-      "title": "3. MNS History",
-      "key": "mns_history",
-      "columnPrefix": "mns_hist",
-      "groups": [
-        {
-          "mns_hist_label": "MNS History",
-          "mns_hist_item": ["Depression", "Anxiety Disorder", "Bipolar", "Psychosis", "Alcohol Use", "Others"]
-        }
-      ]
+        "title": "3. MNS History",
+        "key": "mns_history",
+        "columnPrefix": "mns_hist",
+        "groups": [
+            {
+                "mns_hist_label": "MNS History",
+                "mns_hist_item": ["Depression", "Anxiety Disorder", "Bipolar", "Psychosis", "Alcohol Use", "Others"]
+            }
+        ]
     },
     {
-      "title": "4. Family History of MNS condition",
-      "key": "fam_hist_mns_conditions",
-      "columnPrefix": "fam_hist_mns_cond",
-      "groups": [
-        {
-          "fam_hist_mns_cond_label": "Family History of MNS condition",
-          "fam_hist_mns_cond_item": ["Depression", "Anxiety", "Bipolar", "Psychosis"]
-        }
-      ]
+        "title": "4. Family History of MNS condition",
+        "key": "fam_hist_mns_conditions",
+        "columnPrefix": "fam_hist_mns_cond",
+        "groups": [
+            {
+                "fam_hist_mns_cond_label": "Family History of MNS condition",
+                "fam_hist_mns_cond_item": ["Depression", "Anxiety", "Bipolar", "Psychosis"]
+            }
+        ]
     }
-  ]
-  
+]

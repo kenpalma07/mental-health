@@ -13,10 +13,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const ItrIndex: React.FC = () => {
-  const [isModalOpen, setModalOpen] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isModalOpen, setModalOpen] = React.useState(true);
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => {
+    window.location.href = '/medrecords';
+  };
 
   React.useEffect(() => {
     if (isModalOpen) {
@@ -24,22 +26,19 @@ const ItrIndex: React.FC = () => {
     } else {
       document.body.style.overflow = '';
     }
-
     return () => {
       document.body.style.overflow = '';
     };
   }, [isModalOpen]);
 
-  React.useEffect(() => {
-    openModal(); // Open modal on mount
-  }, []);
-
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Medical Records" />
       <div className="p-4 space-y-4">
-        <SearchPatientModalMedRecs open={isModalOpen} onClose={closeModal} />
-        {/* Add more content here later */}
+        <SearchPatientModalMedRecs 
+          open={isModalOpen} 
+          onClose={closeModal}
+        />
       </div>
     </AppLayout>
   );

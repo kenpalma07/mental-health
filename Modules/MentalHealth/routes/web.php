@@ -10,10 +10,14 @@ use Modules\MentalHealth\Http\Controllers\AssessmentController;
 use Modules\MentalHealth\Http\Controllers\FormController;
 use Modules\MentalHealth\Http\Controllers\MedicalRecordsController;
 use Modules\MentalHealth\Http\Controllers\PharmaController;
+use Modules\MentalHealth\Http\Controllers\ReferralController;
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
 // Patient Information
 Route::get('/patients', [PatientController::class, 'index'])->name('patients');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
+Route::get('/patients/create/regist', [PatientController::class, 'createRegist'])->name('patients.createRegist');
 Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 Route::get('/patients/search', [PatientController::class, 'search']);
 Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
@@ -21,12 +25,13 @@ Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patien
 Route::get('/patients/{id}/view', [PatientController::class, 'view']);
 Route::get('/patients/{patient}/consent-pdf', [PatientConsentController::class, 'streamConsentPDF']);
 Route::get('/patients/{id}/patenroll', [PatientController::class, 'patenroll'])->name('view.patenroll');
+Route::get('/patSched', [PatientController::class, 'viewPatSched'])->name('viewPatSched.view');
 // Route::get('/patients/{patient}/export-consent-pdf', [PatientConsentController::class, 'exportConsentPDF']);
 
 // Patient Consultation
 Route::get('/consultations/{id}', [ConsultationController::class, 'index'])->name('consultations.index');
 Route::post('/consultations/store', [ConsultationController::class, 'store'])->name('consultations.store');
-Route::get('/consultations/{id}/edit-consultation', [ConsultationController::class, 'edit'])->name('consultation.edit');
+// Route::get('/consultations/{id}/edit-consultation', [ConsultationController::class, 'edit'])->name('consultation.edit');
 Route::put('/consultations/{id}', [ConsultationController::class, 'update'])->name('consultations.update');
 
 // Patient Consent
@@ -55,19 +60,19 @@ Route::get('/reportadultsr', [ReportController::class, 'adultsr']);
 
 // Patient Assessment
 Route::get('/assessment/{id}/addAssessment', [AssessmentController::class, 'index']);
+Route::get('/assessment/{pat_perm_id}/followupAssessment', [AssessmentController::class, 'followupByPatient']);
 Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
 Route::get('/assessment/{id}/history', [AssessmentController::class, 'show'])->name('assessment.show');
-
+Route::get('/assessments/{id}/edit', [AssessmentController::class, 'edit'])->name('assessments.edit');
+Route::put('/assessments/{id}', [AssessmentController::class, 'update'])->name('assessments.update'); // <-- And this for saving edits
 
 //pharma
 Route::post('/pharma/store', [PharmaController::class, 'store'])->name('pharma.store');
 Route::get('/pharma/rxView/{id}', [PharmaController::class, 'rxView']);
-Route::get('/RxPrintView', [PharmaController::class, 'RxPrintView']);
+Route::get('/RxPrint/{id}', [PharmaController::class, 'RxPrint']);
+Route::put('/pharma/{id}', [PharmaController::class, 'update'])->name('pharma.update');
 
-
-
-
-
-
-
-
+//referral
+Route::post('/sendReferral/send', [ReferralController::class, 'store'])->name('sendReferral');
+Route::get('/Referral', [ReferralController::class, 'index'])->name('Referral.index');
+});

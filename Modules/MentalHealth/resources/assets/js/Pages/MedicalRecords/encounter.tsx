@@ -1,30 +1,50 @@
-import * as React from 'react';
 import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem, PageProps, MentalAssessmentForm } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import type { PageProps } from '@/types';
-import type { BreadcrumbItem } from '@/types';
-
-interface Assessment {
-    id: number;                 // assessment id for React keys
-    pat_temp_id: number;        // patient id
-    consult_date_assess: string;
-    ref_choice: string;
-    ref_fhud: string;
-    ref_reason: string;
-}
+import * as React from 'react';
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Others',
-        href: '/others',
+        title: 'Referral List Encounter',
+        href: '#',
     },
 ];
 
-const OtherIndex: React.FC = () => {
-    const { assessments } = usePage<PageProps<{ assessments: Assessment[] }>>().props;
-    const [showModal, setShowModal] = React.useState(true); 
+const EncounterIndex: React.FC = () => {
+    const { assessments } = usePage<PageProps<{ assessments: MentalAssessmentForm[] }>>().props;
+    const [showModal, setShowModal] = React.useState(true);
 
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => {
+        setShowModal(false);
+        window.location.href = '/patients';
+    };
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
+
+    const filteredAssessments = React.useMemo(
+        () =>
+            assessments.filter(
+                (item: { ref_choice: string; ref_fhud: string; ref_reason: string; }) =>
+                    (item.ref_choice && item.ref_choice.trim() !== '') ||
+                    (item.ref_fhud && item.ref_fhud.trim() !== '') ||
+                    (item.ref_reason && item.ref_reason.trim() !== '')
+            ),
+        [assessments]
+    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -32,52 +52,50 @@ const OtherIndex: React.FC = () => {
 
             {/* Modal container */}
             {showModal && (
-                <div
-                    className="fixed inset-0 flex items-start justify-center pt-10 z-50"
-                    style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }}
-                >
-                    <div className="bg-white rounded-lg shadow-lg p-6 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
+                <div className="fixed inset-0 z-50 flex items-start justify-center pt-10" style={{ backgroundColor: 'rgba(49, 49, 49, 0.6)' }}>
+                    <div className="max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-lg bg-white p-6 shadow-lg">
+                        <div className="mb-4 flex items-center justify-between">
                             <h2 className="text-xl font-semibold">Referral History</h2>
-                            <button
-                                onClick={closeModal}
-                                className="text-sm px-3 py-1 bg-red-400 rounded hover:bg-red-600"
-                            >
+                            <button onClick={closeModal} className="rounded bg-red-400 px-3 py-1 text-sm hover:bg-red-600">
                                 X
                             </button>
                         </div>
-                        <table className="min-w-full table-auto border border-gray-300 text-sm">
-                            <thead>
-                                <tr className="bg-black text-white text-sm">
-                                    <th className="px-4 py-2 border">Date</th>
-                                    <th className="px-4 py-2 border">Referral Choice</th>
-                                    <th className="px-4 py-2 border">Referred FHUD</th>
-                                    <th className="px-4 py-2 border">Referral Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assessments.map((item) => (
-                                    <tr
+                        <Table>
+                            <TableHeader>
+                                <TableRow >
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Date</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Choice</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referred FHUD</TableHead>
+                                    <TableHead className="bg-black text-xs border px-4 py-2 text-white">Referral Remarks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {filteredAssessments.map((item: MentalAssessmentForm) => (
+                                    <TableRow
                                         key={item.id}
-                                        className="hover:bg-gray-100 text-xs cursor-pointer"
-                                        onClick={() => {
-                                            window.open(
-                                                `/referralform/${item.pat_temp_id}?consult_date=${item.consult_date_assess}`,
-                                                '_blank'
-                                            );
-                                            setShowModal(false);   
-                                            window.location.href = '/patients'; 
+                                        className="cursor-pointer text-xs hover:bg-gray-100"
+                                        onClick={(): void => {
+                                            window.open(`/referralform/${item.pat_temp_id}?consult_date=${item.consult_date_assess}`, '_blank');
+                                            setShowModal(false);
+                                            window.location.href = '/patients';
                                         }}
                                     >
-                                        <td className="px-4 py-2 border text-black-600">{item.consult_date_assess}</td>
-                                        <td className="px-4 py-2 border text-black-600">{item.ref_choice}</td>
-                                        <td className="px-4 py-2 border text-black-600">{item.ref_fhud}</td>
-                                        <td className="px-4 py-2 border text-black-600">{item.ref_reason}</td>
-                                    </tr>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.consult_date_assess ? formatDate(item.consult_date_assess) : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_choice && item.ref_choice.trim() !== '' ? item.ref_choice : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_fhud && item.ref_fhud.trim() !== '' ? item.ref_fhud : ''}
+                                        </TableCell>
+                                        <TableCell className="text-black-600 border px-4 py-2">
+                                            {item.ref_reason && item.ref_reason.trim() !== '' ? item.ref_reason : ''}
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 </div>
             )}
@@ -85,4 +103,4 @@ const OtherIndex: React.FC = () => {
     );
 };
 
-export default OtherIndex;
+export default EncounterIndex;

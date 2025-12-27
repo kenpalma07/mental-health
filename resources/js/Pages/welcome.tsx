@@ -1,35 +1,46 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const carouselImages = [
-    {
-        src: '/assets/img/dashboard/men.jpg',
-    },
-    {
-        src: '/assets/img/dashboard/men1.jpg',
-    },
+    { src: '/assets/img/dashboard/men.jpg' },
+    { src: '/assets/img/dashboard/men1.jpg' },
+    { src: '/assets/img/dashboard/Brochure.jpg' },
+    { src: '/assets/img/dashboard/Brochure2.jpg' },
 ];
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [fade, setFade] = useState(true);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Function to go to the next slide
     const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+        setFade(false);
+        timeoutRef.current = setTimeout(() => {
+            setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+            setFade(true);
+        }, 600); // slower for smoother fade
     };
 
-    // Function to go to the previous slide
     const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+        setFade(false);
+        timeoutRef.current = setTimeout(() => {
+            setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+            setFade(true);
+        }, 600); // slower for smoother fade
     };
 
-    // Set up automatic slide transition every 3 seconds
     useEffect(() => {
-        const interval = setInterval(nextSlide, 3000); // 3000 ms = 3 seconds
-        return () => clearInterval(interval); // Clean up the interval on component unmount
-    }, []);
+        const interval = setInterval(() => {
+            nextSlide();
+        }, 3500);
+        return () => {
+            clearInterval(interval);
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, [currentSlide]);
 
     return (
         <>
@@ -46,7 +57,6 @@ export default function Welcome() {
                         <img src="/assets/img/logos/Department_of_Health.svg" alt="DOH Logo" className="h-10 w-auto" />
                         <span className="text-xl font-bold tracking-tight max-[512px]:hidden">Mental Health System</span>
                     </Link>
-
                     <div className="flex items-center gap-2 max-[611px]:grid max-[611px]:grid-cols-2 sm:flex-row sm:gap-4">
                         {auth.user ? (
                             <Link
@@ -75,31 +85,76 @@ export default function Welcome() {
                 </div>
             </div>
 
-            {/* Main Section with the carousel centered at the top with gap from header
-            <div className="mt-6 flex min-h-screen flex-col items-center justify-start bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a]">
-                <div className="relative w-full max-w-4xl"> */}
-                    {/* Carousel Card */}
-                    {/* <div className="relative flex items-center justify-center">
-                        <img
-                            src={carouselImages[currentSlide].src}
-                            alt="Mental Health Poster"
-                            className="h-[60vh] w-full rounded-lg object-cover shadow-lg" // Added shadow effect here
-                        /> */}
-                    {/* Arrows */}
-                    {/* <button
-                            onClick={prevSlide}
-                            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-white/70 p-2 text-gray-800 hover:bg-white dark:bg-black/50 dark:text-white"
-                        > */}
-                    ‹
-                    {/* </button>
-                        <button
-                            onClick={nextSlide}
-                            className="absolute top-1/2 right-0 -translate-y-1/2 rounded-full bg-white/70 p-2 text-gray-800 hover:bg-white dark:bg-black/50 dark:text-white"
-                        > */}
-                    ›{/* </button> */}
-                    {/* </div> */}
-                {/* </div>
-            </div> */}
+            {/* Responsive grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 grid-rows-1 lg:grid-rows-5 gap-4 p-4 sm:p-6">
+                {/* Main Card with Full Image */}
+                <div className="lg:col-span-3 lg:row-span-5 col-span-1 row-span-1">
+                    <Card className="w-full h-full aspect-square max-h-[600px] flex flex-col justify-center items-center  shadow-xl rounded-2xl overflow-hidden p-0">
+                        <CardContent className="w-full h-full flex flex-col items-center justify-center p-0 relative">
+                            {/* Low opacity background image */}
+                            <img
+                                src={carouselImages[currentSlide].src}
+                                alt="Mental Health Slide"
+                                className={`absolute top-0 left-0 w-full h-full object-cover z-0 opacity-10 transition-opacity duration-700 ${fade ? 'opacity-10' : 'opacity-0'}`}
+                            />
+                            <Card
+                                className={`absolute inset-0 flex items-center justify-center rounded-[10px] shadow-2xl transition-opacity duration-700 ${fade ? 'opacity-100' : 'opacity-0'}`}
+                                style={{ margin: 'auto', pointerEvents: 'none', background: 'transparent', border: 'none' }}
+                            >
+                                <img
+                                    src={carouselImages[currentSlide].src}
+                                    alt="Mental Health Slide High"
+                                    className="w-[90%] h-[90%] object-contain rounded-[10px] m-auto bg-transparent"
+                                    draggable={false}
+                                />
+                            </Card>
+
+                            {/* Carousel Controls */}
+                            <button
+                                onClick={prevSlide}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-2 shadow hover:bg-white z-20"
+                                aria-label="Previous"
+                                type="button"
+                            >
+                                &#8592;
+                            </button>
+                            <button
+                                onClick={nextSlide}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-2 shadow hover:bg-white z-20"
+                                aria-label="Next"
+                                type="button"
+                            >
+                                &#8594;
+                            </button>
+                        </CardContent>
+                    </Card>
+                </div>
+                {/* Side Card */}
+                <div className="lg:col-span-2 lg:row-span-5 col-span-1 row-span-1">
+                    <Card className="h-[300px] sm:h-[400px] lg:h-full flex flex-col justify-center items-center shadow-xl rounded-2xl bg-gradient-to-br from-green-100 to-violet-100">
+                        <CardContent className="w-full flex flex-col items-center p-8">
+                            {/* <div className="w-full mb-4">
+                                <div className="text-center bg-gradient-to-r from-violet-400 to-green-500 bg-opacity-90 rounded-xl px-4 py-3 shadow-lg max-w-xs mx-auto text-white">
+                                    <h2 className="text-lg sm:text-2xl font-bold text-white">Welcome to the Mental Health System</h2>
+                                    <p className="mt-2 text-white text-sm sm:text-base">
+                                        Empowering communities for better mental health and well-being.
+                                    </p>
+                                </div>
+                            </div> */}
+                            <h3 className="text-lg sm:text-xl font-semibold text-green-700 mb-4">Did you know?</h3>
+                            <p className="text-gray-700 text-center text-sm sm:text-base">
+                                Mental health is just as important as physical health. Take a step today for a healthier mind!
+                            </p>
+                            <Link
+                                href="/register"
+                                className="mt-6 rounded-md bg-green-600 px-6 py-2 text-white font-semibold hover:bg-green-700 transition"
+                            >
+                                Get Started
+                            </Link>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
         </>
     );
 }

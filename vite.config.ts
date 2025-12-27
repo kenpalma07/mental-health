@@ -7,7 +7,6 @@ import { defineConfig } from 'vite';
 import { viteObfuscateFile } from 'vite-plugin-obfuscator';
 
 export default defineConfig({
-
     // comment this block if cors error occurred
     server: {
         host: 'localhost',
@@ -57,6 +56,8 @@ export default defineConfig({
     resolve: {
         alias: {
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+            '@assets': resolve(__dirname, 'Modules/MentalHealth/resources/assets'),
+            '@': resolve(__dirname, 'resources/js'),
         },
     },
 });

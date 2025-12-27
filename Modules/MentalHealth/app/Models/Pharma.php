@@ -18,8 +18,6 @@ class Pharma extends Model
         'patient_assess_phar_id',
         'phar_date',
         'pat_perm_id',
-        'date_entered',
-        'time_entered',
         'phar_med',
         'phar_intake',
         'phar_intakeUnit',
@@ -42,15 +40,15 @@ class Pharma extends Model
 
         static::creating(function ($model) {
             $now = Carbon::now('Asia/Manila');
-            $model->date_entered = $now->toDateString();
-            $model->time_entered = $now->toTimeString();
+            // $model->date_entered = $now->toDateString();
+            // $model->time_entered = $now->toTimeString();
             $model->ts_created_at = $now;
         });
 
         static::updating(function ($model) {
             $now = Carbon::now('Asia/Manila');
-            $model->date_updated = $now->toDateString();
-            $model->time_updated = $now->toTimeString();
+            // $model->date_updated = $now->toDateString();
+            // $model->time_updated = $now->toTimeString();
             $model->ts_updated_at = $now;
         });
     }

@@ -98,6 +98,13 @@ class MentalAssessmentForm extends Model
         'pres_comp_label' => '',
     ];
 
+
+    public function patient()
+    {
+        return $this->belongsTo(MasterPatient::class, 'pat_temp_id', 'id');
+    }
+
+
     protected static function boot()
     {
         parent::boot();
@@ -118,4 +125,3 @@ class MentalAssessmentForm extends Model
         });
     }
 }
-
